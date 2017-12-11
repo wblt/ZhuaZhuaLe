@@ -4,7 +4,7 @@ import com.dev.base.R;
 import com.dev.base.view.activity.base.BaseActivity;
 
 /**
- * Created by Administrator on 2017/12/10 0010.
+ * Created by 丁琪 on 2017/12/10 0010.
  */
 
 public class HomeActivity extends BaseActivity{

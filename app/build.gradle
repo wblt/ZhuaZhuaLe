@@ -58,55 +58,48 @@ android {
 
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:cardview-v7:25.3.1'
-
     //Fresco图片加载
     compile 'com.facebook.fresco:fresco:1.5.0'
-    compile 'com.facebook.fresco:animated-gif:1.5.0'//加载gif动图需编译此库
-
+    compile 'com.facebook.fresco:animated-gif:1.5.0'
+    //加载gif动图需编译此库
     //ButterKnife注入
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
     //greenDAO
     compile 'org.greenrobot:greendao:3.2.0'
-//    compile 'net.zetetic:android-database-sqlcipher:3.5.7'//用于数据库加密，添加后apk会增大5M左右，对安全性要求不高的话不建议使用
-
+    //    compile 'net.zetetic:android-database-sqlcipher:3.5.7'//用于数据库加密，添加后apk会增大5M左右，对安全性要求不高的话不建议使用
     //EventBus
     compile 'org.greenrobot:eventbus:3.0.0'
-    annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'//用于eventbus开启Index加速
-
+    annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
+    //用于eventbus开启Index加速
     //Rxjava1 & RxAndroid1
-//    compile 'io.reactivex:rxandroid:1.2.0'
-//    compile 'io.reactivex:rxjava:1.2.0'
-
+    //    compile 'io.reactivex:rxandroid:1.2.0'
+    //    compile 'io.reactivex:rxjava:1.2.0'
     //Rxjava2 & RxAndroid2
     compile 'io.reactivex.rxjava2:rxjava:2.1.6'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-
     //Retrofit
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-//    compile 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
+    //    compile 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
-
     //状态栏、导航栏颜色设置
     compile 'org.zackratos:ultimatebar:1.1.1'
-
+    //  轮播图
+    compile 'com.jude:rollviewpager:1.2.9'
     //内存泄漏检测
-//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-//    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-//    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-
+    //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    //    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 }
 
