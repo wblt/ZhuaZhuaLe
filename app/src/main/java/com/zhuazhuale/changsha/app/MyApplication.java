@@ -2,6 +2,7 @@ package com.zhuazhuale.changsha.app;
 
 import android.app.Application;
 
+import com.lzy.okgo.OkGo;
 import com.zhuazhuale.changsha.model.net.RetrofitUtil;
 import com.zhuazhuale.changsha.util.CrashLogUtil;
 import com.zhuazhuale.changsha.util.FrescoUtil;
@@ -32,7 +33,8 @@ public class MyApplication extends Application {
 //        refWatcher = LeakCanary.install(this);
 
         instance = this;
-
+//必须调用初始化
+        OkGo.getInstance().init(this);
         ToastUtil.init(this);//初始化吐司
         LogUtil.init(true);//初始化Log打印，true表示显示打印，false表示不显示打印
         CrashLogUtil.getInstance().init(this);//初始化崩溃输出

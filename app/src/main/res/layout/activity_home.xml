@@ -50,6 +50,8 @@
                 android:orientation="vertical">
 
                 <com.jude.rollviewpager.RollPagerView
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
                     android:id="@+id/rpv_mall"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"

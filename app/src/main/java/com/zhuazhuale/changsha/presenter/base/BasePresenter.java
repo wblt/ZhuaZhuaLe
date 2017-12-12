@@ -38,4 +38,6 @@ public abstract class BasePresenter<T extends IBaseView> {
     public void destroy() {
         mIView = null;
     }
+
+
 }

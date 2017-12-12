@@ -19,7 +19,7 @@ android {
         //用于eventbus开启Index加速
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [ eventBusIndex : "com.dev.base.MyEventBusIndex" ]
+                arguments = [eventBusIndex: "com.dev.base.MyEventBusIndex"]
             }
         }
     }
@@ -41,10 +41,10 @@ android {
             signingConfig signingConfigs.config//使用上面配置的签名进行打包
         }
 
-       debug {
-           minifyEnabled false
-           signingConfig signingConfigs.config//ddebug模式下也使用上面配置的签名进行打包
-       }
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.config//ddebug模式下也使用上面配置的签名进行打包
+        }
     }
     //greendao配置
     greendao {
@@ -97,6 +97,9 @@ dependencies {
     compile 'org.zackratos:ultimatebar:1.1.1'
     //  轮播图
     compile 'com.jude:rollviewpager:1.2.9'
+    //  网络框架okGo
+    compile 'com.lzy.net:okgo:3.0.4'
+    compile 'com.lzy.net:okrx2:2.0.2'
     //内存泄漏检测
     //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
