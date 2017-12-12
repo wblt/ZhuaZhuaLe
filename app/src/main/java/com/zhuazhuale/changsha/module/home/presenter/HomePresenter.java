@@ -3,6 +3,7 @@ package com.zhuazhuale.changsha.module.home.presenter;
 import com.google.gson.Gson;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
+import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.model.HomeModel;
 import com.zhuazhuale.changsha.module.home.ui.IHomeView;
 import com.zhuazhuale.changsha.presenter.base.BasePresenter;
@@ -50,6 +51,9 @@ public class HomePresenter extends BasePresenter<IHomeView> {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(s);
+                Gson gson = new Gson();
+                DeviceGoodsBean deviceGoodsBean = gson.fromJson(s, DeviceGoodsBean.class);
+                mIView.showDeviceGoods(deviceGoodsBean.getRows());
             }
 
             @Override

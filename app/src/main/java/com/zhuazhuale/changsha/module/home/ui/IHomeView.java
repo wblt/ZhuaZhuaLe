@@ -1,6 +1,7 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
+import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.presenter.iview.IBaseView;
 
 import java.util.List;
@@ -12,4 +13,6 @@ import java.util.List;
 public interface IHomeView extends IBaseView {
 
     void showImagePage(List<BaseDataBean.RowsBean> rows);
+
+    void showDeviceGoods(List<DeviceGoodsBean.RowsBean> rows);
 }

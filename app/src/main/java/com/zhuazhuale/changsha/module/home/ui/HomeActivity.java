@@ -1,44 +1,47 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
 import android.graphics.Color;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
+import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
+import com.zhuazhuale.changsha.module.home.adapter.DeviceGoodsAdapter;
 import com.zhuazhuale.changsha.module.home.adapter.HomeAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.HomePresenter;
 import com.zhuazhuale.changsha.util.IItemOnClickListener;
 import com.zhuazhuale.changsha.view.RefreshableView;
-import com.zhuazhuale.changsha.view.activity.base.BaseActivity;
+import com.zhuazhuale.changsha.view.activity.base.ToolbarBaseActivity;
+import com.zhuazhuale.changsha.view.adapter.CollectAdapter;
+import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by 丁琪 on 2017/12/10 0010.
  */
 
-public class HomeActivity extends BaseActivity implements IHomeView, View.OnClickListener {
+public class HomeActivity extends ToolbarBaseActivity implements IHomeView, View.OnClickListener {
 
     @BindView(R.id.rfv_home)
     RefreshableView rfv_home;
     @BindView(R.id.rpv_mall)
     RollPagerView rpv_mall;
+    @BindView(R.id.rv_home_list)
+    RecyclerView rv_home_list;
+
     private HomePresenter homePresenter;
 
     @Override
     protected void setContentLayout() {
         setContentView(R.layout.activity_home);
-        ButterKnife.bind(this);
-
     }
-
-
 
     @Override
     protected void initView() {
@@ -100,5 +103,15 @@ public class HomeActivity extends BaseActivity implements IHomeView, View.OnClic
 
             }
         });
+    }
+
+    @Override
+    public void showDeviceGoods(List<DeviceGoodsBean.RowsBean> rows) {
+        //设置页面为“成功”状态，显示正文布局
+        getLoadLayout().setLayoutState(State.SUCCESS);
+        DeviceGoodsAdapter mCollectAdapter = new DeviceGoodsAdapter(getContext(), rows);
+        rv_home_list.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        rv_home_list.setHasFixedSize(false);
+        rv_home_list.setAdapter(mCollectAdapter);
     }
 }

@@ -26,6 +26,7 @@
             app:contentInsetStartWithNavigation="0dp"
             app:navigationIcon="@mipmap/ic_return_white"
             app:titleTextColor="@color/white"
+            android:visibility="gone"
             >
 
             <!--<TextView-->
