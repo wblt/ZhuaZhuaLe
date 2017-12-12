@@ -7,16 +7,31 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/shezhi" />
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="25dp"
             android:layout_centerInParent="true"
-            android:layout_marginTop="8dp"
             android:src="@mipmap/homepage_title"
             android:textColor="@color/white"
             android:textSize="30dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/mine" />
     </RelativeLayout>
 
     <com.zhuazhuale.changsha.view.RefreshableView
@@ -30,13 +45,46 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
+                <com.jude.rollviewpager.RollPagerView
+                    android:id="@+id/rpv_mall"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="我是下拉刷新" />
+                    android:layout_height="200dp"
+                    android:layout_gravity="center_horizontal">
+
+                </com.jude.rollviewpager.RollPagerView>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
+
+                    <ImageView
+                        android:id="@+id/iv_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:src="@mipmap/homelisttag" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/iv_tag"
+                        android:src="@mipmap/homelistimg" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:src="@mipmap/changedataimg" />
+
+                </RelativeLayout>
+
+
             </LinearLayout>
         </ScrollView>
     </com.zhuazhuale.changsha.view.RefreshableView>

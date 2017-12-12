@@ -6,7 +6,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.util.log.LogUtil;
 
 
 /**
@@ -109,7 +109,7 @@ public class RefreshableView extends LinearLayout implements View.OnTouchListene
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        Log.e(TAG, "onlayout");
+        LogUtil.e(TAG, "onlayout");
         if (changed && firstLayout) {
             //将View的Touch时间的处理交给RefreshableView去处理
             view = getChildAt(1);
@@ -134,9 +134,9 @@ public class RefreshableView extends LinearLayout implements View.OnTouchListene
                 view.getLocationOnScreen(viewLocations);
                 ((ViewGroup) view).getChildAt(0).getLocationOnScreen(childLocations);
                 original_margin = childLocations[1] - viewLocations[1];
-                Log.d(TAG, "onLayout viewLocations[1] " + viewLocations[1]);
-                Log.d(TAG, "onLayout locations[1] " + childLocations[1]);
-                Log.d(TAG, "onLayout original_margin " + original_margin);
+                LogUtil.d(TAG, "onLayout viewLocations[1] " + viewLocations[1]);
+                LogUtil.d(TAG, "onLayout locations[1] " + childLocations[1]);
+                LogUtil.d(TAG, "onLayout original_margin " + original_margin);
             }
         }
     }
@@ -161,7 +161,7 @@ public class RefreshableView extends LinearLayout implements View.OnTouchListene
 
                         //MarginTop的距离是手势距离的1/2,形成费力延迟的效果
                         marginLayoutParams.topMargin = (int) (distance / 2 + hideHeight);
-                        Log.d(TAG, "topMargin " + marginLayoutParams.topMargin);
+                        LogUtil.e(TAG, "topMargin " + marginLayoutParams.topMargin);
 
                         //如果大于最大的MarginTop的值的时候，就将值置为 maxMarginTop
                         if (marginLayoutParams.topMargin >= maxMarginTop)

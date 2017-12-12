@@ -22,6 +22,7 @@ import com.zhuazhuale.changsha.view.widget.ProgressDialog;
 
 import org.zackratos.ultimatebar.UltimateBar;
 
+import butterknife.ButterKnife;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
@@ -85,6 +86,7 @@ public abstract class BaseActivity extends AbstractActivity implements IBaseActi
         initView();//由具体的activity实现，做视图相关的初始化
         obtainData();//由具体的activity实现，做数据的初始化
         initEvent();//由具体的activity实现，做事件监听的初始化
+
 
     }
 
