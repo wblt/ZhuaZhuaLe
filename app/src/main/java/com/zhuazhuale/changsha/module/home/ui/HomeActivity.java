@@ -1,9 +1,11 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
@@ -35,6 +37,10 @@ public class HomeActivity extends ToolbarBaseActivity implements IHomeView, View
     RollPagerView rpv_mall;
     @BindView(R.id.rv_home_list)
     RecyclerView rv_home_list;
+    @BindView(R.id.iv_home_shezhi)
+    ImageView iv_home_shezhi;
+    @BindView(R.id.iv_home_mine)
+    ImageView iv_home_mine;
 
     private HomePresenter homePresenter;
 
@@ -58,6 +64,8 @@ public class HomeActivity extends ToolbarBaseActivity implements IHomeView, View
 
     @Override
     protected void initEvent() {
+        iv_home_shezhi.setOnClickListener(this);
+        iv_home_mine.setOnClickListener(this);
         rfv_home.addPullToRefreshListener(new RefreshableView.PullToRefreshListener() {
             @Override
             public void onRefresh() {
@@ -74,6 +82,15 @@ public class HomeActivity extends ToolbarBaseActivity implements IHomeView, View
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_home_shezhi:
+                break;
+            case R.id.iv_home_mine:
+                Intent intent = new Intent(HomeActivity.this, MineActivity.class);
+                startActivity(intent);
+                break;
+
+        }
 
     }
 
