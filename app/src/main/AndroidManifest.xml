@@ -29,6 +29,7 @@
 
         <activity android:name=".view.activity.CollectActivity"></activity>
         <activity android:name=".module.home.ui.MineActivity" />
+        <activity android:name=".module.home.ui.SettingActivity" />
 
     </application>
 

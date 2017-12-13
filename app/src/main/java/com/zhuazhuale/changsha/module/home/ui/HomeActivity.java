@@ -83,11 +83,14 @@ public class HomeActivity extends ToolbarBaseActivity implements IHomeView, View
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_home_shezhi:
-                break;
+
             case R.id.iv_home_mine:
-                Intent intent = new Intent(HomeActivity.this, MineActivity.class);
-                startActivity(intent);
+                Intent intent1 = new Intent(HomeActivity.this, MineActivity.class);
+                startActivity(intent1);
+                break;
+            case R.id.iv_home_shezhi:
+                Intent intent2 = new Intent(HomeActivity.this, SettingActivity.class);
+                startActivity(intent2);
                 break;
 
         }
