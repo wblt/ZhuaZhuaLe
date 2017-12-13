@@ -52,6 +52,14 @@ public class SettingActivity extends ToolbarBaseActivity implements View.OnClick
         TextView tv_wtfk = (TextView) ic_setting_wtfk.findViewById(R.id.tv_list_n);
         TextView tv_gywm = (TextView) ic_setting_gywm.findViewById(R.id.tv_list_n);
         TextView tv_tcdl = (TextView) ic_setting_tcdl.findViewById(R.id.tv_list_n);
+
+        ImageView iv_bjyx = (ImageView) ic_setting_bjyx.findViewById(R.id.iv_list_tu);
+        ImageView iv_yy = (ImageView) ic_setting_yy.findViewById(R.id.iv_list_tu);
+        ImageView iv_lp = (ImageView) ic_setting_lp.findViewById(R.id.iv_list_tu);
+        iv_bjyx.setImageResource(R.mipmap.icon_kai);
+        iv_yy.setImageResource(R.mipmap.icon_kai);
+        iv_lp.setImageResource(R.mipmap.icon_guan);
+
         tv_tzzx.setText("通知中心");
         tv_yqjl.setText("邀请奖励");
         tv_sryqm.setText("输入邀请码");
