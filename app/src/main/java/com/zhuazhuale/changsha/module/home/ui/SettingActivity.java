@@ -1,19 +1,18 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
 import butterknife.BindView;
 
 /**
- * Created by Administrator on 2017/12/13 0013.
+ * 设置页面
+ * Created by 丁琪 on 2017/12/13 0013.
  */
 
 public class SettingActivity extends AppBaseActivity implements View.OnClickListener {
@@ -103,6 +102,8 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
             case R.id.ic_setting_tzzx:
                 break;
             case R.id.ic_setting_yqjl:
+                Intent intent = new Intent(SettingActivity.this, InviteActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ic_setting_sryqm:
                 break;
@@ -123,7 +124,6 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
         }
 
     }
-
 
 
 }

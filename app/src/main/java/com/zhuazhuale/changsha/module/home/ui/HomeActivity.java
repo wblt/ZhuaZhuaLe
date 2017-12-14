@@ -27,6 +27,7 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
+ * 首页
  * Created by 丁琪 on 2017/12/10 0010.
  */
 
@@ -121,6 +122,11 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
         });
     }
 
+    /**
+     * 设备列表
+     *
+     * @param rows
+     */
     @Override
     public void showDeviceGoods(List<DeviceGoodsBean.RowsBean> rows) {
         //设置页面为“成功”状态，显示正文布局

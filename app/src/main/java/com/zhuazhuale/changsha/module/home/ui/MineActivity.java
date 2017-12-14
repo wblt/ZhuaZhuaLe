@@ -10,6 +10,7 @@ import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import butterknife.BindView;
 
 /**
+ * 个人中心
  * Created by Administrator on 2017/12/13.
  */
 
