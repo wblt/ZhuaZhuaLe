@@ -120,6 +120,8 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
                 startActivity(intent2);
                 break;
             case R.id.ic_setting_gywm:
+                Intent intent3 = new Intent(SettingActivity.this, AboutUsActivity.class);
+                startActivity(intent3);
                 break;
             case R.id.ic_setting_tcdl:
                 // 退出登录 测试添加微信登录
