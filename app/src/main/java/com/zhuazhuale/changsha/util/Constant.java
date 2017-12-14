@@ -14,4 +14,6 @@ public class Constant {
     public static String GetDeviceGoods = URL + "/api/Device/GetDeviceGoods";
 
 
+
+
 }

@@ -4,6 +4,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
@@ -114,9 +117,13 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
             case R.id.ic_setting_gywm:
                 break;
             case R.id.ic_setting_tcdl:
+                // 退出登录 测试添加微信登录
+
                 break;
         }
 
     }
+
+
 
 }
