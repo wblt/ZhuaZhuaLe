@@ -9,6 +9,9 @@ import android.widget.ImageView;
 
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
@@ -16,7 +19,6 @@ import com.zhuazhuale.changsha.module.home.adapter.DeviceGoodsAdapter;
 import com.zhuazhuale.changsha.module.home.adapter.HomeAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.HomePresenter;
 import com.zhuazhuale.changsha.util.IItemOnClickListener;
-import com.zhuazhuale.changsha.view.RefreshableView;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
@@ -31,7 +33,7 @@ import butterknife.BindView;
 public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnClickListener {
 
     @BindView(R.id.rfv_home)
-    RefreshableView rfv_home;
+    SmartRefreshLayout rfv_home;
     @BindView(R.id.rpv_mall)
     RollPagerView rpv_mall;
     @BindView(R.id.rv_home_list)
@@ -65,15 +67,10 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
     protected void initEvent() {
         iv_home_shezhi.setOnClickListener(this);
         iv_home_mine.setOnClickListener(this);
-        rfv_home.addPullToRefreshListener(new RefreshableView.PullToRefreshListener() {
+        rfv_home.setOnRefreshListener(new OnRefreshListener() {
             @Override
-            public void onRefresh() {
-                rfv_home.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        rfv_home.complete();
-                    }
-                }, 2000);
+            public void onRefresh(RefreshLayout refreshlayout) {
+                rfv_home.finishRefresh(2000);
             }
         });
     }

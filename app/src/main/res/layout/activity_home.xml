@@ -38,10 +38,14 @@
             android:src="@mipmap/mine" />
     </RelativeLayout>
 
-    <com.zhuazhuale.changsha.view.RefreshableView
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/rfv_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -104,6 +108,6 @@
 
             </LinearLayout>
         </ScrollView>
-    </com.zhuazhuale.changsha.view.RefreshableView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>
