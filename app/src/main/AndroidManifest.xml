@@ -37,6 +37,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".module.login.ui.LoginActivity"></activity>
         <activity android:name=".module.home.ui.InviteActivity" />
+        <activity android:name=".module.home.ui.InputCodeActivity" />
     </application>
 
 </manifest>

@@ -106,6 +106,8 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.ic_setting_sryqm:
+                Intent intent1=new Intent(SettingActivity.this, InputCodeActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.ic_setting_bjyx:
                 break;
