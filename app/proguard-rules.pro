@@ -130,6 +130,9 @@ public static java.lang.String TABLENAME;
 #Retrofit混淆结束
 
 
+#-keep class com.google.gson.examples.android.model.** { *; }
+
+
 
 #sqlcipher数据库加密开始
 -keep  class net.sqlcipher.** {*;}
