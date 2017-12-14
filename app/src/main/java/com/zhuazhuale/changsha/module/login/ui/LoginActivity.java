@@ -13,7 +13,7 @@ import butterknife.BindView;
 
 public class LoginActivity extends AppBaseActivity implements View.OnClickListener,ILoginView {
     @BindView(R.id.tv_wxlogin)
-    private TextView tv_wxlogin;
+    TextView tv_wxlogin;
 
     private LoginPresenter loginPresenter;
     @Override
