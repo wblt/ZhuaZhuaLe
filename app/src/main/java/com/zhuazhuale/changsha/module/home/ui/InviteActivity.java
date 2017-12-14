@@ -10,7 +10,8 @@ import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import butterknife.BindView;
 
 /**
- * Created by Administrator on 2017/12/14.
+ * 邀请奖励
+ * Created by 丁琪 on 2017/12/14.
  */
 
 public class InviteActivity extends AppBaseActivity implements View.OnClickListener {

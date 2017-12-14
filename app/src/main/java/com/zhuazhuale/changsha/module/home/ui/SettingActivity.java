@@ -116,6 +116,8 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
             case R.id.ic_setting_lp:
                 break;
             case R.id.ic_setting_wtfk:
+                Intent intent2 = new Intent(SettingActivity.this, FeedBackActivity.class);
+                startActivity(intent2);
                 break;
             case R.id.ic_setting_gywm:
                 break;
