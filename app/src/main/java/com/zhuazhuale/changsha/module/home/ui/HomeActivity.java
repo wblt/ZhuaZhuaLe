@@ -17,8 +17,7 @@ import com.zhuazhuale.changsha.module.home.adapter.HomeAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.HomePresenter;
 import com.zhuazhuale.changsha.util.IItemOnClickListener;
 import com.zhuazhuale.changsha.view.RefreshableView;
-import com.zhuazhuale.changsha.view.activity.base.ToolbarBaseActivity;
-import com.zhuazhuale.changsha.view.adapter.CollectAdapter;
+import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
 import java.util.List;
@@ -29,7 +28,7 @@ import butterknife.BindView;
  * Created by 丁琪 on 2017/12/10 0010.
  */
 
-public class HomeActivity extends ToolbarBaseActivity implements IHomeView, View.OnClickListener {
+public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnClickListener {
 
     @BindView(R.id.rfv_home)
     RefreshableView rfv_home;

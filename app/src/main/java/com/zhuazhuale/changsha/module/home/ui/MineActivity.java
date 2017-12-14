@@ -1,13 +1,11 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
-import android.content.DialogInterface;
-import android.text.Layout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
-import com.zhuazhuale.changsha.view.activity.base.ToolbarBaseActivity;
+import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
 import butterknife.BindView;
 
@@ -15,7 +13,7 @@ import butterknife.BindView;
  * Created by Administrator on 2017/12/13.
  */
 
-public class MineActivity extends ToolbarBaseActivity implements View.OnClickListener {
+public class MineActivity extends AppBaseActivity implements View.OnClickListener {
     @BindView(R.id.iv_home_back)
     ImageView iv_home_back;
     @BindView(R.id.ic_cz)

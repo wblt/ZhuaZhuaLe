@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
-import com.zhuazhuale.changsha.view.activity.base.ToolbarBaseActivity;
+import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
 import butterknife.BindView;
 
@@ -13,7 +13,7 @@ import butterknife.BindView;
  * Created by Administrator on 2017/12/13 0013.
  */
 
-public class SettingActivity extends ToolbarBaseActivity implements View.OnClickListener {
+public class SettingActivity extends AppBaseActivity implements View.OnClickListener {
 
     @BindView(R.id.iv_home_back)
     ImageView iv_home_back;
