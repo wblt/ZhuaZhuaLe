@@ -41,6 +41,7 @@
         <activity android:name=".module.home.ui.FeedBackActivity" />
         <activity android:name=".module.home.ui.AboutUsActivity" />
         <activity android:name=".module.home.ui.AddressActivity" />
+        <activity android:name=".module.home.ui.EditAddressActivity" />
     </application>
 
 </manifest>

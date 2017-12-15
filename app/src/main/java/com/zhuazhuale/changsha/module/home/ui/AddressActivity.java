@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -27,6 +28,7 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
     RecyclerView rv_address_list;
     @BindView(R.id.tv_address_add)
     TextView tv_address_add;
+    private Intent intent;
 
 
     @Override
@@ -59,9 +61,16 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
             case R.id.iv_home_back:
                 finish();
                 break;
+            case R.id.tv_address_add:
+                intent = new Intent(AddressActivity.this, EditAddressActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 
+    /**
+     * 地址列表
+     */
     private void showAddressList() {
         List<String> strings = new ArrayList<>();
         strings.add("  ");
@@ -74,5 +83,17 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
         rv_address_list.setLayoutManager(new LinearLayoutManager(this));
         rv_address_list.setHasFixedSize(false);
         rv_address_list.setAdapter(addressAdapter);
+
+    }
+
+    /**
+     * 进入编辑
+     *
+     * @param s
+     * @param position
+     */
+    public void goToChangge(String s, int position) {
+        intent = new Intent(AddressActivity.this, EditAddressActivity.class);
+        startActivity(intent);
     }
 }

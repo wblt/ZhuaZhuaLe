@@ -10,7 +10,9 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
+import com.zhuazhuale.changsha.module.home.ui.AddressActivity;
 import com.zhuazhuale.changsha.util.FrescoUtil;
+import com.zhuazhuale.changsha.util.IItemOnClickListener;
 import com.zhuazhuale.changsha.view.adapter.base.RecyclerBaseAdapter;
 import com.zhuazhuale.changsha.view.adapter.base.ViewHolder;
 
@@ -23,6 +25,7 @@ import java.util.List;
  */
 
 public class AddressAdapter extends RecyclerBaseAdapter<String> {
+
 
     public AddressAdapter(@NonNull Context context, @NonNull List<String> mDataList) {
         super(context, mDataList);
@@ -41,9 +44,9 @@ public class AddressAdapter extends RecyclerBaseAdapter<String> {
       /*  FrescoUtil.getInstance().loadNetImage(sdvMovie, rowsBean.getF_ImgA());//加载网络图片
         tv_device_name.setText(rowsBean.getF_Name());
         tv_device_price.setText(rowsBean.getF_Price() + "/次");*/
-      /*  //initEvent
+        //initEvent
         //点击该项后，从数据表中删除，并且从界面中移除
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+       /* holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CollectActivity mActivity = (CollectActivity) getContext();
@@ -51,6 +54,13 @@ public class AddressAdapter extends RecyclerBaseAdapter<String> {
                 removeItem(position);
             }
         });*/
+        tv_item_address_bj.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddressActivity mActivity = (AddressActivity) getContext();
+                mActivity.goToChangge(s, position);
+            }
+        });
     }
 
     @Override
