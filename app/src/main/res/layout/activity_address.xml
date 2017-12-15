@@ -26,6 +26,6 @@
         android:gravity="center"
         android:text="添加地址"
         android:textColor="@color/colorPrimary"
-        android:textSize="14dp" />
+        android:textSize="16dp" />
 
 </LinearLayout>

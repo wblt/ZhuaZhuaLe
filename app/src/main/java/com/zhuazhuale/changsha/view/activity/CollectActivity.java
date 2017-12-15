@@ -48,6 +48,7 @@ public class CollectActivity extends ToolbarBaseActivity {
     @Override
     protected void initView() {
         getToolbar().setTitle(getResourceString(R.string.my_collect));
+//        getToolbar().setBackgroundResource(R.mipmap.homepage_title);
     }
 
     @Override
