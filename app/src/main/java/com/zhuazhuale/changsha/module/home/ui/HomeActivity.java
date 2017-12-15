@@ -59,6 +59,8 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
     @Override
     protected void obtainData() {
         homePresenter = new HomePresenter(this);
+//        getLoadLayout().setLayoutState(State.LOADING);
+        rfv_home.autoRefresh();
         homePresenter.initData();
         homePresenter.initDeviceGoods(1, 4);
 
@@ -71,7 +73,8 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
         rfv_home.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                rfv_home.finishRefresh(2000);
+                homePresenter.initData();
+                homePresenter.initDeviceGoods(1, 4);
             }
         });
     }
@@ -129,6 +132,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
      */
     @Override
     public void showDeviceGoods(List<DeviceGoodsBean.RowsBean> rows) {
+        rfv_home.finishRefresh(true);
         //设置页面为“成功”状态，显示正文布局
         getLoadLayout().setLayoutState(State.SUCCESS);
         DeviceGoodsAdapter mCollectAdapter = new DeviceGoodsAdapter(getContext(), rows);

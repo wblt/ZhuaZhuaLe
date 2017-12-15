@@ -40,6 +40,7 @@
         <activity android:name=".module.home.ui.InputCodeActivity" />
         <activity android:name=".module.home.ui.FeedBackActivity" />
         <activity android:name=".module.home.ui.AboutUsActivity" />
+        <activity android:name=".module.home.ui.AddressActivity" />
     </application>
 
 </manifest>

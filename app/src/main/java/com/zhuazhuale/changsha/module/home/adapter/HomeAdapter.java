@@ -16,7 +16,8 @@ import com.zhuazhuale.changsha.util.IItemOnClickListener;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/7/25.
+ * 首页轮播图
+ * Created by 丁琪 on 2017/7/25.
  */
 
 public class HomeAdapter extends StaticPagerAdapter {

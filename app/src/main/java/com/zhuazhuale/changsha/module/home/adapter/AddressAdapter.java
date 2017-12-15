@@ -9,10 +9,8 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
-import com.zhuazhuale.changsha.model.entity.table.MovieCollect;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.util.FrescoUtil;
-import com.zhuazhuale.changsha.view.activity.CollectActivity;
 import com.zhuazhuale.changsha.view.adapter.base.RecyclerBaseAdapter;
 import com.zhuazhuale.changsha.view.adapter.base.ViewHolder;
 
@@ -20,28 +18,29 @@ import java.util.List;
 
 /**
  * author:  丁琪
- * date:    2017/12/13
- * description: 娃娃机的列表适配器
+ * date:    2017/12/15
+ * description: 用户地址列表的适配器
  */
 
-public class DeviceGoodsAdapter extends RecyclerBaseAdapter<DeviceGoodsBean.RowsBean> {
+public class AddressAdapter extends RecyclerBaseAdapter<String> {
 
-    public DeviceGoodsAdapter(@NonNull Context context, @NonNull List<DeviceGoodsBean.RowsBean> mDataList) {
+    public AddressAdapter(@NonNull Context context, @NonNull List<String> mDataList) {
         super(context, mDataList);
     }
 
     @Override
-    protected void bindDataForView(ViewHolder holder, final DeviceGoodsBean.RowsBean rowsBean, final int position) {
+    protected void bindDataForView(ViewHolder holder, final String s, final int position) {
         //initView
-        SimpleDraweeView sdvMovie = holder.getView(R.id.sdv_devicegoods);
-        TextView tv_device_name = holder.getView(R.id.tv_device_name);
-        TextView tv_device_price = holder.getView(R.id.tv_device_price);
+        TextView tv_item_address_name = holder.getView(R.id.tv_item_address_name);
+        TextView tv_item_address_phone = holder.getView(R.id.tv_item_address_phone);
+        TextView tv_item_address_dz = holder.getView(R.id.tv_item_address_dz);
+        TextView tv_item_address_bj = holder.getView(R.id.tv_item_address_bj);
+        TextView tv_item_address_sc = holder.getView(R.id.tv_item_address_sc);
 
         //obtainData
-        FrescoUtil.getInstance().loadNetImage(sdvMovie, rowsBean.getF_ImgA());//加载网络图片
+      /*  FrescoUtil.getInstance().loadNetImage(sdvMovie, rowsBean.getF_ImgA());//加载网络图片
         tv_device_name.setText(rowsBean.getF_Name());
-        tv_device_price.setText(rowsBean.getF_Price() + "/次");
-
+        tv_device_price.setText(rowsBean.getF_Price() + "/次");*/
       /*  //initEvent
         //点击该项后，从数据表中删除，并且从界面中移除
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +55,7 @@ public class DeviceGoodsAdapter extends RecyclerBaseAdapter<DeviceGoodsBean.Rows
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.item_devicegoods, parent, false);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.item_address, parent, false);
         return new ViewHolder(view);
     }
 

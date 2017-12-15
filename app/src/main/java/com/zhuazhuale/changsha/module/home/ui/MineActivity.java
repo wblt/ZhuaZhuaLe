@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
     View ic_dd;
     @BindView(R.id.ic_dz)
     View ic_dz;
+    private Intent intent;
 
     @Override
     protected void setContentLayout() {
@@ -85,6 +87,8 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
             case R.id.ic_dd:
                 break;
             case R.id.ic_dz:
+                intent = new Intent(MineActivity.this, AddressActivity.class);
+                startActivity(intent);
                 break;
         }
     }
