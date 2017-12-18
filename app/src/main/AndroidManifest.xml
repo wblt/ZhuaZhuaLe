@@ -43,6 +43,7 @@
         <activity android:name=".module.home.ui.AddressActivity" />
         <activity android:name=".module.home.ui.EditAddressActivity" />
         <activity android:name=".module.home.ui.RechargeActivity" />
+        <activity android:name=".module.home.ui.WaWaBiActivity"/>
     </application>
 
 </manifest>

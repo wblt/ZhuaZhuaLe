@@ -1,13 +1,18 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.adapter.RechargeAdapter;
+import com.zhuazhuale.changsha.module.home.adapter.WaWaBiAdapter;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
 import java.util.ArrayList;
@@ -24,8 +29,10 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
     @BindView(R.id.iv_home_back)
     ImageView iv_home_back;
 
-    @BindView(R.id.rv_recharge_list)
-    RecyclerView rv_recharge_list;
+    @BindView(R.id.rv_wawabi_list)
+    RecyclerView rv_wawabi_list;
+    @BindView(R.id.rfv_wawabi_fresh)
+    SmartRefreshLayout rfv_wawabi_fresh;
 
     @Override
     protected void setContentLayout() {
@@ -50,14 +57,20 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
     }
 
     private void showRechargeList(List<String> strings) {
-        RechargeAdapter adapter = new RechargeAdapter(this, strings);
-        rv_recharge_list.setLayoutManager(new GridLayoutManager(this, 2));
-        rv_recharge_list.setAdapter(adapter);
+        WaWaBiAdapter adapter = new WaWaBiAdapter(this, strings);
+        rv_wawabi_list.setLayoutManager(new LinearLayoutManager(this));
+        rv_wawabi_list.setAdapter(adapter);
     }
 
     @Override
     protected void initEvent() {
         iv_home_back.setOnClickListener(this);
+        rfv_wawabi_fresh.setOnRefreshListener(new OnRefreshListener() {
+                    @Override
+                    public void onRefresh(RefreshLayout refreshlayout) {
+                        rfv_wawabi_fresh.finishLoadmore(2000);
+                    }
+                });
     }
 
     @Override
