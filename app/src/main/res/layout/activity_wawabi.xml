@@ -5,31 +5,26 @@
     android:background="@mipmap/beijing"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <include layout="@layout/layout_header" />
+    <include layout="@layout/layout_header" />
 
-
-    </RelativeLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/rfv_wawabi_fresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <com.scwang.smartrefresh.layout.header.ClassicsHeader
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <android.support.v7.widget.RecyclerView
-        android:padding="14dp"
-        android:id="@+id/rv_wawabi_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_wawabi_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="14dp">
 
-    </android.support.v7.widget.RecyclerView>
+        </android.support.v7.widget.RecyclerView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

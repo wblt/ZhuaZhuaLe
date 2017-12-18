@@ -69,6 +69,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
     protected void initEvent() {
         iv_home_shezhi.setOnClickListener(this);
         iv_home_mine.setOnClickListener(this);
+        rfv_home.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4-6
         rfv_home.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {

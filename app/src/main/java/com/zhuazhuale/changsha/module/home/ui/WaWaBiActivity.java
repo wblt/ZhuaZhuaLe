@@ -28,8 +28,6 @@ import butterknife.BindView;
 public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListener {
     @BindView(R.id.iv_home_back)
     ImageView iv_home_back;
-    @BindView(R.id.tv_header_right)
-    TextView tv_header_right;
 
     @BindView(R.id.rv_wawabi_list)
     RecyclerView rv_wawabi_list;
@@ -43,7 +41,7 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void initView() {
-        tv_header_right.setText("充值");
+
     }
 
     @Override
@@ -68,11 +66,11 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
     protected void initEvent() {
         iv_home_back.setOnClickListener(this);
         rfv_wawabi_fresh.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                rfv_wawabi_fresh.finishLoadmore(2000);
-            }
-        });
+                    @Override
+                    public void onRefresh(RefreshLayout refreshlayout) {
+                        rfv_wawabi_fresh.finishLoadmore(2000);
+                    }
+                });
     }
 
     @Override
