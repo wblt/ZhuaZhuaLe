@@ -42,6 +42,7 @@
         <activity android:name=".module.home.ui.AboutUsActivity" />
         <activity android:name=".module.home.ui.AddressActivity" />
         <activity android:name=".module.home.ui.EditAddressActivity" />
+        <activity android:name=".module.home.ui.RechargeActivity" />
     </application>
 
 </manifest>

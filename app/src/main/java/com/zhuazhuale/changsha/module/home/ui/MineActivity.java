@@ -77,6 +77,8 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
                 finish();
                 break;
             case R.id.ic_cz:
+                intent = new Intent(MineActivity.this, RechargeActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ic_wwb:
                 break;
