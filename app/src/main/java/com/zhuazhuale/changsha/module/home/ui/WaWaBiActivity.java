@@ -16,21 +16,20 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * 充值页面
+ * 我的娃娃币页面
  * Created by 丁琪 on 2017/12/18.
  */
 
-public class RechargeActivity extends AppBaseActivity implements View.OnClickListener {
+public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListener {
     @BindView(R.id.iv_home_back)
     ImageView iv_home_back;
-    @BindView(R.id.tv_recharge_ye)
-    TextView tv_recharge_ye;
+
     @BindView(R.id.rv_recharge_list)
     RecyclerView rv_recharge_list;
 
     @Override
     protected void setContentLayout() {
-        setContentView(R.layout.activity_recharge);
+        setContentView(R.layout.activity_wawabi);
     }
 
     @Override
