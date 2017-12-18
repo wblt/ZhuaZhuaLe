@@ -43,7 +43,9 @@
         <activity android:name=".module.home.ui.AddressActivity" />
         <activity android:name=".module.home.ui.EditAddressActivity" />
         <activity android:name=".module.home.ui.RechargeActivity" />
-        <activity android:name=".module.home.ui.WaWaBiActivity"/>
+        <activity android:name=".module.home.ui.WaWaBiActivity" />
+        <activity android:name=".module.home.ui.RecordActivity" />
+        <activity android:name=".module.home.ui.RecordDetailsActivity" />
     </application>
 
 </manifest>
