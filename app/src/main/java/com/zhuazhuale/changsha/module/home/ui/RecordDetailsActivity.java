@@ -86,24 +86,23 @@ public class RecordDetailsActivity extends AppBaseActivity implements View.OnCli
 
     @Override
     protected void initEvent() {
-
+        tv_shensu.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
+            case R.id.tv_record_details_shensu:
+                goToDetails();
+                break;
         }
     }
 
     /**
      * 申诉
-     *
-     * @param s
-     * @param position
      */
-    public void goToDetails(String s, int position) {
-        Intent intent = new Intent(RecordDetailsActivity.this, RecordDetailsActivity.class);
+    public void goToDetails() {
+        Intent intent = new Intent(RecordDetailsActivity.this, ShenSuActivity.class);
         startActivity(intent);
     }
 }

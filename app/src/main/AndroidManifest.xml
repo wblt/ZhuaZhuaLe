@@ -46,6 +46,7 @@
         <activity android:name=".module.home.ui.WaWaBiActivity" />
         <activity android:name=".module.home.ui.RecordActivity" />
         <activity android:name=".module.home.ui.RecordDetailsActivity" />
+        <activity android:name=".module.home.ui.ShenSuActivity" />
     </application>
 
 </manifest>
