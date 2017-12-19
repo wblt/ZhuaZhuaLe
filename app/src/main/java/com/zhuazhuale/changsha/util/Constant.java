@@ -7,9 +7,9 @@ package com.zhuazhuale.changsha.util;
 public class Constant {
 
     //请求数据时的不同触发时机
-    private static final int INIT = 3;//初始化数据
-    private static final int REFRESH = 4;//刷新数据
-    private static final int LOADMORE = 5;//加载更多数据
+    public static final int INIT = 3;//初始化数据
+    public static final int REFRESH = 4;//刷新数据
+    public static final int LOADMORE = 5;//加载更多数据
 
 
     public static String URL = "http://106.14.192.166:8088";

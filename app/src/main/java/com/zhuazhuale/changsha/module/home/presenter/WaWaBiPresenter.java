@@ -23,24 +23,24 @@ public class WaWaBiPresenter extends BasePresenter<IWaWaBiView> {
         waWaBiModel = WaWaBiModel.getInstance();
     }
 
-
-    public void inittBanlanceWater(int PageIndex, int PageSize) {
+    /**
+     * @param PageIndex
+     * @param PageSize
+     * @param type      类型：初始化数据INIT、刷新数据REFRESH、加载更多数据LOADMORE
+     */
+    public void inittBanlanceWater(int PageIndex, int PageSize, final int type) {
         waWaBiModel.getBanlanceWater(PageIndex, PageSize, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
                 Gson gson = new Gson();
                 BanlanceWaterBean banlanceWaterBean = gson.fromJson(s, BanlanceWaterBean.class);
-                if (1 == banlanceWaterBean.getCode()) {
-                    mIView.showBanlanceWater(banlanceWaterBean);
-                } else {
-                    mIView.showNoData();
-                }
+                mIView.showBanlanceWater(banlanceWaterBean, type);
             }
 
             @Override
             public void callFailed() {
-                mIView.showFailed();
+                mIView.showFailed(type);
             }
 
             @Override

@@ -9,9 +9,8 @@ import com.zhuazhuale.changsha.presenter.iview.IBaseView;
  */
 
 public interface IWaWaBiView extends IBaseView {
-    void showBanlanceWater(BanlanceWaterBean banlanceWaterBean);
+    void showBanlanceWater(BanlanceWaterBean banlanceWaterBean, int type);
 
-    void showNoData();
 
-    void showFailed();
+    void showFailed(int type);
 }

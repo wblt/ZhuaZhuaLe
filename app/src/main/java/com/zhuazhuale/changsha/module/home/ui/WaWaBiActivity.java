@@ -1,20 +1,24 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.BanlanceWaterBean;
 import com.zhuazhuale.changsha.module.home.adapter.WaWaBiAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.WaWaBiPresenter;
+import com.zhuazhuale.changsha.util.CollectionUtil;
+import com.zhuazhuale.changsha.util.Constant;
+import com.zhuazhuale.changsha.util.ToastUtil;
+import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+import com.zhuazhuale.changsha.view.adapter.base.LoadMoreBaseAdapter;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
@@ -35,6 +39,11 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
     @BindView(R.id.rfv_wawabi_fresh)
     SmartRefreshLayout rfv_wawabi_fresh;
     private WaWaBiPresenter presenter;
+    private int mStart = 1;//请求数据的起始点
+    private int mCount = 10;//每次请求的数据数量
+    private boolean isLoadingMore;//是否正在进行“加载更多”的操作，避免重复发起请求
+
+    private WaWaBiAdapter adapter;
 
     @Override
     protected void setContentLayout() {
@@ -53,12 +62,24 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
         getLoadLayout().setOnLoadListener(new OnLoadListener() {
             @Override
             public void onLoad() {
-                //  请求数据
-                presenter.inittBanlanceWater(0, 10);
+                //  初始化数据
+                getData(mStart, mCount, Constant.INIT);
             }
         });
         getLoadLayout().setLayoutState(State.LOADING);
 
+    }
+
+    /**
+     * 请求数据
+     *
+     * @param PageIndex
+     * @param PageSize
+     * @param type
+     */
+    private void getData(int PageIndex, int PageSize, int type) {
+        LogUtil.e("PageIndex    " + PageIndex + "   PageSize    " + PageSize + "    type    " + type);
+        presenter.inittBanlanceWater(PageIndex, PageSize, type);
     }
 
 
@@ -68,9 +89,27 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
         rfv_wawabi_fresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                presenter.inittBanlanceWater(0, 10);
+//                下拉刷新数据
+                getData(0, mCount, Constant.REFRESH);
             }
         });
+        rfv_wawabi_fresh.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                //上拉加载更多
+                if (rfv_wawabi_fresh.isRefreshing()) {
+                    return;
+                }
+                if (!isLoadingMore) {
+                    isLoadingMore = true;
+                    mStart = mStart + 1;
+                    //加载更多
+                    getData(mStart, mCount, Constant.LOADMORE);
+                }
+
+            }
+        });
+
     }
 
     @Override
@@ -85,30 +124,82 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
     /**
      * 我的娃娃币列表
      *
-     * @param banlanceWaterBean
+     * @param Bean
+     * @param type
      */
     @Override
-    public void showBanlanceWater(BanlanceWaterBean banlanceWaterBean) {
-        rfv_wawabi_fresh.finishRefresh();
-        getLoadLayout().setLayoutState(State.SUCCESS);
-        WaWaBiAdapter adapter = new WaWaBiAdapter(this, banlanceWaterBean.getRows());
-        rv_wawabi_list.setLayoutManager(new LinearLayoutManager(this));
-        rv_wawabi_list.setAdapter(adapter);
+    public void showBanlanceWater(BanlanceWaterBean Bean, int type) {
+        switch (type) {
+            case Constant.INIT:
+                mStart = 0;
+                if (0 == Bean.getCode()) {
+                    getLoadLayout().setLayoutState(State.NO_DATA);
+                } else {
+                    //设置页面为“成功”状态，显示正文布局
+                    getLoadLayout().setLayoutState(State.SUCCESS);
+                    adapter = new WaWaBiAdapter(this, Bean.getRows());
+                    rv_wawabi_list.setLayoutManager(new LinearLayoutManager(this));
+                    rv_wawabi_list.setAdapter(adapter);
+                }
+
+                break;
+            case Constant.REFRESH:
+                mStart = 0;
+                rfv_wawabi_fresh.finishRefresh();
+                adapter.replaceData(Bean.getRows());
+                break;
+            case Constant.LOADMORE:
+                isLoadingMore = false;
+                if (0 == Bean.getCode()) {
+                    //全部数据加载完毕
+                    rfv_wawabi_fresh.finishLoadmoreWithNoMoreData();
+                    rfv_wawabi_fresh.resetNoMoreData();
+                } else {
+                    rfv_wawabi_fresh.finishLoadmore();
+                    adapter.insertItems(Bean.getRows());
+                }
+                break;
+
+        }
+        if (Bean.getCode() != 0 && adapter != null) {
+            LogUtil.e("adapter.getItemCount()   " + adapter.getItemCount() + "      Bean.getTotal() " + Bean.getTotal());
+            if (adapter.getItemCount() >= Bean.getTotal()) {
+                rfv_wawabi_fresh.finishLoadmoreWithNoMoreData();
+                rfv_wawabi_fresh.resetNoMoreData();
+            }
+        }
+
     }
 
-    /**
-     * 无数据
-     */
-    @Override
-    public void showNoData() {
-        getLoadLayout().setLayoutState(State.NO_DATA);
-    }
 
     /**
      * 请求失败
+     *
+     * @param type
      */
     @Override
-    public void showFailed() {
-        getLoadLayout().setLayoutState(State.FAILED);
+    public void showFailed(int type) {
+
+        switch (type) {
+            //初始化数据
+            case Constant.INIT:
+                //设置页面为“失败”状态
+                getLoadLayout().setLayoutState(State.FAILED);
+                break;
+
+            //刷新数据
+            case Constant.REFRESH:
+                rfv_wawabi_fresh.finishRefresh(false);
+                ToastUtil.show("刷新失败");
+                break;
+
+            //加载更多数据
+            case Constant.LOADMORE:
+                rfv_wawabi_fresh.finishLoadmore(false);
+                isLoadingMore = false;
+                mStart = mStart - 1;//请求失败时需回退mStart值，确保下次请求的数据正确
+                ToastUtil.show("加载更多失败");
+                break;
+        }
     }
 }
