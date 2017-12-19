@@ -33,8 +33,6 @@ import butterknife.BindView;
  */
 
 public class RecordActivity extends AppBaseActivity implements View.OnClickListener, IRecordView {
-    @BindView(R.id.iv_home_back)
-    ImageView iv_home_back;
 
     @BindView(R.id.rv_record_list)
     RecyclerView rv_record_list;
@@ -45,6 +43,7 @@ public class RecordActivity extends AppBaseActivity implements View.OnClickListe
     private boolean isLoadingMore;//是否正在进行“加载更多”的操作，避免重复发起请求
     private RecordAdapter adapter;
     private RecordPresenter presenter;
+    private boolean isFirst = true;
 
     @Override
     protected void setContentLayout() {
@@ -67,7 +66,7 @@ public class RecordActivity extends AppBaseActivity implements View.OnClickListe
                 getData(mStart, mCount, Constant.INIT);
             }
         });
-        getLoadLayout().setLayoutState(State.LOADING);
+        rfv_record_fresh.autoRefresh();
     }
 
     /**
@@ -85,12 +84,17 @@ public class RecordActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void initEvent() {
-        iv_home_back.setOnClickListener(this);
         rfv_record_fresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
 //                下拉刷新数据
-                getData(0, mCount, Constant.REFRESH);
+                if (isFirst) {
+                    isFirst = false;
+                    getData(0, mCount, Constant.INIT);
+                } else {
+                    getData(0, mCount, Constant.REFRESH);
+
+                }
             }
         });
         rfv_record_fresh.setOnLoadmoreListener(new OnLoadmoreListener() {
@@ -114,27 +118,27 @@ public class RecordActivity extends AppBaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_home_back:
-                finish();
-                break;
+
         }
     }
 
     /**
      * 查看详情
      *
-     * @param s
+     * @param rowsBean
      * @param position
      */
-    public void goToDetails(GradWaterBean.RowsBean s, int position) {
+    public void goToDetails(GradWaterBean.RowsBean rowsBean, int position) {
         Intent intent = new Intent(RecordActivity.this, RecordDetailsActivity.class);
-        startActivity(intent);
+        intent.putExtra("rowsBean", rowsBean);
+        startActivityForResult(intent, 110);
     }
 
     @Override
     public void showGradWater(GradWaterBean Bean, int type) {
         switch (type) {
             case Constant.INIT:
+                rfv_record_fresh.finishRefresh();
                 mStart = 0;
                 if (0 == Bean.getCode()) {
                     getLoadLayout().setLayoutState(State.NO_DATA);

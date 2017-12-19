@@ -6,7 +6,6 @@
     android:background="@mipmap/beijing"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_header"/>
 
     <ScrollView
         android:layout_width="match_parent"

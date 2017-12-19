@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.home.Bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -62,7 +63,7 @@ public class GradWaterBean {
         this.rows = rows;
     }
 
-    public static class RowsBean {
+    public static class RowsBean implements Serializable {
         /**
          * F_ID : 0a35abd7-e9ce-4b8f-ab94-da3160393797
          * F_UserID : 8c12dc2f-bd6c-4348-88ce-daf4994363bb

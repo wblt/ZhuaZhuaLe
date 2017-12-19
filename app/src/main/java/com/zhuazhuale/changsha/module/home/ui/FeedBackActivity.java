@@ -15,8 +15,7 @@ import butterknife.BindView;
  */
 
 public class FeedBackActivity extends AppBaseActivity implements View.OnClickListener {
-    @BindView(R.id.iv_home_back)
-    ImageView iv_home_back;
+
     @BindView(R.id.tv_feedback)
     TextView tv_feedback;
 
@@ -38,16 +37,13 @@ public class FeedBackActivity extends AppBaseActivity implements View.OnClickLis
 
     @Override
     protected void initEvent() {
-        iv_home_back.setOnClickListener(this);
         tv_feedback.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_home_back:
-                finish();
-                break;
+
             case R.id.tv_feedback:
                 break;
         }

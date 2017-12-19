@@ -15,8 +15,6 @@ import butterknife.BindView;
 
 public class InputCodeActivity extends AppBaseActivity implements View.OnClickListener {
 
-    @BindView(R.id.iv_home_back)
-    ImageView iv_home_back;
 
     @Override
     protected void setContentLayout() {
@@ -35,16 +33,13 @@ public class InputCodeActivity extends AppBaseActivity implements View.OnClickLi
 
     @Override
     protected void initEvent() {
-        iv_home_back.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.iv_home_back:
-                finish();
-                break;
+
         }
     }
 }

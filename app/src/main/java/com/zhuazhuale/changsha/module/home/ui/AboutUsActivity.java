@@ -15,8 +15,7 @@ import butterknife.BindView;
  */
 
 public class AboutUsActivity extends AppBaseActivity implements View.OnClickListener {
-    @BindView(R.id.iv_home_back)
-    ImageView iv_home_back;
+
     @BindView(R.id.ic_aboutus_gwpf)
     View ic_aboutus_gwpf;
     @BindView(R.id.ic_aboutus_yhxy)
@@ -42,7 +41,6 @@ public class AboutUsActivity extends AppBaseActivity implements View.OnClickList
 
     @Override
     protected void initEvent() {
-        iv_home_back.setOnClickListener(this);
         ic_aboutus_gwpf.setOnClickListener(this);
         ic_aboutus_yhxy.setOnClickListener(this);
     }
@@ -50,9 +48,7 @@ public class AboutUsActivity extends AppBaseActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_home_back:
-                finish();
-                break;
+
             case R.id.ic_aboutus_gwpf:
                 break;
             case R.id.ic_aboutus_yhxy:

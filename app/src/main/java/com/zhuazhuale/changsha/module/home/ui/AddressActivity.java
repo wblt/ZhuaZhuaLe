@@ -22,8 +22,7 @@ import butterknife.BindView;
  */
 
 public class AddressActivity extends AppBaseActivity implements View.OnClickListener {
-    @BindView(R.id.iv_home_back)
-    ImageView iv_home_back;
+
     @BindView(R.id.rv_address_list)
     RecyclerView rv_address_list;
     @BindView(R.id.tv_address_add)
@@ -49,8 +48,7 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
 
     @Override
     protected void initEvent() {
-        iv_home_back.setOnClickListener(this);
-        iv_home_back.setOnClickListener(this);
+
         tv_address_add.setOnClickListener(this);
 
     }
@@ -58,9 +56,7 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_home_back:
-                finish();
-                break;
+
             case R.id.tv_address_add:
                 intent = new Intent(AddressActivity.this, EditAddressActivity.class);
                 startActivity(intent);

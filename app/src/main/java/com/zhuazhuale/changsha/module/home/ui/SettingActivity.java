@@ -17,8 +17,7 @@ import butterknife.BindView;
 
 public class SettingActivity extends AppBaseActivity implements View.OnClickListener {
 
-    @BindView(R.id.iv_home_back)
-    ImageView iv_home_back;
+
     @BindView(R.id.ic_setting_tzzx)
     View ic_setting_tzzx;
     @BindView(R.id.ic_setting_yqjl)
@@ -81,7 +80,6 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
 
     @Override
     protected void initEvent() {
-        iv_home_back.setOnClickListener(this);
         ic_setting_tzzx.setOnClickListener(this);
         ic_setting_yqjl.setOnClickListener(this);
         ic_setting_sryqm.setOnClickListener(this);
@@ -96,9 +94,7 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_home_back:
-                finish();
-                break;
+
             case R.id.ic_setting_tzzx:
                 break;
             case R.id.ic_setting_yqjl:

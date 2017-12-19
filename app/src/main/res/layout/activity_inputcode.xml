@@ -6,7 +6,6 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_header" />
 
     <TextView
         android:layout_width="match_parent"

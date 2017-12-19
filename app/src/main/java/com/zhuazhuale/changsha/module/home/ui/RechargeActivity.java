@@ -26,8 +26,7 @@ import butterknife.BindView;
  */
 
 public class RechargeActivity extends AppBaseActivity implements View.OnClickListener, IRechargeView {
-    @BindView(R.id.iv_home_back)
-    ImageView iv_home_back;
+
     @BindView(R.id.tv_recharge_ye)
     TextView tv_recharge_ye;
     @BindView(R.id.rv_recharge_list)
@@ -62,15 +61,12 @@ public class RechargeActivity extends AppBaseActivity implements View.OnClickLis
 
     @Override
     protected void initEvent() {
-        iv_home_back.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_home_back:
-                finish();
-                break;
+
         }
     }
 

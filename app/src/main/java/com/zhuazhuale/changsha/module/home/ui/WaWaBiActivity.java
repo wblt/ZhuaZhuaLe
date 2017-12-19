@@ -31,8 +31,6 @@ import butterknife.BindView;
  */
 
 public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListener, IWaWaBiView {
-    @BindView(R.id.iv_home_back)
-    ImageView iv_home_back;
 
     @BindView(R.id.rv_wawabi_list)
     RecyclerView rv_wawabi_list;
@@ -42,6 +40,7 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
     private int mStart = 1;//请求数据的起始点
     private int mCount = 10;//每次请求的数据数量
     private boolean isLoadingMore;//是否正在进行“加载更多”的操作，避免重复发起请求
+    private boolean isFirst = true;
 
     private WaWaBiAdapter adapter;
 
@@ -85,12 +84,17 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void initEvent() {
-        iv_home_back.setOnClickListener(this);
         rfv_wawabi_fresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
 //                下拉刷新数据
-                getData(0, mCount, Constant.REFRESH);
+                if (isFirst) {
+                    isFirst = false;
+                    getData(0, mCount, Constant.INIT);
+                } else {
+                    getData(0, mCount, Constant.REFRESH);
+
+                }
             }
         });
         rfv_wawabi_fresh.setOnLoadmoreListener(new OnLoadmoreListener() {
@@ -115,9 +119,7 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_home_back:
-                finish();
-                break;
+
         }
     }
 
@@ -131,6 +133,7 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
     public void showBanlanceWater(BanlanceWaterBean Bean, int type) {
         switch (type) {
             case Constant.INIT:
+                rfv_wawabi_fresh.finishRefresh();
                 mStart = 0;
                 if (0 == Bean.getCode()) {
                     getLoadLayout().setLayoutState(State.NO_DATA);

@@ -3,6 +3,8 @@ package com.zhuazhuale.changsha.view.activity.base;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
@@ -28,7 +30,12 @@ import butterknife.ButterKnife;
 public abstract class AppBaseActivity extends BaseActivity {
 
     LoadLayout mLoadLayout;//加载布局，可以显示各种状态的布局, 如加载中，加载成功, 加载失败, 无数据
-
+    @BindView(R.id.iv_home_back)
+    ImageView iv_home_back;
+    @BindView(R.id.tv_header_right)
+    TextView tv_header_right;
+    @BindView(R.id.base_header_layout_app)
+    RelativeLayout base_header_layout_app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +68,34 @@ public abstract class AppBaseActivity extends BaseActivity {
 
     public void init() {
         ButterKnife.bind(this);//butterknife绑定
+        iv_home_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
 
+    /**
+     * 获取toolbar
+     */
+    public RelativeLayout getToolbar() {
+        return base_header_layout_app;
+    }
+
+
+    //设置toolbar右侧文字控件的内容
+    public void setToolbarRightTv(String text) {
+        if (tv_header_right != null) {
+            tv_header_right.setText(text);
+        }
+    }
+
+    /**
+     * 获取toolbar右侧的文字控件
+     */
+    public TextView getTvToolbarRight() {
+        return tv_header_right;
     }
 
 

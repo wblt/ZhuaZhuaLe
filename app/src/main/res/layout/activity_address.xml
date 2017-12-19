@@ -6,7 +6,6 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_header" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_address_list"

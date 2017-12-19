@@ -16,8 +16,7 @@ import butterknife.BindView;
  */
 
 public class MineActivity extends AppBaseActivity implements View.OnClickListener {
-    @BindView(R.id.iv_home_back)
-    ImageView iv_home_back;
+
     @BindView(R.id.ic_cz)
     View ic_cz;
     @BindView(R.id.ic_wwb)
@@ -61,7 +60,6 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
 
     @Override
     protected void initEvent() {
-        iv_home_back.setOnClickListener(this);
         ic_cz.setOnClickListener(this);
         ic_wwb.setOnClickListener(this);
         ic_zqjl.setOnClickListener(this);
@@ -73,9 +71,7 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_home_back:
-                finish();
-                break;
+
             case R.id.ic_cz:
                 intent = new Intent(MineActivity.this, RechargeActivity.class);
                 startActivity(intent);

@@ -16,8 +16,7 @@ import butterknife.BindView;
 
 public class InviteActivity extends AppBaseActivity implements View.OnClickListener {
 
-    @BindView(R.id.iv_home_back)
-    ImageView iv_home_back;
+
     @BindView(R.id.tv_invite_1)
     TextView tv_invite_1;
     @BindView(R.id.tv_invite_2)
@@ -54,15 +53,12 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
     protected void initEvent() {
         iv_invite_fxyqm.setOnClickListener(this);
         iv_invite_ss.setOnClickListener(this);
-        iv_home_back.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_home_back:
-                finish();
-                break;
+
         }
     }
 }

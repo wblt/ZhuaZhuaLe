@@ -6,7 +6,6 @@
     android:orientation="vertical">
 
 
-    <include layout="@layout/layout_header" />
 
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
