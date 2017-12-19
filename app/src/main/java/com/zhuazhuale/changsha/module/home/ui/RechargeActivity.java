@@ -50,12 +50,20 @@ public class RechargeActivity extends AppBaseActivity implements View.OnClickLis
         getLoadLayout().setOnLoadListener(new OnLoadListener() {
             @Override
             public void onLoad() {
-                presenter.iniNewCP();
-                presenter.initAllPriceProduct();
+                initData();
+
             }
         });
-        getLoadLayout().setLayoutState(State.LOADING);
+        showLoadingDialog();
+        initData();
+    }
 
+    /**
+     * 请求数据
+     */
+    private void initData() {
+        presenter.iniNewCP();
+        presenter.initAllPriceProduct();
     }
 
 
@@ -83,6 +91,7 @@ public class RechargeActivity extends AppBaseActivity implements View.OnClickLis
     @Override
     public void showAllPriceProduct(AllPriceProductBean allPriceProductBean) {
         getLoadLayout().setLayoutState(State.SUCCESS);
+        dismissLoadingDialog();
         RechargeAdapter adapter = new RechargeAdapter(this, allPriceProductBean.getRows());
         rv_recharge_list.setLayoutManager(new GridLayoutManager(this, 2));
         rv_recharge_list.setAdapter(adapter);
@@ -91,10 +100,12 @@ public class RechargeActivity extends AppBaseActivity implements View.OnClickLis
     @Override
     public void showFailed() {
         getLoadLayout().setLayoutState(State.FAILED);
+        dismissLoadingDialog();
     }
 
     @Override
     public void showNoData() {
         getLoadLayout().setLayoutState(State.NO_DATA);
+        dismissLoadingDialog();
     }
 }

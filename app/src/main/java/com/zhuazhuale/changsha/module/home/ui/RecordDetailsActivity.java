@@ -103,6 +103,7 @@ public class RecordDetailsActivity extends AppBaseActivity implements View.OnCli
      */
     public void goToDetails() {
         Intent intent = new Intent(RecordDetailsActivity.this, ShenSuActivity.class);
-        startActivity(intent);
+        intent.putExtra("rowsBean", rowsBean);
+        startActivityForResult(intent, 110);
     }
 }

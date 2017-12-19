@@ -47,6 +47,8 @@
         <activity android:name=".module.home.ui.RecordActivity" />
         <activity android:name=".module.home.ui.RecordDetailsActivity" />
         <activity android:name=".module.home.ui.ShenSuActivity" />
+        <activity android:name=".module.home.ui.SpoilsActivity" />
+        <activity android:name=".module.home.ui.OrderActivity" />
     </application>
 
 </manifest>

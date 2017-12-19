@@ -1,7 +1,6 @@
 package com.zhuazhuale.changsha.module.home.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
-import com.zhuazhuale.changsha.module.home.Bean.LiYouBean;
 import com.zhuazhuale.changsha.module.home.ui.AddressActivity;
-import com.zhuazhuale.changsha.module.home.ui.ShenSuActivity;
 import com.zhuazhuale.changsha.view.adapter.base.RecyclerBaseAdapter;
 import com.zhuazhuale.changsha.view.adapter.base.ViewHolder;
 
@@ -20,27 +17,24 @@ import java.util.List;
 /**
  * author:  丁琪
  * date:    2017/12/15
- * description: 申诉列表的适配器
+ * description: 订单列表的适配器
  */
 
-public class ShenSuAdapter extends RecyclerBaseAdapter<LiYouBean> {
+public class OrderAdapter extends RecyclerBaseAdapter<String> {
 
 
-    public ShenSuAdapter(@NonNull Context context, @NonNull List<LiYouBean> mDataList) {
+    public OrderAdapter(@NonNull Context context, @NonNull List<String> mDataList) {
         super(context, mDataList);
     }
 
     @Override
-    protected void bindDataForView(ViewHolder holder, final LiYouBean liYouBean, final int position) {
+    protected void bindDataForView(ViewHolder holder, final String s, final int position) {
         //initView
-        TextView tv_item_liyou = holder.getView(R.id.tv_item_liyou);
-        tv_item_liyou.setText(liYouBean.getLiYou());
-        if (liYouBean.isClick()) {
-            tv_item_liyou.setBackgroundColor(Color.parseColor("#888888"));
-        } else {
-            tv_item_liyou.setBackgroundColor(Color.parseColor("#ffffff"));
-
-        }
+        /*TextView tv_item_address_name = holder.getView(R.id.tv_item_address_name);
+        TextView tv_item_address_phone = holder.getView(R.id.tv_item_address_phone);
+        TextView tv_item_address_dz = holder.getView(R.id.tv_item_address_dz);
+        TextView tv_item_address_bj = holder.getView(R.id.tv_item_address_bj);
+        TextView tv_item_address_sc = holder.getView(R.id.tv_item_address_sc);*/
 
         //obtainData
       /*  FrescoUtil.getInstance().loadNetImage(sdvMovie, rowsBean.getF_ImgA());//加载网络图片
@@ -56,18 +50,12 @@ public class ShenSuAdapter extends RecyclerBaseAdapter<LiYouBean> {
                 removeItem(position);
             }
         });*/
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShenSuActivity mActivity = (ShenSuActivity) getContext();
-                mActivity.goToChangge(position);
-            }
-        });
+
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.item_shensu, parent, false);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.item_order, parent, false);
         return new ViewHolder(view);
     }
 

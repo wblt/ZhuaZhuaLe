@@ -85,8 +85,12 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
                 startActivity(intent);
                 break;
             case R.id.ic_zlp:
+                intent = new Intent(MineActivity.this, SpoilsActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ic_dd:
+                intent = new Intent(MineActivity.this, OrderActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ic_dz:
                 intent = new Intent(MineActivity.this, AddressActivity.class);

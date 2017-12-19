@@ -11,6 +11,7 @@
         android:padding="30dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sdv_shensu_img"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:background="@color/white" />
@@ -32,6 +33,7 @@
                 android:textSize="16dp" />
 
             <TextView
+                android:id="@+id/tv_shensu_shipin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -50,6 +52,7 @@
                     android:textColor="@color/white" />
 
                 <TextView
+                    android:id="@+id/tv_shensu_goodsname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="测试"
@@ -68,6 +71,7 @@
                     android:textColor="@color/white" />
 
                 <TextView
+                    android:id="@+id/tv_shensu_goodsid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1003"
@@ -98,6 +102,7 @@
     </android.support.v7.widget.RecyclerView>
 
     <ImageView
+        android:id="@+id/iv_shensu_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

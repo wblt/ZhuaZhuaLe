@@ -1,12 +1,18 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.module.home.Bean.GradWaterBean;
 import com.zhuazhuale.changsha.module.home.Bean.LiYouBean;
 import com.zhuazhuale.changsha.module.home.adapter.ShenSuAdapter;
+import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
 import java.util.ArrayList;
@@ -22,17 +28,32 @@ import butterknife.BindView;
 public class ShenSuActivity extends AppBaseActivity implements View.OnClickListener {
     @BindView(R.id.rv_shensu_list)
     RecyclerView rv_shensu_list;
+    @BindView(R.id.sdv_shensu_img)
+    SimpleDraweeView sdv_shensu_img;
+    @BindView(R.id.tv_shensu_goodsname)
+    TextView tv_shensu_goodsname;
+    @BindView(R.id.tv_shensu_goodsid)
+    TextView tv_shensu_goodsid;
+    @BindView(R.id.iv_shensu_submit)
+    ImageView iv_shensu_submit;
+
     private List<LiYouBean> liYouBeen;
     private ShenSuAdapter shenSuAdapter;
+    private GradWaterBean.RowsBean rowsBean;
 
 
     @Override
     protected void setContentLayout() {
         setContentView(R.layout.activity_shensu);
+        Intent intent = getIntent();
+        rowsBean = (GradWaterBean.RowsBean) intent.getSerializableExtra("rowsBean");
     }
 
     @Override
     protected void initView() {
+        FrescoUtil.getInstance().loadNetImage(sdv_shensu_img, rowsBean.getF_GoodsImgA());//加载网络图片
+        tv_shensu_goodsname.setText(rowsBean.getF_GoodsName());
+        tv_shensu_goodsid.setText(rowsBean.getF_DeviceNo());
         liYouBeen = new ArrayList<>();
         liYouBeen.add(new LiYouBean(false, "游戏工作人员补货"));
         liYouBeen.add(new LiYouBean(false, "没有成功上机就扣币"));
@@ -64,12 +85,22 @@ public class ShenSuActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void initEvent() {
-
+        iv_shensu_submit.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_shensu_submit:
+                submit();
+                break;
+        }
+    }
 
+    /**
+     * 提交申诉
+     */
+    private void submit() {
     }
 
     public void goToChangge(int position) {

@@ -20,7 +20,7 @@ public class LoadLayout extends BaseLoadLayout {
 
     private int mLoadingViewId = R.layout.layout_load_loading_view;
     private int mFailedViewId = R.layout.layout_load_failed_view;
-    private int mNoDataViewId = R.layout.layout_load_null_data_view;
+    private int mNoDataViewId = R.layout.layout_load_null_wawa_view;
     private View mLoadingView;
     private View mFailedView;
     private View mNoDataView;
