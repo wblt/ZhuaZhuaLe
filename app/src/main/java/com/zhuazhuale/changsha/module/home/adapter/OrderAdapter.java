@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.ui.AddressActivity;
+import com.zhuazhuale.changsha.module.home.ui.OrderActivity;
 import com.zhuazhuale.changsha.view.adapter.base.RecyclerBaseAdapter;
 import com.zhuazhuale.changsha.view.adapter.base.ViewHolder;
 
@@ -30,7 +31,8 @@ public class OrderAdapter extends RecyclerBaseAdapter<String> {
     @Override
     protected void bindDataForView(ViewHolder holder, final String s, final int position) {
         //initView
-        /*TextView tv_item_address_name = holder.getView(R.id.tv_item_address_name);
+        TextView tv_details = holder.getView(R.id.tv_item_order_details);
+        /*
         TextView tv_item_address_phone = holder.getView(R.id.tv_item_address_phone);
         TextView tv_item_address_dz = holder.getView(R.id.tv_item_address_dz);
         TextView tv_item_address_bj = holder.getView(R.id.tv_item_address_bj);
@@ -50,6 +52,13 @@ public class OrderAdapter extends RecyclerBaseAdapter<String> {
                 removeItem(position);
             }
         });*/
+        tv_details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OrderActivity mActivity = (OrderActivity) getContext();
+                mActivity.goToDetails(s, position);
+            }
+        });
 
     }
 

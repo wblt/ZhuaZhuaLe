@@ -5,7 +5,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
 import butterknife.BindView;
@@ -29,6 +32,11 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
     View ic_dd;
     @BindView(R.id.ic_dz)
     View ic_dz;
+    @BindView(R.id.sdv_mine_face)
+    SimpleDraweeView sdv_mine_face;
+    @BindView(R.id.tv_mine_name)
+    TextView tv_mine_name;
+
     private Intent intent;
 
     @Override
@@ -38,6 +46,8 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
 
     @Override
     protected void initView() {
+        FrescoUtil.getInstance().loadNetImage(sdv_mine_face, MyApplication.getInstance().getRowsBean().getF_Img());
+        tv_mine_name.setText(MyApplication.getInstance().getRowsBean().getF_Name());
         TextView tv_cz = (TextView) ic_cz.findViewById(R.id.tv_list_n);
         TextView tv_wwb = (TextView) ic_wwb.findViewById(R.id.tv_list_n);
         TextView tv_zqjl = (TextView) ic_zqjl.findViewById(R.id.tv_list_n);

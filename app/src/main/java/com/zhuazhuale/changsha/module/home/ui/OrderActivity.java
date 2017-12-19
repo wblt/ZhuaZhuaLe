@@ -78,8 +78,8 @@ public class OrderActivity extends AppBaseActivity implements View.OnClickListen
      * @param s
      * @param position
      */
-    public void goToChangge(String s, int position) {
-        intent = new Intent(OrderActivity.this, EditAddressActivity.class);
+    public void goToDetails(String s, int position) {
+        intent = new Intent(OrderActivity.this, OrderDetailsActivity.class);
         startActivity(intent);
     }
 }

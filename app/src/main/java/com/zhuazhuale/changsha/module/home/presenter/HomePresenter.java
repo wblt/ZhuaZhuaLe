@@ -1,9 +1,11 @@
 package com.zhuazhuale.changsha.module.home.presenter;
 
 import com.google.gson.Gson;
+import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
+import com.zhuazhuale.changsha.module.home.Bean.LoginInfoBean;
 import com.zhuazhuale.changsha.module.home.model.HomeModel;
 import com.zhuazhuale.changsha.module.home.ui.IHomeView;
 import com.zhuazhuale.changsha.presenter.base.BasePresenter;
@@ -17,10 +19,12 @@ public class HomePresenter extends BasePresenter<IHomeView> {
     private String TAG = getClass().getName();
 
     private final HomeModel homeModel;
+    private final Gson gson;
 
     public HomePresenter(IHomeView iHomeView) {
         super(iHomeView);
         homeModel = HomeModel.getInstance();
+        gson = new Gson();
     }
 
 
@@ -28,8 +32,7 @@ public class HomePresenter extends BasePresenter<IHomeView> {
         homeModel.getBaseData(new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
-                LogUtil.e(TAG, s);
-                Gson gson = new Gson();
+
                 BaseDataBean baseDataBean = gson.fromJson(s, BaseDataBean.class);
                 mIView.showImagePage(baseDataBean.getRows());
             }
@@ -44,6 +47,25 @@ public class HomePresenter extends BasePresenter<IHomeView> {
                 LogUtil.e(TAG, "接口结束");
             }
         });
+
+        homeModel.getLoginMain(new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e("用户信息请求成功:    "+s);
+                LoginInfoBean infoBean = gson.fromJson(s, LoginInfoBean.class);
+                MyApplication.getInstance().setRowsBean(infoBean.getRows());
+            }
+
+            @Override
+            public void callFailed() {
+                LogUtil.e("用户信息请求失败:    ");
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        });
     }
 
     public void initDeviceGoods(int PageIndex, int PageSize) {
@@ -51,7 +73,6 @@ public class HomePresenter extends BasePresenter<IHomeView> {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(s);
-                Gson gson = new Gson();
                 DeviceGoodsBean deviceGoodsBean = gson.fromJson(s, DeviceGoodsBean.class);
                 mIView.showDeviceGoods(deviceGoodsBean.getRows());
             }

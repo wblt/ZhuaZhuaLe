@@ -46,7 +46,39 @@ public class HomeModel {
                     }
                 });
     }
+    public void getLoginMain(final ICallListener<String> iCallListener) {
+        OkGo.<String>post(Constant.LoginMain)
+                .tag(this)
+                .params("vEmailCode","test@zhuazhuale.com")
+                .params("vPassWord","lezhuazhua.888")
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e("请求成功" + response.body());
+                        iCallListener.callSuccess(response.body());
+                    }
 
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e("请求失败" + response.toString());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+    }
+
+    /**
+     * 获取机器的列表
+     * @param PageIndex
+     * @param PageSize
+     * @param iCallListener
+     */
     public void getGetDeviceGoods(int PageIndex, int PageSize, final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.GetDeviceGoods)
                 .tag(this)

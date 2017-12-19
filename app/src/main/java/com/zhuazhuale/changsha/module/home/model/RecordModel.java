@@ -4,6 +4,7 @@ package com.zhuazhuale.changsha.module.home.model;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.log.LogUtil;
@@ -28,7 +29,7 @@ public class RecordModel {
                 .tag(this)
                 .params("PageIndex", PageIndex)
                 .params("PageSize", PageSize)
-                .params("vUserID", "8c12dc2f-bd6c-4348-88ce-daf4994363bb")
+                .params("vUserID",  MyApplication.getInstance().getRowsBean().getF_ID())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

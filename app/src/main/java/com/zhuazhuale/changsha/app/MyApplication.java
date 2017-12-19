@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.lzy.okgo.OkGo;
 import com.zhuazhuale.changsha.model.net.RetrofitUtil;
+import com.zhuazhuale.changsha.module.home.Bean.LoginInfoBean;
 import com.zhuazhuale.changsha.util.CrashLogUtil;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
@@ -20,8 +21,17 @@ import com.zhuazhuale.changsha.util.log.LogUtil;
 
 public class MyApplication extends Application {
     private static MyApplication instance;
+    private LoginInfoBean.RowsBean rowsBean;
     public static MyApplication getInstance() {
         return instance;
+    }
+
+    public LoginInfoBean.RowsBean getRowsBean() {
+        return rowsBean;
+    }
+
+    public void setRowsBean(LoginInfoBean.RowsBean rowsBean) {
+        this.rowsBean = rowsBean;
     }
 
     @Override

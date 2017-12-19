@@ -4,6 +4,7 @@ package com.zhuazhuale.changsha.module.home.model;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.log.LogUtil;
@@ -30,7 +31,7 @@ public class RechargeModel {
     public void getNewCP(final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.GetNewCP)
                 .tag(this)
-                .params("vF_ID", "8c12dc2f-bd6c-4348-88ce-daf4994363bb")
+                .params("vF_ID", MyApplication.getInstance().getRowsBean().getF_ID())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

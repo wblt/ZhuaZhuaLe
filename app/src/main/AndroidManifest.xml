@@ -49,6 +49,7 @@
         <activity android:name=".module.home.ui.ShenSuActivity" />
         <activity android:name=".module.home.ui.SpoilsActivity" />
         <activity android:name=".module.home.ui.OrderActivity" />
+        <activity android:name=".module.home.ui.OrderDetailsActivity" />
     </application>
 
 </manifest>

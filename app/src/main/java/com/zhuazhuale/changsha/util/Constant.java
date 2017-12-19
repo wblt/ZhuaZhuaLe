@@ -26,6 +26,8 @@ public class Constant {
     public static String BanlanceWater = URL + "/api/Account/BanlanceWater";
     //我的抓取记录
     public static String GrabWater = URL + "/api/Account/GrabWater";
+    //邮箱登录
+    public static String LoginMain = URL + "/api/Account/LoginMain";
 
 
 }
