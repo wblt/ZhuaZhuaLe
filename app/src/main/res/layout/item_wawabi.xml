@@ -11,10 +11,10 @@
         android:background="@drawable/textbeijing_recharge"
         android:padding="14dp">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/sdv_item_wawabi_img"
             android:layout_width="70dp"
             android:layout_height="76dp"
-            android:src="@mipmap/ic_logo"
             android:layout_gravity="center" />
 
         <LinearLayout
@@ -25,9 +25,10 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_item_wawabi_goodsname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="测试一二"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="16dp" />
 
@@ -44,25 +45,28 @@
                     android:textSize="16dp" />
 
                 <TextView
+                    android:id="@+id/tv_item_wawabi_amout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="19"
+                    android:text=""
                     android:textSize="16dp" />
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_item_wawabi_creattime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="2017-12-09T19:59:10.243"
+                android:text=""
                 android:textSize="12dp" />
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_item_wawabi_bi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="+ 29"
+            android:text=""
             android:textColor="@color/green"
             android:textSize="20dp" />
 

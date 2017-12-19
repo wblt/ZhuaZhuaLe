@@ -11,12 +11,13 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhuazhuale.changsha.R;
-import com.zhuazhuale.changsha.module.home.adapter.RechargeAdapter;
+import com.zhuazhuale.changsha.module.home.Bean.BanlanceWaterBean;
 import com.zhuazhuale.changsha.module.home.adapter.WaWaBiAdapter;
+import com.zhuazhuale.changsha.module.home.presenter.WaWaBiPresenter;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
+import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 
@@ -25,7 +26,7 @@ import butterknife.BindView;
  * Created by 丁琪 on 2017/12/18.
  */
 
-public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListener {
+public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListener, IWaWaBiView {
     @BindView(R.id.iv_home_back)
     ImageView iv_home_back;
 
@@ -33,6 +34,7 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
     RecyclerView rv_wawabi_list;
     @BindView(R.id.rfv_wawabi_fresh)
     SmartRefreshLayout rfv_wawabi_fresh;
+    private WaWaBiPresenter presenter;
 
     @Override
     protected void setContentLayout() {
@@ -46,31 +48,29 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void obtainData() {
-        List<String> strings = new ArrayList<>();
-        strings.add("");
-        strings.add("");
-        strings.add("");
-        strings.add("");
-        strings.add("");
-        strings.add("");
-        showRechargeList(strings);
+        presenter = new WaWaBiPresenter(this);
+        //设置“加载”状态时要做的事情
+        getLoadLayout().setOnLoadListener(new OnLoadListener() {
+            @Override
+            public void onLoad() {
+                //  请求数据
+                presenter.inittBanlanceWater(0, 10);
+            }
+        });
+        getLoadLayout().setLayoutState(State.LOADING);
+
     }
 
-    private void showRechargeList(List<String> strings) {
-        WaWaBiAdapter adapter = new WaWaBiAdapter(this, strings);
-        rv_wawabi_list.setLayoutManager(new LinearLayoutManager(this));
-        rv_wawabi_list.setAdapter(adapter);
-    }
 
     @Override
     protected void initEvent() {
         iv_home_back.setOnClickListener(this);
         rfv_wawabi_fresh.setOnRefreshListener(new OnRefreshListener() {
-                    @Override
-                    public void onRefresh(RefreshLayout refreshlayout) {
-                        rfv_wawabi_fresh.finishLoadmore(2000);
-                    }
-                });
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                presenter.inittBanlanceWater(0, 10);
+            }
+        });
     }
 
     @Override
@@ -82,5 +82,33 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * 我的娃娃币列表
+     *
+     * @param banlanceWaterBean
+     */
+    @Override
+    public void showBanlanceWater(BanlanceWaterBean banlanceWaterBean) {
+        rfv_wawabi_fresh.finishRefresh();
+        getLoadLayout().setLayoutState(State.SUCCESS);
+        WaWaBiAdapter adapter = new WaWaBiAdapter(this, banlanceWaterBean.getRows());
+        rv_wawabi_list.setLayoutManager(new LinearLayoutManager(this));
+        rv_wawabi_list.setAdapter(adapter);
+    }
 
+    /**
+     * 无数据
+     */
+    @Override
+    public void showNoData() {
+        getLoadLayout().setLayoutState(State.NO_DATA);
+    }
+
+    /**
+     * 请求失败
+     */
+    @Override
+    public void showFailed() {
+        getLoadLayout().setLayoutState(State.FAILED);
+    }
 }

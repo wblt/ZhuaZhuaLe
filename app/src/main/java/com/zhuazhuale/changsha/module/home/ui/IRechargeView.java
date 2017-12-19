@@ -13,4 +13,8 @@ public interface IRechargeView extends IBaseView {
     void showNewCP(NewCPBean newCPBean);
 
     void showAllPriceProduct(AllPriceProductBean allPriceProductBean);
+
+    void showFailed();
+
+    void showNoData();
 }

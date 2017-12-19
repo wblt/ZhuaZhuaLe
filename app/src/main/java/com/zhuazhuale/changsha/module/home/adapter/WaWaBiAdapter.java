@@ -5,8 +5,12 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.module.home.Bean.BanlanceWaterBean;
+import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.view.adapter.base.RecyclerBaseAdapter;
 import com.zhuazhuale.changsha.view.adapter.base.ViewHolder;
 
@@ -18,26 +22,28 @@ import java.util.List;
  * description: 娃娃币
  */
 
-public class WaWaBiAdapter extends RecyclerBaseAdapter<String> {
+public class WaWaBiAdapter extends RecyclerBaseAdapter<BanlanceWaterBean.RowsBean> {
 
 
-    public WaWaBiAdapter(@NonNull Context context, @NonNull List<String> mDataList) {
+    public WaWaBiAdapter(@NonNull Context context, @NonNull List<BanlanceWaterBean.RowsBean> mDataList) {
         super(context, mDataList);
     }
 
     @Override
-    protected void bindDataForView(ViewHolder holder, final String s, final int position) {
+    protected void bindDataForView(ViewHolder holder, final BanlanceWaterBean.RowsBean rowsBean, final int position) {
         //initView
-     /*   TextView tv_item_address_name = holder.getView(R.id.tv_item_address_name);
-        TextView tv_item_address_phone = holder.getView(R.id.tv_item_address_phone);
-        TextView tv_item_address_dz = holder.getView(R.id.tv_item_address_dz);
-        TextView tv_item_address_bj = holder.getView(R.id.tv_item_address_bj);
-        TextView tv_item_address_sc = holder.getView(R.id.tv_item_address_sc);*/
+        SimpleDraweeView sdv_item_wawabi_img = holder.getView(R.id.sdv_item_wawabi_img);
+        TextView tv_item_wawabi_goodsname = holder.getView(R.id.tv_item_wawabi_goodsname);
+        TextView tv_item_wawabi_amout = holder.getView(R.id.tv_item_wawabi_amout);
+        TextView tv_item_wawabi_creattime = holder.getView(R.id.tv_item_wawabi_creattime);
+        TextView tv_item_wawabi_bi = holder.getView(R.id.tv_item_wawabi_bi);
 
         //obtainData
-      /*  FrescoUtil.getInstance().loadNetImage(sdvMovie, rowsBean.getF_ImgA());//加载网络图片
-        tv_device_name.setText(rowsBean.getF_Name());
-        tv_device_price.setText(rowsBean.getF_Price() + "/次");*/
+        FrescoUtil.getInstance().loadNetImage(sdv_item_wawabi_img, rowsBean.getF_GoodsImgA());//加载网络图片
+        tv_item_wawabi_goodsname.setText(rowsBean.getF_GoodsName());
+        tv_item_wawabi_amout.setText(rowsBean.getF_Amout() + "");
+        tv_item_wawabi_creattime.setText(rowsBean.getF_CreateTime() + "");
+        tv_item_wawabi_bi.setText(rowsBean.getF_Amout() + "");
         //initEvent
         //点击该项后，从数据表中删除，并且从界面中移除
        /* holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -48,13 +54,7 @@ public class WaWaBiAdapter extends RecyclerBaseAdapter<String> {
                 removeItem(position);
             }
         });*/
-       /* tv_item_address_bj.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddressActivity mActivity = (AddressActivity) getContext();
-                mActivity.goToChangge(s, position);
-            }
-        });*/
+
     }
 
     @Override

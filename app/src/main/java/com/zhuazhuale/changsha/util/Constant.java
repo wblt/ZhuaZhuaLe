@@ -6,6 +6,12 @@ package com.zhuazhuale.changsha.util;
 
 public class Constant {
 
+    //请求数据时的不同触发时机
+    private static final int INIT = 3;//初始化数据
+    private static final int REFRESH = 4;//刷新数据
+    private static final int LOADMORE = 5;//加载更多数据
+
+
     public static String URL = "http://106.14.192.166:8088";
 
     //  首页的循环广告
@@ -16,6 +22,8 @@ public class Constant {
     public static String GetNewCP = URL + "/api/Account/GetNewCP";
     //获取充值兑换比例
     public static String GetAllPriceProduct = URL + "/api/Account/GetAllPriceProduct";
+    //我的娃娃币
+    public static String BanlanceWater = URL + "/api/Account/BanlanceWater";
 
 
 }
