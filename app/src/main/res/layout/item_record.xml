@@ -15,11 +15,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdv_item_record_img"
                 android:layout_width="86dp"
                 android:layout_height="86dp"
-                android:layout_gravity="center"
-                android:src="@mipmap/ic_logo" />
+                android:layout_gravity="center" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -29,9 +29,10 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_item_record_goodsname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="小猪佩奇-20CM"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="16dp" />
 
@@ -47,10 +48,11 @@
                         android:textSize="12dp" />
 
                     <TextView
+                        android:id="@+id/tv_item_record_result"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="6dp"
-                        android:text="未申诉"
+                        android:text=""
                         android:textSize="12dp" />
                 </LinearLayout>
 
@@ -59,18 +61,20 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/tv_item_record_valid"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="抓取失败"
+                        android:text=""
                         android:textSize="12dp" />
 
                     <TextView
+                        android:id="@+id/tv_item_record_creattime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
                         android:layout_marginTop="10dp"
-                        android:text="2017-12-09T19:59:10.243"
+                        android:text=""
                         android:textSize="12dp" />
                 </LinearLayout>
 

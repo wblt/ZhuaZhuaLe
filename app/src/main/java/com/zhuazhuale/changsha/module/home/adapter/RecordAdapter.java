@@ -5,10 +5,14 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.module.home.Bean.GradWaterBean;
 import com.zhuazhuale.changsha.module.home.ui.RecordActivity;
+import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.view.adapter.base.RecyclerBaseAdapter;
 import com.zhuazhuale.changsha.view.adapter.base.ViewHolder;
 
@@ -20,27 +24,43 @@ import java.util.List;
  * description: 抓取记录
  */
 
-public class RecordAdapter extends RecyclerBaseAdapter<String> {
+public class RecordAdapter extends RecyclerBaseAdapter<GradWaterBean.RowsBean> {
 
 
-    public RecordAdapter(@NonNull Context context, @NonNull List<String> mDataList) {
+    public RecordAdapter(@NonNull Context context, @NonNull List<GradWaterBean.RowsBean> mDataList) {
         super(context, mDataList);
     }
 
     @Override
-    protected void bindDataForView(ViewHolder holder, final String s, final int position) {
+    protected void bindDataForView(ViewHolder holder, final GradWaterBean.RowsBean rowsBean, final int position) {
         //initView
-     /*   TextView tv_item_address_name = holder.getView(R.id.tv_item_address_name);
-        TextView tv_item_address_phone = holder.getView(R.id.tv_item_address_phone);
-        TextView tv_item_address_dz = holder.getView(R.id.tv_item_address_dz);
-        TextView tv_item_address_bj = holder.getView(R.id.tv_item_address_bj);
-        TextView tv_item_address_sc = holder.getView(R.id.tv_item_address_sc);*/
-        TextView tv_item_record_go = holder.getView(R.id.tv_item_record_go);
+        SimpleDraweeView sdv_img = holder.getView(R.id.sdv_item_record_img);
+        TextView tv_goodsname = holder.getView(R.id.tv_item_record_goodsname);
+        TextView tv_valid = holder.getView(R.id.tv_item_record_valid);
+        TextView tv_result = holder.getView(R.id.tv_item_record_result);
+        TextView tv_creattime = holder.getView(R.id.tv_item_record_creattime);
+        TextView tv_go = holder.getView(R.id.tv_item_record_go);
 
         //obtainData
-      /*  FrescoUtil.getInstance().loadNetImage(sdvMovie, rowsBean.getF_ImgA());//加载网络图片
-        tv_device_name.setText(rowsBean.getF_Name());
-        tv_device_price.setText(rowsBean.getF_Price() + "/次");*/
+        FrescoUtil.getInstance().loadNetImage(sdv_img, rowsBean.getF_GoodsImgA());//加载网络图片
+        tv_goodsname.setText(rowsBean.getF_GoodsName());
+        if (rowsBean.isF_Valid()) {
+            tv_valid.setText("抓取失败");
+        } else {
+            tv_valid.setText("抓取成功");
+        }
+        switch (rowsBean.getF_VideoUrl()) {
+
+        }
+        switch (rowsBean.getF_Result()) {
+            case 0:
+                tv_result.setText("未申诉");
+                break;
+            case 1:
+                tv_result.setText("申诉中");
+                break;
+        }
+        tv_creattime.setText(rowsBean.getF_CreateTime() + "");
         //initEvent
         //点击该项后，从数据表中删除，并且从界面中移除
        /* holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -51,11 +71,11 @@ public class RecordAdapter extends RecyclerBaseAdapter<String> {
                 removeItem(position);
             }
         });*/
-        tv_item_record_go.setOnClickListener(new View.OnClickListener() {
+        tv_go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RecordActivity mActivity = (RecordActivity) getContext();
-                mActivity.goToDetails(s, position);
+                mActivity.goToDetails(rowsBean, position);
             }
         });
     }
