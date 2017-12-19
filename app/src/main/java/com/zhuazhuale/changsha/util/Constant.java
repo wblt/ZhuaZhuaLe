@@ -12,8 +12,10 @@ public class Constant {
     public static String BaseData = URL + "/api/Account/BaseData";
     //  获取设备商品信息
     public static String GetDeviceGoods = URL + "/api/Device/GetDeviceGoods";
-
-
+    //获取账号余额信息
+    public static String GetNewCP = URL + "/api/Account/GetNewCP";
+    //获取充值兑换比例
+    public static String GetAllPriceProduct = URL + "/api/Account/GetAllPriceProduct";
 
 
 }

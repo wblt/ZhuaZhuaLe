@@ -20,10 +20,10 @@
             android:layout_marginRight="14dp"
             android:layout_marginTop="14dp">
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_item_recharge_img"
                 android:layout_width="55dp"
-                android:layout_height="60dp"
-                android:src="@mipmap/icon_jinbi" />
+                android:layout_height="60dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -32,19 +32,21 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_item_recharge_price3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="充   ￥1 币"
+                    android:text="充   ￥ 币"
                     android:textColor="@color/black"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_item_recharge_price2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:gravity="end"
-                    android:text="送 + 0 币"
+                    android:text="送 +  币"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14dp"
                     android:textStyle="bold" />
@@ -62,19 +64,21 @@
             android:paddingTop="4dp">
 
             <TextView
+                android:id="@+id/tv_item_recharge_price1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10    币"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="14dp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_item_recharge_remark"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="首冲100返250币"
+                android:text=""
                 android:textColor="@color/colorPrimary"
                 android:textSize="12dp"
                 android:textStyle="bold" />

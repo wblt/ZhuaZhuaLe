@@ -5,10 +5,13 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
-import com.zhuazhuale.changsha.module.home.ui.AddressActivity;
+import com.zhuazhuale.changsha.module.home.Bean.AllPriceProductBean;
+import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.view.adapter.base.RecyclerBaseAdapter;
 import com.zhuazhuale.changsha.view.adapter.base.ViewHolder;
 
@@ -20,26 +23,43 @@ import java.util.List;
  * description: 充值列表
  */
 
-public class RechargeAdapter extends RecyclerBaseAdapter<String> {
+public class RechargeAdapter extends RecyclerBaseAdapter<AllPriceProductBean.RowsBean> {
 
 
-    public RechargeAdapter(@NonNull Context context, @NonNull List<String> mDataList) {
+    public RechargeAdapter(@NonNull Context context, @NonNull List<AllPriceProductBean.RowsBean> mDataList) {
         super(context, mDataList);
     }
 
     @Override
-    protected void bindDataForView(ViewHolder holder, final String s, final int position) {
+    protected void bindDataForView(ViewHolder holder, final AllPriceProductBean.RowsBean rowsBean, final int position) {
         //initView
-     /*   TextView tv_item_address_name = holder.getView(R.id.tv_item_address_name);
-        TextView tv_item_address_phone = holder.getView(R.id.tv_item_address_phone);
-        TextView tv_item_address_dz = holder.getView(R.id.tv_item_address_dz);
-        TextView tv_item_address_bj = holder.getView(R.id.tv_item_address_bj);
-        TextView tv_item_address_sc = holder.getView(R.id.tv_item_address_sc);*/
-
+        TextView tv_item_recharge_price3 = holder.getView(R.id.tv_item_recharge_price3);
+        TextView tv_item_recharge_price2 = holder.getView(R.id.tv_item_recharge_price2);
+        TextView tv_item_recharge_price1 = holder.getView(R.id.tv_item_recharge_price1);
+        TextView tv_item_recharge_remark = holder.getView(R.id.tv_item_recharge_remark);
+        SimpleDraweeView iv_item_recharge_img = holder.getView(R.id.iv_item_recharge_img);
         //obtainData
-      /*  FrescoUtil.getInstance().loadNetImage(sdvMovie, rowsBean.getF_ImgA());//加载网络图片
-        tv_device_name.setText(rowsBean.getF_Name());
-        tv_device_price.setText(rowsBean.getF_Price() + "/次");*/
+        tv_item_recharge_price3.setText("充   ￥" + rowsBean.getF_Price3() + " 币");
+        tv_item_recharge_price2.setText("送 + " + rowsBean.getF_Price2() + " 币");
+        tv_item_recharge_price1.setText(rowsBean.getF_Price1() + "    币");
+        tv_item_recharge_remark.setText(rowsBean.getF_Remark());
+        switch (rowsBean.getF_Price3()) {
+            case 50:
+                FrescoUtil.getInstance().loadResourceImage(iv_item_recharge_img, R.mipmap.icon_jinzhua);
+                break;
+            case 100:
+                FrescoUtil.getInstance().loadResourceImage(iv_item_recharge_img, R.mipmap.icon_jindai);
+                break;
+            case 300:
+                FrescoUtil.getInstance().loadResourceImage(iv_item_recharge_img, R.mipmap.icon_jinguan);
+                break;
+            case 500:
+                FrescoUtil.getInstance().loadResourceImage(iv_item_recharge_img, R.mipmap.icon_jinguan);
+                break;
+            default:
+                FrescoUtil.getInstance().loadResourceImage(iv_item_recharge_img, R.mipmap.icon_jinbi);
+                break;
+        }
         //initEvent
         //点击该项后，从数据表中删除，并且从界面中移除
        /* holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -50,13 +70,7 @@ public class RechargeAdapter extends RecyclerBaseAdapter<String> {
                 removeItem(position);
             }
         });*/
-       /* tv_item_address_bj.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddressActivity mActivity = (AddressActivity) getContext();
-                mActivity.goToChangge(s, position);
-            }
-        });*/
+
     }
 
     @Override
