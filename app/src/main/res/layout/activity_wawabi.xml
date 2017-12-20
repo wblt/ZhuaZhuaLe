@@ -6,8 +6,6 @@
     android:orientation="vertical">
 
 
-
-
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/rfv_wawabi_fresh"
         android:layout_width="match_parent"
@@ -21,7 +19,8 @@
             android:id="@+id/rv_wawabi_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="14dp">
+            android:paddingRight="14dp"
+            android:paddingLeft="14dp">
 
         </android.support.v7.widget.RecyclerView>
 

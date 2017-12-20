@@ -11,7 +11,7 @@ import com.zhuazhuale.changsha.module.home.ui.IHomeView;
 import com.zhuazhuale.changsha.presenter.base.BasePresenter;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
-/**
+/**主页
  * Created by Administrator on 2017/12/12.
  */
 

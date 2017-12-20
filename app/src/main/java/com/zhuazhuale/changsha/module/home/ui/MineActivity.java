@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
+import com.zhuazhuale.changsha.module.home.presenter.MinePresenter;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
@@ -18,7 +20,7 @@ import butterknife.BindView;
  * Created by Administrator on 2017/12/13.
  */
 
-public class MineActivity extends AppBaseActivity implements View.OnClickListener {
+public class MineActivity extends AppBaseActivity implements View.OnClickListener, IMineView {
 
     @BindView(R.id.ic_cz)
     View ic_cz;
@@ -36,6 +38,8 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
     SimpleDraweeView sdv_mine_face;
     @BindView(R.id.tv_mine_name)
     TextView tv_mine_name;
+    @BindView(R.id.tv_mine_yue)
+    TextView tv_mine_yue;
 
     private Intent intent;
 
@@ -65,7 +69,8 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
 
     @Override
     protected void obtainData() {
-
+        MinePresenter presenter = new MinePresenter(this);
+        presenter.iniNewCP();
     }
 
     @Override
@@ -107,5 +112,15 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
                 startActivity(intent);
                 break;
         }
+    }
+
+    /**
+     * 我的余额
+     *
+     * @param newCPBean
+     */
+    @Override
+    public void showNewCP(NewCPBean newCPBean) {
+        tv_mine_yue.setText(newCPBean.getRows().getCP() + "");
     }
 }
