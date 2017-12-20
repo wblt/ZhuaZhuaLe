@@ -100,6 +100,8 @@
                         android:src="@mipmap/homelistimg" />
 
                     <ImageView
+                        android:paddingLeft="30dp"
+                        android:paddingBottom="6dp"
                         android:id="@+id/iv_home_fresh"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
