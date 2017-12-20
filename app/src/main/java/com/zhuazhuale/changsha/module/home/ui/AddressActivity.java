@@ -148,7 +148,7 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
         switch (type) {
             case Constant.INIT:
                 if (addressBean.getCode() == 0) {
-                    getLoadLayout().setLayoutState(State.NO_DATA);
+//                    getLoadLayout().setLayoutState(State.NO_DATA);
                     ToastUtil.show(addressBean.getInfo());
                 } else {
                     getLoadLayout().setLayoutState(State.SUCCESS);

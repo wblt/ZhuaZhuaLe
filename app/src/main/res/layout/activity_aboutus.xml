@@ -10,6 +10,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -42,12 +43,14 @@
                 android:id="@+id/ic_aboutus_yhxy" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
+                    android:layout_marginTop="60dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Copyright @2017"
@@ -63,7 +66,8 @@
                     android:textSize="14dp" />
             </LinearLayout>
 
-            <TextView
+         <!--   <TextView
+                android:layout_marginTop="18dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -72,11 +76,12 @@
                 android:textSize="16dp" />
 
             <TextView
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="长沙抓抓乐信息科技有限公司"
                 android:textColor="@color/black"
-                android:textSize="16dp" />
+                android:textSize="16dp" />-->
 
         </LinearLayout>
     </ScrollView>

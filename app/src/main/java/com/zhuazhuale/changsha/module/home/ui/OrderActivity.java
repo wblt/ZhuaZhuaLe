@@ -80,11 +80,12 @@ public class OrderActivity extends AppBaseActivity implements View.OnClickListen
     /**
      * 进入编辑
      *
-     * @param s
+     * @param rowsBean
      * @param position
      */
-    public void goToDetails(OrderBean.RowsBean s, int position) {
+    public void goToDetails(OrderBean.RowsBean rowsBean, int position) {
         intent = new Intent(OrderActivity.this, OrderDetailsActivity.class);
+        intent.putExtra("OrderBean", rowsBean);
         startActivity(intent);
     }
 

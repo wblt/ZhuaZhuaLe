@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.home.Bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -63,7 +64,7 @@ public class OrderBean {
         this.rows = rows;
     }
 
-    public static class RowsBean {
+    public static class RowsBean implements Serializable{
         /**
          * Detail : [{"F_Name":"超级小飞侠-20CM","F_Img":"http://img.zhuazhuale.com/Goods/xiaofeixia.jpg"},{"F_Name":"比卡丘","F_Img":"http://106.14.192.166:8089/1.jpg"}]
          * F_ID : f97e0f30-cae8-4fe9-8af6-41aa3087c905
@@ -189,7 +190,7 @@ public class OrderBean {
             this.Detail = Detail;
         }
 
-        public static class DetailBean {
+        public static class DetailBean implements Serializable{
             /**
              * F_Name : 超级小飞侠-20CM
              * F_Img : http://img.zhuazhuale.com/Goods/xiaofeixia.jpg

@@ -6,6 +6,7 @@ package com.zhuazhuale.changsha.module.home.Bean;
 
 public class NewCPBean {
 
+
     /**
      * Code : 1
      * Info :

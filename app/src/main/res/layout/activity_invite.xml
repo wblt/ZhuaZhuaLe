@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <ScrollView
-            android:layout_width="match_parent"
+            android:layout_width ="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
@@ -31,11 +31,12 @@
                     android:background="@mipmap/invitebg">
 
                     <android.support.v7.widget.RecyclerView
+                        android:layout_centerHorizontal="true"
                         android:id="@+id/rv_invite_num"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="30dp"
                         android:layout_marginRight="30dp"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                     </android.support.v7.widget.RecyclerView>
