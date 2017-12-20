@@ -7,9 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.module.home.Bean.OrderBean;
 import com.zhuazhuale.changsha.module.home.ui.AddressActivity;
 import com.zhuazhuale.changsha.module.home.ui.OrderActivity;
+import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.view.adapter.base.RecyclerBaseAdapter;
 import com.zhuazhuale.changsha.view.adapter.base.ViewHolder;
 
@@ -21,27 +24,42 @@ import java.util.List;
  * description: 订单列表的适配器
  */
 
-public class OrderAdapter extends RecyclerBaseAdapter<String> {
+public class OrderAdapter extends RecyclerBaseAdapter<OrderBean.RowsBean> {
 
 
-    public OrderAdapter(@NonNull Context context, @NonNull List<String> mDataList) {
+    public OrderAdapter(@NonNull Context context, @NonNull List<OrderBean.RowsBean> mDataList) {
         super(context, mDataList);
     }
 
     @Override
-    protected void bindDataForView(ViewHolder holder, final String s, final int position) {
+    protected void bindDataForView(ViewHolder holder, final OrderBean.RowsBean rowsBean, final int position) {
         //initView
         TextView tv_details = holder.getView(R.id.tv_item_order_details);
-        /*
-        TextView tv_item_address_phone = holder.getView(R.id.tv_item_address_phone);
-        TextView tv_item_address_dz = holder.getView(R.id.tv_item_address_dz);
-        TextView tv_item_address_bj = holder.getView(R.id.tv_item_address_bj);
-        TextView tv_item_address_sc = holder.getView(R.id.tv_item_address_sc);*/
+        TextView tv_item_order_no = holder.getView(R.id.tv_item_order_no);
+        TextView tv_item_order_time = holder.getView(R.id.tv_item_order_time);
+        TextView tv_item_order_name = holder.getView(R.id.tv_item_order_name);
+        TextView tv_item_order_type = holder.getView(R.id.tv_item_order_type);
+        SimpleDraweeView sdv_item_order_img = holder.getView(R.id.sdv_item_order_img);
 
         //obtainData
-      /*  FrescoUtil.getInstance().loadNetImage(sdvMovie, rowsBean.getF_ImgA());//加载网络图片
-        tv_device_name.setText(rowsBean.getF_Name());
-        tv_device_price.setText(rowsBean.getF_Price() + "/次");*/
+        if (rowsBean.getDetail() != null && rowsBean.getDetail().size() > 0) {
+            FrescoUtil.getInstance().loadNetImage(sdv_item_order_img, rowsBean.getDetail().get(0).getF_Img());//加载网络图片
+            tv_item_order_name.setText(rowsBean.getDetail().get(0).getF_Name());
+        } else {
+            FrescoUtil.getInstance().loadNetImage(sdv_item_order_img, "");//加载网络图片
+            tv_item_order_name.setText("");
+        }
+
+        tv_item_order_no.setText(rowsBean.getF_OrderNo());
+        tv_item_order_time.setText(rowsBean.getF_CreateTime());
+        switch (rowsBean.getF_Status()) {
+            case 1:
+                tv_item_order_type.setText("未发货");
+                break;
+            default:
+                tv_item_order_type.setText("已发货");
+                break;
+        }
         //initEvent
         //点击该项后，从数据表中删除，并且从界面中移除
        /* holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +74,7 @@ public class OrderAdapter extends RecyclerBaseAdapter<String> {
             @Override
             public void onClick(View view) {
                 OrderActivity mActivity = (OrderActivity) getContext();
-                mActivity.goToDetails(s, position);
+                mActivity.goToDetails(rowsBean, position);
             }
         });
 

@@ -115,6 +115,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
             getLoadLayout().setLayoutState(State.NO_DATA);
             ToastUtil.show(spoilsBean.getInfo());
         } else {
+            getLoadLayout().setLayoutState(State.SUCCESS);
             showAddressList();
         }
     }

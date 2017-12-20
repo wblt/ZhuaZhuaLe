@@ -17,18 +17,20 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/tv_item_order_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:text="ORD_1711030000001"
+                android:text=""
                 android:textSize="14dp" />
 
             <TextView
+                android:id="@+id/tv_item_order_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="4dp"
-                android:text="2017-11-03T00:17:50.183"
+                android:text=""
                 android:textSize="14dp" />
 
         </RelativeLayout>
@@ -40,6 +42,7 @@
             android:padding="12dp">
 
             <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/sdv_item_order_img"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:background="@color/white" />
@@ -52,9 +55,10 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_item_order_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="炮炮兵"
+                    android:text=""
                     android:textSize="16dp" />
 
                 <LinearLayout
@@ -70,10 +74,11 @@
                         android:textSize="14dp" />
 
                     <TextView
+                        android:id="@+id/tv_item_order_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
-                        android:text="未发货"
+                        android:text=""
                         android:textSize="14dp" />
                 </LinearLayout>
 
