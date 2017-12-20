@@ -70,7 +70,7 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     protected void obtainData() {
         MinePresenter presenter = new MinePresenter(this);
-        presenter.iniNewCP();
+        presenter.initNewCP();
     }
 
     @Override
@@ -121,6 +121,8 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
      */
     @Override
     public void showNewCP(NewCPBean newCPBean) {
-        tv_mine_yue.setText(newCPBean.getRows().getCP() + "");
+        if (newCPBean.getRows() != null) {
+            tv_mine_yue.setText(newCPBean.getRows().getCP() + "");
+        }
     }
 }

@@ -8,9 +8,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.module.home.Bean.SpoilsBean;
 import com.zhuazhuale.changsha.module.home.adapter.AddressAdapter;
 import com.zhuazhuale.changsha.module.home.adapter.SpoilsAdapter;
+import com.zhuazhuale.changsha.module.home.presenter.SpoilsPresenter;
+import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
+import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +27,14 @@ import butterknife.BindView;
  * Created by 丁琪 on 2017/12/15.
  */
 
-public class SpoilsActivity extends AppBaseActivity implements View.OnClickListener {
+public class SpoilsActivity extends AppBaseActivity implements View.OnClickListener, ISpoilsView {
 
     @BindView(R.id.rv_spoils_list)
     RecyclerView rv_spoils_list;
     @BindView(R.id.tv_spoils_fahuo)
     TextView tv_spoils_fahuo;
     private Intent intent;
+    private SpoilsPresenter presenter;
 
 
     @Override
@@ -43,7 +49,16 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void obtainData() {
-        showAddressList();
+        showLoadingDialog();
+        presenter = new SpoilsPresenter(this);
+        presenter.initQueryUserGoods(9);
+//        showAddressList();
+        getLoadLayout().setOnLoadListener(new OnLoadListener() {
+            @Override
+            public void onLoad() {
+                presenter.initQueryUserGoods(9);
+            }
+        });
 
     }
 
@@ -92,5 +107,28 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
     public void goToChangge(String s, int position) {
         intent = new Intent(SpoilsActivity.this, EditAddressActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void showQueryUserGoods(SpoilsBean spoilsBean) {
+        if (0 == spoilsBean.getCode()) {
+            getLoadLayout().setLayoutState(State.NO_DATA);
+            ToastUtil.show(spoilsBean.getInfo());
+        } else {
+            showAddressList();
+        }
+    }
+
+    /**
+     * 接口结束
+     */
+    @Override
+    public void showFinish() {
+        dismissLoadingDialog();
+    }
+
+    @Override
+    public void showFailed() {
+        getLoadLayout().setLayoutState(State.FAILED);
     }
 }

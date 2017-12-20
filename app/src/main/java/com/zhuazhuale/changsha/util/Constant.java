@@ -28,6 +28,8 @@ public class Constant {
     public static String GrabWater = URL + "/api/Account/GrabWater";
     //邮箱登录
     public static String LoginMain = URL + "/api/Account/LoginMain";
+    //我的战利品
+    public static String QueryUserGoods = URL + "/api/Account/QueryUserGoods";
 
 
 }
