@@ -14,5 +14,9 @@ public interface IHomeView extends IBaseView {
 
     void showImagePage(List<BaseDataBean.RowsBean> rows);
 
-    void showDeviceGoods(List<DeviceGoodsBean.RowsBean> rows);
+    void showDeviceGoods(DeviceGoodsBean rows);
+
+    void showFailed();
+
+    void showFinish();
 }

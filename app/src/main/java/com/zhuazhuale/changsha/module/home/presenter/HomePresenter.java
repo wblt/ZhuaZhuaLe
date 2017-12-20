@@ -39,12 +39,13 @@ public class HomePresenter extends BasePresenter<IHomeView> {
 
             @Override
             public void callFailed() {
-
+                mIView.showFailed();
             }
 
             @Override
             public void onFinish() {
                 LogUtil.e(TAG, "接口结束");
+
             }
         });
 
@@ -63,7 +64,6 @@ public class HomePresenter extends BasePresenter<IHomeView> {
 
             @Override
             public void onFinish() {
-
             }
         });
     }
@@ -74,18 +74,18 @@ public class HomePresenter extends BasePresenter<IHomeView> {
             public void callSuccess(String s) {
                 LogUtil.e(s);
                 DeviceGoodsBean deviceGoodsBean = gson.fromJson(s, DeviceGoodsBean.class);
-                mIView.showDeviceGoods(deviceGoodsBean.getRows());
+                mIView.showDeviceGoods(deviceGoodsBean);
             }
 
             @Override
             public void callFailed() {
-
+                mIView.showFailed();
             }
 
             @Override
             public void onFinish() {
                 LogUtil.e("接口结束");
-
+                mIView.showFinish();
             }
         });
     }
