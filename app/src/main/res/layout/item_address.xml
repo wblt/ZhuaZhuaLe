@@ -27,7 +27,7 @@
                 android:id="@+id/tv_item_address_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="角色名字"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="16dp" />
 
@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:text="13912345687"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="14dp" />
 
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
-            android:text="深圳市南山区科技园南区R2-B三楼步步高duyidan(收)"
+            android:text=""
             android:textSize="14dp" />
 
         <TextView

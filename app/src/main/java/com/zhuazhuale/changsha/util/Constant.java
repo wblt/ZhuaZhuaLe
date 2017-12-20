@@ -32,6 +32,10 @@ public class Constant {
     public static String QueryUserGoods = URL + "/api/Account/QueryUserGoods";
     //我的订单
     public static String GetOrders = URL + "/api/Order/GetOrders";
+    //我的地址
+    public static String QueryUserAddress = URL + "/api/Account/QueryUserAddress";
+    //添加地址
+    public static String ModifyUserAddress = URL + "/api/Account/ModifyUserAddress";
 
 
 }

@@ -16,10 +16,10 @@
             android:id="@+id/ll_home_back"
             android:layout_width="70dp"
             android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp">
+            android:layout_centerVertical="true">
 
             <ImageView
+                android:layout_marginLeft="15dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:padding="5dp"

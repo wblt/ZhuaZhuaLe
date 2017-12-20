@@ -8,8 +8,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.module.home.Bean.AddressBean;
 import com.zhuazhuale.changsha.module.home.adapter.AddressAdapter;
+import com.zhuazhuale.changsha.module.home.presenter.AddressPresenter;
+import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
+import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +26,14 @@ import butterknife.BindView;
  * Created by 丁琪 on 2017/12/15.
  */
 
-public class AddressActivity extends AppBaseActivity implements View.OnClickListener {
+public class AddressActivity extends AppBaseActivity implements View.OnClickListener, IAddressView {
 
     @BindView(R.id.rv_address_list)
     RecyclerView rv_address_list;
     @BindView(R.id.tv_address_add)
     TextView tv_address_add;
     private Intent intent;
+    private AddressPresenter presenter;
 
 
     @Override
@@ -42,13 +48,21 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
 
     @Override
     protected void obtainData() {
-        showAddressList();
+        showLoadingDialog();
+        presenter = new AddressPresenter(this);
+        presenter.initQueryUserAddress(0);
+        //状态为加载时的监听,请求网络
+        getLoadLayout().setOnLoadListener(new OnLoadListener() {
+            @Override
+            public void onLoad() {
+                presenter.initQueryUserAddress(0);
+            }
+        });
 
     }
 
     @Override
     protected void initEvent() {
-
         tv_address_add.setOnClickListener(this);
 
     }
@@ -64,32 +78,51 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
         }
     }
 
-    /**
-     * 地址列表
-     */
-    private void showAddressList() {
-        List<String> strings = new ArrayList<>();
-        strings.add("  ");
-        strings.add("  ");
-        strings.add("  ");
-        strings.add("  ");
-        strings.add("  ");
-        strings.add("  ");
-        AddressAdapter addressAdapter = new AddressAdapter(this, strings);
-        rv_address_list.setLayoutManager(new LinearLayoutManager(this));
-        rv_address_list.setHasFixedSize(false);
-        rv_address_list.setAdapter(addressAdapter);
-
-    }
 
     /**
      * 进入编辑
      *
-     * @param s
+     * @param rowsBean
      * @param position
      */
-    public void goToChangge(String s, int position) {
+    public void goToChangge(AddressBean.RowsBean rowsBean, int position) {
         intent = new Intent(AddressActivity.this, EditAddressActivity.class);
+        intent.putExtra("AddressBean", rowsBean);
         startActivity(intent);
+    }
+
+    /**
+     * 请求成功
+     *
+     * @param addressBean
+     */
+    @Override
+    public void showQueryUserAddress(AddressBean addressBean) {
+        if (addressBean.getCode() == 0) {
+            getLoadLayout().setLayoutState(State.NO_DATA);
+            ToastUtil.show(addressBean.getInfo());
+        } else {
+            getLoadLayout().setLayoutState(State.SUCCESS);
+            AddressAdapter addressAdapter = new AddressAdapter(this, addressBean.getRows());
+            rv_address_list.setLayoutManager(new LinearLayoutManager(this));
+            rv_address_list.setHasFixedSize(false);
+            rv_address_list.setAdapter(addressAdapter);
+        }
+    }
+
+    /**
+     * 请求失败
+     */
+    @Override
+    public void showFailed() {
+        getLoadLayout().setLayoutState(State.FAILED);
+    }
+
+    /**
+     * 请求结束
+     */
+    @Override
+    public void showFinish() {
+        dismissLoadingDialog();
     }
 }
