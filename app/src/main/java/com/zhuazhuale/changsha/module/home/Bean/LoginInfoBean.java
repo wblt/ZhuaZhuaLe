@@ -75,8 +75,8 @@ public class LoginInfoBean {
 
         private String F_ID;
         private String F_Code;
-        private Object F_Code1;
-        private Object F_Code2;
+        private String F_Code1;
+        private String F_Code2;
         private String F_Name;
         private int F_CP;
         private String F_Img;
@@ -98,19 +98,19 @@ public class LoginInfoBean {
             this.F_Code = F_Code;
         }
 
-        public Object getF_Code1() {
+        public String getF_Code1() {
             return F_Code1;
         }
 
-        public void setF_Code1(Object F_Code1) {
+        public void setF_Code1(String F_Code1) {
             this.F_Code1 = F_Code1;
         }
 
-        public Object getF_Code2() {
+        public String getF_Code2() {
             return F_Code2;
         }
 
-        public void setF_Code2(Object F_Code2) {
+        public void setF_Code2(String F_Code2) {
             this.F_Code2 = F_Code2;
         }
 

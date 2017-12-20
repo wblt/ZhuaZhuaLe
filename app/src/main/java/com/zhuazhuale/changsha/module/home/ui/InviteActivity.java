@@ -1,11 +1,19 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.module.home.adapter.InviteAdapter;
+import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -33,6 +41,8 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
             ImageView iv_invite_fxyqm;
     @BindView(R.id.iv_invite_ss)//搜索
             ImageView iv_invite_ss;
+    @BindView(R.id.rv_invite_num)
+    RecyclerView rv_invite_num;
 
     @Override
     protected void setContentLayout() {
@@ -46,7 +56,23 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void obtainData() {
+//        String  code= MyApplication.getInstance().getRowsBean().getF_Code1();// 邀请码
+        String code = "684983";
+        char[] chars = code.toCharArray();
+        List<String> strings = new ArrayList<>();
+        for (char c : chars) {
+            LogUtil.e("字符:      " + c);
+            strings.add(c + "");
+        }
+        showNum(strings);
+    }
 
+    private void showNum(List<String> strings) {
+        InviteAdapter adapter = new InviteAdapter(this, strings);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rv_invite_num.setLayoutManager(layoutManager);
+        rv_invite_num.setAdapter(adapter);
     }
 
     @Override
