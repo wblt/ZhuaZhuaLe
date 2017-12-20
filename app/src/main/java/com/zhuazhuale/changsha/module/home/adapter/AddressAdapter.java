@@ -60,6 +60,13 @@ public class AddressAdapter extends RecyclerBaseAdapter<AddressBean.RowsBean> {
                 mActivity.goToChangge(rowsBean, position);
             }
         });
+        tv_item_address_sc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddressActivity mActivity = (AddressActivity) getContext();
+                mActivity.deleteAddress(rowsBean, position);
+            }
+        });
     }
 
     @Override

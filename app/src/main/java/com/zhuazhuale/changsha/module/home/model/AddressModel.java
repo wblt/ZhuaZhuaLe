@@ -55,4 +55,36 @@ public class AddressModel {
                     }
                 });
     }
+
+    /**
+     * 删除地址
+     *
+     * @param id
+     * @param iCallListener
+     */
+    public void getDeleteAddress(String id, final ICallListener<String> iCallListener) {
+        OkGo.<String>post(Constant.DeleteUserAddress)
+                .tag(this)
+                .params("vF_ID", id)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e("请求成功" + response.body());
+                        iCallListener.callSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e("请求失败" + response.toString());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+    }
 }

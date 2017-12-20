@@ -36,6 +36,8 @@ public class Constant {
     public static String QueryUserAddress = URL + "/api/Account/QueryUserAddress";
     //添加地址
     public static String ModifyUserAddress = URL + "/api/Account/ModifyUserAddress";
+    //删除地址
+    public static String DeleteUserAddress = URL + "/api/Account/DeleteUserAddress";
 
 
 }

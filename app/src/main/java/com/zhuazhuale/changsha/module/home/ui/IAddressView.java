@@ -1,6 +1,7 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
 import com.zhuazhuale.changsha.module.home.Bean.AddressBean;
+import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.presenter.iview.IBaseView;
 
 /**
@@ -9,9 +10,12 @@ import com.zhuazhuale.changsha.presenter.iview.IBaseView;
  */
 
 public interface IAddressView extends IBaseView {
-    void showQueryUserAddress(AddressBean addressBean);
+    void showQueryUserAddress(AddressBean addressBean, int type);
 
-    void showFailed();
+    void showFailed(int type);
 
     void showFinish();
+
+
+    void showDeleteUserAddress(EditAddressBean addressBean);
 }

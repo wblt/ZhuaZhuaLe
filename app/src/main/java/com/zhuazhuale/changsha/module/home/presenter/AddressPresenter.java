@@ -3,12 +3,11 @@ package com.zhuazhuale.changsha.module.home.presenter;
 import com.google.gson.Gson;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.module.home.Bean.AddressBean;
-import com.zhuazhuale.changsha.module.home.Bean.SpoilsBean;
+import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.model.AddressModel;
-import com.zhuazhuale.changsha.module.home.model.SpoilsModel;
 import com.zhuazhuale.changsha.module.home.ui.IAddressView;
-import com.zhuazhuale.changsha.module.home.ui.ISpoilsView;
 import com.zhuazhuale.changsha.presenter.base.BasePresenter;
+import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
 /**
@@ -26,19 +25,47 @@ public class AddressPresenter extends BasePresenter<IAddressView> {
         addressModel = AddressModel.getInstance();
     }
 
-    public void initQueryUserAddress(int vCheck) {
+    public void initQueryUserAddress(int vCheck, final int type) {
         addressModel.getQueryUserAddress(vCheck, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
                 Gson gson = new Gson();
                 AddressBean addressBean = gson.fromJson(s, AddressBean.class);
-                mIView.showQueryUserAddress(addressBean);
+                mIView.showQueryUserAddress(addressBean, type);
             }
 
             @Override
             public void callFailed() {
-                mIView.showFailed();
+                mIView.showFailed(type);
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e(TAG, "接口结束");
+                mIView.showFinish();
+            }
+        });
+    }
+
+    /**
+     * 删除地址
+     *
+     * @param id
+     */
+    public void initDeleteUserAddress(String id) {
+        addressModel.getDeleteAddress(id, new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(TAG, s);
+                Gson gson = new Gson();
+                EditAddressBean addressBean = gson.fromJson(s, EditAddressBean.class);
+                mIView.showDeleteUserAddress(addressBean);
+            }
+
+            @Override
+            public void callFailed() {
+                mIView.showFailed(Constant.REFRESH);
             }
 
             @Override

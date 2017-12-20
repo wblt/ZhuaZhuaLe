@@ -40,11 +40,13 @@
                 android:textSize="18dp" />
 
             <EditText
+                android:maxLines="1"
                 android:id="@+id/et_edit_address_name"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="2.6"
                 android:background="@mipmap/searchbg"
+                android:hint="请输入联系人"
                 android:paddingLeft="10dp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14dp" />
@@ -68,11 +70,16 @@
                 android:textSize="18dp" />
 
             <EditText
+                android:maxLength="11"
+                android:maxLines="1"
                 android:id="@+id/et_edit_address_phone"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="2.6"
                 android:background="@mipmap/searchbg"
+                android:digits="1234567890"
+                android:hint="请输入联系人电话号码"
+                android:inputType="phone|number"
                 android:paddingLeft="10dp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14dp" />
@@ -96,11 +103,13 @@
                 android:textSize="18dp" />
 
             <EditText
+                android:maxLines="1"
                 android:id="@+id/et_edit_address_address"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="2.6"
                 android:background="@mipmap/searchbg"
+                android:hint="请输入联系人地址"
                 android:paddingLeft="10dp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14dp" />
@@ -109,14 +118,15 @@
 
 
     <TextView
+        android:id="@+id/tv_edit_address_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:textSize="16dp"
         android:background="@mipmap/searchbg"
         android:gravity="center"
         android:text="保存"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/colorPrimary"
+        android:textSize="16dp" />
 
 
 </LinearLayout>
