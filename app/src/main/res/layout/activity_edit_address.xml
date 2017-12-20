@@ -103,7 +103,6 @@
                 android:textSize="18dp" />
 
             <EditText
-                android:maxLines="1"
                 android:id="@+id/et_edit_address_address"
                 android:layout_width="0dp"
                 android:layout_height="48dp"

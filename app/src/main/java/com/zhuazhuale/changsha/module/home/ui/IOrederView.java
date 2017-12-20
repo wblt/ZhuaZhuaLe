@@ -9,9 +9,9 @@ import com.zhuazhuale.changsha.presenter.iview.IBaseView;
  */
 
 public interface IOrederView extends IBaseView {
-    void showGetOrder(OrderBean orderBean);
+    void showGetOrder(OrderBean orderBean, int type);
 
-    void showFailed();
+    void showFailed(int type);
 
     void showFinish();
 }

@@ -3,7 +3,6 @@ package com.zhuazhuale.changsha.module.home.ui;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -13,12 +12,10 @@ import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.BanlanceWaterBean;
 import com.zhuazhuale.changsha.module.home.adapter.WaWaBiAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.WaWaBiPresenter;
-import com.zhuazhuale.changsha.util.CollectionUtil;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
-import com.zhuazhuale.changsha.view.adapter.base.LoadMoreBaseAdapter;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
@@ -205,4 +202,5 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
                 break;
         }
     }
+
 }

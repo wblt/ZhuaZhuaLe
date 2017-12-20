@@ -6,6 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.AddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
@@ -30,6 +33,9 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
     RecyclerView rv_address_list;
     @BindView(R.id.tv_address_add)
     TextView tv_address_add;
+    @BindView(R.id.srl_address_fresh)
+    SmartRefreshLayout srl_address_fresh;
+
     private Intent intent;
     private AddressPresenter presenter;
     private AddressAdapter addressAdapter;
@@ -63,6 +69,13 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
     @Override
     protected void initEvent() {
         tv_address_add.setOnClickListener(this);
+        srl_address_fresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                //下拉刷新
+                presenter.initQueryUserAddress(0, Constant.REFRESH);
+            }
+        });
 
     }
 
@@ -180,6 +193,7 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
     @Override
     public void showFinish() {
         dismissLoadingDialog();
+        srl_address_fresh.finishRefresh();
     }
 
 

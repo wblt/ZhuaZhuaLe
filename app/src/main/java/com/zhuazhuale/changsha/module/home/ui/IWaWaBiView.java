@@ -13,4 +13,5 @@ public interface IWaWaBiView extends IBaseView {
 
 
     void showFailed(int type);
+
 }

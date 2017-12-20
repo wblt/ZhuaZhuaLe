@@ -5,17 +5,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.OrderBean;
 import com.zhuazhuale.changsha.module.home.adapter.OrderAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.OrderPresenter;
+import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 
@@ -28,6 +29,8 @@ public class OrderActivity extends AppBaseActivity implements View.OnClickListen
 
     @BindView(R.id.rv_order_list)
     RecyclerView rv_order_list;
+    @BindView(R.id.srl_order_fresh)
+    SmartRefreshLayout srl_order_fresh;
 
     private Intent intent;
     private OrderPresenter presenter;
@@ -48,24 +51,29 @@ public class OrderActivity extends AppBaseActivity implements View.OnClickListen
     protected void obtainData() {
         showLoadingDialog();
         presenter = new OrderPresenter(this);
-        presenter.initGetOrders(0);
+        presenter.initGetOrders(0, Constant.INIT);
         getLoadLayout().setOnLoadListener(new OnLoadListener() {
             @Override
             public void onLoad() {
-                presenter.initGetOrders(0);
+                presenter.initGetOrders(0, Constant.INIT);
             }
         });
     }
 
     @Override
     protected void initEvent() {
-
+        //刷新监听
+        srl_order_fresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                presenter.initGetOrders(0, Constant.REFRESH);
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-        }
+
 
     }
 
@@ -84,31 +92,60 @@ public class OrderActivity extends AppBaseActivity implements View.OnClickListen
      * 获取成功,地址列表
      *
      * @param orderBean
+     * @param type
      */
     @Override
-    public void showGetOrder(OrderBean orderBean) {
-        if (0 == orderBean.getCode()) {
-            //设置页面为“空数据”状态
-            getLoadLayout().setLayoutState(State.NO_DATA);
-            ToastUtil.show(orderBean.getInfo());
-        } else {
-            //设置页面为“成功”状态，显示正文布局
-            getLoadLayout().setLayoutState(State.SUCCESS);
-            addressAdapter = new OrderAdapter(this, orderBean.getRows());
-            rv_order_list.setLayoutManager(new LinearLayoutManager(this));
-            rv_order_list.setHasFixedSize(false);
-            rv_order_list.setAdapter(addressAdapter);
+    public void showGetOrder(OrderBean orderBean, int type) {
+        switch (type) {
+            case Constant.INIT:
+                if (0 == orderBean.getCode()) {
+                    //设置页面为“空数据”状态
+                    getLoadLayout().setLayoutState(State.NO_DATA);
+                    ToastUtil.show(orderBean.getInfo());
+                } else {
+                    //设置页面为“成功”状态，显示正文布局
+                    getLoadLayout().setLayoutState(State.SUCCESS);
+                    addressAdapter = new OrderAdapter(this, orderBean.getRows());
+                    rv_order_list.setLayoutManager(new LinearLayoutManager(this));
+                    rv_order_list.setHasFixedSize(false);
+                    rv_order_list.setAdapter(addressAdapter);
+                }
+                break;
+            case Constant.REFRESH:
+                if (0 == orderBean.getCode()) {
+                    //设置页面为“空数据”状态
+                    getLoadLayout().setLayoutState(State.NO_DATA);
+                    ToastUtil.show(orderBean.getInfo());
+                } else {
+                    //设置页面为“成功”状态，显示正文布局
+                    getLoadLayout().setLayoutState(State.SUCCESS);
+                    addressAdapter.replaceData(orderBean.getRows());
+                    ToastUtil.show("刷新成功!");
+
+                }
+                break;
         }
+
+
     }
 
     @Override
-    public void showFailed() {
-        //设置页面为“失败”状态
-        getLoadLayout().setLayoutState(State.FAILED);
+    public void showFailed(int type) {
+        switch (type) {
+            case Constant.INIT:
+                //设置页面为“失败”状态
+                getLoadLayout().setLayoutState(State.FAILED);
+                break;
+            case Constant.REFRESH:
+                ToastUtil.show("刷新失败,请检查网络!");
+                break;
+        }
+
     }
 
     @Override
     public void showFinish() {
         dismissLoadingDialog();
+        srl_order_fresh.finishRefresh();
     }
 }
