@@ -32,6 +32,7 @@
             android:textSize="17sp" />
 
         <TextView
+
             android:paddingRight="40dp"
             android:paddingLeft="40dp"
             android:paddingTop="10dp"

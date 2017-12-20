@@ -27,5 +27,9 @@ public interface State {
      * 加载成功且返回无数据
      */
     int NO_DATA = 4;
+    /**
+     * 当需要监听无数据页面的点击事件时
+     */
+    int GOING = 5;
 
 }

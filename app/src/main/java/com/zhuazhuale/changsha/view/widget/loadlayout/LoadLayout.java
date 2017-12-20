@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
 
@@ -24,6 +25,7 @@ public class LoadLayout extends BaseLoadLayout {
     private View mLoadingView;
     private View mFailedView;
     private View mNoDataView;
+    private TextView null_data_view_text2;
 
     public LoadLayout(Context context) {
         super(context);
@@ -69,10 +71,11 @@ public class LoadLayout extends BaseLoadLayout {
     @Override
     protected View createNoDataView() {
         mNoDataView = LayoutInflater.from(getContext()).inflate(mNoDataViewId, null);
-        mNoDataView.setOnClickListener(new View.OnClickListener() {
+        null_data_view_text2 = (TextView) mNoDataView.findViewById(R.id.null_data_view_text2);
+        null_data_view_text2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setLayoutState(State.LOADING);
+                setLayoutState(State.GOING);
             }
         });
         return mNoDataView;

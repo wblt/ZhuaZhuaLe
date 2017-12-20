@@ -34,6 +34,7 @@ public abstract class BaseLoadLayout extends FrameLayout implements State {
 
     private int mState = State.SUCCESS;
     private OnLoadListener mLoadListener;
+    private OnNoDataListener onNoDataListener;
 
     public BaseLoadLayout(Context context) {
         super(context);
@@ -105,6 +106,27 @@ public abstract class BaseLoadLayout extends FrameLayout implements State {
         }
         if (mLoadListener != null) {
             mLoadListener.onLoad();
+        }
+        if (anim != null) {
+            anim.showAnim();
+        }
+    }
+
+    private void onGoingNoData() {
+        if (mSuccessView != null) {
+            mSuccessView.setVisibility(View.GONE);
+        }
+        if (mFailedView != null) {
+            mFailedView.setVisibility(View.GONE);
+        }
+        if (mNullDataView != null) {
+            mNullDataView.setVisibility(View.GONE);
+        }
+        if (mLoadingView != null) {
+            mLoadingView.setVisibility(View.GONE);
+        }
+        if (mLoadListener != null) {
+            onNoDataListener.onGoTo();
         }
         if (anim != null) {
             anim.showAnim();
@@ -197,10 +219,14 @@ public abstract class BaseLoadLayout extends FrameLayout implements State {
             case NO_DATA:
                 onLoadNoData();
                 break;
+            case GOING:
+                onGoingNoData();
+                break;
             default:
                 break;
         }
     }
+
 
     public int getLayoutState() {
         return mState;
@@ -208,6 +234,10 @@ public abstract class BaseLoadLayout extends FrameLayout implements State {
 
     public void setOnLoadListener(OnLoadListener listener) {
         this.mLoadListener = listener;
+    }
+
+    public void setOnNoDataListener(OnNoDataListener listener) {
+        this.onNoDataListener = listener;
     }
 
     private FrameAnimation initAnim(View inflated) {

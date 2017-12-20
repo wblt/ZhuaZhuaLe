@@ -15,6 +15,7 @@ import com.zhuazhuale.changsha.module.home.presenter.SpoilsPresenter;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
+import com.zhuazhuale.changsha.view.widget.loadlayout.OnNoDataListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
 import java.util.ArrayList;
@@ -57,6 +58,15 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
             @Override
             public void onLoad() {
                 presenter.initQueryUserGoods(9);
+            }
+        });
+        //没有查到数据页面的点击监听事件
+        getLoadLayout().setLayoutState(State.LOADING);
+        getLoadLayout().setOnNoDataListener(new OnNoDataListener() {
+            @Override
+            public void onGoTo() {
+                ToastUtil.show("我是战利品页面");
+                getLoadLayout().setLayoutState(State.LOADING);
             }
         });
 
