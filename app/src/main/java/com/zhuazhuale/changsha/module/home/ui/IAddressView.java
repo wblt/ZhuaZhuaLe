@@ -17,5 +17,5 @@ public interface IAddressView extends IBaseView {
     void showFinish();
 
 
-    void showDeleteUserAddress(EditAddressBean addressBean);
+    void showDeleteUserAddress(EditAddressBean addressBean, int position);
 }

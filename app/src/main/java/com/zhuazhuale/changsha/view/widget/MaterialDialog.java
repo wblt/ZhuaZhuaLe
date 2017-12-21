@@ -193,7 +193,7 @@ public class MaterialDialog {
         mPositiveButton.setTextColor(Color.argb(255, 35, 159, 242));
         mPositiveButton.setText(text);
         mPositiveButton.setGravity(Gravity.CENTER);
-        mPositiveButton.setTextSize(15);
+        mPositiveButton.setTextSize(16);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT

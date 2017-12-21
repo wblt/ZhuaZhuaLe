@@ -9,9 +9,9 @@ import com.zhuazhuale.changsha.presenter.iview.IBaseView;
  */
 
 public interface ISpoilsView extends IBaseView {
-    void showQueryUserGoods(SpoilsBean spoilsBean);
+    void showQueryUserGoods(SpoilsBean spoilsBean, int type);
 
     void showFinish();
 
-    void showFailed();
+    void showFailed(int type);
 }

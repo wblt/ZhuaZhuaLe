@@ -17,6 +17,7 @@ import com.zhuazhuale.changsha.module.home.presenter.AddressPresenter;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+import com.zhuazhuale.changsha.view.widget.MaterialDialog;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
@@ -39,6 +40,9 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
     private Intent intent;
     private AddressPresenter presenter;
     private AddressAdapter addressAdapter;
+    private MaterialDialog mDialog;
+    private AddressBean.RowsBean bean;
+    private int pos;
 
 
     @Override
@@ -48,7 +52,7 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
 
     @Override
     protected void initView() {
-
+        mDialog = new MaterialDialog(this);
     }
 
     @Override
@@ -109,22 +113,44 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
      * @param position
      */
     public void deleteAddress(AddressBean.RowsBean rowsBean, int position) {
-        showLoadingDialog();
-        presenter.initDeleteUserAddress(rowsBean.getF_ID());
+        bean = rowsBean;
+        pos = position;
+        mDialog.setMessage("确定删除这个地址?");
+        mDialog.setPositiveButton("确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+                showLoadingDialog();
+                //这里从全局变量mMovieRes获取信息来构建对象，
+                //如果从movieRes获取的话，要声明为final类型，但是声明为final类型后，你在这个内部类里面获取到的movieRes都是不变的（一直是第一次获取到的那个,除非重新new Dialog）
+
+                presenter.initDeleteUserAddress(bean.getF_ID(), pos);
+            }
+        });
+        mDialog.setNegativeButton("取消", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
+
     }
 
     /**
      * 删除成功
      *
      * @param addressBean
+     * @param position
      */
     @Override
-    public void showDeleteUserAddress(EditAddressBean addressBean) {
+    public void showDeleteUserAddress(EditAddressBean addressBean, int position) {
         if (addressBean.getCode() == 0) {
             ToastUtil.show(addressBean.getInfo());
         } else {
             ToastUtil.show(addressBean.getInfo());
-            presenter.initQueryUserAddress(0, Constant.REFRESH);
+            addressAdapter.removeItem(position);
+//            presenter.initQueryUserAddress(0, Constant.REFRESH);
         }
     }
 
@@ -161,9 +187,11 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
             case Constant.REFRESH:
                 if (addressBean.getCode() == 0) {
                     ToastUtil.show(addressBean.getInfo());
+                    addressAdapter.removeAll();
                 } else {
                     addressAdapter.replaceData(addressBean.getRows());
                 }
+
                 break;
         }
 

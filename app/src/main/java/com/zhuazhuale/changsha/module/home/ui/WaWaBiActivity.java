@@ -158,7 +158,13 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
             case Constant.REFRESH:
                 mStart = 0;
                 rfv_wawabi_fresh.finishRefresh();
-                adapter.replaceData(Bean.getRows());
+                if (Bean.getCode() == 0) {
+                    adapter.removeAll();
+                    ToastUtil.show(Bean.getInfo());
+                } else {
+                    adapter.replaceData(Bean.getRows());
+                }
+
                 break;
             case Constant.LOADMORE:
                 isLoadingMore = false;

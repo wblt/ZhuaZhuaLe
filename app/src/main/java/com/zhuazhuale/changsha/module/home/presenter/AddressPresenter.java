@@ -52,15 +52,17 @@ public class AddressPresenter extends BasePresenter<IAddressView> {
      * 删除地址
      *
      * @param id
+     * @param position
      */
-    public void initDeleteUserAddress(String id) {
+    public void initDeleteUserAddress(String id, final int position) {
+        LogUtil.e("id  " + id + "   position  " + position);
         addressModel.getDeleteAddress(id, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
                 Gson gson = new Gson();
                 EditAddressBean addressBean = gson.fromJson(s, EditAddressBean.class);
-                mIView.showDeleteUserAddress(addressBean);
+                mIView.showDeleteUserAddress(addressBean, position);
             }
 
             @Override
