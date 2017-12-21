@@ -55,4 +55,39 @@ public class SpoilsModel {
                     }
                 });
     }
+
+    /**
+     * 娃娃兑换游戏币
+     *
+     * @param vUserGoodsID
+     * @param vDeviceID
+     * @param iCallListener
+     */
+    public void getExChangeCP(String vUserGoodsID, String vDeviceID, final ICallListener<String> iCallListener) {
+        OkGo.<String>post(Constant.ExChangeCP)
+                .tag(this)
+                .params("vUserGoodsID", vUserGoodsID)
+                .params("vDeviceID", vDeviceID)
+                .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e("请求成功" + response.body());
+                        iCallListener.callSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e("请求失败" + response.toString());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+    }
 }

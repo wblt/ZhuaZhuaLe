@@ -2,10 +2,12 @@ package com.zhuazhuale.changsha.module.home.presenter;
 
 import com.google.gson.Gson;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
+import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.SpoilsBean;
 import com.zhuazhuale.changsha.module.home.model.SpoilsModel;
 import com.zhuazhuale.changsha.module.home.ui.ISpoilsView;
 import com.zhuazhuale.changsha.presenter.base.BasePresenter;
+import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
 /**
@@ -36,6 +38,36 @@ public class SpoilsPresenter extends BasePresenter<ISpoilsView> {
             @Override
             public void callFailed() {
                 mIView.showFailed(type);
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e(TAG, "接口结束");
+                mIView.showFinish();
+            }
+        });
+    }
+
+    /**
+     * 娃娃兑换游戏币
+     *
+     * @param vUserGoodsID
+     * @param vDeviceID
+     * @param pos
+     */
+    public void initExChangeCP(String vUserGoodsID, String vDeviceID, final int pos) {
+        spoilsModel.getExChangeCP(vUserGoodsID, vDeviceID, new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(TAG, s);
+                Gson gson = new Gson();
+                EditAddressBean bean = gson.fromJson(s, EditAddressBean.class);
+                mIView.showExChangeCP(bean, pos);
+            }
+
+            @Override
+            public void callFailed() {
+                mIView.showFailed(Constant.REFRESH);
             }
 
             @Override

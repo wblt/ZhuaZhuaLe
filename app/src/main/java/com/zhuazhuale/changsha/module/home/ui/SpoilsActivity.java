@@ -10,12 +10,14 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.SpoilsBean;
 import com.zhuazhuale.changsha.module.home.adapter.SpoilsAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.SpoilsPresenter;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+import com.zhuazhuale.changsha.view.widget.MaterialDialog;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnNoDataListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
@@ -38,6 +40,9 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
     private Intent intent;
     private SpoilsPresenter presenter;
     private SpoilsAdapter addressAdapter;
+    private MaterialDialog mDialog;
+    private SpoilsBean.RowsBean bean;
+    private int pos;
 
 
     @Override
@@ -48,6 +53,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
     @Override
     protected void initView() {
         getTvToolbarRight().setText("申请发货");
+        mDialog = new MaterialDialog(this);
     }
 
     @Override
@@ -102,6 +108,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     public void showQueryUserGoods(SpoilsBean spoilsBean, int type) {
+        srl_spoils_fresh.finishRefresh(true);
         switch (type) {
             case Constant.INIT:
                 if (0 == spoilsBean.getCode()) {
@@ -137,6 +144,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     public void showFailed(int type) {
+        srl_spoils_fresh.finishRefresh(false);
         switch (type) {
             case Constant.INIT:
                 getLoadLayout().setLayoutState(State.FAILED);
@@ -148,13 +156,51 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
     }
 
     /**
+     * 兑换成功
+     * @param bean
+     * @param pos
+     */
+    @Override
+    public void showExChangeCP(EditAddressBean bean, int pos) {
+        if (bean.getCode() == 0) {
+            ToastUtil.show(bean.getInfo());
+        } else {
+            ToastUtil.show(bean.getInfo());
+            addressAdapter.removeItem(pos);
+        }
+    }
+
+    /**
      * 兑换游戏币
      *
      * @param rowsBean
      * @param position
      */
     public void duiHuan(SpoilsBean.RowsBean rowsBean, int position) {
-        addressAdapter.removeItem(position);
+        bean = rowsBean;
+        pos = position;
+        mDialog.setTitle("兑换游戏币");
+        mDialog.setMessage("确定将当前娃娃兑换成" + rowsBean.getF_ExChangePrice() + "游戏币");
+
+        mDialog.setPositiveButton("确定兑换", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+                showLoadingDialog();
+                //这里从全局变量bean获取信息来构建对象，
+                //如果从rowsBean获取的话，要声明为final类型，但是声明为final类型后，你在这个内部类里面获取到的rowsBean都是不变的（一直是第一次获取到的那个,除非重新new Dialog）
+
+                presenter.initExChangeCP(bean.getF_ID(), bean.getF_DeviceID(), pos);
+            }
+        });
+        mDialog.setNegativeButton("取消兑换", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();
+
 
     }
 }

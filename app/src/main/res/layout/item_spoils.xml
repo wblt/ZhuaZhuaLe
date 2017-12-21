@@ -5,9 +5,9 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_marginBottom="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:background="@drawable/textbeijing_recharge"
         android:padding="14dp">
 
@@ -16,13 +16,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:paddingBottom="26dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp"
+            android:paddingTop="26dp"
             android:src="@mipmap/selector_off" />
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/sdv_item_spoils_img"
             android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="10dp" />
+            android:layout_height="100dp" />
 
         <LinearLayout
             android:layout_width="match_parent"

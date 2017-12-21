@@ -42,6 +42,8 @@ public class Constant {
     public static String Invitation = URL + "/api/Account/Invitation";
     //提交申诉
     public static String Appeal = URL + "/api/Account/Appeal";
+    //娃娃兑换游戏币
+    public static String ExChangeCP = URL + "/api/Account/ExChangeCP";
 
 
 }

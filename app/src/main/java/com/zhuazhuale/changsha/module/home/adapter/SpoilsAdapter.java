@@ -38,7 +38,7 @@ public class SpoilsAdapter extends RecyclerBaseAdapter<SpoilsBean.RowsBean> {
     protected void bindDataForView(ViewHolder holder, final SpoilsBean.RowsBean rowsBean, final int position) {
         //initView
         SimpleDraweeView sdv_spoils_img = holder.getView(R.id.sdv_item_spoils_img);
-        ImageView iv_spoils_check = holder.getView(R.id.iv_item_spoils_check);
+        final ImageView iv_spoils_check = holder.getView(R.id.iv_item_spoils_check);
         TextView tv_spoils_name = holder.getView(R.id.tv_item_spoils_name);
         TextView tv_item_spoils_info = holder.getView(R.id.tv_item_spoils_info);
         TextView tv_item_spoils_dh = holder.getView(R.id.tv_item_spoils_dh);
@@ -69,10 +69,11 @@ public class SpoilsAdapter extends RecyclerBaseAdapter<SpoilsBean.RowsBean> {
                 //改变选择的状态
                 if (rowsBean.isCheck()) {
                     rowsBean.setCheck(false);
+                    iv_spoils_check.setImageResource(R.mipmap.selector_off);
                 } else {
                     rowsBean.setCheck(true);
+                    iv_spoils_check.setImageResource(R.mipmap.selector_on);
                 }
-                updateAll();
             }
         });
         tv_item_spoils_dh.setOnClickListener(new View.OnClickListener() {

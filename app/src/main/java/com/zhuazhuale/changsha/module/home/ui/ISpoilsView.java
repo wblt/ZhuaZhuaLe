@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.SpoilsBean;
 import com.zhuazhuale.changsha.presenter.iview.IBaseView;
 
@@ -14,4 +15,6 @@ public interface ISpoilsView extends IBaseView {
     void showFinish();
 
     void showFailed(int type);
+
+    void showExChangeCP(EditAddressBean bean, int pos);
 }
