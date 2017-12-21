@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -43,6 +44,7 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
             ImageView iv_invite_ss;
     @BindView(R.id.rv_invite_num)
     RecyclerView rv_invite_num;
+    private String code;
 
     @Override
     protected void setContentLayout() {
@@ -57,7 +59,7 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
     @Override
     protected void obtainData() {
 //        String  code= MyApplication.getInstance().getRowsBean().getF_Code1();// 邀请码
-        String code = "684983";
+        code = "684983";
         char[] chars = code.toCharArray();
         List<String> strings = new ArrayList<>();
         for (char c : chars) {
@@ -84,6 +86,13 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_invite_fxyqm:
+                //分享
+                Intent intent1 = new Intent(Intent.ACTION_SEND);
+                intent1.putExtra(Intent.EXTRA_TEXT, "快来和我一起玩 抓抓乐,输入邀请码:" + code + "  马上送你88个游戏币!");
+                intent1.setType("text/plain");
+                startActivity(Intent.createChooser(intent1, "share"));
+                break;
 
         }
     }

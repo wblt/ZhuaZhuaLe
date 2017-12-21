@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.GradWaterBean;
 import com.zhuazhuale.changsha.module.home.Bean.LiYouBean;
 import com.zhuazhuale.changsha.module.home.adapter.ShenSuAdapter;
@@ -112,24 +113,43 @@ public class ShenSuActivity extends AppBaseActivity implements View.OnClickListe
      * 提交申诉
      */
     private void submit() {
-        for (LiYouBean bean : liYouBeen) {
-            if (bean.isClick()) {
-                remark = bean.getLiYou();
-            }
-        }
         if (remark.isEmpty()) {
             ToastUtil.show("请选择一个理由!");
         } else {
+            showLoadingDialog();
             presenter.initAppeal(rowsBean.getF_DeviceID(), rowsBean.getF_ID(), remark, rowsBean.getF_VideoUrl());
 
         }
     }
 
-    public void goToChangge(int position) {
+    public void goToChangge(LiYouBean liYouBean, int position) {
         for (LiYouBean bean : liYouBeen) {
             bean.setClick(false);
         }
+        remark = liYouBean.getLiYou();
         liYouBeen.get(position).setClick(true);
         shenSuAdapter.replaceData(liYouBeen);
+    }
+
+    @Override
+    public void showSuccess(EditAddressBean newCPBean) {
+        if (newCPBean.getCode() == 0) {
+            ToastUtil.show(newCPBean.getInfo());
+        } else {
+            ToastUtil.show(newCPBean.getInfo());
+            setResult(2);
+            finish();
+        }
+    }
+
+    @Override
+    public void showFinish() {
+        dismissLoadingDialog();
+    }
+
+
+    @Override
+    public void showFailed() {
+        ToastUtil.show("提交失败,请检查网络!");
     }
 }

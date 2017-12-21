@@ -125,4 +125,13 @@ public class RecordDetailsActivity extends AppBaseActivity implements View.OnCli
         intent.putExtra("rowsBean", rowsBean);
         startActivityForResult(intent, 110);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 110 && resultCode == 2) {
+            tv_shensu.setText("已申诉");
+            rowsBean.setF_Appeal(1);
+        }
+    }
 }

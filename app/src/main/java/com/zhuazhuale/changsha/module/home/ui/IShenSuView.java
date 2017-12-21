@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.presenter.iview.IBaseView;
 
 /**
@@ -8,4 +9,9 @@ import com.zhuazhuale.changsha.presenter.iview.IBaseView;
  */
 
 public interface IShenSuView extends IBaseView {
+    void showFinish();
+
+    void showSuccess(EditAddressBean newCPBean);
+
+    void showFailed();
 }

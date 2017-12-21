@@ -60,7 +60,7 @@ public class ShenSuAdapter extends RecyclerBaseAdapter<LiYouBean> {
             @Override
             public void onClick(View v) {
                 ShenSuActivity mActivity = (ShenSuActivity) getContext();
-                mActivity.goToChangge(position);
+                mActivity.goToChangge(liYouBean, position);
             }
         });
     }
