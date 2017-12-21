@@ -18,6 +18,7 @@
     <string name="close">关闭</string>
 
     <string name="exit_confirm">再点一次退出程序</string>
+    <string name="pay_result_callback_msg" formatted="false">微信支付结果：%s</string>
 
 
 </resources>

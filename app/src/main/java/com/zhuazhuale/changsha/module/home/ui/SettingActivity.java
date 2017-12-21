@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.module.login.ui.LoginActivity;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
 import butterknife.BindView;
@@ -36,6 +37,7 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
     View ic_setting_gywm;
     @BindView(R.id.ic_setting_tcdl)
     View ic_setting_tcdl;
+    private Intent intent;
 
     @Override
     protected void setContentLayout() {
@@ -96,14 +98,16 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
         switch (view.getId()) {
 
             case R.id.ic_setting_tzzx:
+                intent = new Intent(SettingActivity.this, LoginActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ic_setting_yqjl:
-                Intent intent = new Intent(SettingActivity.this, InviteActivity.class);
+                intent = new Intent(SettingActivity.this, InviteActivity.class);
                 startActivity(intent);
                 break;
             case R.id.ic_setting_sryqm:
-                Intent intent1 = new Intent(SettingActivity.this, InputCodeActivity.class);
-                startActivity(intent1);
+                intent = new Intent(SettingActivity.this, InputCodeActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ic_setting_bjyx:
                 break;
@@ -112,12 +116,12 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
             case R.id.ic_setting_lp:
                 break;
             case R.id.ic_setting_wtfk:
-                Intent intent2 = new Intent(SettingActivity.this, FeedBackActivity.class);
-                startActivity(intent2);
+                intent = new Intent(SettingActivity.this, FeedBackActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ic_setting_gywm:
-                Intent intent3 = new Intent(SettingActivity.this, AboutUsActivity.class);
-                startActivity(intent3);
+                intent = new Intent(SettingActivity.this, AboutUsActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ic_setting_tcdl:
                 // 退出登录 测试添加微信登录

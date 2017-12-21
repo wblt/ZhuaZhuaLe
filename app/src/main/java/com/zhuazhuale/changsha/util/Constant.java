@@ -48,6 +48,8 @@ public class Constant {
     public static String ModifyUserGoods = URL + "/api/Account/ModifyUserGoods";
     //创建订单
     public static String CreateOrder = URL + "/api/Order/CreateOrder";
+    //微信登录
+    public static String Login = URL + "/api/Account/Login";
 
 
 }

@@ -33,7 +33,7 @@ import okhttp3.Call;
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
     private String APPID = "wx6a6349cd0ccf0b09";
-    private String secret = "";
+    private String secret = "90e0434b5026f273019c00167ab4f6b1";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
