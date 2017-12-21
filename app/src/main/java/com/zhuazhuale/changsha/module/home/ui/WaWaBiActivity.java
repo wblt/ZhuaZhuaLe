@@ -17,6 +17,7 @@ import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
+import com.zhuazhuale.changsha.view.widget.loadlayout.OnNoDataListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
 
@@ -64,6 +65,8 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
         });
 //        getLoadLayout().setLayoutState(State.LOADING);
         rfv_wawabi_fresh.autoRefresh();
+
+
     }
 
     /**
@@ -108,6 +111,15 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
                     getData(mStart, mCount, Constant.LOADMORE);
                 }
 
+            }
+        });
+        //没有查到数据页面的点击监听事件
+        getLoadLayout().setOnNoDataListener(new OnNoDataListener() {
+            @Override
+            public void onGoTo() {
+//                getLoadLayout().setLayoutState(State.LOADING);
+                //  回到首页
+                getActivityStackManager().exitAllActivityExceptCurrent(HomeActivity.class);
             }
         });
 

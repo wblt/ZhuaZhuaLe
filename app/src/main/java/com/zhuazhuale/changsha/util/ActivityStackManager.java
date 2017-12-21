@@ -176,7 +176,9 @@ public class ActivityStackManager {
     public void exitAllActivityExceptCurrent(Class cls) {
         Activity activity;
         while (true) {
-            activity = firstActivity();
+//            activity = firstActivity();   //
+            activity = currentActivity();
+
             if (activity == null) {
                 break;
             }

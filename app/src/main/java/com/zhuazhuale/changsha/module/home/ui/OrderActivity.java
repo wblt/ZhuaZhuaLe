@@ -16,6 +16,7 @@ import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
+import com.zhuazhuale.changsha.view.widget.loadlayout.OnNoDataListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
 import butterknife.BindView;
@@ -67,6 +68,15 @@ public class OrderActivity extends AppBaseActivity implements View.OnClickListen
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 presenter.initGetOrders(0, Constant.REFRESH);
+            }
+        });
+        //没有查到数据页面的点击监听事件
+        getLoadLayout().setOnNoDataListener(new OnNoDataListener() {
+            @Override
+            public void onGoTo() {
+//                getLoadLayout().setLayoutState(State.LOADING);
+                //  回到首页
+                getActivityStackManager().exitAllActivityExceptCurrent(HomeActivity.class);
             }
         });
     }

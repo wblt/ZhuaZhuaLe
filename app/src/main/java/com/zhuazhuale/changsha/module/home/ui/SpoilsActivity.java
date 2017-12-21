@@ -36,6 +36,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
     TextView tv_spoils_fahuo;
     private Intent intent;
     private SpoilsPresenter presenter;
+    private SpoilsAdapter addressAdapter;
 
 
     @Override
@@ -60,22 +61,22 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
                 presenter.initQueryUserGoods(9);
             }
         });
-        //没有查到数据页面的点击监听事件
-        getLoadLayout().setLayoutState(State.LOADING);
-        getLoadLayout().setOnNoDataListener(new OnNoDataListener() {
-            @Override
-            public void onGoTo() {
-                ToastUtil.show("我是战利品页面");
-                getLoadLayout().setLayoutState(State.LOADING);
-            }
-        });
+
 
     }
 
     @Override
     protected void initEvent() {
-
         tv_spoils_fahuo.setOnClickListener(this);
+        //没有查到数据页面的点击监听事件
+        getLoadLayout().setOnNoDataListener(new OnNoDataListener() {
+            @Override
+            public void onGoTo() {
+//                getLoadLayout().setLayoutState(State.LOADING);
+                //  回到首页
+                getActivityStackManager().exitAllActivityExceptCurrent(HomeActivity.class);
+            }
+        });
 
     }
 
@@ -101,23 +102,10 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
         strings.add("  ");
         strings.add("  ");
         strings.add("  ");
-        SpoilsAdapter addressAdapter = new SpoilsAdapter(this, strings);
-        rv_spoils_list.setLayoutManager(new LinearLayoutManager(this));
-        rv_spoils_list.setHasFixedSize(false);
-        rv_spoils_list.setAdapter(addressAdapter);
+
 
     }
 
-    /**
-     * 进入编辑
-     *
-     * @param s
-     * @param position
-     */
-    public void goToChangge(String s, int position) {
-        intent = new Intent(SpoilsActivity.this, EditAddressActivity.class);
-        startActivity(intent);
-    }
 
     @Override
     public void showQueryUserGoods(SpoilsBean spoilsBean) {
@@ -126,7 +114,10 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
             ToastUtil.show(spoilsBean.getInfo());
         } else {
             getLoadLayout().setLayoutState(State.SUCCESS);
-            showAddressList();
+            addressAdapter = new SpoilsAdapter(this, spoilsBean.getRows());
+            rv_spoils_list.setLayoutManager(new LinearLayoutManager(this));
+            rv_spoils_list.setHasFixedSize(false);
+            rv_spoils_list.setAdapter(addressAdapter);
         }
     }
 
@@ -141,5 +132,11 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
     @Override
     public void showFailed() {
         getLoadLayout().setLayoutState(State.FAILED);
+    }
+
+
+    public void duiHuan(SpoilsBean.RowsBean rowsBean, int position) {
+        addressAdapter.removeItem(position);
+
     }
 }

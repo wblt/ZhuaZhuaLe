@@ -20,6 +20,7 @@ import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
+import com.zhuazhuale.changsha.view.widget.loadlayout.OnNoDataListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
 import java.util.ArrayList;
@@ -84,6 +85,16 @@ public class RecordActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void initEvent() {
+        //没有查到数据页面的点击监听事件
+        getLoadLayout().setOnNoDataListener(new OnNoDataListener() {
+            @Override
+            public void onGoTo() {
+//                getLoadLayout().setLayoutState(State.LOADING);
+                //  回到首页
+                getActivityStackManager().exitAllActivityExceptCurrent(HomeActivity.class);
+            }
+        });
+
         rfv_record_fresh.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {

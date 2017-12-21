@@ -83,6 +83,15 @@ public class SpoilsBean {
         private String F_Img;
         private boolean F_Check;
         private int F_ExChangePrice;
+        private boolean isCheck;
+
+        public boolean isCheck() {
+            return isCheck;
+        }
+
+        public void setCheck(boolean check) {
+            isCheck = check;
+        }
 
         public String getF_ID() {
             return F_ID;
