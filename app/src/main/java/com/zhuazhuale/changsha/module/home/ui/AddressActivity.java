@@ -115,8 +115,9 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
     public void deleteAddress(AddressBean.RowsBean rowsBean, int position) {
         bean = rowsBean;
         pos = position;
-        mDialog.setMessage("确定删除这个地址?");
-        mDialog.setPositiveButton("确定", new View.OnClickListener() {
+        mDialog.setTitle("删除地址");
+        mDialog.setMessage("亲,确定删除地址么");
+        mDialog.setPositiveButton("确定删除", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDialog.dismiss();

@@ -44,6 +44,10 @@ public class Constant {
     public static String Appeal = URL + "/api/Account/Appeal";
     //娃娃兑换游戏币
     public static String ExChangeCP = URL + "/api/Account/ExChangeCP";
+    //修改商品选中状态
+    public static String ModifyUserGoods = URL + "/api/Account/ModifyUserGoods";
+    //创建订单
+    public static String CreateOrder = URL + "/api/Order/CreateOrder";
 
 
 }

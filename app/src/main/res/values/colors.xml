@@ -6,7 +6,7 @@
 
 
     <!--MD_dialog相关-->
-    <color name="card_background">#ccffffff</color>
+    <color name="card_background">#ddffffff</color>
     <color name="card_shadow">#22ffffff</color>
     <color name="lite_blue">#ff359ff2</color>
     <color name="window_background">#00000000</color>
