@@ -38,6 +38,7 @@ public class WaWaBiAdapter extends RecyclerBaseAdapter<BanlanceWaterBean.RowsBea
         TextView tv_item_wawabi_amout = holder.getView(R.id.tv_item_wawabi_amout);
         TextView tv_item_wawabi_creattime = holder.getView(R.id.tv_item_wawabi_creattime);
         TextView tv_item_wawabi_bi = holder.getView(R.id.tv_item_wawabi_bi);
+        TextView tv_item_wawabi_type = holder.getView(R.id.tv_item_wawabi_type);
 
         //obtainData
         FrescoUtil.getInstance().loadNetImage(sdv_item_wawabi_img, rowsBean.getF_GoodsImgA());//加载网络图片
@@ -48,6 +49,19 @@ public class WaWaBiAdapter extends RecyclerBaseAdapter<BanlanceWaterBean.RowsBea
         switch (rowsBean.getF_Type()) {
             case 1:
                 //充值
+                tv_item_wawabi_type.setText("微信充值  +   ");
+                tv_item_wawabi_bi.setTextColor(Color.parseColor("#7CD237"));
+                tv_item_wawabi_bi.setText("+ " + rowsBean.getF_Amout());
+                break;
+            case 2:
+                //充值
+                tv_item_wawabi_type.setText("支付宝充值  +   ");
+                tv_item_wawabi_bi.setTextColor(Color.parseColor("#7CD237"));
+                tv_item_wawabi_bi.setText("+ " + rowsBean.getF_Amout());
+                break;
+            case 3:
+                //充值
+                tv_item_wawabi_type.setText("好友赠送  +   ");
                 tv_item_wawabi_bi.setTextColor(Color.parseColor("#7CD237"));
                 tv_item_wawabi_bi.setText("+ " + rowsBean.getF_Amout());
                 break;
@@ -55,6 +69,24 @@ public class WaWaBiAdapter extends RecyclerBaseAdapter<BanlanceWaterBean.RowsBea
                 //消费
                 tv_item_wawabi_bi.setTextColor(Color.parseColor("#FF4081"));
                 tv_item_wawabi_bi.setText("- " + rowsBean.getF_Amout());
+                break;
+            case 5:
+                //游戏退换
+                tv_item_wawabi_type.setText("游戏退换  +   ");
+                tv_item_wawabi_bi.setTextColor(Color.parseColor("#7CD237"));
+                tv_item_wawabi_bi.setText("+ " + rowsBean.getF_Amout());
+                break;
+            case 6:
+                //游戏退换
+                tv_item_wawabi_type.setText("游戏兑换  +   ");
+                tv_item_wawabi_bi.setTextColor(Color.parseColor("#7CD237"));
+                tv_item_wawabi_bi.setText("+ " + rowsBean.getF_Amout());
+                break;
+            case 7:
+                //游戏退换
+                tv_item_wawabi_type.setText("邀请奖励  +   ");
+                tv_item_wawabi_bi.setTextColor(Color.parseColor("#7CD237"));
+                tv_item_wawabi_bi.setText("+ " + rowsBean.getF_Amout());
                 break;
         }
         //initEvent

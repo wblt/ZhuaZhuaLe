@@ -44,7 +44,7 @@ public class RecordAdapter extends RecyclerBaseAdapter<GradWaterBean.RowsBean> {
         //obtainData
         FrescoUtil.getInstance().loadNetImage(sdv_img, rowsBean.getF_GoodsImgA());//加载网络图片
         tv_goodsname.setText(rowsBean.getF_GoodsName());
-        if (rowsBean.isF_Valid()) {
+        if (rowsBean.getF_Result() == 0) {
             tv_valid.setText("抓取失败");
         } else {
             tv_valid.setText("抓取成功");
@@ -52,12 +52,12 @@ public class RecordAdapter extends RecyclerBaseAdapter<GradWaterBean.RowsBean> {
         switch (rowsBean.getF_VideoUrl()) {
 
         }
-        switch (rowsBean.getF_Result()) {
+        switch (rowsBean.getF_Appeal()) {
             case 0:
                 tv_result.setText("未申诉");
                 break;
-            case 1:
-                tv_result.setText("申诉中");
+            default:
+                tv_result.setText("已申诉");
                 break;
         }
         tv_creattime.setText(rowsBean.getF_CreateTime() + "");

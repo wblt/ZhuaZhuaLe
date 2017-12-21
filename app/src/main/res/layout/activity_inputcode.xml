@@ -17,6 +17,11 @@
         android:textSize="18dp" />
 
     <EditText
+        android:maxLength="11"
+        android:maxLines="1"
+        android:digits="1234567890"
+        android:inputType="phone|number"
+        android:id="@+id/et_inputcode_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -26,6 +31,7 @@
         android:textSize="14dp" />
 
     <ImageView
+        android:id="@+id/iv_inputcode_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"

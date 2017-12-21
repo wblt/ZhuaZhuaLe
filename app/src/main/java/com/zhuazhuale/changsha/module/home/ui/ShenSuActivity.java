@@ -12,7 +12,9 @@ import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.GradWaterBean;
 import com.zhuazhuale.changsha.module.home.Bean.LiYouBean;
 import com.zhuazhuale.changsha.module.home.adapter.ShenSuAdapter;
+import com.zhuazhuale.changsha.module.home.presenter.ShenSuPresenter;
 import com.zhuazhuale.changsha.util.FrescoUtil;
+import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ import butterknife.BindView;
  * Created by Administrator on 2017/12/19.
  */
 
-public class ShenSuActivity extends AppBaseActivity implements View.OnClickListener {
+public class ShenSuActivity extends AppBaseActivity implements View.OnClickListener, IShenSuView {
     @BindView(R.id.rv_shensu_list)
     RecyclerView rv_shensu_list;
     @BindView(R.id.sdv_shensu_img)
@@ -36,10 +38,14 @@ public class ShenSuActivity extends AppBaseActivity implements View.OnClickListe
     TextView tv_shensu_goodsid;
     @BindView(R.id.iv_shensu_submit)
     ImageView iv_shensu_submit;
+    @BindView(R.id.tv_shensu_shipin)
+    TextView tv_shensu_shipin;
 
     private List<LiYouBean> liYouBeen;
     private ShenSuAdapter shenSuAdapter;
     private GradWaterBean.RowsBean rowsBean;
+    private ShenSuPresenter presenter;
+    private String remark = "";
 
 
     @Override
@@ -54,6 +60,11 @@ public class ShenSuActivity extends AppBaseActivity implements View.OnClickListe
         FrescoUtil.getInstance().loadNetImage(sdv_shensu_img, rowsBean.getF_GoodsImgA());//加载网络图片
         tv_shensu_goodsname.setText(rowsBean.getF_GoodsName());
         tv_shensu_goodsid.setText(rowsBean.getF_DeviceNo());
+        if (rowsBean.getF_VideoUrl().isEmpty()) {
+            tv_shensu_shipin.setText("无");
+        } else {
+            tv_shensu_shipin.setText("已有视频");
+        }
         liYouBeen = new ArrayList<>();
         liYouBeen.add(new LiYouBean(false, "游戏工作人员补货"));
         liYouBeen.add(new LiYouBean(false, "没有成功上机就扣币"));
@@ -80,7 +91,7 @@ public class ShenSuActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void obtainData() {
-
+        presenter = new ShenSuPresenter(this);
     }
 
     @Override
@@ -90,7 +101,7 @@ public class ShenSuActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_shensu_submit:
                 submit();
                 break;
@@ -101,6 +112,17 @@ public class ShenSuActivity extends AppBaseActivity implements View.OnClickListe
      * 提交申诉
      */
     private void submit() {
+        for (LiYouBean bean : liYouBeen) {
+            if (bean.isClick()) {
+                remark = bean.getLiYou();
+            }
+        }
+        if (remark.isEmpty()) {
+            ToastUtil.show("请选择一个理由!");
+        } else {
+            presenter.initAppeal(rowsBean.getF_DeviceID(), rowsBean.getF_ID(), remark, rowsBean.getF_VideoUrl());
+
+        }
     }
 
     public void goToChangge(int position) {

@@ -38,6 +38,10 @@ public class Constant {
     public static String ModifyUserAddress = URL + "/api/Account/ModifyUserAddress";
     //删除地址
     public static String DeleteUserAddress = URL + "/api/Account/DeleteUserAddress";
+    //输入邀请码
+    public static String Invitation = URL + "/api/Account/Invitation";
+    //提交申诉
+    public static String Appeal = URL + "/api/Account/Appeal";
 
 
 }

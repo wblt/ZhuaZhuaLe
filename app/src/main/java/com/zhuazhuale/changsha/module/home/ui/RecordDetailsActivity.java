@@ -16,6 +16,7 @@ import com.zhuazhuale.changsha.module.home.Bean.GradWaterBean;
 import com.zhuazhuale.changsha.module.home.adapter.RecordAdapter;
 import com.zhuazhuale.changsha.module.home.adapter.WaWaBiAdapter;
 import com.zhuazhuale.changsha.util.FrescoUtil;
+import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
 import java.util.ArrayList;
@@ -42,6 +43,8 @@ public class RecordDetailsActivity extends AppBaseActivity implements View.OnCli
     TextView tv_deviceno;
     @BindView(R.id.tv_record_details_shensu)
     TextView tv_shensu;
+    @BindView(R.id.iv_record_details_watch)
+    ImageView iv_watch;
     private GradWaterBean.RowsBean rowsBean;
 
     @Override
@@ -59,7 +62,7 @@ public class RecordDetailsActivity extends AppBaseActivity implements View.OnCli
             tv_goodsname.setText(rowsBean.getF_GoodsName());
             tv_creattime.setText(rowsBean.getF_CreateTime());
             tv_deviceno.setText(rowsBean.getF_DeviceNo());
-            if (rowsBean.isF_Valid()) {
+            if (rowsBean.getF_Result() == 0) {
                 tv_result.setText("抓取失败");
             } else {
                 tv_result.setText("抓取成功");
@@ -67,12 +70,12 @@ public class RecordDetailsActivity extends AppBaseActivity implements View.OnCli
             switch (rowsBean.getF_VideoUrl()) {
 
             }
-            switch (rowsBean.getF_Result()) {
+            switch (rowsBean.getF_Appeal()) {
                 case 0:
                     tv_shensu.setText("未申诉");
                     break;
-                case 1:
-                    tv_shensu.setText("申诉中");
+                default:
+                    tv_shensu.setText("已申诉");
                     break;
             }
 
@@ -87,13 +90,29 @@ public class RecordDetailsActivity extends AppBaseActivity implements View.OnCli
     @Override
     protected void initEvent() {
         tv_shensu.setOnClickListener(this);
+        iv_watch.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_record_details_shensu:
-                goToDetails();
+                switch (rowsBean.getF_Appeal()) {
+                    case 0:
+                        goToDetails();
+                        break;
+                    default:
+                        ToastUtil.show("您已申诉,请等待工作人员反馈!");
+                        break;
+                }
+
+                break;
+            case R.id.iv_record_details_watch:
+                if (rowsBean.getF_VideoUrl().isEmpty()) {
+                    ToastUtil.show("没有游戏视频!");
+                } else {
+                    ToastUtil.show(rowsBean.getF_VideoUrl());
+                }
                 break;
         }
     }

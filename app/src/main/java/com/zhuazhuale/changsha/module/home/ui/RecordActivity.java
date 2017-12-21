@@ -128,9 +128,6 @@ public class RecordActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-
-        }
     }
 
     /**

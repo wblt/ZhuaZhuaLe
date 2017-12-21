@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="已有视频"
+                android:text=""
                 android:textColor="@color/red" />
 
             <LinearLayout
@@ -55,7 +55,7 @@
                     android:id="@+id/tv_shensu_goodsname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="测试"
+                    android:text=""
                     android:textColor="@color/white" />
             </LinearLayout>
 
@@ -74,7 +74,7 @@
                     android:id="@+id/tv_shensu_goodsid"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1003"
+                    android:text=""
                     android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
