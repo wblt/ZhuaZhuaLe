@@ -1,4 +1,4 @@
-package com.zhuazhuale.changsha.module.login.presenter;
+package com.zhuazhuale.changsha.module.login.bean;
 
 import java.io.Serializable;
 import java.util.List;

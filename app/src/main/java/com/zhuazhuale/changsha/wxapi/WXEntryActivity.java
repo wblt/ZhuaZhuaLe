@@ -1,7 +1,7 @@
 package com.zhuazhuale.changsha.wxapi;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -14,17 +14,15 @@ import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
+import com.zhuazhuale.changsha.module.home.ui.HomeActivity;
 import com.zhuazhuale.changsha.module.login.presenter.LoginPresenter;
-import com.zhuazhuale.changsha.module.login.presenter.WeiXinLoginGetUserinfoBean;
-import com.zhuazhuale.changsha.module.login.ui.LoginActivity;
+import com.zhuazhuale.changsha.module.login.bean.WeiXinLoginGetUserinfoBean;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-
-import okhttp3.Call;
 
 /**
  * Created by wb on 2017/12/14.
@@ -140,6 +138,10 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                         }.getType();
                         WeiXinLoginGetUserinfoBean bean = gson.fromJson(response.body(), type);
                         LogUtil.e("获取用户信息成功：\n" + "昵称:" + bean.getNickname() + "\n头像路径" + bean.getHeadimgurl());
+
+                        Intent intent = new Intent(WXEntryActivity.this, HomeActivity.class);
+                        intent.putExtra("WeiXinLoginGetUserinfoBean", bean);
+                        startActivity(intent);
 
                     }
 

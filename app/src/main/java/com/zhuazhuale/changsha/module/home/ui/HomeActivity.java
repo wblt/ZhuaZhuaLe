@@ -19,6 +19,7 @@ import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.adapter.DeviceGoodsAdapter;
 import com.zhuazhuale.changsha.module.home.adapter.HomeAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.HomePresenter;
+import com.zhuazhuale.changsha.module.login.bean.WeiXinLoginGetUserinfoBean;
 import com.zhuazhuale.changsha.util.IItemOnClickListener;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
@@ -52,10 +53,13 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
     private int mStart = 1;
     private int mCont = 4;
     private DeviceGoodsAdapter mCollectAdapter;
+    private WeiXinLoginGetUserinfoBean userinfoBean;
 
     @Override
     protected void setContentLayout() {
         setContentView(R.layout.activity_home);
+        Intent intent = getIntent();
+        userinfoBean = (WeiXinLoginGetUserinfoBean) intent.getSerializableExtra("WeiXinLoginGetUserinfoBean");
     }
 
     @Override
