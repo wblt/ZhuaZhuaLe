@@ -67,7 +67,9 @@ public class RecordActivity extends AppBaseActivity implements View.OnClickListe
                 getData(mStart, mCount, Constant.INIT);
             }
         });
-        rfv_record_fresh.autoRefresh();
+//        rfv_record_fresh.autoRefresh();
+        //  初始化数据
+        getData(mStart, mCount, Constant.INIT);
     }
 
     /**

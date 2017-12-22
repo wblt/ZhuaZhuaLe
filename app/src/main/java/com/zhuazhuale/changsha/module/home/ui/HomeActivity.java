@@ -71,7 +71,10 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
     protected void obtainData() {
         homePresenter = new HomePresenter(this);
 //        getLoadLayout().setLayoutState(State.LOADING);
-        rfv_home.autoRefresh();
+//        rfv_home.autoRefresh();
+        showLoadingDialog();
+        homePresenter.initData();
+        homePresenter.initDeviceGoods(1, mCont);
         getToolbar().setVisibility(View.GONE);
     }
 
