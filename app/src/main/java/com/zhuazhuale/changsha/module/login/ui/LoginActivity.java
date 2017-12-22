@@ -37,8 +37,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
 
     @Override
     protected void setContentLayout() {
-       /* int color = getResourceColor(R.color.white);
-        setStatusBarColor(color, 0);*/
+
 
         setContentView(R.layout.activity_login);
         getToolbar().setVisibility(View.GONE);
@@ -72,7 +71,8 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
 
     @Override
     protected void initView() {
-
+        int color = getResourceColor(R.color.white);
+        setStatusBarColor(color, 0);
     }
 
     @Override

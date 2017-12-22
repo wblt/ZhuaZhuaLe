@@ -3,6 +3,7 @@ package com.zhuazhuale.changsha.view.activity.base;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -44,6 +45,7 @@ public abstract class AppBaseActivity extends BaseActivity {
     }
 
     public void setContentView(int layoutResId) {
+
         super.setContentView(R.layout.activity_base_app);
 
         addViewToContainer(layoutResId);
