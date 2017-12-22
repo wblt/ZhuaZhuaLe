@@ -16,15 +16,15 @@ public interface BaseConstants {
     String APP_SHARE_USER = "app_user_share";               //用户sharePreference
 
 
-    String F_ID = "F_ID";
-    String F_Code = "F_Code";
-    String F_Code1 = "F_Code1";
-    String F_Code2 = "F_ID";
-    String F_Name = "F_Name";
-    String F_CP = "F_CP";
-    String F_Img = "F_Img";
-    String F_VerCode = "F_VerCode";
-    String IsFirstLoGin = "IsFirstLogin";
-    String IsLogin = "IsLogin";
+    String F_ID = "f_id";
+    String F_Code = "f_code";
+    String F_Code1 = "f_code1";
+    String F_Code2 = "f_code2";
+    String F_Name = "f_name";
+    String F_CP = "f_cp";
+    String F_Img = "f_img";
+    String F_VerCode = "f_vercode";
+    String IsFirstLoGin = "isfirstlogin";
+    String IsLogin = "islogin";
 
 }

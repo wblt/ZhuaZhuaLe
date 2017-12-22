@@ -100,7 +100,7 @@ public class OrderActivity extends AppBaseActivity implements View.OnClickListen
     }
 
     /**
-     * 获取成功,地址列表
+     * 获取成功,订单列表
      *
      * @param orderBean
      * @param type
@@ -112,7 +112,6 @@ public class OrderActivity extends AppBaseActivity implements View.OnClickListen
                 if (0 == orderBean.getCode()) {
                     //设置页面为“空数据”状态
                     getLoadLayout().setLayoutState(State.NO_DATA);
-                    ToastUtil.show(orderBean.getInfo());
                 } else {
                     //设置页面为“成功”状态，显示正文布局
                     getLoadLayout().setLayoutState(State.SUCCESS);

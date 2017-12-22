@@ -50,6 +50,8 @@ public class Constant {
     public static String CreateOrder = URL + "/api/Order/CreateOrder";
     //微信登录
     public static String Login = URL + "/api/Account/Login";
+    //退出登录
+    public static String LoginOut = URL + "/api/Account/LoginOut";
 
 
 }

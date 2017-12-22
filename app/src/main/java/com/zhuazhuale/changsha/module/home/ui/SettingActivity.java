@@ -7,9 +7,13 @@ import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.constant.BaseConstants;
+import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
+import com.zhuazhuale.changsha.module.home.presenter.SettingPresenter;
 import com.zhuazhuale.changsha.module.login.ui.LoginActivity;
 import com.zhuazhuale.changsha.util.PreferenceUtil;
+import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+import com.zhuazhuale.changsha.view.widget.MaterialDialog;
 
 import butterknife.BindView;
 
@@ -18,7 +22,7 @@ import butterknife.BindView;
  * Created by 丁琪 on 2017/12/13 0013.
  */
 
-public class SettingActivity extends AppBaseActivity implements View.OnClickListener {
+public class SettingActivity extends AppBaseActivity implements View.OnClickListener, ISettingView {
 
 
     @BindView(R.id.ic_setting_tzzx)
@@ -40,6 +44,8 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
     @BindView(R.id.ic_setting_tcdl)
     View ic_setting_tcdl;
     private Intent intent;
+    private MaterialDialog mDialog;
+    private SettingPresenter presenter;
 
     @Override
     protected void setContentLayout() {
@@ -79,7 +85,8 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
 
     @Override
     protected void obtainData() {
-
+        presenter = new SettingPresenter(this);
+        mDialog = new MaterialDialog(this);
     }
 
     @Override
@@ -126,18 +133,56 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.ic_setting_tcdl:
-//                getActivityStackManager().exitActivityByFirstIn(HomeActivity.class);
-                getActivityStackManager().firstActivity().finish();
-                // 退出登录 测试添加微信登录
-                PreferenceUtil.putBoolean(SettingActivity.this, BaseConstants.IsLogin, false);
-                intent = new Intent(SettingActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+
+                mDialog.setTitle("娃娃乐温馨提示");
+                mDialog.setMessage("是否要退出登录");
+
+                mDialog.setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialog.dismiss();
+                        showLoadingDialog();
+                        //这里从全局变量bean获取信息来构建对象，
+                        //如果从rowsBean获取的话，要声明为final类型，但是声明为final类型后，你在这个内部类里面获取到的rowsBean都是不变的（一直是第一次获取到的那个,除非重新new Dialog）
+                        presenter.initLoginOut();
+                    }
+                });
+                mDialog.setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialog.dismiss();
+                    }
+                });
+                mDialog.show();
 
 
                 break;
         }
 
+    }
+
+    @Override
+    public void showLoginOut(EditAddressBean bean) {
+        if (bean.getCode() == 0) {
+            ToastUtil.show(bean.getInfo());
+        } else {
+            HomeActivity.instance.finish();
+            // 退出登录 返回登录页面
+            PreferenceUtil.putBoolean(SettingActivity.this, BaseConstants.IsLogin, false);
+            intent = new Intent(SettingActivity.this, LoginActivity.class);
+            startActivity(intent);
+            getActivityStackManager().exitActivity(this);
+        }
+    }
+
+    @Override
+    public void showFaild() {
+        ToastUtil.show("退出失败,请检查网络!");
+    }
+
+    @Override
+    public void showFinish() {
+        dismissLoadingDialog();
     }
 
 

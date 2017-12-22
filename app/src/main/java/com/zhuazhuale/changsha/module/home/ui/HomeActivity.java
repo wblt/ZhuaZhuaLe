@@ -53,13 +53,13 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
     private int mStart = 1;
     private int mCont = 4;
     private DeviceGoodsAdapter mCollectAdapter;
-    private WeiXinLoginGetUserinfoBean userinfoBean;
+
+    public static HomeActivity instance = null;
 
     @Override
     protected void setContentLayout() {
         setContentView(R.layout.activity_home);
-        Intent intent = getIntent();
-        userinfoBean = (WeiXinLoginGetUserinfoBean) intent.getSerializableExtra("WeiXinLoginGetUserinfoBean");
+        instance = this;
     }
 
     @Override
