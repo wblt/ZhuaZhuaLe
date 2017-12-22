@@ -82,6 +82,20 @@ public class LoginInfoBean {
         private String F_Img;
         private String F_VerCode;
 
+        public RowsBean() {
+        }
+
+        public RowsBean(String f_ID, String f_Code, String f_Code1, String f_Code2, String f_Name, int f_CP, String f_Img, String f_VerCode) {
+            F_ID = f_ID;
+            F_Code = f_Code;
+            F_Code1 = f_Code1;
+            F_Code2 = f_Code2;
+            F_Name = f_Name;
+            F_CP = f_CP;
+            F_Img = f_Img;
+            F_VerCode = f_VerCode;
+        }
+
         public String getF_ID() {
             return F_ID;
         }

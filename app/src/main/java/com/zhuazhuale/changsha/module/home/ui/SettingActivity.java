@@ -6,7 +6,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.module.login.ui.LoginActivity;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
 import butterknife.BindView;
@@ -98,8 +100,8 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
         switch (view.getId()) {
 
             case R.id.ic_setting_tzzx:
-                intent = new Intent(SettingActivity.this, LoginActivity.class);
-                startActivity(intent);
+               /* intent = new Intent(SettingActivity.this, LoginActivity.class);
+                startActivity(intent);*/
                 break;
             case R.id.ic_setting_yqjl:
                 intent = new Intent(SettingActivity.this, InviteActivity.class);
@@ -124,7 +126,14 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.ic_setting_tcdl:
+//                getActivityStackManager().exitActivityByFirstIn(HomeActivity.class);
+                getActivityStackManager().firstActivity().finish();
                 // 退出登录 测试添加微信登录
+                PreferenceUtil.putBoolean(SettingActivity.this, BaseConstants.IsLogin, false);
+                intent = new Intent(SettingActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+
 
                 break;
         }
