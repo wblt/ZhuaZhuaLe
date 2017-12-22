@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.util.CommonUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
@@ -53,8 +54,7 @@ public class FeedBackActivity extends AppBaseActivity implements View.OnClickLis
         switch (v.getId()) {
 
             case R.id.tv_feedback:
-                boolean aBoolean = isSpecialApplInstalled(FeedBackActivity.this, "com.tencent.mobileqq");
-                if (aBoolean) {
+                if (CommonUtil.isQQClientAvailable(this)) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
                 } else {
                     ToastUtil.show("您的手机还未安装最新的QQ,请安装后再联系客服!");
@@ -64,21 +64,5 @@ public class FeedBackActivity extends AppBaseActivity implements View.OnClickLis
         }
     }
 
-    /**
-     * 判断手机设备是否安装指定包名的apk应用程序
-     *
-     * @param context
-     * @param packageName
-     * @return
-     */
-    public static boolean isSpecialApplInstalled(Context context, String packageName) {
-        PackageManager packageManager = context.getPackageManager();
-        try {
-            packageManager.getPackageInfo(packageName, 0);
-            return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+
 }

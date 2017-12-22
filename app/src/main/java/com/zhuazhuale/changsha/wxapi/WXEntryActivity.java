@@ -1,40 +1,18 @@
 package com.zhuazhuale.changsha.wxapi;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.View;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.lzy.okgo.OkGo;
-import com.lzy.okgo.callback.StringCallback;
-import com.lzy.okgo.model.Response;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
-import com.zhuazhuale.changsha.app.MyApplication;
-import com.zhuazhuale.changsha.module.home.Bean.LoginInfoBean;
-import com.zhuazhuale.changsha.module.home.ui.HomeActivity;
+import com.zhuazhuale.changsha.model.entity.eventbus.LoginEvent;
 import com.zhuazhuale.changsha.module.login.presenter.LoginPresenter;
-import com.zhuazhuale.changsha.module.login.presenter.WeiXinLoginGetUserinfoBean;
-import com.zhuazhuale.changsha.module.login.ui.LoginActivity;
-import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.EventBusUtil;
-import com.zhuazhuale.changsha.util.HashCoderUtil;
+import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
-import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
-import java.util.Date;
-
-import okhttp3.Call;
 
 /**
  * Created by wb on 2017/12/14.
@@ -75,13 +53,16 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 //发送成功
-                EventBusUtil.postEvent(code1);
+                LoginEvent event = new LoginEvent(code1);
+                EventBusUtil.postEvent(event);
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 //发送取消
+                ToastUtil.show("微信发送取消");
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
                 //发送被拒绝
+                ToastUtil.show("微信发送被拒绝");
                 break;
             default:
                 //发送返回
@@ -90,7 +71,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         finish();
 
     }
-
 
 
 }

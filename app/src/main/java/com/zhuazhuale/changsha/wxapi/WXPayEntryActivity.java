@@ -10,14 +10,11 @@ import android.util.Log;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
-import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhuazhuale.changsha.R;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     private String TAG = getClass().getName();

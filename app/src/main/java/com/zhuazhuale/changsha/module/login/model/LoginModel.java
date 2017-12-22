@@ -1,15 +1,11 @@
 package com.zhuazhuale.changsha.module.login.model;
 
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
-import com.zhuazhuale.changsha.module.home.Bean.LoginInfoBean;
-import com.zhuazhuale.changsha.module.login.presenter.WeiXinLoginGetUserinfoBean;
+import com.zhuazhuale.changsha.module.login.bean.WeiXinLoginGetUserinfoBean;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.HashCoderUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
@@ -122,7 +118,7 @@ public class LoginModel {
     public void login(WeiXinLoginGetUserinfoBean bean, final ICallListener<String> iCallListener) {
         Date date = new Date();
         long timeStamp = date.getTime()/1000;
-        String key = "$%&*[zzl]168";
+        String key = "#$%&*[zzl]168";
         String s = bean.getOpenid() + timeStamp + key;
         String vToken = HashCoderUtil.MD5Encode(s, "");
         LogUtil.e(bean.toString());

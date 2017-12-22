@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.util;
 
+import com.zhuazhuale.changsha.model.entity.eventbus.LoginEvent;
 import com.zhuazhuale.changsha.model.entity.eventbus.MovieEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -21,7 +22,7 @@ public class EventBusUtil {
 
     //订阅事件
     public static void register(Object subscriber) {
-        if(!EventBus.getDefault().isRegistered(subscriber)){
+        if (!EventBus.getDefault().isRegistered(subscriber)) {
             EventBus.getDefault().register(subscriber);
         }
     }
@@ -39,7 +40,7 @@ public class EventBusUtil {
     }
 
     //获取保存起来的粘性事件
-    public static <T> T getStickyEvent(Class<T> classType){
+    public static <T> T getStickyEvent(Class<T> classType) {
         return EventBus.getDefault().getStickyEvent(classType);
     }
 
@@ -49,7 +50,7 @@ public class EventBusUtil {
     }
 
     //发送事件
-    public static void postEvent(Object event){
+    public static void postEvent(Object event) {
         EventBus.getDefault().post(event);
     }
 
@@ -62,4 +63,5 @@ public class EventBusUtil {
     public static void postMovieEvent(MovieEvent movieEvent) {
         postEvent(movieEvent);
     }
+
 }

@@ -6,9 +6,11 @@ import android.widget.ImageView;
 
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.model.entity.eventbus.LoginEvent;
 import com.zhuazhuale.changsha.module.home.Bean.LoginInfoBean;
 import com.zhuazhuale.changsha.module.home.ui.HomeActivity;
 import com.zhuazhuale.changsha.module.login.presenter.LoginPresenter;
+import com.zhuazhuale.changsha.util.CommonUtil;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
@@ -53,8 +55,8 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
 
     //EventBus的事件接收，从事件中获取最新的收藏数量并更新界面展示
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void handleEvent(String event) {
-        String code = event.toString();
+    public void handleEvent(LoginEvent event) {
+        String code = event.getCode();
         loginPresenter.initWX(code, APPID, secret);
     }
 
@@ -76,8 +78,13 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         switch (view.getId()) {
             case R.id.iv_login_wxlogin:
                 if (isLogin) {
-                    showLoadingDialog();
-                    loginPresenter.getCode();
+                    if (CommonUtil.isWeixinAvilible(this)) {
+                        showLoadingDialog();
+                        loginPresenter.getCode();
+                    } else {
+                        ToastUtil.show("您的手机还未安装最新的微信,请安装后再登录!");
+                    }
+
                 }
 
                 break;
