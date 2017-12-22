@@ -53,6 +53,7 @@
         <activity android:name=".module.home.ui.OrderActivity" />
         <activity android:name=".module.home.ui.OrderDetailsActivity" />
         <activity android:name=".module.login.ui.LoginActivity" />
+        <activity android:name=".module.home.ui.DeliveryActivity" />
     </application>
 
 </manifest>

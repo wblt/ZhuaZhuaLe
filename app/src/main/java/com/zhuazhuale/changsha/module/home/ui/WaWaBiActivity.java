@@ -223,4 +223,9 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public void showFinish() {
+        dismissLoadingDialog();
+    }
+
 }

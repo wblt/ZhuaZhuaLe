@@ -49,6 +49,7 @@ public class RecordPresenter extends BasePresenter<IRecordView> {
             @Override
             public void onFinish() {
                 LogUtil.e(TAG, "接口结束");
+                mIView.showFinish();
             }
         });
     }

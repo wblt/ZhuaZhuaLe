@@ -335,7 +335,7 @@ public class MaterialDialog {
             }
             if (mLayoutParams != null && mNegativeButton != null) {
                 if (mButtonLayout.getChildCount() > 0) {
-                    mLayoutParams.setMargins(dip2px(12), 0, 0, dip2px(BUTTON_BOTTOM));
+                    mLayoutParams.setMargins(dip2px(2), 0, 0, dip2px(BUTTON_BOTTOM));
                     mNegativeButton.setLayoutParams(mLayoutParams);
                     mButtonLayout.addView(mNegativeButton, 1);
                 } else {

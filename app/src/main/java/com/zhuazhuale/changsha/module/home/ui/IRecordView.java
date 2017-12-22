@@ -12,4 +12,6 @@ public interface IRecordView extends IBaseView {
     void showGradWater(GradWaterBean gradWaterBean, int type);
 
     void showFailed(int type);
+
+    void showFinish();
 }

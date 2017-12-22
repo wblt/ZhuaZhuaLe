@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -36,6 +37,26 @@ public class DeviceGoodsAdapter extends RecyclerBaseAdapter<DeviceGoodsBean.Rows
         SimpleDraweeView sdvMovie = holder.getView(R.id.sdv_devicegoods);
         TextView tv_device_name = holder.getView(R.id.tv_device_name);
         TextView tv_device_price = holder.getView(R.id.tv_device_price);
+        ImageView iv_status = holder.getView(R.id.iv_item_devicegoods_status);
+        TextView tv_status = holder.getView(R.id.tv_item_devicegoods_status);
+        switch (rowsBean.getF_Status()) {
+            case 1:
+                iv_status.setImageResource(R.mipmap.freestatus);
+                tv_status.setText("空闲中");
+                break;
+            case 2:
+                iv_status.setImageResource(R.mipmap.workstatus);
+                tv_status.setText("游戏中");
+                break;
+            case 3:
+                iv_status.setImageResource(R.mipmap.unworkstatus);
+                tv_status.setText("维修中");
+                break;
+            case 4:
+                iv_status.setImageResource(R.mipmap.changestatus);
+                tv_status.setText("更换中");
+                break;
+        }
 
         //obtainData
         FrescoUtil.getInstance().loadNetImage(sdvMovie, rowsBean.getF_ImgA());//加载网络图片

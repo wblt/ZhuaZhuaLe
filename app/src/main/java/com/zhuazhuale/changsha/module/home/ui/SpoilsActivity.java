@@ -22,6 +22,9 @@ import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnNoDataListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 
 /**
@@ -52,7 +55,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void initView() {
-        getTvToolbarRight().setText("申请发货");
+//        getTvToolbarRight().setText("申请发货");
         mDialog = new MaterialDialog(this);
     }
 
@@ -99,8 +102,22 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
         switch (v.getId()) {
 
             case R.id.tv_spoils_fahuo:
-                intent = new Intent(SpoilsActivity.this, EditAddressActivity.class);
-                startActivity(intent);
+                List<SpoilsBean.RowsBean> beanList = new ArrayList<>();
+                for (SpoilsBean.RowsBean rowsBean : addressAdapter.getDataList()) {
+                    if (rowsBean.isCheck()) {
+                        beanList.add(rowsBean);
+                    }
+                }
+                SpoilsBean spoilsBean = new SpoilsBean();
+                spoilsBean.setRows(beanList);
+                if (beanList.size() > 0) {
+                    intent = new Intent(SpoilsActivity.this, DeliveryActivity.class);
+                    intent.putExtra("SpoilsBean", spoilsBean);
+                    startActivity(intent);
+                } else {
+                    ToastUtil.show("请选择发货的商品!");
+                }
+
                 break;
         }
     }
@@ -157,6 +174,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
 
     /**
      * 兑换成功
+     *
      * @param bean
      * @param pos
      */

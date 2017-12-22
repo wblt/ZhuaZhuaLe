@@ -1,12 +1,13 @@
 package com.zhuazhuale.changsha.module.home.Bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/12/20.
  */
 
-public class SpoilsBean {
+public class SpoilsBean implements Serializable{
 
 
     /**
@@ -63,7 +64,7 @@ public class SpoilsBean {
         this.rows = rows;
     }
 
-    public static class RowsBean {
+    public static class RowsBean implements Serializable{
         /**
          * F_ID : 3c32ffd3-c508-4092-acf0-7ef8cd69ae79
          * F_UserID : d734b0cc-721d-4430-b153-596acfaed97f

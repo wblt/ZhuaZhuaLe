@@ -46,6 +46,7 @@ public class WaWaBiPresenter extends BasePresenter<IWaWaBiView> {
             @Override
             public void onFinish() {
                 LogUtil.e(TAG, "接口结束");
+                mIView.showFinish();
             }
         });
     }

@@ -215,4 +215,9 @@ public class RecordActivity extends AppBaseActivity implements View.OnClickListe
                 break;
         }
     }
+
+    @Override
+    public void showFinish() {
+        dismissLoadingDialog();
+    }
 }
