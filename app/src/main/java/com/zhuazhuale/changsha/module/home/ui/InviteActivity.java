@@ -58,8 +58,10 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void obtainData() {
-//        String  code= MyApplication.getInstance().getRowsBean().getF_Code1();// 邀请码
-        code = "684983";
+        code = MyApplication.getInstance().getRowsBean().getF_Code1();// 邀请码
+        if (code.isEmpty()) {
+            code = "684983";
+        }
         char[] chars = code.toCharArray();
         List<String> strings = new ArrayList<>();
         for (char c : chars) {
