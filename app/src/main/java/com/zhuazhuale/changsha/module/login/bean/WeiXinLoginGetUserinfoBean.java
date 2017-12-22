@@ -17,6 +17,22 @@ public class WeiXinLoginGetUserinfoBean implements Serializable {
     private String unionid;
     private List<?> privilege;
 
+    @Override
+    public String toString() {
+        return "WeiXinLoginGetUserinfoBean{" +
+                "city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", headimgurl='" + headimgurl + '\'' +
+                ", language='" + language + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", openid='" + openid + '\'' +
+                ", province='" + province + '\'' +
+                ", sex=" + sex +
+                ", unionid='" + unionid + '\'' +
+                ", privilege=" + privilege +
+                '}';
+    }
+
     public String getCity() {
         return city;
     }

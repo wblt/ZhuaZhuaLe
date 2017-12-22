@@ -48,7 +48,11 @@ public class HomePresenter extends BasePresenter<IHomeView> {
 
             }
         });
+//        login();
 
+    }
+
+    private void login() {
         homeModel.getLoginMain(new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {

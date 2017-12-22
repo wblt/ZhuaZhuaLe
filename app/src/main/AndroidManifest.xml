@@ -18,7 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".module.home.ui.HomeActivity"
+            android:name=".module.login.ui.LoginActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,16 +29,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".module.home.ui.HomeActivity"/>
         <activity android:name=".view.activity.CollectActivity" />
         <activity android:name=".module.home.ui.MineActivity" />
         <activity android:name=".module.home.ui.SettingActivity" />
         <activity
+            android:theme="@android:style/Theme.Translucent"
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".module.login.ui.LoginActivity"></activity>
+            />
+
         <activity android:name=".module.home.ui.InviteActivity" />
         <activity android:name=".module.home.ui.InputCodeActivity" />
         <activity android:name=".module.home.ui.FeedBackActivity" />
