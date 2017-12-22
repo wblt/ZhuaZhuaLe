@@ -10,11 +10,13 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.model.entity.eventbus.CPfreshEvent;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.SpoilsBean;
 import com.zhuazhuale.changsha.module.home.adapter.SpoilsAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.SpoilsPresenter;
 import com.zhuazhuale.changsha.util.Constant;
+import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.MaterialDialog;
@@ -185,6 +187,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
         } else {
             ToastUtil.show(bean.getInfo());
             addressAdapter.removeItem(pos);
+            EventBusUtil.postEvent(new CPfreshEvent("刷新"));
         }
     }
 

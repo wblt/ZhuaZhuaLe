@@ -37,8 +37,6 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
 
     @Override
     protected void setContentLayout() {
-
-
         setContentView(R.layout.activity_login);
         getToolbar().setVisibility(View.GONE);
 

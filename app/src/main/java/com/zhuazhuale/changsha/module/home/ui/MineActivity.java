@@ -8,10 +8,18 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.model.entity.eventbus.CPfreshEvent;
+import com.zhuazhuale.changsha.model.entity.eventbus.LoginEvent;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.presenter.MinePresenter;
+import com.zhuazhuale.changsha.module.login.presenter.LoginPresenter;
+import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.FrescoUtil;
+import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -42,6 +50,7 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
     TextView tv_mine_yue;
 
     private Intent intent;
+    private MinePresenter presenter;
 
     @Override
     protected void setContentLayout() {
@@ -69,8 +78,24 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
 
     @Override
     protected void obtainData() {
-        MinePresenter presenter = new MinePresenter(this);
+        presenter = new MinePresenter(this);
         presenter.initNewCP();
+        EventBusUtil.register(this);//订阅事件
+    }
+
+    //EventBus的事件接收，从事件中获取最新的收藏数量并更新界面展示
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleEvent(CPfreshEvent event) {
+        String code = event.getCPisFresh();
+        LogUtil.e(code);
+        presenter.initNewCP();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //取消订阅
+        EventBusUtil.unregister(this);
     }
 
     @Override
