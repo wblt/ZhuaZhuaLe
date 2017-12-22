@@ -108,8 +108,8 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
         switch (view.getId()) {
 
             case R.id.ic_setting_tzzx:
-                intent = new Intent(SettingActivity.this, FlashActivity.class);
-                startActivity(intent);
+               /* intent = new Intent(SettingActivity.this, FlashActivity.class);
+                startActivity(intent);*/
                 break;
             case R.id.ic_setting_yqjl:
                 intent = new Intent(SettingActivity.this, InviteActivity.class);
@@ -143,8 +143,6 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
                     public void onClick(View v) {
                         mDialog.dismiss();
                         showLoadingDialog();
-                        //这里从全局变量bean获取信息来构建对象，
-                        //如果从rowsBean获取的话，要声明为final类型，但是声明为final类型后，你在这个内部类里面获取到的rowsBean都是不变的（一直是第一次获取到的那个,除非重新new Dialog）
                         presenter.initLoginOut();
                     }
                 });

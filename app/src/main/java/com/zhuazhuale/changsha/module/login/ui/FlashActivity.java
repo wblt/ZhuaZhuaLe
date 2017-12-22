@@ -11,13 +11,16 @@ import android.view.WindowManager;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.module.home.adapter.FlashAdapter;
 import com.zhuazhuale.changsha.util.IItemOnClickListener;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 指导Flash页面
  * Created by Administrator on 2017/12/22.
  */
 
@@ -28,7 +31,15 @@ public class FlashActivity extends Activity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_flash);
-        initView();
+        boolean isFirstLogin = PreferenceUtil.getBoolean(this, BaseConstants.IsFirstLoGin, false);
+        if (isFirstLogin) {
+            Intent intent = new Intent(FlashActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            initView();
+        }
+
     }
 
     private void initView() {
@@ -50,8 +61,10 @@ public class FlashActivity extends Activity {
         adapter.setOnItemClickListener(new IItemOnClickListener() {
             @Override
             public void itemOnClick(View view, int position) {
+                PreferenceUtil.putBoolean(FlashActivity.this, BaseConstants.IsFirstLoGin, true);
                 Intent intent = new Intent(FlashActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
 
             @Override

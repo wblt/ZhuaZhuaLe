@@ -18,9 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".module.login.ui.LoginActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:exported="true"
+            android:name=".module.login.ui.FlashActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -54,7 +52,7 @@
         <activity android:name=".module.home.ui.SpoilsActivity" />
         <activity android:name=".module.home.ui.OrderActivity" />
         <activity android:name=".module.home.ui.OrderDetailsActivity" />
-        <activity android:name=".module.login.ui.FlashActivity" />
+        <activity android:name=".module.login.ui.LoginActivity" />
     </application>
 
 </manifest>
