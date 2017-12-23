@@ -59,6 +59,8 @@
             android:exported="true"
             android:launchMode="singleTop" />
         <activity android:name=".module.home.ui.AddressListActivity" />
+        <activity android:name=".module.vital.ui.PlayActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

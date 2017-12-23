@@ -22,8 +22,8 @@ public class MinePresenter extends BasePresenter<IMineView> {
 
     private final MineModel mineModel;
 
-    public MinePresenter(IMineView iMineView) {
-        super(iMineView);
+    public MinePresenter(IMineView view) {
+        super(view);
         mineModel = MineModel.getInstance();
     }
 

@@ -1,12 +1,13 @@
 package com.zhuazhuale.changsha.module.home.Bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/12/12.
  */
 
-public class DeviceGoodsBean {
+public class DeviceGoodsBean implements Serializable{
 
     /**
      * Code : 1
@@ -62,7 +63,7 @@ public class DeviceGoodsBean {
         this.rows = rows;
     }
 
-    public static class RowsBean {
+    public static class RowsBean implements Serializable{
         /**
          * F_Camera1 : rtmp://12937.liveplay.myqcloud.com/live/12937_76858531d64d11e792905cb9018cf0d4
          * F_Camera2 : rtmp://12937.liveplay.myqcloud.com/live/12937_b38ff0ebd64d11e792905cb9018cf0d4

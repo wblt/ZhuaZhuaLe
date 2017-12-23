@@ -15,6 +15,7 @@ public class Constant {
 
 
     public static String URL = "http://106.14.192.166:8088";
+    public static String URLGAME = "http://api2.crypfx.com:8899";
 
     //  首页的循环广告
     public static String BaseData = URL + "/api/Account/BaseData";
@@ -56,6 +57,15 @@ public class Constant {
     public static String LoginOut = URL + "/api/Account/LoginOut";
     //微信充值
     public static String WxUnifiedOrder = URL + "/api/Common/WxUnifiedOrder";
+
+    //游戏上机
+    public static String UpperGame = URLGAME + "/api/Operation/UpperGame";
+    //下机
+    public static String LowerGame = URLGAME + "/api/Operation/LowerGame";
+    //娃娃机状态查询
+    public static String QueryGame = URLGAME + "/api/Operation/QueryGame";
+    //操控,机器上下左右
+    public static String ControlGame = URLGAME + "/api/Operation/ControlGame";
 
 
 }

@@ -12,6 +12,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.model.entity.table.MovieCollect;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
+import com.zhuazhuale.changsha.module.home.ui.HomeActivity;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.view.activity.CollectActivity;
 import com.zhuazhuale.changsha.view.adapter.base.RecyclerBaseAdapter;
@@ -63,16 +64,14 @@ public class DeviceGoodsAdapter extends RecyclerBaseAdapter<DeviceGoodsBean.Rows
         tv_device_name.setText(rowsBean.getF_Name());
         tv_device_price.setText(rowsBean.getF_Price() + "/次");
 
-      /*  //initEvent
-        //点击该项后，从数据表中删除，并且从界面中移除
+        //initEvent
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CollectActivity mActivity = (CollectActivity) getContext();
-                mActivity.deleteCollect(rowsBean);
-                removeItem(position);
+                HomeActivity mActivity = (HomeActivity) getContext();
+                mActivity.open(rowsBean);
             }
-        });*/
+        });
     }
 
     @Override

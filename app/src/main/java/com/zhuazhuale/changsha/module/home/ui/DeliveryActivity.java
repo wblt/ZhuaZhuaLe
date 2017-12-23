@@ -200,7 +200,7 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
             }
         } else {
             ToastUtil.show(addressBean.getInfo());
-
+            showNoAddress();
             getTvToolbarRight().setText("添加收货地址");
             getTvToolbarRight().setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -209,6 +209,12 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
                 }
             });
         }
+    }
+
+    private void showNoAddress() {
+        tv_delivery_name.setText("");
+        tv_delivery_phone.setText("");
+        tv_delivery_address.setText("");
     }
 
     @Override

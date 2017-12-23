@@ -20,6 +20,7 @@ import com.zhuazhuale.changsha.module.home.adapter.DeviceGoodsAdapter;
 import com.zhuazhuale.changsha.module.home.adapter.HomeAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.HomePresenter;
 import com.zhuazhuale.changsha.module.login.bean.WeiXinLoginGetUserinfoBean;
+import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
 import com.zhuazhuale.changsha.util.IItemOnClickListener;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
@@ -184,5 +185,16 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
     @Override
     public void showFinish() {
         dismissLoadingDialog();
+    }
+
+    /**
+     * 打开设备
+     *
+     * @param rowsBean
+     */
+    public void open(DeviceGoodsBean.RowsBean rowsBean) {
+        Intent intent = new Intent(getContext(), PlayActivity.class);
+        intent.putExtra("DeviceGoods", rowsBean);
+        startActivity(intent);
     }
 }
