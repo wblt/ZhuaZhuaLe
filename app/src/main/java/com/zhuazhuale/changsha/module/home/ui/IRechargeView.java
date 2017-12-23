@@ -17,7 +17,6 @@ public interface IRechargeView extends IBaseView {
 
     void showFailed();
 
-    void showNoData();
 
     void showWxUnifiedOrder(WxUnifiedOrder wxUnifiedOrder);
 

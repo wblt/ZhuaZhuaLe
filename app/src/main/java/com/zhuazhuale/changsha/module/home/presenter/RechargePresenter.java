@@ -59,11 +59,8 @@ public class RechargePresenter extends BasePresenter<IRechargeView> {
                 LogUtil.e(s);
                 Gson gson = new Gson();
                 AllPriceProductBean allPriceProductBean = gson.fromJson(s, AllPriceProductBean.class);
-                if (1 == allPriceProductBean.getCode()) {
-                    mIView.showAllPriceProduct(allPriceProductBean);
-                } else {
-                    mIView.showNoData();
-                }
+                mIView.showAllPriceProduct(allPriceProductBean);
+
             }
 
             @Override
@@ -74,6 +71,7 @@ public class RechargePresenter extends BasePresenter<IRechargeView> {
             @Override
             public void onFinish() {
                 LogUtil.e("接口结束");
+                mIView.showFinish();
 
             }
         });

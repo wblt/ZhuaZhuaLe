@@ -88,7 +88,10 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
     public void handleEvent(CPfreshEvent event) {
         String code = event.getCPisFresh();
         LogUtil.e(code);
-        presenter.initNewCP();
+        if ("刷新".equals(code)){
+            presenter.initNewCP();
+        }
+
     }
 
     @Override
