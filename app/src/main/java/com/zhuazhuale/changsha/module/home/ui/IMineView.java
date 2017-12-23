@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import com.zhuazhuale.changsha.module.home.Bean.AddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.presenter.iview.IBaseView;
 
@@ -10,4 +11,6 @@ import com.zhuazhuale.changsha.presenter.iview.IBaseView;
 
 public interface IMineView extends IBaseView {
     void showNewCP(NewCPBean newCPBean);
+
+
 }

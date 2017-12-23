@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/ll_delivery_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -80,7 +81,7 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="20dp"
+            android:layout_width="36dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@mipmap/rightarrowback" />

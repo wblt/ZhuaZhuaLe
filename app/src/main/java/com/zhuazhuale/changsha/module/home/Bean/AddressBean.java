@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Administrator on 2017/12/20.
  */
 
-public class AddressBean {
+public class AddressBean implements Serializable{
 
     /**
      * Code : 1
