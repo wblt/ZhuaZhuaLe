@@ -1,7 +1,10 @@
 package com.zhuazhuale.changsha.util;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.widget.Toast;
+
+import com.zhuazhuale.changsha.R;
 
 
 /**
@@ -33,7 +36,7 @@ public class ToastUtil {
             mToast.setDuration(Toast.LENGTH_SHORT);
         }
 //        mToast.getView().setBackgroundColor(mContext.getResources().getColor(R.color.theme_orange));
-
+        mToast.setGravity(Gravity.CENTER, 0, 0);
         mToast.show();
     }
 

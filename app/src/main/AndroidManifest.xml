@@ -54,6 +54,9 @@
         <activity android:name=".module.home.ui.OrderDetailsActivity" />
         <activity android:name=".module.login.ui.LoginActivity" />
         <activity android:name=".module.home.ui.DeliveryActivity" />
+        <activity android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
     </application>
 
 </manifest>

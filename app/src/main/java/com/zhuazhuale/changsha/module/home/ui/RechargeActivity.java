@@ -78,9 +78,8 @@ public class RechargeActivity extends AppBaseActivity implements View.OnClickLis
         LogUtil.e(code);
         if ("刷新".equals(code)) {
             presenter.iniNewCP();
-        } else {
-            dismissLoadingDialog();
         }
+        dismissLoadingDialog();
     }
 
     @Override
@@ -120,6 +119,10 @@ public class RechargeActivity extends AppBaseActivity implements View.OnClickLis
         tv_recharge_ye.setText(newCPBean.getRows().getCP() + "");
     }
 
+    /**
+     * 充值列表
+     * @param allPriceProductBean
+     */
     @Override
     public void showAllPriceProduct(AllPriceProductBean allPriceProductBean) {
         getLoadLayout().setLayoutState(State.SUCCESS);
@@ -182,6 +185,9 @@ public class RechargeActivity extends AppBaseActivity implements View.OnClickLis
      * @param position
      */
     public void rechargeCP(AllPriceProductBean.RowsBean rowsBean, int position) {
+        showLoadingDialog();
+        LogUtil.e(rowsBean.getF_ID()+"");
         presenter.iniWxUnifiedOrder(rowsBean.getF_ID());
+
     }
 }

@@ -58,11 +58,11 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 //发送取消
-                ToastUtil.show("微信发送取消");
+                ToastUtil.show("微信登录被取消");
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
                 //发送被拒绝
-                ToastUtil.show("微信发送被拒绝");
+                ToastUtil.show("微信登录被拒绝");
                 break;
             default:
                 //发送返回
