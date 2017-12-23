@@ -10,11 +10,13 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.model.entity.eventbus.AddressEvent;
 import com.zhuazhuale.changsha.module.home.Bean.AddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.adapter.AddressAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.AddressPresenter;
 import com.zhuazhuale.changsha.util.Constant;
+import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.MaterialDialog;
@@ -151,6 +153,7 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
         } else {
             ToastUtil.show(addressBean.getInfo());
             addressAdapter.removeItem(position);
+            EventBusUtil.postEvent(new AddressEvent("刷新"));
 //            presenter.initQueryUserAddress(0, Constant.REFRESH);
         }
     }
@@ -161,6 +164,7 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 110 && resultCode == 2) {
             presenter.initQueryUserAddress(0, Constant.REFRESH);
+            EventBusUtil.postEvent(new AddressEvent("刷新"));
         }
     }
 

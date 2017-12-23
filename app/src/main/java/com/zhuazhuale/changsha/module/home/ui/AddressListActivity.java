@@ -9,12 +9,19 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.model.entity.eventbus.AddressEvent;
+import com.zhuazhuale.changsha.model.entity.eventbus.LoginEvent;
 import com.zhuazhuale.changsha.module.home.Bean.AddressBean;
+import com.zhuazhuale.changsha.module.home.Bean.AllPriceProductBean;
 import com.zhuazhuale.changsha.module.home.adapter.AddressListAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.AddressListPresenter;
 import com.zhuazhuale.changsha.util.Constant;
+import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -53,6 +60,21 @@ public class AddressListActivity extends AppBaseActivity implements View.OnClick
         Intent intent = getIntent();
         AddressBean bean = (AddressBean) intent.getSerializableExtra("address");
         showAddressList(bean);
+        EventBusUtil.register(this);//订阅事件
+    }
+
+    //EventBus的事件接收，从事件中获取最新的收藏数量并更新界面展示
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleEvent(AddressEvent event) {
+        String code = event.getAddressFresh();
+        presenter.initUserAddress(0, Constant.REFRESH);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //取消订阅
+        EventBusUtil.unregister(this);
     }
 
     private void showAddressList(AddressBean bean) {
@@ -104,5 +126,17 @@ public class AddressListActivity extends AppBaseActivity implements View.OnClick
     @Override
     public void showFinish() {
 
+    }
+
+    /**
+     * 选择地址
+     *
+     * @param rowsBean
+     */
+    public void select(AddressBean.RowsBean rowsBean) {
+        Intent intent = new Intent();
+        intent.putExtra("rowsBean", rowsBean);
+        setResult(2, intent);
+        finish();
     }
 }

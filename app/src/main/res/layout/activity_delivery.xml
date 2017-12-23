@@ -38,10 +38,11 @@
                         android:textSize="14dp" />
 
                     <TextView
+                        android:layout_marginLeft="4dp"
                         android:id="@+id/tv_delivery_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="测试"
+                        android:text=""
                         android:textColor="@color/black"
                         android:textSize="14dp" />
 
@@ -52,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:text="123456789"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="14dp" />
             </LinearLayout>
@@ -70,10 +71,11 @@
                     android:textSize="12dp" />
 
                 <TextView
+                    android:layout_marginLeft="4dp"
                     android:id="@+id/tv_delivery_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="长沙市雨花区火家台"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="12dp" />
 
@@ -123,11 +125,11 @@
                 android:textSize="14dp" />
 
             <TextView
+                android:id="@+id/tv_delivery_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/textbeijing"
                 android:gravity="right"
-
                 android:paddingBottom="10dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"

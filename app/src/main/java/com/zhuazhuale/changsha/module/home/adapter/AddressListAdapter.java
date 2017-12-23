@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.AddressBean;
 import com.zhuazhuale.changsha.module.home.ui.AddressActivity;
+import com.zhuazhuale.changsha.module.home.ui.AddressListActivity;
 import com.zhuazhuale.changsha.view.adapter.base.RecyclerBaseAdapter;
 import com.zhuazhuale.changsha.view.adapter.base.ViewHolder;
 
@@ -43,14 +44,13 @@ public class AddressListAdapter extends RecyclerBaseAdapter<AddressBean.RowsBean
         tv_item_address_dz.setText(rowsBean.getF_Address());
         //initEvent
         //点击该项后，从数据表中删除，并且从界面中移除
-       /* holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CollectActivity mActivity = (CollectActivity) getContext();
-                mActivity.deleteCollect(rowsBean);
-                removeItem(position);
+                AddressListActivity mActivity = (AddressListActivity) getContext();
+                mActivity.select(rowsBean);
             }
-        });*/
+        });
 
     }
 

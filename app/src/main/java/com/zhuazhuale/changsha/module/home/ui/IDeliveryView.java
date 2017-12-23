@@ -1,6 +1,7 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
 import com.zhuazhuale.changsha.module.home.Bean.AddressBean;
+import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.presenter.iview.IBaseView;
 
 /**
@@ -14,4 +15,8 @@ public interface IDeliveryView extends IBaseView {
     void showFailed();
 
     void showFinish();
+
+    void showModifyUserGoods(EditAddressBean bean);
+
+    void showCreateOrder(EditAddressBean bean);
 }

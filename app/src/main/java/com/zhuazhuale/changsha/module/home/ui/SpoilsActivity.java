@@ -115,7 +115,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
                 if (beanList.size() > 0) {
                     intent = new Intent(SpoilsActivity.this, DeliveryActivity.class);
                     intent.putExtra("SpoilsBean", spoilsBean);
-                    startActivity(intent);
+                    startActivityForResult(intent, 110);
                 } else {
                     ToastUtil.show("请选择发货的商品!");
                 }
@@ -222,6 +222,13 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
         });
         mDialog.show();
 
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==110&&resultCode==2){
+            presenter.initQueryUserGoods(9,Constant.REFRESH);
+        }
     }
 }
