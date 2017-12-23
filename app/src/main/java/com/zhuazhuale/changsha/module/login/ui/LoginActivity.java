@@ -12,6 +12,7 @@ import com.zhuazhuale.changsha.module.home.Bean.LoginInfoBean;
 import com.zhuazhuale.changsha.module.home.ui.HomeActivity;
 import com.zhuazhuale.changsha.module.login.presenter.LoginPresenter;
 import com.zhuazhuale.changsha.util.CommonUtil;
+import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
@@ -30,8 +31,6 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     ImageView iv_login_check;
     private boolean isAgree = true;
 
-    private String APPID = "wx6a6349cd0ccf0b09";
-    private String secret = "5bd3f329e4df0d79c07181d4e2b9f072";
 
     private LoginPresenter loginPresenter;
 
@@ -83,7 +82,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleEvent(LoginEvent event) {
         String code = event.getCode();
-        loginPresenter.initWX(code, APPID, secret);
+        loginPresenter.initWX(code, Constant.APPID, Constant.secret);
     }
 
     @Override

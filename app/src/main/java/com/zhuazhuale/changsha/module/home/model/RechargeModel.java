@@ -9,7 +9,8 @@ import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
-/**充值页面
+/**
+ * 充值页面
  * Created by Administrator on 2017/12/12.
  */
 
@@ -62,6 +63,39 @@ public class RechargeModel {
     public void getAllPriceProduct(final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.GetAllPriceProduct)
                 .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e(response.toString());
+                        iCallListener.callSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e(response.toString());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+    }
+
+    /**
+     * 微信充值
+     *
+     * @param iCallListener
+     */
+    public void getWxUnifiedOrder( String productId, final ICallListener<String> iCallListener) {
+        OkGo.<String>post(Constant.WxUnifiedOrder)
+                .tag(this)
+                .params("userid", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("openid", MyApplication.getInstance().getRowsBean().getF_Code())
+                .params("productId", productId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

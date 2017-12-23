@@ -6,11 +6,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.AllPriceProductBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
+import com.zhuazhuale.changsha.module.home.Bean.WxUnifiedOrder;
 import com.zhuazhuale.changsha.module.home.adapter.RechargeAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.RechargePresenter;
+import com.zhuazhuale.changsha.util.Constant;
+import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
@@ -107,5 +113,43 @@ public class RechargeActivity extends AppBaseActivity implements View.OnClickLis
     public void showNoData() {
         getLoadLayout().setLayoutState(State.NO_DATA);
         dismissLoadingDialog();
+    }
+
+    /**
+     * 微信支付订单生成成功
+     *
+     * @param wxUnifiedOrder
+     */
+    @Override
+    public void showWxUnifiedOrder(WxUnifiedOrder wxUnifiedOrder) {
+        if (wxUnifiedOrder.getCode()==1){
+            payMonenyForWX(wxUnifiedOrder);
+        }else {
+            ToastUtil.show(wxUnifiedOrder.getInfo());
+        }
+    }
+
+    private void payMonenyForWX(WxUnifiedOrder wxUnifiedOrder) {
+        IWXAPI api= WXAPIFactory.createWXAPI(this, Constant.APPID);
+        api.registerApp(Constant.APPID);
+
+        PayReq payRequest=new PayReq();
+        payRequest.appId=Constant.APPID;
+
+    }
+
+    @Override
+    public void showFinish() {
+
+    }
+
+    /**
+     * 微信充值
+     *
+     * @param rowsBean
+     * @param position
+     */
+    public void rechargeCP(AllPriceProductBean.RowsBean rowsBean, int position) {
+        presenter.iniWxUnifiedOrder(rowsBean.getF_ID());
     }
 }

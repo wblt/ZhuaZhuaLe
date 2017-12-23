@@ -6,6 +6,7 @@ import com.zhuazhuale.changsha.module.home.Bean.AllPriceProductBean;
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
+import com.zhuazhuale.changsha.module.home.Bean.WxUnifiedOrder;
 import com.zhuazhuale.changsha.module.home.model.HomeModel;
 import com.zhuazhuale.changsha.module.home.model.RechargeModel;
 import com.zhuazhuale.changsha.module.home.ui.IHomeView;
@@ -74,6 +75,30 @@ public class RechargePresenter extends BasePresenter<IRechargeView> {
             public void onFinish() {
                 LogUtil.e("接口结束");
 
+            }
+        });
+    }
+
+    public void iniWxUnifiedOrder(String productId) {
+        rechargeModel.getWxUnifiedOrder(productId, new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(TAG, s);
+                Gson gson = new Gson();
+                WxUnifiedOrder wxUnifiedOrder = gson.fromJson(s, WxUnifiedOrder.class);
+                mIView.showWxUnifiedOrder(wxUnifiedOrder);
+
+            }
+
+            @Override
+            public void callFailed() {
+                mIView.showFailed();
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e(TAG, "接口结束");
+                mIView.showFinish();
             }
         });
     }

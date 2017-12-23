@@ -2,6 +2,7 @@ package com.zhuazhuale.changsha.module.home.ui;
 
 import com.zhuazhuale.changsha.module.home.Bean.AllPriceProductBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
+import com.zhuazhuale.changsha.module.home.Bean.WxUnifiedOrder;
 import com.zhuazhuale.changsha.presenter.iview.IBaseView;
 
 /**
@@ -17,4 +18,8 @@ public interface IRechargeView extends IBaseView {
     void showFailed();
 
     void showNoData();
+
+    void showWxUnifiedOrder(WxUnifiedOrder wxUnifiedOrder);
+
+    void showFinish();
 }

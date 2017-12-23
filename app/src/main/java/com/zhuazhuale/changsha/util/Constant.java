@@ -5,6 +5,8 @@ package com.zhuazhuale.changsha.util;
  */
 
 public class Constant {
+    public static String APPID = "wx6a6349cd0ccf0b09";
+    public static String secret = "5bd3f329e4df0d79c07181d4e2b9f072";
 
     //请求数据时的不同触发时机
     public static final int INIT = 3;//初始化数据
@@ -52,6 +54,8 @@ public class Constant {
     public static String Login = URL + "/api/Account/Login";
     //退出登录
     public static String LoginOut = URL + "/api/Account/LoginOut";
+    //微信充值
+    public static String WxUnifiedOrder = URL + "/api/Common/WxUnifiedOrder";
 
 
 }

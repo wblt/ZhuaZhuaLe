@@ -26,5 +26,6 @@ public interface BaseConstants {
     String F_VerCode = "f_vercode";
     String IsFirstLoGin = "isfirstlogin";
     String IsLogin = "islogin";
+    String OpenId = "OpenId";
 
 }

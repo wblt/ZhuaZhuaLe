@@ -13,6 +13,7 @@ import com.zhuazhuale.changsha.module.login.bean.WeiXinLoginGetUserinfoBean;
 import com.zhuazhuale.changsha.module.login.model.LoginModel;
 import com.zhuazhuale.changsha.module.login.ui.ILoginView;
 import com.zhuazhuale.changsha.presenter.base.BasePresenter;
+import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
 import java.lang.reflect.Type;
@@ -41,7 +42,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
     private void regToWx() {
         // 通过WXAPIFactory工厂,获得IWXAPI的实例
-        api = WXAPIFactory.createWXAPI((Context) mIView, "wx6a6349cd0ccf0b09", true);
+        api = WXAPIFactory.createWXAPI((Context) mIView, Constant.APPID, true);
         // 将应用的appid注册到微信
         api.registerApp("wx6a6349cd0ccf0b09");
     }
@@ -99,7 +100,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
         });
     }
 
-    private void waWaLeLogin(WeiXinLoginGetUserinfoBean bean) {
+    private void waWaLeLogin(final WeiXinLoginGetUserinfoBean bean) {
         loginModel.login(bean, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {

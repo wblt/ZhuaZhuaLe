@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.AllPriceProductBean;
+import com.zhuazhuale.changsha.module.home.ui.RechargeActivity;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.view.adapter.base.RecyclerBaseAdapter;
 import com.zhuazhuale.changsha.view.adapter.base.ViewHolder;
@@ -62,14 +63,13 @@ public class RechargeAdapter extends RecyclerBaseAdapter<AllPriceProductBean.Row
         }
         //initEvent
         //点击该项后，从数据表中删除，并且从界面中移除
-       /* holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CollectActivity mActivity = (CollectActivity) getContext();
-                mActivity.deleteCollect(rowsBean);
-                removeItem(position);
+                RechargeActivity mActivity = (RechargeActivity) getContext();
+                mActivity.rechargeCP(rowsBean,position);
             }
-        });*/
+        });
 
     }
 
