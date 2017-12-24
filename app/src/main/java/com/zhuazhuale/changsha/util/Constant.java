@@ -14,8 +14,8 @@ public class Constant {
     public static final int LOADMORE = 5;//加载更多数据
 
 
-    public static String URL = "http://106.14.192.166:8088";
-//    public static String URLGAME = "http://api2.crypfx.com:8899";
+//    public static String URL = "http://106.14.192.166:8088";
+    public static String URL = "http://api.zhuazhuale.com";
 //    public static String URLGAME = "http://api2.crypfx.com:8899";
     public static String URLGAME = "'http://106.14.192.166:8092";
 

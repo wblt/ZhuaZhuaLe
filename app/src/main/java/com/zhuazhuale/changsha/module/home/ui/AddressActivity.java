@@ -182,17 +182,26 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
 //                    getLoadLayout().setLayoutState(State.NO_DATA);
                     ToastUtil.show(addressBean.getInfo());
                 } else {
-                    getLoadLayout().setLayoutState(State.SUCCESS);
                     addressAdapter = new AddressAdapter(this, addressBean.getRows());
                     rv_address_list.setLayoutManager(new LinearLayoutManager(this));
                     rv_address_list.setHasFixedSize(false);
                     rv_address_list.setAdapter(addressAdapter);
+                    if (addressBean.getRows() == null || addressBean.getRows().size() == 0) {
+                        //设置页面为“没数据”状态
+                        getLoadLayout().setLayoutState(State.NO_DATA);
+
+                    } else {
+                        //设置页面为“成功”状态，显示正文布局
+                        getLoadLayout().setLayoutState(State.SUCCESS);
+                    }
                 }
                 break;
             case Constant.REFRESH:
                 if (addressBean.getCode() == 0) {
                     ToastUtil.show(addressBean.getInfo());
-                    addressAdapter.removeAll();
+                    if (addressAdapter!=null&&addressAdapter.getItemCount() > 0) {
+                        addressAdapter.removeAll();
+                    }
                 } else {
                     addressAdapter.replaceData(addressBean.getRows());
                 }

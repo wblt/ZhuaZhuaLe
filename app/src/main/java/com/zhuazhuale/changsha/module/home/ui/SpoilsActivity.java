@@ -139,6 +139,14 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
                     rv_spoils_list.setLayoutManager(new LinearLayoutManager(this));
                     rv_spoils_list.setHasFixedSize(false);
                     rv_spoils_list.setAdapter(addressAdapter);
+                    if (spoilsBean.getRows() == null || spoilsBean.getRows().size() == 0) {
+                        //设置页面为“没数据”状态
+                        getLoadLayout().setLayoutState(State.NO_DATA);
+
+                    } else {
+                        //设置页面为“成功”状态，显示正文布局
+                        getLoadLayout().setLayoutState(State.SUCCESS);
+                    }
                 }
                 break;
             case Constant.REFRESH:

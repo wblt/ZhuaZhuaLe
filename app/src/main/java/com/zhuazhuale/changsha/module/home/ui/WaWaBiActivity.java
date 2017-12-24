@@ -149,11 +149,18 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
                 if (0 == Bean.getCode()) {
                     getLoadLayout().setLayoutState(State.NO_DATA);
                 } else {
-                    //设置页面为“成功”状态，显示正文布局
-                    getLoadLayout().setLayoutState(State.SUCCESS);
+
                     adapter = new WaWaBiAdapter(this, Bean.getRows());
                     rv_wawabi_list.setLayoutManager(new LinearLayoutManager(this));
                     rv_wawabi_list.setAdapter(adapter);
+                    if (Bean.getRows() == null || Bean.getRows().size() == 0) {
+                        //设置页面为“没数据”状态
+                        getLoadLayout().setLayoutState(State.NO_DATA);
+
+                    } else {
+                        //设置页面为“成功”状态，显示正文布局
+                        getLoadLayout().setLayoutState(State.SUCCESS);
+                    }
                 }
 
                 break;
@@ -161,7 +168,10 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
                 mStart = 0;
                 rfv_wawabi_fresh.finishRefresh();
                 if (Bean.getCode() == 0) {
-                    adapter.removeAll();
+                    if (adapter.getItemCount() > 0) {
+                        adapter.removeAll();
+                    }
+                    getLoadLayout().setLayoutState(State.NO_DATA);
                     ToastUtil.show(Bean.getInfo());
                 } else {
                     adapter.replaceData(Bean.getRows());

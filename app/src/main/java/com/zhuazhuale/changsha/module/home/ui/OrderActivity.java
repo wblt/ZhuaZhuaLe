@@ -122,6 +122,14 @@ public class OrderActivity extends AppBaseActivity implements View.OnClickListen
                     rv_order_list.setLayoutManager(layoutManager);
                     rv_order_list.setHasFixedSize(false);
                     rv_order_list.setAdapter(addressAdapter);
+                    if (orderBean.getRows() == null || orderBean.getRows().size() == 0) {
+                        //设置页面为“没数据”状态
+                        getLoadLayout().setLayoutState(State.NO_DATA);
+
+                    } else {
+                        //设置页面为“成功”状态，显示正文布局
+                        getLoadLayout().setLayoutState(State.SUCCESS);
+                    }
                 }
                 break;
             case Constant.REFRESH:

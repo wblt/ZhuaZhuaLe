@@ -159,13 +159,26 @@ public class RecordActivity extends AppBaseActivity implements View.OnClickListe
                     adapter = new RecordAdapter(this, Bean.getRows());
                     rv_record_list.setLayoutManager(new LinearLayoutManager(this));
                     rv_record_list.setAdapter(adapter);
+                    if (Bean.getRows() == null || Bean.getRows().size() == 0) {
+                        //设置页面为“没数据”状态
+                        getLoadLayout().setLayoutState(State.NO_DATA);
+
+                    } else {
+                        //设置页面为“成功”状态，显示正文布局
+                        getLoadLayout().setLayoutState(State.SUCCESS);
+                    }
                 }
 
                 break;
             case Constant.REFRESH:
                 mStart = 0;
                 rfv_record_fresh.finishRefresh();
-                adapter.replaceData(Bean.getRows());
+                if (Bean.getCode()==0){
+                    getLoadLayout().setLayoutState(State.NO_DATA);
+                }else {
+                    adapter.replaceData(Bean.getRows());
+
+                }
                 break;
             case Constant.LOADMORE:
                 isLoadingMore = false;

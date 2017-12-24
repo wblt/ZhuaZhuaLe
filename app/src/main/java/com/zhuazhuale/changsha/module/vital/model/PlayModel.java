@@ -32,7 +32,7 @@ public class PlayModel {
      * @param iCallListener
      */
     public void getUpperGame(String vDeviceID, final ICallListener<String> iCallListener) {
-        OkGo.<String>post(Constant.LoginMain)
+        OkGo.<String>post(Constant.UpperGame)
                 .tag(this)
                 .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vDeviceID", vDeviceID)
