@@ -52,6 +52,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     ImageView iv_play_change;
     @BindView(R.id.tv_play_cp)
     TextView tv_play_cp;
+    @BindView(R.id.tv_play_bi)
+    TextView tv_play_bi;
 
     private DeviceGoodsBean.RowsBean rowsBean;
     private TXLivePlayer mLivePlayer1;
@@ -97,7 +99,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
         colorFilter = new ColorMatrixColorFilter(matrix);
         iv_play_startgame.setColorFilter(colorFilter);
-
+        tv_play_bi.setText(rowsBean.getF_Price() + "币 / 次");
     }
 
     private void creatTXLivePlayer2() {
@@ -141,6 +143,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         presenter = new PlayPresenter(this);
         //查询游戏币数量
         presenter.initNewCP();
+        //查询游戏的状态
+        presenter.initQueryGame(rowsBean.getF_ID());
     }
 
     /**
@@ -172,7 +176,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 case 1:
                     //空闲中,可以上机
                     isOpen = true;
-                    matrix.setSaturation(50);//饱和度 0灰色 100过度彩色，50正常
+                    matrix.setSaturation(1);//饱和度 0灰色 100过度彩色，50正常
                     colorFilter = new ColorMatrixColorFilter(matrix);
                     iv_play_startgame.setColorFilter(colorFilter);
                     break;
@@ -353,8 +357,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
             @Override
             public void onNetStatus(Bundle bundle) {
-//                ToastUtil.show(bundle.toString());
-                LogUtil.e(bundle.toString());
+//                LogUtil.e(bundle.toString());
             }
         });
     }
@@ -390,8 +393,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
             @Override
             public void onNetStatus(Bundle bundle) {
-//                ToastUtil.show(bundle.toString());
-                LogUtil.e(bundle.toString());
+//                LogUtil.e(bundle.toString());
             }
         });
     }

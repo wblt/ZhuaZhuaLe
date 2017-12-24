@@ -17,6 +17,7 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+
                 <com.tencent.rtmp.ui.TXCloudVideoView
                     android:id="@+id/video_view2"
                     android:layout_width="match_parent"
@@ -25,6 +26,7 @@
                     android:layout_marginLeft="32dp"
                     android:layout_marginRight="32dp"
                     android:visibility="gone" />
+
                 <com.tencent.rtmp.ui.TXCloudVideoView
                     android:id="@+id/video_view1"
                     android:layout_width="match_parent"
@@ -157,14 +159,31 @@
                             android:src="@mipmap/recharge_button_iphone" />
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/iv_play_startgame"
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="12dp"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:src="@mipmap/srartgame" />
+                        android:layout_gravity="center">
+
+                        <ImageView
+                            android:id="@+id/iv_play_startgame"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:src="@mipmap/srartgame" />
+
+
+                        <TextView
+                            android:id="@+id/tv_play_bi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:paddingTop="38dp"
+                            android:text="29币 / 次"
+                            android:textColor="@color/white"
+                            android:textSize="12dp" />
+                    </RelativeLayout>
+
 
                 </LinearLayout>
 

@@ -24,6 +24,9 @@ public interface BaseConstants {
     String F_CP = "f_cp";
     String F_Img = "f_img";
     String F_VerCode = "f_vercode";
+    String F_FxUrl = "f_fxurl";
+
+
     String IsFirstLoGin = "isfirstlogin";
     String IsLogin = "islogin";
     String OpenId = "OpenId";

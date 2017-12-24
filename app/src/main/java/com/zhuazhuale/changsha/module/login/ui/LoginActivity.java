@@ -53,6 +53,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         int F_CP = PreferenceUtil.getInt(this, BaseConstants.F_CP, 0);
         String F_Img = PreferenceUtil.getString(this, BaseConstants.F_Img, "");
         String F_VerCode = PreferenceUtil.getString(this, BaseConstants.F_VerCode, "");
+        String F_FxUrl = PreferenceUtil.getString(this, BaseConstants.F_FxUrl, "");
         LoginInfoBean.RowsBean rowsBean = new LoginInfoBean.RowsBean();
         rowsBean.setF_ID(F_ID);
         rowsBean.setF_Code(F_Code);
@@ -62,6 +63,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         rowsBean.setF_CP(F_CP);
         rowsBean.setF_Img(F_Img);
         rowsBean.setF_VerCode(F_VerCode);
+        rowsBean.setF_VerCode(F_FxUrl);
         // 保存在内存中
         MyApplication.getInstance().setRowsBean(rowsBean);
     }
@@ -158,6 +160,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
             PreferenceUtil.putInt(this, BaseConstants.F_CP, bean.getF_CP());
             PreferenceUtil.putString(this, BaseConstants.F_Img, bean.getF_Img());
             PreferenceUtil.putString(this, BaseConstants.F_VerCode, bean.getF_VerCode());
+            PreferenceUtil.putString(this, BaseConstants.F_FxUrl, bean.getF_FxUrl());
             PreferenceUtil.putBoolean(this, BaseConstants.IsLogin, true);
 
             MyApplication.getInstance().setRowsBean(infoBean.getRows());

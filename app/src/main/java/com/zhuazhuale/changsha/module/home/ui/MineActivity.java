@@ -48,9 +48,12 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
     TextView tv_mine_name;
     @BindView(R.id.tv_mine_yue)
     TextView tv_mine_yue;
+    @BindView(R.id.tv_mine_id)
+    TextView tv_mine_id;
 
     private Intent intent;
     private MinePresenter presenter;
+    private String id;
 
     @Override
     protected void setContentLayout() {
@@ -73,7 +76,13 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
         tv_zlp.setText("我的战利品");
         tv_dd.setText("我的订单");
         tv_dz.setText("我的地址");
-
+        if (MyApplication.getInstance().getRowsBean().getF_Code1() != null) {
+            // 邀请码
+            id = MyApplication.getInstance().getRowsBean().getF_Code1();
+        } else {
+            id = "";
+        }
+        tv_mine_id.setText(id);
     }
 
     @Override
@@ -88,7 +97,7 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
     public void handleEvent(CPfreshEvent event) {
         String code = event.getCPisFresh();
         LogUtil.e(code);
-        if ("刷新".equals(code)){
+        if ("刷新".equals(code)) {
             presenter.initNewCP();
         }
 

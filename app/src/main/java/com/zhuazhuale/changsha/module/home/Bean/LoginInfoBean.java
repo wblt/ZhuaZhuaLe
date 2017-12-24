@@ -7,10 +7,11 @@ package com.zhuazhuale.changsha.module.home.Bean;
 
 public class LoginInfoBean {
 
+
     /**
      * Code : 1
      * Info : 登陆成功
-     * rows : {"F_ID":"d734b0cc-721d-4430-b153-596acfaed97f","F_Code":"o_IiX0a1M19WwcnTWMv-KoglIzBc","F_Code1":null,"F_Code2":null,"F_Name":"测试账号","F_CP":10000,"F_Img":"http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIWocVuO317VKlQK4WV3NlRVoFJMbibCNLADWQLIcjWP1GRyjSFCT8m1gSkNKGnibpjvfTicibgLrOedg/0","F_VerCode":"0"}
+     * rows : {"F_ID":"9b4e05e2-0ddd-4c2f-abba-52ae7abc99a1","F_Code":"o_IiX0bFs7-LJ6-tWtttT-DCuN1o","F_Code1":"582818","F_Code2":"582818","F_Name":"丁琪","F_CP":17,"F_Img":"http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLlT5FfCicL6zyBzNbY3BpRwTkIkXvlUQfmcucKcX8vW5D9icGlKNH6kWh5S7me6ZcKfssmQLGFuNeA/0","F_VerCode":"0","F_Version":"1.0","F_FxUrl":"http://www.zhuazhuale.com/fx.html"}
      * PageCount : 0
      * total : 0
      */
@@ -63,14 +64,16 @@ public class LoginInfoBean {
 
     public static class RowsBean {
         /**
-         * F_ID : d734b0cc-721d-4430-b153-596acfaed97f
-         * F_Code : o_IiX0a1M19WwcnTWMv-KoglIzBc
-         * F_Code1 : null
-         * F_Code2 : null
-         * F_Name : 测试账号
-         * F_CP : 10000
-         * F_Img : http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIWocVuO317VKlQK4WV3NlRVoFJMbibCNLADWQLIcjWP1GRyjSFCT8m1gSkNKGnibpjvfTicibgLrOedg/0
+         * F_ID : 9b4e05e2-0ddd-4c2f-abba-52ae7abc99a1
+         * F_Code : o_IiX0bFs7-LJ6-tWtttT-DCuN1o
+         * F_Code1 : 582818
+         * F_Code2 : 582818
+         * F_Name : 丁琪
+         * F_CP : 17
+         * F_Img : http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLlT5FfCicL6zyBzNbY3BpRwTkIkXvlUQfmcucKcX8vW5D9icGlKNH6kWh5S7me6ZcKfssmQLGFuNeA/0
          * F_VerCode : 0
+         * F_Version : 1.0
+         * F_FxUrl : http://www.zhuazhuale.com/fx.html
          */
 
         private String F_ID;
@@ -81,20 +84,8 @@ public class LoginInfoBean {
         private int F_CP;
         private String F_Img;
         private String F_VerCode;
-
-        public RowsBean() {
-        }
-
-        public RowsBean(String f_ID, String f_Code, String f_Code1, String f_Code2, String f_Name, int f_CP, String f_Img, String f_VerCode) {
-            F_ID = f_ID;
-            F_Code = f_Code;
-            F_Code1 = f_Code1;
-            F_Code2 = f_Code2;
-            F_Name = f_Name;
-            F_CP = f_CP;
-            F_Img = f_Img;
-            F_VerCode = f_VerCode;
-        }
+        private String F_Version;
+        private String F_FxUrl;
 
         public String getF_ID() {
             return F_ID;
@@ -158,6 +149,22 @@ public class LoginInfoBean {
 
         public void setF_VerCode(String F_VerCode) {
             this.F_VerCode = F_VerCode;
+        }
+
+        public String getF_Version() {
+            return F_Version;
+        }
+
+        public void setF_Version(String F_Version) {
+            this.F_Version = F_Version;
+        }
+
+        public String getF_FxUrl() {
+            return F_FxUrl;
+        }
+
+        public void setF_FxUrl(String F_FxUrl) {
+            this.F_FxUrl = F_FxUrl;
         }
     }
 }
