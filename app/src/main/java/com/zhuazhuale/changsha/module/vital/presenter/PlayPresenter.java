@@ -3,6 +3,7 @@ package com.zhuazhuale.changsha.module.vital.presenter;
 import com.google.gson.Gson;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
+import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
 import com.zhuazhuale.changsha.module.home.model.MineModel;
 import com.zhuazhuale.changsha.module.home.ui.IMineView;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
@@ -24,6 +25,60 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
     public PlayPresenter(IPlayView view) {
         super(view);
         playModel = PlayModel.getInstance();
+    }
+
+    /**
+     * 查询游戏币
+     */
+    public void initNewCP() {
+        playModel.getNewCP(new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(TAG, s);
+                Gson gson = new Gson();
+                NewCPBean newCPBean = gson.fromJson(s, NewCPBean.class);
+                mIView.showNewCP(newCPBean);
+            }
+
+            @Override
+            public void callFailed() {
+                mIView.showFailed();
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e(TAG, "接口结束");
+                mIView.showFinish();
+            }
+        });
+    }
+
+    /**
+     * 查询机器的状态
+     *
+     * @param vDeviceID
+     */
+    public void initQueryGame(String vDeviceID) {
+        playModel.getQueryGame(vDeviceID, new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(TAG, s);
+                Gson gson = new Gson();
+                QueryGameBean queryGameBean = gson.fromJson(s, QueryGameBean.class);
+                mIView.showQueryGame(queryGameBean);
+            }
+
+            @Override
+            public void callFailed() {
+                mIView.showFailed();
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e(TAG, "接口结束");
+                mIView.showFinish();
+            }
+        });
     }
 
     /**
