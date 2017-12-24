@@ -154,6 +154,9 @@ public class AddressModel {
 }
      */
     public void getModifyUserGoods(List<String> vF_ID, final ICallListener<String> iCallListener) {
+        for (String s:vF_ID){
+            LogUtil.e("商品编号:  "+s);
+        }
         OkGo.<String>post(Constant.ModifyUserGoods)
                 .tag(this)
                 .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())

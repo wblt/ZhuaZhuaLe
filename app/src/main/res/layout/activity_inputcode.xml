@@ -31,6 +31,7 @@
         android:textSize="14dp" />
 
     <ImageView
+        android:background="?android:attr/selectableItemBackground"
         android:id="@+id/iv_inputcode_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

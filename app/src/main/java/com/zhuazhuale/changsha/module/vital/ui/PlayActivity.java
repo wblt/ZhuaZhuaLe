@@ -3,6 +3,8 @@ package com.zhuazhuale.changsha.module.vital.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.tencent.rtmp.ITXLivePlayListener;
 import com.tencent.rtmp.TXLiveConstants;
@@ -10,9 +12,14 @@ import com.tencent.rtmp.TXLivePlayer;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
+import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
+import com.zhuazhuale.changsha.module.vital.presenter.PlayPresenter;
+import com.zhuazhuale.changsha.util.AnimationUtils;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+
+import butterknife.BindView;
 
 /**
  * 游戏页面
@@ -20,11 +27,26 @@ import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
  */
 
 public class PlayActivity extends AppBaseActivity implements View.OnClickListener, IPlayView {
-
+    @BindView(R.id.iv_play_startgame)
+    ImageView iv_play_startgame;
+    @BindView(R.id.iv_play_up)
+    ImageView iv_play_up;
+    @BindView(R.id.iv_play_left)
+    ImageView iv_play_left;
+    @BindView(R.id.iv_play_right)
+    ImageView iv_play_right;
+    @BindView(R.id.iv_play_down)
+    ImageView iv_play_down;
+    @BindView(R.id.ll_play_caozuo)
+    LinearLayout ll_play_caozuo;
+    @BindView(R.id.iv_play_catch)
+    ImageView iv_play_catch;
 
     private DeviceGoodsBean.RowsBean rowsBean;
     private TXLivePlayer mLivePlayer;
     private TXCloudVideoView mView;
+    private PlayPresenter presenter;
+    private StartGameBean.RowsBean gameBeanRows;
 
     @Override
     protected void setContentLayout() {
@@ -57,7 +79,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     @Override
     protected void obtainData() {
-
+        presenter = new PlayPresenter(this);
     }
 
     @Override
@@ -89,10 +111,39 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 LogUtil.e(bundle.toString());
             }
         });
+        iv_play_startgame.setOnClickListener(this);
+        iv_play_up.setOnClickListener(this);
+        iv_play_left.setOnClickListener(this);
+        iv_play_right.setOnClickListener(this);
+        iv_play_down.setOnClickListener(this);
+        iv_play_catch.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_play_startgame:
+//                showLoadingDialog();
+//                AnimationUtils.addTouchDrak(iv_play_startgame,true);
+                presenter.initUpperGame(rowsBean.getF_DeviceNo());
+
+                break;
+            case R.id.iv_play_up:
+                presenter.initControlGame(rowsBean.getF_DeviceNo(), "1",gameBeanRows.getToken(), gameBeanRows.getTimestamp() + "");
+                break;
+            case R.id.iv_play_down:
+                presenter.initControlGame(rowsBean.getF_DeviceNo(), "2",gameBeanRows.getToken(), gameBeanRows.getTimestamp() + "");
+                break;
+            case R.id.iv_play_left:
+                presenter.initControlGame(rowsBean.getF_DeviceNo(), "3", gameBeanRows.getToken(),gameBeanRows.getTimestamp() + "");
+                break;
+            case R.id.iv_play_right:
+                presenter.initControlGame(rowsBean.getF_DeviceNo(), "4", gameBeanRows.getToken(),gameBeanRows.getTimestamp() + "");
+                break;
+            case R.id.iv_play_catch:
+                presenter.initControlGame(rowsBean.getF_DeviceNo(), "5", gameBeanRows.getToken(),gameBeanRows.getTimestamp() + "");
+                break;
+        }
 
     }
 
@@ -101,5 +152,34 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         super.onDestroy();
         mLivePlayer.stopPlay(true); // true代表清除最后一帧画面
         mView.onDestroy();
+    }
+
+    @Override
+    public void showStartGame(StartGameBean gameBean) {
+        gameBeanRows = gameBean.getRows();
+        switch (gameBean.getCode()) {
+            case 1://成功
+                ll_play_caozuo.setVisibility(View.VISIBLE);
+//                ll_play_caozuo.setVisibility(View.GONE);
+                iv_play_catch.setVisibility(View.VISIBLE);
+                break;
+            case 0://失败
+                ToastUtil.show(gameBean.getInfo());
+                break;
+            case -9999://当前有用户正在游戏
+                ToastUtil.show(gameBean.getInfo());
+                break;
+        }
+
+    }
+
+    @Override
+    public void showFailed() {
+        ToastUtil.show("游戏失败,请检查网络!");
+    }
+
+    @Override
+    public void showFinish() {
+        dismissLoadingDialog();
     }
 }

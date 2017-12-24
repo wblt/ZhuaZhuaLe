@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.vital.ui;
 
+import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
 import com.zhuazhuale.changsha.presenter.iview.IBaseView;
 
 /**
@@ -8,4 +9,8 @@ import com.zhuazhuale.changsha.presenter.iview.IBaseView;
  */
 
 public interface IPlayView extends IBaseView{
+    void showStartGame(StartGameBean gameBean);
+    void showFailed();
+    void showFinish();
+
 }

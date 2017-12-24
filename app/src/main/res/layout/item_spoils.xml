@@ -50,6 +50,7 @@
                 android:textSize="14dp" />
 
             <TextView
+                android:foreground="?android:attr/selectableItemBackground"
                 android:id="@+id/tv_item_spoils_dh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

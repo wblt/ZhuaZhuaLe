@@ -117,6 +117,7 @@
 
 
     <TextView
+        android:foreground="?android:attr/selectableItemBackground"
         android:id="@+id/tv_edit_address_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

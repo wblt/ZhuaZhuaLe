@@ -79,6 +79,7 @@
                 android:textSize="14dp" />
 
             <ImageView
+                android:foreground="?android:attr/selectableItemBackground"
                 android:id="@+id/iv_record_details_watch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -138,6 +139,7 @@
             android:text="游戏过程中遇到任何问题请点击申诉按钮反馈" />
 
         <TextView
+            android:foreground="?android:attr/selectableItemBackground"
             android:id="@+id/tv_record_details_shensu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
