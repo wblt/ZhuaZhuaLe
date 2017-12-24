@@ -182,7 +182,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 break;
         }
         ToastUtil.show("登录失败,请检查网络!");
-
+        dismissLoadingDialog();
     }
 
     @Override
