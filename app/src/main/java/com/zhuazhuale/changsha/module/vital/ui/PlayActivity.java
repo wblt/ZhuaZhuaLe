@@ -57,6 +57,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private TXCloudVideoView mView2;
     private TXCloudVideoView mView1;
     private boolean isFirst = true;
+    //  FORWARD BACKWARD LEFT  RIGHT
+    private String up = "FORWARD";
+    private String down = "BACKWARD";
+    private String left = "LEFT";
+    private String right = "RIGHT";
 
     @Override
     protected void setContentLayout() {
@@ -93,6 +98,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         mLivePlayer2.stopPlay(true);
         mLivePlayer2.enableHardwareDecode(true);
         mLivePlayer2.startPlay(url2, TXLivePlayer.PLAY_TYPE_LIVE_RTMP); //推荐FLV
+        //监听第二个直播流拉流事件
+        playerListen2();
     }
 
     /**
@@ -120,13 +127,30 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     @Override
     protected void initEvent() {
+        //监听第一个直播流拉流事件
+        playerListen1();
+
+
+        iv_play_startgame.setOnClickListener(this);
+        iv_play_up.setOnClickListener(this);
+        iv_play_left.setOnClickListener(this);
+        iv_play_right.setOnClickListener(this);
+        iv_play_down.setOnClickListener(this);
+        iv_play_catch.setOnClickListener(this);
+        iv_play_change.setOnClickListener(this);
+    }
+
+
+    /**
+     * 监听第一个直播流拉流事件
+     */
+    private void playerListen1() {
         mLivePlayer1.setPlayListener(new ITXLivePlayListener() {
             @Override
             public void onPlayEvent(int i, Bundle bundle) {
                 LogUtil.e("       i   " + i + "        bundle  " + bundle.toString());
                 switch (i) {
                     case 2004:
-                        iv_play_change.setClickable(true);
                         ToastUtil.show("欢迎进入游戏间");
                         dismissLoadingDialog();
                         break;
@@ -135,7 +159,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                             creatTXLivePlayer2();
                             isFirst = false;
                         }
-                        iv_play_change.setClickable(true);
                         ToastUtil.show("欢迎进入游戏间");
                         dismissLoadingDialog();
                         break;
@@ -153,13 +176,43 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 LogUtil.e(bundle.toString());
             }
         });
-        iv_play_startgame.setOnClickListener(this);
-        iv_play_up.setOnClickListener(this);
-        iv_play_left.setOnClickListener(this);
-        iv_play_right.setOnClickListener(this);
-        iv_play_down.setOnClickListener(this);
-        iv_play_catch.setOnClickListener(this);
-        iv_play_change.setOnClickListener(this);
+    }
+
+    /**
+     * 监听第二个直播流拉流事件
+     */
+    private void playerListen2() {
+        mLivePlayer2.setPlayListener(new ITXLivePlayListener() {
+            @Override
+            public void onPlayEvent(int i, Bundle bundle) {
+                LogUtil.e("       i   " + i + "        bundle  " + bundle.toString());
+                switch (i) {
+                    case 2004:
+                        iv_play_change.setClickable(true);
+                        dismissLoadingDialog();
+                        break;
+                    case 2002:
+                        if (isFirst) {
+                            creatTXLivePlayer2();
+                            isFirst = false;
+                        }
+                        iv_play_change.setClickable(true);
+                        dismissLoadingDialog();
+                        break;
+                    case 2007:
+                        ToastUtil.show("有点延迟...");
+                        showLoadingDialog();
+                        break;
+
+                }
+            }
+
+            @Override
+            public void onNetStatus(Bundle bundle) {
+//                ToastUtil.show(bundle.toString());
+                LogUtil.e(bundle.toString());
+            }
+        });
     }
 
     @Override
@@ -170,20 +223,19 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 ll_play_caozuo.setVisibility(View.VISIBLE);
                 //                showLoadingDialog();
 //                AnimationUtils.addTouchDrak(iv_play_startgame,true);
-                presenter.initUpperGame(rowsBean.getF_DeviceNo());
+                presenter.initUpperGame(rowsBean.getF_ID());
                 break;
             case R.id.iv_play_up:
-                ControlGame("FORWARD");
+                ControlGame(up);
                 break;
             case R.id.iv_play_down:
-                ControlGame("BACKWARD");
+                ControlGame(down);
                 break;
             case R.id.iv_play_left:
-                ControlGame("RIGHT");
-
+                ControlGame(left);
                 break;
             case R.id.iv_play_right:
-                ControlGame("LEFT");
+                ControlGame(right);
                 break;
             case R.id.iv_play_catch:
                 ControlGame("DOWN");
@@ -194,11 +246,22 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                     isURL = false;
                     mView1.setVisibility(View.VISIBLE);
                     mView2.setVisibility(View.GONE);
+                    //  FORWARD BACKWARD LEFT  RIGHT
+                    //改变方向
+                    up = "FORWARD";
+                    down = "BACKWARD";
+                    left = "LEFT";
+                    right = "RIGHT";
                 } else {
                     ToastUtil.show("false");
                     isURL = true;
                     mView1.setVisibility(View.GONE);
                     mView2.setVisibility(View.VISIBLE);
+                    //改变方向
+                    up = "LEFT";
+                    down = "RIGHT";
+                    left = "BACKWARD";
+                    right = "FORWARD";
                 }
                 break;
         }
@@ -212,7 +275,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      */
     private void ControlGame(String forward) {
         if (isPlay) {
-            presenter.initControlGame(rowsBean.getF_DeviceNo(), forward, gameBeanRows.getToken(), gameBeanRows.getTimestamp() + "");
+            presenter.initControlGame(rowsBean.getF_ID(), forward, gameBeanRows.getToken(), gameBeanRows.getTimestamp() + "");
         }
 
     }

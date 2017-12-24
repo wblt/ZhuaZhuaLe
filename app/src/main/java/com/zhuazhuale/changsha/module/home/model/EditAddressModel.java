@@ -30,6 +30,9 @@ public class EditAddressModel {
      * @param iCallListener
      */
     public void getModifyUserAddress(String address, String name, String ID, String phone, final ICallListener<String> iCallListener) {
+        if (ID.isEmpty()) {
+            ID = "";
+        }
         OkGo.<String>post(Constant.ModifyUserAddress)
                 .tag(this)
                 .params("F_ID", ID)

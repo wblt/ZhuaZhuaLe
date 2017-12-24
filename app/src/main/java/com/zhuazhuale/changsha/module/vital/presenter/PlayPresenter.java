@@ -26,6 +26,11 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
         playModel = PlayModel.getInstance();
     }
 
+    /**
+     * 游戏上机
+     *
+     * @param vDeviceID
+     */
     public void initUpperGame(String vDeviceID) {
         playModel.getUpperGame(vDeviceID, new ICallListener<String>() {
             @Override
@@ -49,8 +54,8 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
         });
     }
 
-    public void initControlGame(String vDeviceID, String vAction,String vToken, String timeStamp) {
-        playModel.getControlGame(vDeviceID, vAction, vToken,timeStamp, new ICallListener<String>() {
+    public void initControlGame(String vDeviceID, String vAction, String vToken, String timeStamp) {
+        playModel.getControlGame(vDeviceID, vAction, vToken, timeStamp, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);

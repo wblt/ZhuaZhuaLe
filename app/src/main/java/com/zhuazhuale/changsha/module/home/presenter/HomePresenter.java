@@ -48,7 +48,7 @@ public class HomePresenter extends BasePresenter<IHomeView> {
 
             }
         });
-//        login();
+        login();
 
     }
 

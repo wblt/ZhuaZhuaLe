@@ -27,6 +27,69 @@ public class PlayModel {
     }
 
     /**
+     * 获取账户余额信息
+     *
+     * @param iCallListener
+     */
+    public void getNewCP(final ICallListener<String> iCallListener) {
+        OkGo.<String>post(Constant.GetNewCP)
+                .tag(this)
+                .params("vF_ID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e("请求成功" + response.body());
+                        iCallListener.callSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e("请求失败" + response.toString());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+    }
+
+    /**
+     * 查询游戏机的状态
+     *
+     * @param vDeviceID
+     * @param iCallListener
+     */
+    public void getQueryGame(String vDeviceID, final ICallListener<String> iCallListener) {
+        OkGo.<String>post(Constant.QueryGame)
+                .tag(this)
+                .params("vDeviceID", vDeviceID)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e("请求成功" + response.body());
+                        iCallListener.callSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e("请求失败" + response.toString());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+    }
+
+    /**
      * 游戏上机
      *
      * @param iCallListener
@@ -71,7 +134,7 @@ public class PlayModel {
      * @param timeStamp
      * @param iCallListener
      */
-    public void getControlGame(String vDeviceID, String vAction,String vToken, String timeStamp, final ICallListener<String> iCallListener) {
+    public void getControlGame(String vDeviceID, String vAction, String vToken, String timeStamp, final ICallListener<String> iCallListener) {
 
         OkGo.<String>post(Constant.ControlGame)
                 .tag(this)
