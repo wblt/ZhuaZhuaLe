@@ -42,41 +42,75 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     ImageView iv_play_catch;
     @BindView(R.id.ll_play_open)
     LinearLayout ll_play_open;
+    @BindView(R.id.iv_play_change)
+    ImageView iv_play_change;
 
     private DeviceGoodsBean.RowsBean rowsBean;
-    private TXLivePlayer mLivePlayer;
-    private TXCloudVideoView mView;
+    private TXLivePlayer mLivePlayer1;
     private PlayPresenter presenter;
     private StartGameBean.RowsBean gameBeanRows;
     private boolean isPlay = false;
+    private String url1;
+    private String url2;
+    private TXLivePlayer mLivePlayer2;
+    private boolean isURL = false;
+    private TXCloudVideoView mView2;
+    private TXCloudVideoView mView1;
+    private boolean isFirst = true;
 
     @Override
     protected void setContentLayout() {
         setContentView(R.layout.activity_play);
         Intent intent = getIntent();
         rowsBean = (DeviceGoodsBean.RowsBean) intent.getSerializableExtra("DeviceGoods");
+        url1 = rowsBean.getF_Camera1();
+        url2 = rowsBean.getF_Camera2();
     }
 
     @Override
     protected void initView() {
         showLoadingDialog();
         //mPlayerView即step1中添加的界面view
-        mView = (TXCloudVideoView) findViewById(R.id.video_view);
+        mView1 = (TXCloudVideoView) findViewById(R.id.video_view1);
+        mView2 = (TXCloudVideoView) findViewById(R.id.video_view2);
+        mView2.setVisibility(View.GONE);
+        creatTXLivePlayer1();
+
+
+    }
+
+    private void creatTXLivePlayer2() {
 
         //创建player对象 setRenderMode
-        mLivePlayer = new TXLivePlayer(getContext());
+        mLivePlayer2 = new TXLivePlayer(getContext());
         //将图像等比例缩放，适配最长边，缩放后的宽和高都不会超过显示区域，居中显示，画面可能会留有黑边。
 //        mLivePlayer.setRenderMode(TXLiveConstants.RENDER_MODE_ADJUST_RESOLUTION;);
-        mLivePlayer.setRenderMode(TXLiveConstants.RENDER_MODE_FULL_FILL_SCREEN);//填充
-        mLivePlayer.setRenderRotation(TXLiveConstants.RENDER_ROTATION_LANDSCAPE);
+        mLivePlayer2.setRenderMode(TXLiveConstants.RENDER_MODE_FULL_FILL_SCREEN);//填充
+        mLivePlayer2.setRenderRotation(TXLiveConstants.RENDER_ROTATION_LANDSCAPE);
         //关键player对象与界面view
-        mLivePlayer.setPlayerView(mView);
+        mLivePlayer2.setPlayerView(mView2);
         //软解和硬解的切换需要在切换之前先stopPlay，切换之后再startPlay，否则会产生比较严重的花屏问题。
-        mLivePlayer.stopPlay(true);
-        mLivePlayer.enableHardwareDecode(true);
-        mLivePlayer.startPlay(rowsBean.getF_Camera1(), TXLivePlayer.PLAY_TYPE_LIVE_RTMP); //推荐FLV
+        mLivePlayer2.stopPlay(true);
+        mLivePlayer2.enableHardwareDecode(true);
+        mLivePlayer2.startPlay(url2, TXLivePlayer.PLAY_TYPE_LIVE_RTMP); //推荐FLV
+    }
 
-
+    /**
+     * 创建直播视频
+     */
+    private void creatTXLivePlayer1() {
+        //创建player对象 setRenderMode
+        mLivePlayer1 = new TXLivePlayer(getContext());
+        //将图像等比例缩放，适配最长边，缩放后的宽和高都不会超过显示区域，居中显示，画面可能会留有黑边。
+//        mLivePlayer.setRenderMode(TXLiveConstants.RENDER_MODE_ADJUST_RESOLUTION;);
+        mLivePlayer1.setRenderMode(TXLiveConstants.RENDER_MODE_FULL_FILL_SCREEN);//填充
+        mLivePlayer1.setRenderRotation(TXLiveConstants.RENDER_ROTATION_LANDSCAPE);
+        //关键player对象与界面view
+        mLivePlayer1.setPlayerView(mView1);
+        //软解和硬解的切换需要在切换之前先stopPlay，切换之后再startPlay，否则会产生比较严重的花屏问题。
+        mLivePlayer1.stopPlay(true);
+        mLivePlayer1.enableHardwareDecode(true);
+        mLivePlayer1.startPlay(url1, TXLivePlayer.PLAY_TYPE_LIVE_RTMP); //推荐FLV
     }
 
     @Override
@@ -86,16 +120,22 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     @Override
     protected void initEvent() {
-        mLivePlayer.setPlayListener(new ITXLivePlayListener() {
+        mLivePlayer1.setPlayListener(new ITXLivePlayListener() {
             @Override
             public void onPlayEvent(int i, Bundle bundle) {
                 LogUtil.e("       i   " + i + "        bundle  " + bundle.toString());
                 switch (i) {
                     case 2004:
+                        iv_play_change.setClickable(true);
                         ToastUtil.show("欢迎进入游戏间");
                         dismissLoadingDialog();
                         break;
                     case 2002:
+                        if (isFirst) {
+                            creatTXLivePlayer2();
+                            isFirst = false;
+                        }
+                        iv_play_change.setClickable(true);
                         ToastUtil.show("欢迎进入游戏间");
                         dismissLoadingDialog();
                         break;
@@ -119,6 +159,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         iv_play_right.setOnClickListener(this);
         iv_play_down.setOnClickListener(this);
         iv_play_catch.setOnClickListener(this);
+        iv_play_change.setOnClickListener(this);
     }
 
     @Override
@@ -127,7 +168,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             case R.id.iv_play_startgame:
                 ll_play_open.setVisibility(View.GONE);
                 ll_play_caozuo.setVisibility(View.VISIBLE);
-    //                showLoadingDialog();
+                //                showLoadingDialog();
 //                AnimationUtils.addTouchDrak(iv_play_startgame,true);
                 presenter.initUpperGame(rowsBean.getF_DeviceNo());
                 break;
@@ -146,6 +187,19 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 break;
             case R.id.iv_play_catch:
                 ControlGame("DOWN");
+                break;
+            case R.id.iv_play_change:
+                if (isURL) {
+                    ToastUtil.show("true");
+                    isURL = false;
+                    mView1.setVisibility(View.VISIBLE);
+                    mView2.setVisibility(View.GONE);
+                } else {
+                    ToastUtil.show("false");
+                    isURL = true;
+                    mView1.setVisibility(View.GONE);
+                    mView2.setVisibility(View.VISIBLE);
+                }
                 break;
         }
 
@@ -166,8 +220,10 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mLivePlayer.stopPlay(true); // true代表清除最后一帧画面
-        mView.onDestroy();
+        mLivePlayer1.stopPlay(true); // true代表清除最后一帧画面
+        mLivePlayer2.stopPlay(true); // true代表清除最后一帧画面
+        mView1.onDestroy();
+        mView2.onDestroy();
     }
 
     @Override

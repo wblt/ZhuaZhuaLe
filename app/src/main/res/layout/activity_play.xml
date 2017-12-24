@@ -14,22 +14,37 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.tencent.rtmp.ui.TXCloudVideoView
-                android:id="@+id/video_view"
-                android:layout_width="match_parent"
-                android:layout_height="500dp"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:visibility="visible" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <com.tencent.rtmp.ui.TXCloudVideoView
+                    android:id="@+id/video_view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="32dp"
+                    android:visibility="gone" />
+                <com.tencent.rtmp.ui.TXCloudVideoView
+                    android:id="@+id/video_view1"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="32dp"
+                    android:visibility="invisible" />
+
+
+            </RelativeLayout>
+
 
             <RelativeLayout
-                android:paddingTop="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="14dp"
                 android:paddingLeft="14dp"
-                android:paddingRight="14dp">
+                android:paddingRight="14dp"
+                android:paddingTop="4dp">
 
                 <LinearLayout
                     android:id="@+id/ll_play_caozuo"
@@ -94,8 +109,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:foreground="?android:attr/selectableItemBackground"
-                            android:src="@mipmap/zhua"
-                            />
+                            android:src="@mipmap/zhua" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -139,6 +153,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="40dp"
+                            android:foreground="?android:attr/selectableItemBackground"
                             android:src="@mipmap/recharge_button_iphone" />
                     </LinearLayout>
 
@@ -154,11 +169,13 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="12dp"
+                    android:id="@+id/iv_play_change"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="16dp"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:src="@mipmap/changephoto" />
 
             </RelativeLayout>
