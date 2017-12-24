@@ -117,8 +117,8 @@ public class OrderActivity extends AppBaseActivity implements View.OnClickListen
                     getLoadLayout().setLayoutState(State.SUCCESS);
                     addressAdapter = new OrderAdapter(this, orderBean.getRows());
                     LinearLayoutManager layoutManager=new LinearLayoutManager(this);
-                    layoutManager.setStackFromEnd(true);//列表再底部开始展示，反转后由上面开始展示
-                    layoutManager.setReverseLayout(true);//列表翻转
+                   /* layoutManager.setStackFromEnd(true);//列表再底部开始展示，反转后由上面开始展示
+                    layoutManager.setReverseLayout(true);//列表翻转*/
                     rv_order_list.setLayoutManager(layoutManager);
                     rv_order_list.setHasFixedSize(false);
                     rv_order_list.setAdapter(addressAdapter);

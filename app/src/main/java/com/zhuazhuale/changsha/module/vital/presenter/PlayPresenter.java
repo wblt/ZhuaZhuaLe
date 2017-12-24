@@ -6,6 +6,7 @@ import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
 import com.zhuazhuale.changsha.module.home.model.MineModel;
 import com.zhuazhuale.changsha.module.home.ui.IMineView;
+import com.zhuazhuale.changsha.module.vital.bean.ControlGameBean;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
 import com.zhuazhuale.changsha.module.vital.model.PlayModel;
 import com.zhuazhuale.changsha.module.vital.ui.IPlayView;
@@ -48,7 +49,7 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             @Override
             public void onFinish() {
                 LogUtil.e(TAG, "接口结束");
-                mIView.showFinish();
+//                mIView.showFinish();
             }
         });
     }
@@ -76,7 +77,7 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             @Override
             public void onFinish() {
                 LogUtil.e(TAG, "接口结束");
-                mIView.showFinish();
+//                mIView.showFinish();
             }
         });
     }
@@ -109,13 +110,21 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
         });
     }
 
+    /**
+     * 操作游戏
+     * @param vDeviceID
+     * @param vAction
+     * @param vToken
+     * @param timeStamp
+     */
     public void initControlGame(String vDeviceID, String vAction, String vToken, String timeStamp) {
         playModel.getControlGame(vDeviceID, vAction, vToken, timeStamp, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
                 Gson gson = new Gson();
-//                NewCPBean newCPBean = gson.fromJson(s, NewCPBean.class);
+                ControlGameBean controlGameBean = gson.fromJson(s, ControlGameBean.class);
+                mIView.showControlGame(controlGameBean);
             }
 
             @Override

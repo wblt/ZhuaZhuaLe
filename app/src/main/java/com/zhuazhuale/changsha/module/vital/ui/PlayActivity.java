@@ -18,6 +18,7 @@ import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
+import com.zhuazhuale.changsha.module.vital.bean.ControlGameBean;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
 import com.zhuazhuale.changsha.module.vital.presenter.PlayPresenter;
 import com.zhuazhuale.changsha.util.ToastUtil;
@@ -161,6 +162,16 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             ToastUtil.show(newCPBean.getInfo());
             tv_play_cp.setText(newCP);
         }
+    }
+
+    /**
+     * 操作返回的数据
+     *
+     * @param controlGameBean
+     */
+    @Override
+    public void showControlGame(ControlGameBean controlGameBean) {
+
     }
 
     /**

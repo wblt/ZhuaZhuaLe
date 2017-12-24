@@ -86,6 +86,13 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
     protected void initEvent() {
         iv_invite_fxyqm.setOnClickListener(this);
         iv_invite_ss.setOnClickListener(this);
+        getTvToolbarRight().setText("获取奖励");
+        getTvToolbarRight().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), InputCodeActivity.class));
+            }
+        });
     }
 
     @Override
@@ -95,7 +102,7 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
                 //分享
                 Intent intent1 = new Intent(Intent.ACTION_SEND);
 //                intent1.putExtra(Intent.EXTRA_TEXT, "快来和我一起玩 抓抓乐,输入邀请码:" + code + "  马上送你88个游戏币!");
-                intent1.putExtra(Intent.EXTRA_TEXT, "亲，欢迎使用长沙娃娃乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！"+MyApplication.getInstance().getRowsBean().getF_FxUrl());
+                intent1.putExtra(Intent.EXTRA_TEXT, "亲，欢迎使用长沙娃娃乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！" + MyApplication.getInstance().getRowsBean().getF_FxUrl());
                 intent1.setType("text/plain");
                 startActivity(Intent.createChooser(intent1, "share"));
                 break;

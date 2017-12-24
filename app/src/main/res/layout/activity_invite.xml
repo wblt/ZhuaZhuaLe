@@ -157,7 +157,7 @@
                     </LinearLayout>
 
                     <ImageView
-                        android:background="?android:attr/selectableItemBackground"
+                        android:foreground="?android:attr/selectableItemBackground"
                         android:id="@+id/iv_invite_fxyqm"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
                 </RelativeLayout>
 
                 <ImageView
-                    android:background="?android:attr/selectableItemBackground"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:id="@+id/iv_invite_ss"
                     android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
