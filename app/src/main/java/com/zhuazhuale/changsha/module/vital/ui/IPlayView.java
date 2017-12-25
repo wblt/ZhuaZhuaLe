@@ -20,5 +20,5 @@ public interface IPlayView extends IBaseView{
 
     void showNewCP(NewCPBean newCPBean);
 
-    void showControlGame(ControlGameBean controlGameBean);
+    void showControlGame(ControlGameBean controlGameBean, String vAction);
 }

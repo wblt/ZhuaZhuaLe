@@ -117,14 +117,14 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
      * @param vToken
      * @param timeStamp
      */
-    public void initControlGame(String vDeviceID, String vAction, String vToken, String timeStamp) {
+    public void initControlGame(String vDeviceID, final String vAction, String vToken, String timeStamp) {
         playModel.getControlGame(vDeviceID, vAction, vToken, timeStamp, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
                 Gson gson = new Gson();
                 ControlGameBean controlGameBean = gson.fromJson(s, ControlGameBean.class);
-                mIView.showControlGame(controlGameBean);
+                mIView.showControlGame(controlGameBean,vAction);
             }
 
             @Override

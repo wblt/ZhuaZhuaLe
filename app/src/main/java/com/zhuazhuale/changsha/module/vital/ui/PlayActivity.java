@@ -1,7 +1,6 @@
 package com.zhuazhuale.changsha.module.vital.ui;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
@@ -24,7 +23,6 @@ import com.zhuazhuale.changsha.module.vital.presenter.PlayPresenter;
 import com.zhuazhuale.changsha.util.SoundUtils;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
-import com.zhuazhuale.changsha.view.MyImageView;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
 import butterknife.BindView;
@@ -77,7 +75,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private String right = "RIGHT";
     private int newCP = 0;
     private boolean isOpen = false;// 判断游戏机器的状态,能否开始游戏
-    private ColorMatrix matrix;
     private ColorMatrixColorFilter colorFilter;
     private SoundUtils soundUtils;
     private int bgvoice = 0;
@@ -104,7 +101,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         mView2.setVisibility(View.GONE);
         creatTXLivePlayer1();
         //让图片变灰色
-        matrix = new ColorMatrix();
+        ColorMatrix matrix = new ColorMatrix();
         matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
         colorFilter = new ColorMatrixColorFilter(matrix);
         iv_play_startgame.setColorFilter(colorFilter);
@@ -185,9 +182,22 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      * 操作返回的数据
      *
      * @param controlGameBean
+     * @param vAction
      */
     @Override
-    public void showControlGame(ControlGameBean controlGameBean) {
+    public void showControlGame(ControlGameBean controlGameBean, String vAction) {
+
+        if (vAction.equals("DOWN")) {
+            if (controlGameBean.getCode() == 1) {
+                //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
+                soundUtils.playSound(success, 0);
+            } else {
+                soundUtils.playSound(fail, 0);
+            }
+        } else {
+            //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
+            soundUtils.playSound(move, 0);
+        }
 
     }
 
@@ -204,13 +214,15 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 case 1:
                     //空闲中,可以上机
                     isOpen = true;
-                    matrix.setSaturation(1);//饱和度 0灰色 100过度彩色，50正常
-                    colorFilter = new ColorMatrixColorFilter(matrix);
+                    ColorMatrix matrix1 = new ColorMatrix();
+                    matrix1.setSaturation(1);//饱和度 0灰色 100过度彩色，50正常
+                    colorFilter = new ColorMatrixColorFilter(matrix1);
                     iv_play_startgame.setColorFilter(colorFilter);
                     break;
                 case 2:
                     //其他用户正在游戏中
                     isOpen = false;
+                    ColorMatrix matrix = new ColorMatrix();
                     matrix.setSaturation(50);//饱和度 0灰色 100过度彩色，50正常
                     colorFilter = new ColorMatrixColorFilter(matrix);
                     iv_play_startgame.setColorFilter(colorFilter);
@@ -246,8 +258,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
                 if (isOpen) {
                     showLoadingDialog();
-                    //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
-                    soundUtils.playSound(readygo, 0);
+
                     presenter.initUpperGame(rowsBean.getF_ID());
                 } else {
                     ToastUtil.show("还有其他玩家在玩,请稍等!");
@@ -306,8 +317,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      */
     private void ControlGame(String forward) {
         if (isPlay) {
-            //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
-            soundUtils.playSound(move, 0);
+
             presenter.initControlGame(rowsBean.getF_ID(), forward, gameBeanRows.getToken(), gameBeanRows.getTimestamp() + "");
         }
 
@@ -339,6 +349,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         switch (gameBean.getCode()) {
             case 1://成功
                 ToastUtil.show("开始游戏吧!");
+                //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
+                soundUtils.playSound(readygo, 0);
                 isPlay = true;
                 ll_play_open.setVisibility(View.GONE);
                 ll_play_caozuo.setVisibility(View.VISIBLE);
