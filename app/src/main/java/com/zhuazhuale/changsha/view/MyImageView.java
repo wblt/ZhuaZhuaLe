@@ -13,7 +13,7 @@ import com.zhuazhuale.changsha.R;
 /**
  * Created by Administrator on 2017/12/25.
  */
-public class MyImageView extends TXCloudVideoView {
+public class MyImageView extends ImageView {
     //宽高比，由我们自己设定
     private float ratio;
     public MyImageView(Context context, AttributeSet attrs) {
