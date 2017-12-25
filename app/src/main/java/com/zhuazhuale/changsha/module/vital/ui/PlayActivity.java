@@ -82,6 +82,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private int move = 2;
     private int fail = 3;
     private int success = 4;
+    private int start = 5;
+    private int take = 6;
 
     @Override
     protected void setContentLayout() {
@@ -114,6 +116,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         soundUtils.putSound(move, R.raw.move);
         soundUtils.putSound(fail, R.raw.fail);
         soundUtils.putSound(success, R.raw.success);
+        soundUtils.putSound(start, R.raw.start);
+        soundUtils.putSound(take, R.raw.take);
 
     }
 
@@ -258,7 +262,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
                 if (isOpen) {
                     showLoadingDialog();
-
+                    soundUtils.playSound(start, 0);
                     presenter.initUpperGame(rowsBean.getF_ID());
                 } else {
                     ToastUtil.show("还有其他玩家在玩,请稍等!");
@@ -279,6 +283,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 ControlGame(right);
                 break;
             case R.id.iv_play_catch:
+                soundUtils.playSound(take, 0);
                 ControlGame("DOWN");
                 break;
             case R.id.iv_play_change:
@@ -317,7 +322,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      */
     private void ControlGame(String forward) {
         if (isPlay) {
-
             presenter.initControlGame(rowsBean.getF_ID(), forward, gameBeanRows.getToken(), gameBeanRows.getTimestamp() + "");
         }
 
