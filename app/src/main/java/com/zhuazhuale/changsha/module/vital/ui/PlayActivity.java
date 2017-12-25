@@ -67,8 +67,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private String url2;
     private TXLivePlayer mLivePlayer2;
     private boolean isURL = false;  // 判断是否 是直播视频1
-    private MyImageView mView2;
-    private MyImageView mView1;
+    private TXCloudVideoView mView2;
+    private TXCloudVideoView mView1;
     private boolean isFirst = true; //判断是否第一次进入,主要为了创建直播视频二
     //  FORWARD BACKWARD LEFT  RIGHT
     private String up = "FORWARD";
@@ -99,8 +99,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     protected void initView() {
         showLoadingDialog();
         //mPlayerView即step1中添加的界面view
-        mView1 = (MyImageView) findViewById(R.id.video_view1);
-        mView2 = (MyImageView) findViewById(R.id.video_view2);
+        mView1 = (TXCloudVideoView) findViewById(R.id.video_view1);
+        mView2 = (TXCloudVideoView) findViewById(R.id.video_view2);
         mView2.setVisibility(View.GONE);
         creatTXLivePlayer1();
         //让图片变灰色
