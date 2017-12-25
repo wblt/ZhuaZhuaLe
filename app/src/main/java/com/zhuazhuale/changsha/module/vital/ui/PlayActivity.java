@@ -21,8 +21,10 @@ import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
 import com.zhuazhuale.changsha.module.vital.bean.ControlGameBean;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
 import com.zhuazhuale.changsha.module.vital.presenter.PlayPresenter;
+import com.zhuazhuale.changsha.util.SoundUtils;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
+import com.zhuazhuale.changsha.view.MyImageView;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
 import butterknife.BindView;
@@ -65,8 +67,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private String url2;
     private TXLivePlayer mLivePlayer2;
     private boolean isURL = false;  // 判断是否 是直播视频1
-    private TXCloudVideoView mView2;
-    private TXCloudVideoView mView1;
+    private MyImageView mView2;
+    private MyImageView mView1;
     private boolean isFirst = true; //判断是否第一次进入,主要为了创建直播视频二
     //  FORWARD BACKWARD LEFT  RIGHT
     private String up = "FORWARD";
@@ -77,6 +79,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private boolean isOpen = false;// 判断游戏机器的状态,能否开始游戏
     private ColorMatrix matrix;
     private ColorMatrixColorFilter colorFilter;
+    private SoundUtils soundUtils;
+    private int bgvoice = 0;
+    private int readygo = 1;
+    private int move = 2;
+    private int fail = 3;
+    private int success = 4;
 
     @Override
     protected void setContentLayout() {
@@ -91,8 +99,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     protected void initView() {
         showLoadingDialog();
         //mPlayerView即step1中添加的界面view
-        mView1 = (TXCloudVideoView) findViewById(R.id.video_view1);
-        mView2 = (TXCloudVideoView) findViewById(R.id.video_view2);
+        mView1 = (MyImageView) findViewById(R.id.video_view1);
+        mView2 = (MyImageView) findViewById(R.id.video_view2);
         mView2.setVisibility(View.GONE);
         creatTXLivePlayer1();
         //让图片变灰色
@@ -101,6 +109,15 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         colorFilter = new ColorMatrixColorFilter(matrix);
         iv_play_startgame.setColorFilter(colorFilter);
         tv_play_bi.setText(rowsBean.getF_Price() + "币 / 次");
+        //使用的时候先初始化一个声音播放工具
+        soundUtils = new SoundUtils(this, SoundUtils.MEDIA_SOUND);
+        //然后添加声音进去,参数是添加声音的编号和资源id
+        soundUtils.putSound(bgvoice, R.raw.bgvoice);
+        soundUtils.putSound(readygo, R.raw.readygo);
+        soundUtils.putSound(move, R.raw.move);
+        soundUtils.putSound(fail, R.raw.fail);
+        soundUtils.putSound(success, R.raw.success);
+
     }
 
     private void creatTXLivePlayer2() {
@@ -218,6 +235,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         iv_play_down.setOnClickListener(this);
         iv_play_catch.setOnClickListener(this);
         iv_play_change.setOnClickListener(this);
+
     }
 
 
@@ -225,8 +243,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_play_startgame:
+
                 if (isOpen) {
                     showLoadingDialog();
+                    //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
+                    soundUtils.playSound(readygo, 0);
                     presenter.initUpperGame(rowsBean.getF_ID());
                 } else {
                     ToastUtil.show("还有其他玩家在玩,请稍等!");
@@ -234,6 +255,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
                 break;
             case R.id.iv_play_up:
+
                 ControlGame(up);
                 break;
             case R.id.iv_play_down:
@@ -249,6 +271,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 ControlGame("DOWN");
                 break;
             case R.id.iv_play_change:
+
                 if (isURL) {
                     ToastUtil.show("true");
                     isURL = false;
@@ -283,6 +306,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      */
     private void ControlGame(String forward) {
         if (isPlay) {
+            //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
+            soundUtils.playSound(move, 0);
             presenter.initControlGame(rowsBean.getF_ID(), forward, gameBeanRows.getToken(), gameBeanRows.getTimestamp() + "");
         }
 
@@ -300,6 +325,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             mLivePlayer2.stopPlay(true); // true代表清除最后一帧画面
 
         }
+        // 停止背景音乐
+        soundUtils.stopSound();
+//        soundUtils = null;
         mView1.onDestroy();
         mView2.onDestroy();
     }
@@ -387,6 +415,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                         dismissLoadingDialog();
                         break;
                     case 2002:
+                        //无限播放背景音乐
+                        soundUtils.playSound(bgvoice, SoundUtils.INFINITE_PLAY);
                         if (isFirst) {
                             creatTXLivePlayer2();
                             isFirst = false;
