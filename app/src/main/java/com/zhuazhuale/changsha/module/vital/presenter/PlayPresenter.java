@@ -2,6 +2,7 @@ package com.zhuazhuale.changsha.module.vital.presenter;
 
 import com.google.gson.Gson;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
+import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
 import com.zhuazhuale.changsha.module.home.model.MineModel;
@@ -58,15 +59,16 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
      * 查询机器的状态
      *
      * @param vDeviceID
+     * @param type
      */
-    public void initQueryGame(String vDeviceID) {
+    public void initQueryGame(String vDeviceID, final int type) {
         playModel.getQueryGame(vDeviceID, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
                 Gson gson = new Gson();
                 QueryGameBean queryGameBean = gson.fromJson(s, QueryGameBean.class);
-                mIView.showQueryGame(queryGameBean);
+                mIView.showQueryGame(queryGameBean,type);
             }
 
             @Override
@@ -109,14 +111,19 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             }
         });
     }
+
+    /**
+     * 游戏下机
+     * @param vDeviceID
+     */
     public void initLowerGame(String vDeviceID) {
         playModel.getLowerGame(vDeviceID, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
                 Gson gson = new Gson();
-              /*  StartGameBean gameBean = gson.fromJson(s, StartGameBean.class);
-                mIView.showStartGame(gameBean);*/
+                EditAddressBean LowerGame = gson.fromJson(s, EditAddressBean.class);
+                mIView.showLowerGame(LowerGame);
             }
 
             @Override

@@ -2,29 +2,45 @@ package com.zhuazhuale.changsha.module.vital.ui;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.tencent.rtmp.ITXLivePlayListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePlayer;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.model.entity.eventbus.CPfreshEvent;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
+import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
+import com.zhuazhuale.changsha.module.home.ui.RechargeActivity;
 import com.zhuazhuale.changsha.module.vital.bean.ControlGameBean;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
 import com.zhuazhuale.changsha.module.vital.presenter.PlayPresenter;
+import com.zhuazhuale.changsha.util.DensityUtil;
+import com.zhuazhuale.changsha.util.EventBusUtil;
+import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.SoundUtils;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -56,6 +72,19 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     TextView tv_play_cp;
     @BindView(R.id.tv_play_bi)
     TextView tv_play_bi;
+    @BindView(R.id.iv_play_recharge)
+    ImageView iv_play_recharge;
+    @BindView(R.id.sdv_play_fece)
+    SimpleDraweeView sdv_play_fece;
+    @BindView(R.id.iv_play_wifi)
+    ImageView iv_play_wifi;
+    @BindView(R.id.tv_play_name)
+    TextView tv_play_name;
+    @BindView(R.id.view_play)
+    LinearLayout view_play;
+    @BindView(R.id.srv_play)
+    SmartRefreshLayout srv_play;
+
 
     private DeviceGoodsBean.RowsBean rowsBean;
     private TXLivePlayer mLivePlayer1;
@@ -87,6 +116,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private int take = 6;
     private Dialog dialog;
     private TextView tv_dialog_info;
+    private int h_screendp;
+    private MyThread mutliThread;
 
     @Override
     protected void setContentLayout() {
@@ -95,6 +126,14 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         rowsBean = (DeviceGoodsBean.RowsBean) intent.getSerializableExtra("DeviceGoods");
         url1 = rowsBean.getF_Camera1();
         url2 = rowsBean.getF_Camera2();
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int w_screen = dm.widthPixels;
+        int h_screen = dm.heightPixels;
+        LogUtil.e("w_screen     " + w_screen + "    h_screen    " + h_screen);
+        int w_screendp = DensityUtil.px2dp(this, w_screen);
+        h_screendp = DensityUtil.px2dp(this, h_screen);
+        LogUtil.e("w_screendp     " + w_screendp + "    h_screendp    " + h_screendp);
+
     }
 
     @Override
@@ -118,9 +157,16 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         soundUtils.putSound(success, R.raw.success);
         soundUtils.putSound(start, R.raw.start);
         soundUtils.putSound(take, R.raw.take);
-
+        FrescoUtil.getInstance().loadNetImage(sdv_play_fece, MyApplication.getInstance().getRowsBean().getF_Img());
+        tv_play_name.setText(MyApplication.getInstance().getRowsBean().getF_Name());
         creatMyDialog();
-
+        /*RelativeLayout.LayoutParams ff=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, h_screendp);
+        rl_play_play.setLayoutParams(ff);*/
+      /*  //设置图片参数
+        ViewGroup.LayoutParams layoutParams = mImageView.getLayoutParams();
+        layoutParams.width = width;
+        layoutParams.height = height;
+        mImageView.setLayoutParams(layoutParams);*/
 
     }
 
@@ -196,8 +242,21 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         //查询游戏币数量
         presenter.initNewCP();
         //查询游戏的状态
-        presenter.initQueryGame(rowsBean.getF_ID());
+        presenter.initQueryGame(rowsBean.getF_ID(), first);
+        EventBusUtil.register(this);//订阅事件
     }
+
+    //EventBus的事件接收，从事件中获取最新的收藏数量并更新界面展示
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleEvent(CPfreshEvent event) {
+        String code = event.getCPisFresh();
+        LogUtil.e(code);
+        if ("刷新".equals(code)) {
+            presenter.initNewCP();
+        }
+
+    }
+
 
     /**
      * 查询游戏币数量
@@ -223,27 +282,26 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      */
     @Override
     public void showControlGame(ControlGameBean controlGameBean, String vAction) {
-        boolean isHave=  getActivityStackManager().isActivityExist(PlayActivity.class);
+        boolean isHave = getActivityStackManager().isActivityExist(PlayActivity.class);
         if (vAction.equals("DOWN")) {
             if (controlGameBean.getCode() == 1) {
-                //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
-                soundUtils.playSound(success, 0);
-                tv_dialog_info.setText("恭喜你,抓取成功!");
-                if (isHave){
+                if (isHave) {
+                    //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
+                    soundUtils.playSound(success, 0);
+                    tv_dialog_info.setText("恭喜你,抓取成功!");
                     dialog.show();
-                }else {
+                } else {
                     ToastUtil.show("恭喜你,抓取成功!");
                 }
             } else {
-                soundUtils.playSound(fail, 0);
-                tv_dialog_info.setText("抓取失败,再接再厉!");
-                if (isHave){
+                if (isHave) {
+                    soundUtils.playSound(fail, 0);
+                    tv_dialog_info.setText("抓取失败,再接再厉!");
                     dialog.show();
-                }else {
+                } else {
                     ToastUtil.show("抓取失败,再接再厉!");
                 }
             }
-
 
 
         } else {
@@ -254,31 +312,101 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     }
 
     /**
+     * 下机成功
+     *
+     * @param lowerGame
+     */
+    @Override
+    public void showLowerGame(EditAddressBean lowerGame) {
+        mutliThread.resumeThread();//下机了,继续检查游戏机的状态
+        LogUtil.e("我下机了,继续检查吧!" + isStart);
+        if (lowerGame.getCode() == 0) {
+            ToastUtil.show(lowerGame.getInfo());
+        }
+    }
+
+    /**
      * 查询机器的状态
      *
      * @param queryGameBean
+     * @param type
      */
     @Override
-    public void showQueryGame(QueryGameBean queryGameBean) {
-        if (queryGameBean.getCode() == 1) {
-            QueryGameBean.RowsBean rowsBean = queryGameBean.getRows();
-            switch (rowsBean.getVStatus()) {
-                case 1:
-                    //空闲中,可以上机
-                    isOpen = true;
-                    iv_play_startgame.setImageResource(R.mipmap.srartgame);
-                    break;
-                case 2:
-                    //其他用户正在游戏中
-                    isOpen = false;
-                    iv_play_startgame.setImageResource(R.mipmap.srartgame2);
-                    break;
-                case 3:
-                    break;
-            }
-        } else {
-            ToastUtil.show(queryGameBean.getInfo());
+    public void showQueryGame(QueryGameBean queryGameBean, int type) {
+        int code = queryGameBean.getCode();
+        switch (type) {
+            case 1://第一次进入游戏检查状态
+                if (code == 1) {
+                    // 创建子线程,检查机器的状态
+                    creatThread();
+                    QueryGameBean.RowsBean rows = queryGameBean.getRows();
+                    switch (rows.getVStatus()) {
+                        case 1:
+                            //空闲中,可以上机
+                            isOpen = true;
+                            iv_play_startgame.setImageResource(R.mipmap.srartgame);
+                            break;
+                        case 2:
+                            //其他用户正在游戏中
+                            isOpen = false;
+                            iv_play_startgame.setImageResource(R.mipmap.srartgame2);
+                            break;
+                        case 3:
+                            isOpen = false;
+                            iv_play_startgame.setImageResource(R.mipmap.srartgame2);
+                            break;
+                    }
+                } else {
+                    ToastUtil.show(queryGameBean.getInfo());
+                }
+                break;
+            case 2://点击开始游戏时,检查游戏状态
+                if (code == 1) {
+                    QueryGameBean.RowsBean rows = queryGameBean.getRows();
+                    switch (rows.getVStatus()) {
+                        case 1:
+                            //空闲中,可以上机
+                            isOpen = true;
+                            iv_play_startgame.setImageResource(R.mipmap.srartgame);
+                            presenter.initUpperGame(rowsBean.getF_ID());
+                            break;
+                        case 2:
+                            //其他用户正在游戏中
+                            isOpen = false;
+                            iv_play_startgame.setImageResource(R.mipmap.srartgame2);
+                            break;
+                        case 3:
+                            isOpen = false;
+                            iv_play_startgame.setImageResource(R.mipmap.srartgame2);
+                            break;
+                    }
+                } else {
+                    ToastUtil.show(queryGameBean.getInfo());
+                }
+                break;
+            case 3://开启子线程5秒钟检查游戏机状态
+                if (code == 1) {
+                    QueryGameBean.RowsBean rows = queryGameBean.getRows();
+                    switch (rows.getVStatus()) {
+                        case 1:
+                            //空闲中,可以上机
+                            isOpen = true;
+                            iv_play_startgame.setImageResource(R.mipmap.srartgame);
+                            break;
+                        case 2:
+                            //其他用户正在游戏中
+                            isOpen = false;
+                            iv_play_startgame.setImageResource(R.mipmap.srartgame2);
+                            break;
+                        case 3:
+                            isOpen = false;
+                            iv_play_startgame.setImageResource(R.mipmap.srartgame2);
+                            break;
+                    }
+                }
+                break;
         }
+
     }
 
 
@@ -293,6 +421,95 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         iv_play_down.setOnClickListener(this);
         iv_play_catch.setOnClickListener(this);
         iv_play_change.setOnClickListener(this);
+        iv_play_recharge.setOnClickListener(this);
+        srv_play.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+//                addViewItem();
+            }
+        });
+
+    }
+
+    private boolean isStart = true;
+    private static int first = 1;
+    private static int startGame = 2;
+    private static int thread = 3;
+
+    /**
+     * 创建子线程,检查机器的状态
+     */
+    private void creatThread() {
+        mutliThread = new MyThread();
+        Thread thread = new Thread(mutliThread);
+        thread.start();
+
+    }
+
+    private class MyThread extends Thread {
+        private final Object lock = new Object();
+        private boolean pause = false;
+
+        /**
+         * 调用这个方法实现暂停线程
+         */
+        public void pauseThread() {
+            pause = true;
+        }
+
+        /**
+         * 调用这个方法实现恢复线程的运行
+         */
+        public void resumeThread() {
+            pause = false;
+            synchronized (lock) {
+                lock.notifyAll();
+            }
+        }
+
+        /**
+         * 注意：这个方法只能在run方法里调用，不然会阻塞主线程，导致页面无响应
+         */
+        void onPause() {
+            synchronized (lock) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            try {
+                while (true) {
+                    // 让线程处于暂停等待状态
+                    while (pause) {
+                        onPause();
+                    }
+                    try {
+                        Thread.sleep(5000);
+                        LogUtil.e("我是子线程");
+                        presenter.initQueryGame(rowsBean.getF_ID(), thread);
+                    } catch (InterruptedException e) {
+                        //捕获到异常之后，执行break跳出循环
+                        break;
+                    }
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    //添加ViewItem
+    private void addViewItem() {
+        View hotelEvaluateView = View.inflate(this, R.layout.item_order, null);
+
+        view_play.addView(hotelEvaluateView);
+        //sortHotelViewItem();
 
     }
 
@@ -303,9 +520,17 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             case R.id.iv_play_startgame:
 
                 if (isOpen) {
-                    showLoadingDialog();
-                    soundUtils.playSound(start, 0);
-                    presenter.initUpperGame(rowsBean.getF_ID());
+                    if (newCP != 0 && newCP > rowsBean.getF_Price()) {
+                        showLoadingDialog();
+                        soundUtils.playSound(start, 0);
+                        //查询游戏的状态,先查询机器状态,再开始游戏
+                        presenter.initQueryGame(rowsBean.getF_ID(), startGame);
+//                        presenter.initUpperGame(rowsBean.getF_ID());
+                    } else {
+                        ToastUtil.show("余额不足,请充值!");
+                        startActivity(new Intent(getContext(), RechargeActivity.class));
+                    }
+
                 } else {
                     ToastUtil.show("还有其他玩家在玩,请稍等!");
                 }
@@ -353,9 +578,13 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                     right = "FORWARD";
                 }
                 break;
+            case R.id.iv_play_recharge:
+                startActivity(new Intent(getContext(), RechargeActivity.class));
+                break;
         }
 
     }
+
 
     /**
      * 操作方向
@@ -375,6 +604,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     public void onDestroy() {
         super.onDestroy();
+        //取消订阅
+        EventBusUtil.unregister(this);
         //判断是否有流,再关闭,不然会报错
         if (mLivePlayer1.isPlaying()) {
             mLivePlayer1.stopPlay(true); // true代表清除最后一帧画面
@@ -398,10 +629,13 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      */
     @Override
     public void showStartGame(StartGameBean gameBean) {
+        newCP = newCP - rowsBean.getF_Price();
+        tv_play_cp.setText(newCP + "");
         gameBeanRows = gameBean.getRows();
         isPlay = false;
         switch (gameBean.getCode()) {
             case 1://成功
+                mutliThread.pauseThread();//暂停查询
                 ToastUtil.show("开始游戏吧!");
                 //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
                 soundUtils.playSound(readygo, 0);

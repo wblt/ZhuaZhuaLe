@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.vital.ui;
 
+import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
 import com.zhuazhuale.changsha.module.vital.bean.ControlGameBean;
@@ -16,9 +17,12 @@ public interface IPlayView extends IBaseView{
     void showFailed();
     void showFinish();
 
-    void showQueryGame(QueryGameBean queryGameBean);
+    void showQueryGame(QueryGameBean queryGameBean, int type);
 
     void showNewCP(NewCPBean newCPBean);
 
     void showControlGame(ControlGameBean controlGameBean, String vAction);
+
+
+    void showLowerGame(EditAddressBean lowerGame);
 }
