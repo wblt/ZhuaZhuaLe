@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.vital.ui;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -84,6 +85,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private int success = 4;
     private int start = 5;
     private int take = 6;
+    private Dialog dialog;
+    private TextView tv_dialog_info;
 
     @Override
     protected void setContentLayout() {
@@ -119,6 +122,39 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         soundUtils.putSound(start, R.raw.start);
         soundUtils.putSound(take, R.raw.take);
 
+        creatMyDialog();
+
+
+    }
+
+    private void creatMyDialog() {
+        dialog = new Dialog(this, R.style.MyDialog);
+        dialog.setContentView(R.layout.dialog_play);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        TextView tv_dialog_cancel = (TextView) dialog.findViewById(R.id.tv_dialog_cancel);
+        TextView tv_dialog_ok = (TextView) dialog.findViewById(R.id.tv_dialog_ok);
+        tv_dialog_info = (TextView) dialog.findViewById(R.id.tv_dialog_info);
+        tv_dialog_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                presenter.initLowerGame(rowsBean.getF_ID());
+                isPlay = false;
+                ll_play_open.setVisibility(View.VISIBLE);
+                ll_play_caozuo.setVisibility(View.INVISIBLE);
+                dialog.dismiss();
+            }
+        });
+        tv_dialog_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLoadingDialog();
+                soundUtils.playSound(start, 0);
+                presenter.initUpperGame(rowsBean.getF_ID());
+                dialog.dismiss();
+            }
+        });
     }
 
     private void creatTXLivePlayer2() {
@@ -195,9 +231,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             if (controlGameBean.getCode() == 1) {
                 //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
                 soundUtils.playSound(success, 0);
+                tv_dialog_info.setText("恭喜你,抓取成功!");
             } else {
                 soundUtils.playSound(fail, 0);
+                tv_dialog_info.setText("抓取失败,再接再厉!");
             }
+            dialog.show();
         } else {
             //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
             soundUtils.playSound(move, 0);
@@ -323,6 +362,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private void ControlGame(String forward) {
         if (isPlay) {
             presenter.initControlGame(rowsBean.getF_ID(), forward, gameBeanRows.getToken(), gameBeanRows.getTimestamp() + "");
+            if (forward.equals("DOWN")) {
+                isPlay = false;//正在抓取,不能操作了
+            }
         }
 
     }
@@ -346,6 +388,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         mView2.onDestroy();
     }
 
+    /**
+     * 上机成功
+     *
+     * @param gameBean
+     */
     @Override
     public void showStartGame(StartGameBean gameBean) {
         gameBeanRows = gameBean.getRows();

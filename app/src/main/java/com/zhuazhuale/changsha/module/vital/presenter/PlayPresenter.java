@@ -109,6 +109,28 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             }
         });
     }
+    public void initLowerGame(String vDeviceID) {
+        playModel.getLowerGame(vDeviceID, new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(TAG, s);
+                Gson gson = new Gson();
+              /*  StartGameBean gameBean = gson.fromJson(s, StartGameBean.class);
+                mIView.showStartGame(gameBean);*/
+            }
+
+            @Override
+            public void callFailed() {
+                mIView.showFailed();
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e(TAG, "接口结束");
+                mIView.showFinish();
+            }
+        });
+    }
 
     /**
      * 操作游戏
