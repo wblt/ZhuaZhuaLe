@@ -2,12 +2,14 @@ package com.zhuazhuale.changsha.module.home.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -21,6 +23,7 @@ import com.zhuazhuale.changsha.module.home.adapter.HomeAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.HomePresenter;
 import com.zhuazhuale.changsha.module.login.bean.WeiXinLoginGetUserinfoBean;
 import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
+import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.IItemOnClickListener;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
@@ -122,8 +125,10 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
      *
      * @param rows
      */
+
     @Override
     public void showImagePage(List<BaseDataBean.RowsBean> rows) {
+
         HomeAdapter homeAdapter = new HomeAdapter(this, rows);
         //设置播放时间间隔
         rpv_mall.setPlayDelay(2000);

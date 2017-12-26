@@ -1,11 +1,15 @@
 package com.zhuazhuale.changsha.module.home.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.generic.GenericDraweeHierarchy;
+import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.zhuazhuale.changsha.R;
@@ -43,11 +47,9 @@ public class HomeAdapter extends StaticPagerAdapter {
         View view2 = mInflater.inflate(R.layout.item_home,
                 container, false);
         final SimpleDraweeView view = (SimpleDraweeView) view2.findViewById(R.id.iv_home_image);
-
-//        Tools.GlideCircleImageUrlMall(context, newsList.get(position), view);
-        FrescoUtil.getInstance().loadNetImage(view, newsList.get(position).getF_ImgUrl());//加载网络图片
-        /*view.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        view2.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));*/
+        Uri imageUri = Uri.parse(newsList.get(position).getF_ImgUrl());
+        //开始下载
+        view.setImageURI(imageUri);
 
         return view2;
     }
