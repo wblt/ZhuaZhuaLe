@@ -4,10 +4,12 @@
     android:layout_height="match_parent"
     android:background="@mipmap/beijing"
     android:orientation="vertical">
+<!--
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -15,13 +17,14 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="0dp">
 
                 <com.tencent.rtmp.ui.TXCloudVideoView
                     android:id="@+id/video_view2"
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
+                    android:layout_height="match_parent"
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="32dp"
                     android:layout_marginRight="32dp"
@@ -30,7 +33,7 @@
                 <com.tencent.rtmp.ui.TXCloudVideoView
                     android:id="@+id/video_view1"
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
+                    android:layout_height="match_parent"
                     android:layout_centerInParent="true"
                     android:layout_marginLeft="32dp"
                     android:layout_marginRight="32dp"
@@ -43,7 +46,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="14dp"
+                android:paddingBottom="2dp"
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp"
                 android:paddingTop="4dp">
@@ -52,7 +55,7 @@
                     android:id="@+id/ll_play_caozuo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone">
+                    android:visibility="invisible">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -129,7 +132,7 @@
                 <LinearLayout
                     android:id="@+id/ll_play_open"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:visibility="visible">
 
@@ -201,6 +204,6 @@
 
 
         </LinearLayout>
-    </ScrollView>
+   <!-- </ScrollView>-->
 
 </LinearLayout>
