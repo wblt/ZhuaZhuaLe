@@ -604,6 +604,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mutliThread.pauseThread();
         //取消订阅
         EventBusUtil.unregister(this);
         //判断是否有流,再关闭,不然会报错
