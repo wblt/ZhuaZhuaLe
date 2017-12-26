@@ -122,11 +122,12 @@ public class SoundUtils {
     }
 
     public void stopSound() {
-        if (soundSigna != null && soundSigna.size() > 0) {
+        soundPool.release();
+        /*if (soundSigna != null && soundSigna.size() > 0) {
             for (int i : soundSigna) {
                 soundPool.pause(i);
             }
-        }
+        }*/
 
     }
 

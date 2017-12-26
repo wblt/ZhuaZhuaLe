@@ -105,11 +105,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         mView2 = (TXCloudVideoView) findViewById(R.id.video_view2);
         mView2.setVisibility(View.GONE);
         creatTXLivePlayer1();
-        //让图片变灰色
-        ColorMatrix matrix = new ColorMatrix();
-        matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
-        colorFilter = new ColorMatrixColorFilter(matrix);
-        iv_play_startgame.setColorFilter(colorFilter);
+
+        iv_play_startgame.setImageResource(R.mipmap.srartgame2);
         tv_play_bi.setText(rowsBean.getF_Price() + "币 / 次");
         //使用的时候先初始化一个声音播放工具
         soundUtils = new SoundUtils(this, SoundUtils.MEDIA_SOUND);
@@ -226,17 +223,29 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      */
     @Override
     public void showControlGame(ControlGameBean controlGameBean, String vAction) {
-
+        boolean isHave=  getActivityStackManager().isActivityExist(PlayActivity.class);
         if (vAction.equals("DOWN")) {
             if (controlGameBean.getCode() == 1) {
                 //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
                 soundUtils.playSound(success, 0);
                 tv_dialog_info.setText("恭喜你,抓取成功!");
+                if (isHave){
+                    dialog.show();
+                }else {
+                    ToastUtil.show("恭喜你,抓取成功!");
+                }
             } else {
                 soundUtils.playSound(fail, 0);
                 tv_dialog_info.setText("抓取失败,再接再厉!");
+                if (isHave){
+                    dialog.show();
+                }else {
+                    ToastUtil.show("抓取失败,再接再厉!");
+                }
             }
-            dialog.show();
+
+
+
         } else {
             //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
             soundUtils.playSound(move, 0);
@@ -257,18 +266,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 case 1:
                     //空闲中,可以上机
                     isOpen = true;
-                    ColorMatrix matrix1 = new ColorMatrix();
-                    matrix1.setSaturation(1);//饱和度 0灰色 100过度彩色，50正常
-                    colorFilter = new ColorMatrixColorFilter(matrix1);
-                    iv_play_startgame.setColorFilter(colorFilter);
+                    iv_play_startgame.setImageResource(R.mipmap.srartgame);
                     break;
                 case 2:
                     //其他用户正在游戏中
                     isOpen = false;
-                    ColorMatrix matrix = new ColorMatrix();
-                    matrix.setSaturation(50);//饱和度 0灰色 100过度彩色，50正常
-                    colorFilter = new ColorMatrixColorFilter(matrix);
-                    iv_play_startgame.setColorFilter(colorFilter);
+                    iv_play_startgame.setImageResource(R.mipmap.srartgame2);
                     break;
                 case 3:
                     break;

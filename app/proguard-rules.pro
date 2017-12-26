@@ -206,3 +206,5 @@ public static java.lang.String TABLENAME;
 -keepclassmembers class * extends android.webkit.WebViewClient {
     public void *(android.webkit.WebView, jav.lang.String);
 }
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}

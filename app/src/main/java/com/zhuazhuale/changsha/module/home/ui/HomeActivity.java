@@ -15,6 +15,7 @@ import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
@@ -59,6 +60,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
     private DeviceGoodsAdapter mCollectAdapter;
 
     public static HomeActivity instance = null;
+    private Intent intent;
 
     @Override
     protected void setContentLayout() {
@@ -103,6 +105,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
         switch (v.getId()) {
 
             case R.id.ll_home_mine:
+
                 Intent intent1 = new Intent(HomeActivity.this, MineActivity.class);
                 startActivity(intent1);
                 break;
@@ -127,7 +130,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
      */
 
     @Override
-    public void showImagePage(List<BaseDataBean.RowsBean> rows) {
+    public void showImagePage(final List<BaseDataBean.RowsBean> rows) {
 
         HomeAdapter homeAdapter = new HomeAdapter(this, rows);
         //设置播放时间间隔
@@ -140,7 +143,20 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
         homeAdapter.setOnItemClickListener(new IItemOnClickListener() {
             @Override
             public void itemOnClick(View view, int position) {
-
+                switch (rows.get(position).getF_Type()) {
+                    case 1:
+                        //邀请码界面
+                        intent = new Intent(getContext(), InviteActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        //充值界面
+                        intent = new Intent(getContext(), RechargeActivity.class);
+                        startActivity(intent);
+                        break;
+                    default:
+                        break;
+                }
             }
 
             @Override

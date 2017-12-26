@@ -1,6 +1,8 @@
 package com.zhuazhuale.changsha.util;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.os.Build;
 
 import java.util.Iterator;
 import java.util.Stack;
@@ -95,6 +97,7 @@ public class ActivityStackManager {
 
     /**
      * 退出activity
+     *
      * @param activity
      */
     public void exitActivity(Activity activity) {
@@ -104,6 +107,7 @@ public class ActivityStackManager {
 
     /**
      * 退出类型为cls的Activity
+     *
      * @param cls
      */
     public void exitActivity(Class cls) {
@@ -125,6 +129,7 @@ public class ActivityStackManager {
 
     /**
      * 退出类型为cls且第一个进栈的Activity
+     *
      * @param cls
      */
     public void exitActivityByFirstIn(Class cls) {
@@ -147,6 +152,7 @@ public class ActivityStackManager {
 
     /**
      * 退出类型为cls且第后一个进栈的Activity
+     *
      * @param cls
      */
     public void exitActivityByLastIn(Class cls) {
@@ -204,8 +210,58 @@ public class ActivityStackManager {
         }
     }
 
+    /**
+     * 判断一个Activity 是否存在
+     *
+     * @param clz
+     * @return
+     */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public <T extends Activity> boolean isActivityExist(Class<T> clz) {
+        boolean res;
+        Activity activity = getActivity(clz);
+        if (activity == null) {
+            res = false;
+        } else {
+            if (activity.isFinishing() || activity.isDestroyed()) {
+                res = false;
+            } else {
+                res = true;
+            }
+        }
 
+        return res;
+    }
 
+    /**
+     * 获得指定activity实例
+     *
+     * @param clazz Activity 的类对象
+     * @return
+     */
+    public <T extends Activity> T getActivity(Class<T> clazz) {
+        if (CollectionUtil.isEmpty(mActivityStack)) {
+            return null;
+        }
+        Activity activity2 = null;
+        Iterator<Activity> iterator = mActivityStack.iterator();
+        while (iterator.hasNext()) {
+            Activity activity = iterator.next();
+            if (activity == null) {
+                continue;
+            }
+            if (activity.getClass().equals(clazz)) {
+                activity2 = activity;
+
+            }
+        }
+        if (activity2 != null) {
+            return (T) activity2;
+        } else {
+            return null;
+
+        }
+    }
 
 
 }

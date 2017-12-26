@@ -10,6 +10,9 @@
     <!-- 此处仅用于获取设备唯一识别号，详见CommonUtil.getDeviceUniqueId() -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"

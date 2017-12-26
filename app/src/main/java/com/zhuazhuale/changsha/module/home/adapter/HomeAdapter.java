@@ -50,6 +50,12 @@ public class HomeAdapter extends StaticPagerAdapter {
         Uri imageUri = Uri.parse(newsList.get(position).getF_ImgUrl());
         //开始下载
         view.setImageURI(imageUri);
+        view2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClick.itemOnClick(v,position);
+            }
+        });
 
         return view2;
     }
