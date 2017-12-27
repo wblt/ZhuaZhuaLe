@@ -1,21 +1,18 @@
 package com.zhuazhuale.changsha.module.vital.ui;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.provider.Settings;
-import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.tencent.rtmp.ITXLivePlayListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePlayer;
@@ -31,13 +28,13 @@ import com.zhuazhuale.changsha.module.home.ui.RechargeActivity;
 import com.zhuazhuale.changsha.module.vital.bean.ControlGameBean;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
 import com.zhuazhuale.changsha.module.vital.presenter.PlayPresenter;
-import com.zhuazhuale.changsha.util.DensityUtil;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.SoundUtils;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+import com.zhuazhuale.changsha.view.activity.base.BaseActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -116,6 +113,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private TextView tv_dialog_info;
     private MyThread mutliThread;
     private Dialog dialogfinish;
+    private AlertDialog isExit;
 
     @Override
     protected void setContentLayout() {
@@ -152,7 +150,13 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         FrescoUtil.getInstance().loadNetImage(sdv_play_fece, MyApplication.getInstance().getRowsBean().getF_Img());
         tv_play_name.setText(MyApplication.getInstance().getRowsBean().getF_Name());
         creatMyDialog();
-
+        // 监听返回按键
+        this.setOnKeyListener(new OnKeyClickListener() {
+            @Override
+            public void clickBack() {
+                listen();
+            }
+        });
 
     }
 
@@ -232,6 +236,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         presenter.initNewCP();
         //查询游戏的状态
         presenter.initQueryGame(rowsBean.getF_ID(), first);
+        // 开启子线程5秒钟检查一次机器状态
+        creatThread();
+
         EventBusUtil.register(this);//订阅事件
     }
 
@@ -324,7 +331,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     public void showQueryGame(QueryGameBean queryGameBean, int type) {
         int code = queryGameBean.getCode();
-        creatThread();
         switch (type) {
             case 1://第一次进入游戏检查状态
                 if (code == 1) {
@@ -431,6 +437,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     }
 
+
     private class MyThread extends Thread {
         private final Object lock = new Object();
         private boolean pause = false;
@@ -476,8 +483,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                     }
                     try {
                         LogUtil.e("我是子线程");
-                        Thread.sleep(5000);
                         presenter.initQueryGame(rowsBean.getF_ID(), thread);
+                        Thread.sleep(5000);
 
                     } catch (InterruptedException e) {
                         //捕获到异常之后，执行break跳出循环
@@ -635,43 +642,64 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     }
 
+    /**
+     * 监听返回按键,当还在上机时,就弹出提示,下机
+     *
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
-    public void onBackPressed() {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            listen();
+        }
+
+        return false;
+
+    }
+
+    /**
+     * 判断是否在游戏,弹出提示
+     */
+    private void listen() {
         if (isStart) {
             finish();
         } else {
-            boolean isHave = getActivityStackManager().isActivityExist(PlayActivity.class);
-            if (isHave) {
-                dialogfinish = new Dialog(this, R.style.MyDialog);
-                dialogfinish.setContentView(R.layout.dialog_play);
-                dialogfinish.setCanceledOnTouchOutside(false);
-                dialogfinish.setCancelable(false);
-                TextView tv_dialog_cancel = (TextView) dialogfinish.findViewById(R.id.tv_dialog_cancel);
-                TextView tv_dialog_ok = (TextView) dialogfinish.findViewById(R.id.tv_dialog_ok);
-                tv_dialog_info = (TextView) dialogfinish.findViewById(R.id.tv_dialog_info);
-                tv_dialog_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogfinish.dismiss();
-                        presenter.initLowerGame(rowsBean.getF_ID());
-                        isPlay = false;
-                        dialogfinish.dismiss();
-                        finish();
-                    }
-                });
-                tv_dialog_ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showLoadingDialog();
-                        dialogfinish.dismiss();
-                    }
-                });
-                tv_dialog_info.setText("您还在游戏中,确定退出游戏么?");
-                dialogfinish.show();
+            // 创建退出对话框
+            isExit = new AlertDialog.Builder(this).create();
+            // 设置对话框标题
+            isExit.setTitle("系统提示");
+            // 设置对话框消息
+            isExit.setMessage("您游戏还在进行,确定要退出吗?");
+            // 添加选择按钮并注册监听
+            isExit.setButton("确定", listener);
+            isExit.setButton2("取消", listener);
+            // 显示对话框
+            isExit.show();
+        }
+    }
+
+    /**
+     * 监听对话框里面的button点击事件
+     */
+    DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which) {
+                case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序
+                    presenter.initLowerGame(rowsBean.getF_ID());
+                    isExit.dismiss();
+                    finish();
+                    break;
+                case AlertDialog.BUTTON_NEGATIVE:// "取消"第二个按钮取消对话框
+                    isExit.dismiss();
+                    break;
+                default:
+                    break;
             }
         }
+    };
 
-    }
 
     @Override
     public void showFailed() {

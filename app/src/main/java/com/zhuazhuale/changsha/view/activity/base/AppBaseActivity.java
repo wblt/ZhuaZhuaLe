@@ -74,7 +74,11 @@ public abstract class AppBaseActivity extends BaseActivity {
         ll_home_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                if (mOnKeyClickListener != null) {//如果没有设置返回事件的监听，则默认finish页面。
+                    mOnKeyClickListener.clickBack();
+                } else {
+                    finish();
+                }
             }
         });
     }
@@ -116,6 +120,7 @@ public abstract class AppBaseActivity extends BaseActivity {
             mLoadLayout.closeAnim();
         }
     }
+
 
 
 }
