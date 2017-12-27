@@ -82,8 +82,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     TextView tv_play_name;
     @BindView(R.id.view_play)
     LinearLayout view_play;
-    @BindView(R.id.srv_play)
-    SmartRefreshLayout srv_play;
+
 
 
     private DeviceGoodsBean.RowsBean rowsBean;
@@ -422,12 +421,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         iv_play_catch.setOnClickListener(this);
         iv_play_change.setOnClickListener(this);
         iv_play_recharge.setOnClickListener(this);
-        srv_play.setOnLoadmoreListener(new OnLoadmoreListener() {
+      /*  srv_play.setOnLoadmoreListener(new OnLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
 //                addViewItem();
             }
-        });
+        });*/
 
     }
 
