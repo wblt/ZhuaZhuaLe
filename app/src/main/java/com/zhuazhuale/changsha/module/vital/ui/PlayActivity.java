@@ -118,6 +118,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private MyThread mutliThread;
     private Dialog dialogfinish;
     private AlertDialog isExit;
+    private TextView tv_dialog_ok;
 
     @Override
     protected void setContentLayout() {
@@ -173,12 +174,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         TextView tv_dialog_cancel = (TextView) dialog.findViewById(R.id.tv_dialog_cancel);
-        TextView tv_dialog_ok = (TextView) dialog.findViewById(R.id.tv_dialog_ok);
+        tv_dialog_ok = (TextView) dialog.findViewById(R.id.tv_dialog_ok);
         tv_dialog_info = (TextView) dialog.findViewById(R.id.tv_dialog_info);
         tv_dialog_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+               CountdownUtil.getInstance().cancel("DOWN");
                 presenter.initLowerGame(rowsBean.getF_ID());
                 isPlay = false;
                 ll_play_open.setVisibility(View.VISIBLE);
@@ -295,11 +296,13 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     public void showControlGame(ControlGameBean controlGameBean, String vAction) {
         boolean isHave = getActivityStackManager().isActivityExist(PlayActivity.class);
         if (vAction.equals("DOWN")) {
+
             if (controlGameBean.getCode() == 1) {
                 if (isHave) {
                     //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
                     soundUtils.playSound(success, 0);
                     tv_dialog_info.setText("恭喜你,抓取成功!");
+                    openGame();
                     dialog.show();
                 } else {
                     ToastUtil.show("恭喜你,抓取成功!");
@@ -308,6 +311,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 if (isHave) {
                     soundUtils.playSound(fail, 0);
                     tv_dialog_info.setText("抓取失败,再接再厉!");
+                    openGame();
                     dialog.show();
                 } else {
                     ToastUtil.show("抓取失败,再接再厉!");
@@ -315,11 +319,33 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             }
 
 
+
         } else {
             //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
             soundUtils.playSound(move, 0);
         }
 
+    }
+
+    /**
+     * 倒计时开始游戏
+     */
+    private void openGame() {
+        CountdownUtil.getInstance().newTimer(8000, 1000, new CountdownUtil.ICountDown() {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                tv_dialog_ok.setText("继续游戏(" + millisUntilFinished / 1000 + ")");
+            }
+
+            @Override
+            public void onFinish() {
+                tv_dialog_ok.setText("(0)");
+                showLoadingDialog();
+                soundUtils.playSound(start, 0);
+                presenter.initUpperGame(rowsBean.getF_ID());
+                dialog.dismiss();
+            }
+        }, "DOWN");
     }
 
     /**
@@ -361,7 +387,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 case 1:
                     //空闲中,可以上机
                     isOpen = true;
-                    if (type==startGame){
+                    if (type == startGame) {
                         presenter.initUpperGame(rowsBean.getF_ID());
                     }
                     iv_play_startgame.setImageResource(R.mipmap.srartgame);
@@ -377,7 +403,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                     break;
             }
         } else {
-            if (type!=thread){
+            if (type != thread) {
                 ToastUtil.show(queryGameBean.getInfo());
 
             }
