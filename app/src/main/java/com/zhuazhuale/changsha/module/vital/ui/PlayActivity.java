@@ -84,7 +84,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     LinearLayout view_play;
 
 
-
     private DeviceGoodsBean.RowsBean rowsBean;
     private TXLivePlayer mLivePlayer1;
     private PlayPresenter presenter;
@@ -115,8 +114,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private int take = 6;
     private Dialog dialog;
     private TextView tv_dialog_info;
-    private int h_screendp;
     private MyThread mutliThread;
+    private Dialog dialogfinish;
 
     @Override
     protected void setContentLayout() {
@@ -125,13 +124,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         rowsBean = (DeviceGoodsBean.RowsBean) intent.getSerializableExtra("DeviceGoods");
         url1 = rowsBean.getF_Camera1();
         url2 = rowsBean.getF_Camera2();
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        int w_screen = dm.widthPixels;
-        int h_screen = dm.heightPixels;
-        LogUtil.e("w_screen     " + w_screen + "    h_screen    " + h_screen);
-        int w_screendp = DensityUtil.px2dp(this, w_screen);
-        h_screendp = DensityUtil.px2dp(this, h_screen);
-        LogUtil.e("w_screendp     " + w_screendp + "    h_screendp    " + h_screendp);
+
 
     }
 
@@ -159,16 +152,13 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         FrescoUtil.getInstance().loadNetImage(sdv_play_fece, MyApplication.getInstance().getRowsBean().getF_Img());
         tv_play_name.setText(MyApplication.getInstance().getRowsBean().getF_Name());
         creatMyDialog();
-        /*RelativeLayout.LayoutParams ff=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, h_screendp);
-        rl_play_play.setLayoutParams(ff);*/
-      /*  //设置图片参数
-        ViewGroup.LayoutParams layoutParams = mImageView.getLayoutParams();
-        layoutParams.width = width;
-        layoutParams.height = height;
-        mImageView.setLayoutParams(layoutParams);*/
+
 
     }
 
+    /**
+     * 抓到娃娃的提示dialog
+     */
     private void creatMyDialog() {
         dialog = new Dialog(this, R.style.MyDialog);
         dialog.setContentView(R.layout.dialog_play);
@@ -318,6 +308,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     public void showLowerGame(EditAddressBean lowerGame) {
         mutliThread.resumeThread();//下机了,继续检查游戏机的状态
+        isStart = true;
         LogUtil.e("我下机了,继续检查吧!" + isStart);
         if (lowerGame.getCode() == 0) {
             ToastUtil.show(lowerGame.getInfo());
@@ -333,11 +324,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     public void showQueryGame(QueryGameBean queryGameBean, int type) {
         int code = queryGameBean.getCode();
+        creatThread();
         switch (type) {
             case 1://第一次进入游戏检查状态
                 if (code == 1) {
                     // 创建子线程,检查机器的状态
-                    creatThread();
+
                     QueryGameBean.RowsBean rows = queryGameBean.getRows();
                     switch (rows.getVStatus()) {
                         case 1:
@@ -421,12 +413,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         iv_play_catch.setOnClickListener(this);
         iv_play_change.setOnClickListener(this);
         iv_play_recharge.setOnClickListener(this);
-      /*  srv_play.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-//                addViewItem();
-            }
-        });*/
 
     }
 
@@ -489,9 +475,10 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                         onPause();
                     }
                     try {
-                        Thread.sleep(5000);
                         LogUtil.e("我是子线程");
+                        Thread.sleep(5000);
                         presenter.initQueryGame(rowsBean.getF_ID(), thread);
+
                     } catch (InterruptedException e) {
                         //捕获到异常之后，执行break跳出循环
                         break;
@@ -501,15 +488,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 e.printStackTrace();
             }
         }
-    }
-
-    //添加ViewItem
-    private void addViewItem() {
-        View hotelEvaluateView = View.inflate(this, R.layout.item_order, null);
-
-        view_play.addView(hotelEvaluateView);
-        //sortHotelViewItem();
-
     }
 
 
@@ -603,7 +581,10 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mutliThread.pauseThread();
+        if (mutliThread != null) {
+            mutliThread.pauseThread();
+            mutliThread = null;
+        }
         //取消订阅
         EventBusUtil.unregister(this);
         //判断是否有流,再关闭,不然会报错
@@ -637,6 +618,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             case 1://成功
                 mutliThread.pauseThread();//暂停查询
                 ToastUtil.show("开始游戏吧!");
+                isStart = false;
                 //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
                 soundUtils.playSound(readygo, 0);
                 isPlay = true;
@@ -649,6 +631,44 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             case -9999://当前有用户正在游戏
                 ToastUtil.show(gameBean.getInfo());
                 break;
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isStart) {
+            finish();
+        } else {
+            boolean isHave = getActivityStackManager().isActivityExist(PlayActivity.class);
+            if (isHave) {
+                dialogfinish = new Dialog(this, R.style.MyDialog);
+                dialogfinish.setContentView(R.layout.dialog_play);
+                dialogfinish.setCanceledOnTouchOutside(false);
+                dialogfinish.setCancelable(false);
+                TextView tv_dialog_cancel = (TextView) dialogfinish.findViewById(R.id.tv_dialog_cancel);
+                TextView tv_dialog_ok = (TextView) dialogfinish.findViewById(R.id.tv_dialog_ok);
+                tv_dialog_info = (TextView) dialogfinish.findViewById(R.id.tv_dialog_info);
+                tv_dialog_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogfinish.dismiss();
+                        presenter.initLowerGame(rowsBean.getF_ID());
+                        isPlay = false;
+                        dialogfinish.dismiss();
+                        finish();
+                    }
+                });
+                tv_dialog_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showLoadingDialog();
+                        dialogfinish.dismiss();
+                    }
+                });
+                tv_dialog_info.setText("您还在游戏中,确定退出游戏么?");
+                dialogfinish.show();
+            }
         }
 
     }
