@@ -175,11 +175,12 @@
                             android:src="@mipmap/zhua" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                        android:id="@+id/tv_play_djs"
+                            android:layout_width="60dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
                             android:layout_marginLeft="4dp"
-                            android:text="29"
+                            android:text="30"
                             android:textColor="@color/white"
                             android:textSize="30dp"
                             android:textStyle="bold" />

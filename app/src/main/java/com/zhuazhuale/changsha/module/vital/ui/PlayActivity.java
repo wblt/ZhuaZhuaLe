@@ -28,13 +28,15 @@ import com.zhuazhuale.changsha.module.home.ui.RechargeActivity;
 import com.zhuazhuale.changsha.module.vital.bean.ControlGameBean;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
 import com.zhuazhuale.changsha.module.vital.presenter.PlayPresenter;
+import com.zhuazhuale.changsha.util.CountdownUtil;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.SoundUtils;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
-import com.zhuazhuale.changsha.view.activity.base.BaseActivity;
+import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
+import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -79,6 +81,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     TextView tv_play_name;
     @BindView(R.id.view_play)
     LinearLayout view_play;
+    @BindView(R.id.tv_play_djs)
+    TextView tv_play_djs;
 
 
     private DeviceGoodsBean.RowsBean rowsBean;
@@ -232,6 +236,16 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     protected void obtainData() {
         presenter = new PlayPresenter(this);
+        getLoadLayout().setOnLoadListener(new OnLoadListener() {
+            @Override
+            public void onLoad() {
+                mLivePlayer1.startPlay(url1, TXLivePlayer.PLAY_TYPE_LIVE_RTMP); //推荐FLV
+                //查询游戏币数量
+                presenter.initNewCP();
+                //查询游戏的状态
+                presenter.initQueryGame(rowsBean.getF_ID(), first);
+            }
+        });
         //查询游戏币数量
         presenter.initNewCP();
         //查询游戏的状态
@@ -262,6 +276,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     public void showNewCP(NewCPBean newCPBean) {
         if (newCPBean.getCode() == 1) {
+            getLoadLayout().setLayoutState(State.SUCCESS);
             newCP = newCPBean.getRows().getCP();
             tv_play_cp.setText(newCP + "");
         } else {
@@ -322,6 +337,13 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         }
     }
 
+    @Override
+    public void showNewCPFailed() {
+        //设置页面为“失败”状态
+        getLoadLayout().setLayoutState(State.FAILED);
+        dismissLoadingDialog();
+    }
+
     /**
      * 查询机器的状态
      *
@@ -331,77 +353,34 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     public void showQueryGame(QueryGameBean queryGameBean, int type) {
         int code = queryGameBean.getCode();
-        switch (type) {
-            case 1://第一次进入游戏检查状态
-                if (code == 1) {
-                    // 创建子线程,检查机器的状态
+        if (code == 1) {
+            // 创建子线程,检查机器的状态
 
-                    QueryGameBean.RowsBean rows = queryGameBean.getRows();
-                    switch (rows.getVStatus()) {
-                        case 1:
-                            //空闲中,可以上机
-                            isOpen = true;
-                            iv_play_startgame.setImageResource(R.mipmap.srartgame);
-                            break;
-                        case 2:
-                            //其他用户正在游戏中
-                            isOpen = false;
-                            iv_play_startgame.setImageResource(R.mipmap.srartgame2);
-                            break;
-                        case 3:
-                            isOpen = false;
-                            iv_play_startgame.setImageResource(R.mipmap.srartgame2);
-                            break;
+            QueryGameBean.RowsBean rows = queryGameBean.getRows();
+            switch (rows.getVStatus()) {
+                case 1:
+                    //空闲中,可以上机
+                    isOpen = true;
+                    if (type==startGame){
+                        presenter.initUpperGame(rowsBean.getF_ID());
                     }
-                } else {
-                    ToastUtil.show(queryGameBean.getInfo());
-                }
-                break;
-            case 2://点击开始游戏时,检查游戏状态
-                if (code == 1) {
-                    QueryGameBean.RowsBean rows = queryGameBean.getRows();
-                    switch (rows.getVStatus()) {
-                        case 1:
-                            //空闲中,可以上机
-                            isOpen = true;
-                            iv_play_startgame.setImageResource(R.mipmap.srartgame);
-                            presenter.initUpperGame(rowsBean.getF_ID());
-                            break;
-                        case 2:
-                            //其他用户正在游戏中
-                            isOpen = false;
-                            iv_play_startgame.setImageResource(R.mipmap.srartgame2);
-                            break;
-                        case 3:
-                            isOpen = false;
-                            iv_play_startgame.setImageResource(R.mipmap.srartgame2);
-                            break;
-                    }
-                } else {
-                    ToastUtil.show(queryGameBean.getInfo());
-                }
-                break;
-            case 3://开启子线程5秒钟检查游戏机状态
-                if (code == 1) {
-                    QueryGameBean.RowsBean rows = queryGameBean.getRows();
-                    switch (rows.getVStatus()) {
-                        case 1:
-                            //空闲中,可以上机
-                            isOpen = true;
-                            iv_play_startgame.setImageResource(R.mipmap.srartgame);
-                            break;
-                        case 2:
-                            //其他用户正在游戏中
-                            isOpen = false;
-                            iv_play_startgame.setImageResource(R.mipmap.srartgame2);
-                            break;
-                        case 3:
-                            isOpen = false;
-                            iv_play_startgame.setImageResource(R.mipmap.srartgame2);
-                            break;
-                    }
-                }
-                break;
+                    iv_play_startgame.setImageResource(R.mipmap.srartgame);
+                    break;
+                case 2:
+                    //其他用户正在游戏中
+                    isOpen = false;
+                    iv_play_startgame.setImageResource(R.mipmap.srartgame2);
+                    break;
+                case 3://在维修中
+                    isOpen = false;
+                    iv_play_startgame.setImageResource(R.mipmap.srartgame2);
+                    break;
+            }
+        } else {
+            if (type!=thread){
+                ToastUtil.show(queryGameBean.getInfo());
+
+            }
         }
 
     }
@@ -423,9 +402,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     }
 
     private boolean isStart = true;
-    private static int first = 1;
-    private static int startGame = 2;
-    private static int thread = 3;
+    private static int first = 1; //第一次时进入检查机器状态
+    private static int startGame = 2;//开始游戏时检查机器状态
+    private static int thread = 3;//开启子线程检查机器状态
 
     /**
      * 创建子线程,检查机器的状态
@@ -437,7 +416,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     }
 
-
+    /**
+     * 子线程,检查机器的状态
+     */
     private class MyThread extends Thread {
         private final Object lock = new Object();
         private boolean pause = false;
@@ -534,7 +515,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 ControlGame(right);
                 break;
             case R.id.iv_play_catch:
-                soundUtils.playSound(take, 0);
+
                 ControlGame("DOWN");
                 break;
             case R.id.iv_play_change:
@@ -579,6 +560,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         if (isPlay) {
             presenter.initControlGame(rowsBean.getF_ID(), forward, gameBeanRows.getToken(), gameBeanRows.getTimestamp() + "");
             if (forward.equals("DOWN")) {
+                CountdownUtil.getInstance().cancel("play");
+                soundUtils.playSound(take, 0);
                 isPlay = false;//正在抓取,不能操作了
             }
         }
@@ -595,11 +578,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         //取消订阅
         EventBusUtil.unregister(this);
         //判断是否有流,再关闭,不然会报错
-        if (mLivePlayer1.isPlaying()) {
+        if (mLivePlayer1 != null && mLivePlayer1.isPlaying()) {
             mLivePlayer1.stopPlay(true); // true代表清除最后一帧画面
 
         }
-        if (mLivePlayer2.isPlaying()) {
+        if (mLivePlayer2 != null && mLivePlayer2.isPlaying()) {
             mLivePlayer2.stopPlay(true); // true代表清除最后一帧画面
 
         }
@@ -631,6 +614,21 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 isPlay = true;
                 ll_play_open.setVisibility(View.GONE);
                 ll_play_caozuo.setVisibility(View.VISIBLE);
+                //倒计时
+                CountdownUtil.getInstance().newTimer(30000, 1000, new CountdownUtil.ICountDown() {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        tv_play_djs.setText(millisUntilFinished / 1000 + "\"");
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        LogUtil.e("我是倒计时,我结束了");
+                        tv_play_djs.setText("0\"");
+                        ControlGame("DOWN");
+                    }
+                }, "play");
                 break;
             case 0://失败
                 ToastUtil.show(gameBean.getInfo());
@@ -671,7 +669,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             // 设置对话框标题
             isExit.setTitle("系统提示");
             // 设置对话框消息
-            isExit.setMessage("您游戏还在进行,确定要退出吗?");
+            isExit.setMessage("亲,您正在游戏当中确定要提出游戏么(退出游戏将扣除游戏币,并不记录游戏记录)");
             // 添加选择按钮并注册监听
             isExit.setButton("确定", listener);
             isExit.setButton2("取消", listener);

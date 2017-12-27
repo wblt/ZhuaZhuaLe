@@ -44,7 +44,7 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
 
             @Override
             public void callFailed() {
-                mIView.showFailed();
+                mIView.showNewCPFailed();
             }
 
             @Override

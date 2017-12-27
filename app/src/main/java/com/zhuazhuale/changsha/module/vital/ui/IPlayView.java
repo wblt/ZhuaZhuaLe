@@ -25,4 +25,6 @@ public interface IPlayView extends IBaseView{
 
 
     void showLowerGame(EditAddressBean lowerGame);
+
+    void showNewCPFailed();
 }
