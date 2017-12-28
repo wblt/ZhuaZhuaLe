@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.zhuazhuale.changsha">
 
     <!-- 网络相关权限 -->
@@ -64,6 +65,10 @@
         <activity android:name=".module.home.ui.AddressListActivity" />
         <activity android:name=".module.vital.ui.PlayActivity"
             android:screenOrientation="portrait"/>
+        <service android:name="cn.jpush.android.service.PushService"
+            android:process=":multiprocess"
+            tools:node="replace" >
+        </service>
     </application>
 
 </manifest>

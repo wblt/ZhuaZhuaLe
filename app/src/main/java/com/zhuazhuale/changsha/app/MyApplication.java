@@ -17,6 +17,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * author:  ljy
  * date:    2017/9/13
@@ -69,6 +71,9 @@ public class MyApplication extends Application {
         // 初始化Bugly
         //腾讯bugly检测工具
         CrashReport.initCrashReport(getApplicationContext(), "060b9179aa", true);
+        //极光注册,初始化
+        JPushInterface.setDebugMode(true);//如果时正式版就改成false
+        JPushInterface.init(this);
     }
     /**
      * 获取进程号对应的进程名
