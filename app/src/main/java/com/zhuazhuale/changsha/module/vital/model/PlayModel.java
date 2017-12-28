@@ -191,4 +191,37 @@ public class PlayModel {
                     }
                 });
     }
+
+    /**
+     * 查询在这台机器用户抓取成功的记录
+     * @param vDeviceID
+     * @param iCallListener
+     */
+    public void getGetAllUserTrueByDeviceID(String vDeviceID, final ICallListener<String> iCallListener) {
+        OkGo.<String>post(Constant.GetAllUserTrueByDeviceID)
+                .tag(this)
+                .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("vDeviceID", vDeviceID)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e("请求成功" + response.body());
+                        iCallListener.callSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e("请求失败" + response.toString());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+    }
+
 }

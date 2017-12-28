@@ -68,6 +68,8 @@ public class Constant {
     public static String QueryGame = URLGAME + "/api/Operation/QueryGame";
     //操控,机器上下左右
     public static String ControlGame = URLGAME + "/api/Operation/ControlGame";
+    //查询在这台机器用户抓取成功的记录
+    public static String GetAllUserTrueByDeviceID = URL + "/api/Account/GetAllUserTrueByDeviceID";
 
 
 }

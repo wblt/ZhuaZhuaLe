@@ -7,6 +7,7 @@ import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
 import com.zhuazhuale.changsha.module.home.model.MineModel;
 import com.zhuazhuale.changsha.module.home.ui.IMineView;
+import com.zhuazhuale.changsha.module.vital.bean.AllUserTrueByDeviceIDBean;
 import com.zhuazhuale.changsha.module.vital.bean.ControlGameBean;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
 import com.zhuazhuale.changsha.module.vital.model.PlayModel;
@@ -164,6 +165,35 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             @Override
             public void onFinish() {
                 LogUtil.e(TAG, "接口结束");
+            }
+        });
+    }
+
+    /**
+     * 查询在这台机器用户抓取成功的记录
+     * @param vDeviceID
+     * @param init
+     */
+
+    public void initGetAllUserTrueByDeviceID(String vDeviceID, final int type) {
+        playModel.getGetAllUserTrueByDeviceID(vDeviceID, new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(TAG, s);
+                Gson gson = new Gson();
+                AllUserTrueByDeviceIDBean trueByDeviceIDBean = gson.fromJson(s, AllUserTrueByDeviceIDBean.class);
+                mIView.showAllUserTrues(trueByDeviceIDBean,type);
+            }
+
+            @Override
+            public void callFailed() {
+                mIView.showFailed();
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e(TAG, "接口结束");
+                mIView.showFinish();
             }
         });
     }

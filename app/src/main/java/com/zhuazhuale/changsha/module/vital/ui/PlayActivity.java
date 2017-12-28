@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,9 +27,12 @@ import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
 import com.zhuazhuale.changsha.module.home.ui.RechargeActivity;
+import com.zhuazhuale.changsha.module.vital.adapter.AllTrueAdapter;
+import com.zhuazhuale.changsha.module.vital.bean.AllUserTrueByDeviceIDBean;
 import com.zhuazhuale.changsha.module.vital.bean.ControlGameBean;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
 import com.zhuazhuale.changsha.module.vital.presenter.PlayPresenter;
+import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.CountdownUtil;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.FrescoUtil;
@@ -83,6 +88,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     LinearLayout view_play;
     @BindView(R.id.tv_play_djs)
     TextView tv_play_djs;
+    @BindView(R.id.rv_play_list)
+    RecyclerView rv_play_list;
 
 
     private DeviceGoodsBean.RowsBean rowsBean;
@@ -116,13 +123,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private Dialog dialog;
     private TextView tv_dialog_info;
     private MyThread mutliThread;
-    private Dialog dialogfinish;
     private AlertDialog isExit;
     private TextView tv_dialog_ok;
 
     @Override
     protected void setContentLayout() {
-        setContentView(R.layout.activity_play);
+        setContentView(R.layout.activity_play2);
         Intent intent = getIntent();
         rowsBean = (DeviceGoodsBean.RowsBean) intent.getSerializableExtra("DeviceGoods");
         url1 = rowsBean.getF_Camera1();
@@ -179,7 +185,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         tv_dialog_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               CountdownUtil.getInstance().cancel("DOWN");
+                CountdownUtil.getInstance().cancel("DOWN");
                 presenter.initLowerGame(rowsBean.getF_ID());
                 isPlay = false;
                 ll_play_open.setVisibility(View.VISIBLE);
@@ -245,12 +251,15 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 presenter.initNewCP();
                 //查询游戏的状态
                 presenter.initQueryGame(rowsBean.getF_ID(), first);
+                presenter.initGetAllUserTrueByDeviceID(rowsBean.getF_ID(), Constant.REFRESH);
+
             }
         });
         //查询游戏币数量
         presenter.initNewCP();
         //查询游戏的状态
         presenter.initQueryGame(rowsBean.getF_ID(), first);
+        presenter.initGetAllUserTrueByDeviceID(rowsBean.getF_ID(), Constant.INIT);
         // 开启子线程5秒钟检查一次机器状态
         creatThread();
 
@@ -319,7 +328,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             }
 
 
-
         } else {
             //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
             soundUtils.playSound(move, 0);
@@ -368,6 +376,23 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         //设置页面为“失败”状态
         getLoadLayout().setLayoutState(State.FAILED);
         dismissLoadingDialog();
+    }
+
+    /**
+     * 展现用户在这台机器抓取成功的记录
+     *
+     * @param trueBean
+     * @param type
+     */
+    @Override
+    public void showAllUserTrues(AllUserTrueByDeviceIDBean trueBean, int type) {
+        if (trueBean.getCode() == 1) {
+            AllTrueAdapter adapter = new AllTrueAdapter(getContext(), trueBean.getRows());
+            rv_play_list.setLayoutManager(new LinearLayoutManager(this));
+            rv_play_list.setAdapter(adapter);
+        } else {
+            LogUtil.e(trueBean.getInfo());
+        }
     }
 
     /**
@@ -547,7 +572,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             case R.id.iv_play_change:
 
                 if (isURL) {
-                    ToastUtil.show("true");
                     isURL = false;
                     mView1.setVisibility(View.VISIBLE);
                     mView2.setVisibility(View.GONE);
@@ -558,7 +582,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                     left = "LEFT";
                     right = "RIGHT";
                 } else {
-                    ToastUtil.show("false");
                     isURL = true;
                     mView1.setVisibility(View.GONE);
                     mView2.setVisibility(View.VISIBLE);
@@ -597,6 +620,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     public void onDestroy() {
         super.onDestroy();
+        CountdownUtil.getInstance().cancelAll();
         if (mutliThread != null) {
             mutliThread.pauseThread();
             mutliThread = null;

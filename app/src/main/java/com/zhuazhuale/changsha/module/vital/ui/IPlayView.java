@@ -3,6 +3,7 @@ package com.zhuazhuale.changsha.module.vital.ui;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
+import com.zhuazhuale.changsha.module.vital.bean.AllUserTrueByDeviceIDBean;
 import com.zhuazhuale.changsha.module.vital.bean.ControlGameBean;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
 import com.zhuazhuale.changsha.presenter.iview.IBaseView;
@@ -27,4 +28,6 @@ public interface IPlayView extends IBaseView{
     void showLowerGame(EditAddressBean lowerGame);
 
     void showNewCPFailed();
+
+    void showAllUserTrues(AllUserTrueByDeviceIDBean trueByDeviceIDBean, int type);
 }
