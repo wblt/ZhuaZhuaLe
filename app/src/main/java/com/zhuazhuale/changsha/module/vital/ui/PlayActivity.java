@@ -371,6 +371,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         }
     }
 
+    /**
+     * 网络连接失败
+     */
     @Override
     public void showNewCPFailed() {
         //设置页面为“失败”状态

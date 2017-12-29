@@ -172,7 +172,6 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
     /**
      * 查询在这台机器用户抓取成功的记录
      * @param vDeviceID
-     * @param init
      */
 
     public void initGetAllUserTrueByDeviceID(String vDeviceID, final int type) {
@@ -193,7 +192,7 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             @Override
             public void onFinish() {
                 LogUtil.e(TAG, "接口结束");
-                mIView.showFinish();
+//                mIView.showFinish();
             }
         });
     }

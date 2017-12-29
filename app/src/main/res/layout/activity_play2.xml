@@ -269,6 +269,8 @@
                 android:textSize="16dp" />
 
             <android.support.v7.widget.RecyclerView
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
                 android:id="@+id/rv_play_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
