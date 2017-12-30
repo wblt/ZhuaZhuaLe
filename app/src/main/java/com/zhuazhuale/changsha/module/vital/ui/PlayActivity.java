@@ -26,6 +26,7 @@ import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
+import com.zhuazhuale.changsha.module.home.ui.FeedBackActivity;
 import com.zhuazhuale.changsha.module.home.ui.RechargeActivity;
 import com.zhuazhuale.changsha.module.vital.adapter.AllTrueAdapter;
 import com.zhuazhuale.changsha.module.vital.bean.AllUserTrueByDeviceIDBean;
@@ -168,7 +169,13 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 listen();
             }
         });
-
+        getTvToolbarRight().setText("求助");
+        getTvToolbarRight().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), FeedBackActivity.class));
+            }
+        });
     }
 
     /**
@@ -304,6 +311,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     public void showControlGame(ControlGameBean controlGameBean, String vAction) {
         boolean isHave = getActivityStackManager().isActivityExist(PlayActivity.class);
+        if (controlGameBean.getCode() == -9999) {
+            ToastUtil.show("退出房间");
+            finish();
+            return;
+        }
         if (vAction.equals("DOWN")) {
 
             if (controlGameBean.getCode() == 1) {
@@ -815,7 +827,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                         break;
                     case 2002:
                         //无限播放背景音乐
-                        soundUtils.playSound(bgvoice, SoundUtils.INFINITE_PLAY);
+                        soundUtils.playSoundLun(bgvoice, SoundUtils.INFINITE_PLAY);
                         if (isFirst) {
                             creatTXLivePlayer2();
                             isFirst = false;

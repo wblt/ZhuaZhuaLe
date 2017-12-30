@@ -9,6 +9,9 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
+import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
+
 /**
  * TODO 播放声音工具类
  *
@@ -63,7 +66,6 @@ public class SoundUtils {
      * TODO 媒体音量
      */
     public static final int MEDIA_SOUND = 3;
-    private final List<Integer> soundSigna;
 
     /**
      * TODO 构造器内初始化
@@ -79,7 +81,6 @@ public class SoundUtils {
         // 初始化声音池和声音参数map
         soundPool = new SoundPool(256, AudioManager.STREAM_MUSIC, 0);
         soundPoolMap = new HashMap<Integer, Integer>();
-        soundSigna = new ArrayList<>();
     }
 
     /**
@@ -107,18 +108,47 @@ public class SoundUtils {
      */
     @SuppressWarnings("static-access")
     public void playSound(int order, int times) {
-        // 实例化AudioManager对象
-        AudioManager am = (AudioManager) context
-                .getSystemService(context.AUDIO_SERVICE);
-        // 返回当前AudioManager对象播放所选声音的类型的最大音量值
-        float maxVolumn = am.getStreamMaxVolume(soundVolType);
-        // 返回当前AudioManager对象的音量值
-        float currentVolumn = am.getStreamVolume(soundVolType);
-        // 比值
-        float volumnRatio = currentVolumn / maxVolumn;
-        int i = soundPool.play(soundPoolMap.get(order), volumnRatio, volumnRatio, 1,
-                times, 1);
-        soundSigna.add(i);
+        boolean is_yy = PreferenceUtil.getBoolean(context, BaseConstants.Is_yy, true);
+        if (is_yy) {
+            // 实例化AudioManager对象
+            AudioManager am = (AudioManager) context
+                    .getSystemService(context.AUDIO_SERVICE);
+            // 返回当前AudioManager对象播放所选声音的类型的最大音量值
+            float maxVolumn = am.getStreamMaxVolume(soundVolType);
+            // 返回当前AudioManager对象的音量值
+            float currentVolumn = am.getStreamVolume(soundVolType);
+            // 比值
+            float volumnRatio = currentVolumn / maxVolumn;
+            soundPool.play(soundPoolMap.get(order), volumnRatio, volumnRatio, 1,
+                    times, 1);
+        }
+
+    }
+
+    /**
+     * 无限循环bof
+     *
+     * @param order
+     * @param times,
+     */
+    public void playSoundLun(int order, int times) {
+        boolean is_bjyx = PreferenceUtil.getBoolean(context, BaseConstants.Is_bjyx, true);
+        if (is_bjyx) {
+            // 实例化AudioManager对象
+            AudioManager am = (AudioManager) context
+                    .getSystemService(context.AUDIO_SERVICE);
+            // 返回当前AudioManager对象播放所选声音的类型的最大音量值
+            float maxVolumn = am.getStreamMaxVolume(soundVolType);
+            // 返回当前AudioManager对象的音量值
+            float currentVolumn = am.getStreamVolume(soundVolType);
+            // 比值
+            float volumnRatio = currentVolumn / maxVolumn;
+            soundPool.play(soundPoolMap.get(order), volumnRatio, volumnRatio, 1,
+                    times, 1);
+        } else {
+            return;
+        }
+
     }
 
     public void stopSound() {
@@ -138,4 +168,6 @@ public class SoundUtils {
         this.soundVolType = soundVolType;
 
     }
+
+
 }

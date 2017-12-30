@@ -47,6 +47,9 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
     private Intent intent;
     private MaterialDialog mDialog;
     private SettingPresenter presenter;
+    private ImageView iv_bjyx;
+    private ImageView iv_yy;
+    private ImageView iv_lp;
 
     @Override
     protected void setContentLayout() {
@@ -65,12 +68,28 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
         TextView tv_gywm = (TextView) ic_setting_gywm.findViewById(R.id.tv_list_n);
         TextView tv_tcdl = (TextView) ic_setting_tcdl.findViewById(R.id.tv_list_n);
 
-        ImageView iv_bjyx = (ImageView) ic_setting_bjyx.findViewById(R.id.iv_list_tu);
-        ImageView iv_yy = (ImageView) ic_setting_yy.findViewById(R.id.iv_list_tu);
-        ImageView iv_lp = (ImageView) ic_setting_lp.findViewById(R.id.iv_list_tu);
-        iv_bjyx.setImageResource(R.mipmap.icon_kai);
-        iv_yy.setImageResource(R.mipmap.icon_kai);
-        iv_lp.setImageResource(R.mipmap.icon_guan);
+        iv_bjyx = (ImageView) ic_setting_bjyx.findViewById(R.id.iv_list_tu);
+        iv_yy = (ImageView) ic_setting_yy.findViewById(R.id.iv_list_tu);
+        iv_lp = (ImageView) ic_setting_lp.findViewById(R.id.iv_list_tu);
+
+        boolean isbjyx = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_bjyx, true);
+        boolean isyy = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_yy, true);
+        boolean islp = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lp, false);
+        if (isbjyx) {
+            iv_bjyx.setImageResource(R.mipmap.icon_kai);
+        } else {
+            iv_bjyx.setImageResource(R.mipmap.icon_guan);
+        }
+        if (isyy) {
+            iv_yy.setImageResource(R.mipmap.icon_kai);
+        } else {
+            iv_yy.setImageResource(R.mipmap.icon_guan);
+        }
+        if (islp) {
+            iv_lp.setImageResource(R.mipmap.icon_kai);
+        } else {
+            iv_lp.setImageResource(R.mipmap.icon_guan);
+        }
 
         tv_tzzx.setText("通知中心");
         tv_yqjl.setText("邀请奖励");
@@ -95,9 +114,49 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
         ic_setting_tzzx.setOnClickListener(this);
         ic_setting_yqjl.setOnClickListener(this);
         ic_setting_sryqm.setOnClickListener(this);
-        ic_setting_bjyx.setOnClickListener(this);
-        ic_setting_yy.setOnClickListener(this);
-        ic_setting_lp.setOnClickListener(this);
+        iv_bjyx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean is_bjyx = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_bjyx, true);
+                if (is_bjyx) {
+                    iv_bjyx.setImageResource(R.mipmap.icon_guan);
+                    PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_bjyx, false);
+
+                } else {
+                    iv_bjyx.setImageResource(R.mipmap.icon_kai);
+                    PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_bjyx, true);
+
+                }
+            }
+        });
+        iv_yy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean is_yy = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_yy, true);
+                if (is_yy) {
+                    iv_yy.setImageResource(R.mipmap.icon_guan);
+                    PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_yy, false);
+                } else {
+                    iv_yy.setImageResource(R.mipmap.icon_kai);
+                    PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_yy, true);
+
+
+                }
+            }
+        });
+        iv_lp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean is_lp = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lp, false);
+                if (is_lp) {
+                    iv_lp.setImageResource(R.mipmap.icon_guan);
+                    PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_lp, false);
+                } else {
+                    iv_lp.setImageResource(R.mipmap.icon_kai);
+                    PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_lp, true);
+                }
+            }
+        });
         ic_setting_wtfk.setOnClickListener(this);
         ic_setting_gywm.setOnClickListener(this);
         ic_setting_tcdl.setOnClickListener(this);
@@ -120,6 +179,8 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.ic_setting_bjyx:
+
+
                 break;
             case R.id.ic_setting_yy:
                 break;
