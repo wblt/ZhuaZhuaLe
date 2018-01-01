@@ -351,7 +351,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      * 倒计时开始游戏
      */
     private void openGame() {
-        CountdownUtil.getInstance().newTimer(8000, 1000, new CountdownUtil.ICountDown() {
+        CountdownUtil.getInstance().newTimer(10000, 1000, new CountdownUtil.ICountDown() {
             @Override
             public void onTick(long millisUntilFinished) {
                 tv_dialog_ok.setText("继续游戏(" + millisUntilFinished / 1000 + ")");
@@ -360,9 +360,16 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             @Override
             public void onFinish() {
                 tv_dialog_ok.setText("(0)");
-                showLoadingDialog();
-                soundUtils.playSound(start, 0);
-                presenter.initUpperGame(rowsBean.getF_ID());
+                CountdownUtil.getInstance().cancel("DOWN");
+                presenter.initLowerGame(rowsBean.getF_ID());
+                isPlay = false;
+                ll_play_open.setVisibility(View.VISIBLE);
+                ll_play_caozuo.setVisibility(View.INVISIBLE);
+
+
+//                showLoadingDialog();
+//                soundUtils.playSound(start, 0);
+//                presenter.initLowerGame(rowsBean.getF_ID());
                 dialog.dismiss();
             }
         }, "DOWN");
