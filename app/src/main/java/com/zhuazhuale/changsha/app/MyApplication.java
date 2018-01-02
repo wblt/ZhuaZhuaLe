@@ -6,8 +6,11 @@ import android.text.TextUtils;
 
 import com.lzy.okgo.OkGo;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhuazhuale.changsha.model.net.RetrofitUtil;
 import com.zhuazhuale.changsha.module.home.Bean.LoginInfoBean;
+import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.CrashLogUtil;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
@@ -74,7 +77,18 @@ public class MyApplication extends Application {
         //极光注册,初始化
         JPushInterface.setDebugMode(true);//如果时正式版就改成false
         JPushInterface.init(this);
+        regToWx();
     }
+
+    public static IWXAPI api;
+
+    private void regToWx() {
+        // 通过WXAPIFactory工厂,获得IWXAPI的实例
+        api = WXAPIFactory.createWXAPI(this, Constant.APPID, true);
+        // 将应用的appid注册到微信
+        api.registerApp(Constant.APPID);
+    }
+
     /**
      * 获取进程号对应的进程名
      *

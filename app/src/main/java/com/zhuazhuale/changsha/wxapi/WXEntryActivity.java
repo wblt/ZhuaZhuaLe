@@ -8,10 +8,10 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.zhuazhuale.changsha.model.entity.eventbus.LoginEvent;
-import com.zhuazhuale.changsha.module.login.presenter.LoginPresenter;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
+import static com.zhuazhuale.changsha.app.MyApplication.api;
 
 
 /**
@@ -24,7 +24,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 通过WXAPIFactory工厂，获取IWXAPI的实例
-        LoginPresenter.api.handleIntent(getIntent(), this);
+        api.handleIntent(getIntent(), this);
     }
 
 

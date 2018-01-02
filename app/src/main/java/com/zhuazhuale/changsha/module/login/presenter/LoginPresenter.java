@@ -1,20 +1,17 @@
 package com.zhuazhuale.changsha.module.login.presenter;
 
-import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.module.home.Bean.LoginInfoBean;
 import com.zhuazhuale.changsha.module.login.bean.WeiXinLoginGetUserinfoBean;
 import com.zhuazhuale.changsha.module.login.model.LoginModel;
 import com.zhuazhuale.changsha.module.login.ui.ILoginView;
 import com.zhuazhuale.changsha.presenter.base.BasePresenter;
-import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.log.LogUtil;
+import static com.zhuazhuale.changsha.app.MyApplication.api;
 
 import java.lang.reflect.Type;
 
@@ -30,7 +27,6 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
     public LoginPresenter(ILoginView iLoginView) {
         super(iLoginView);
         loginModel = LoginModel.getInstance();
-        regToWx();
     }
 
     /** -------------------------微信第三方登录---------------------- */
@@ -38,14 +34,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
      * 微信平台应用授权登录接入代码示例
      */
     //---------------------------微信第三方相关
-    public static IWXAPI api;
 
-    private void regToWx() {
-        // 通过WXAPIFactory工厂,获得IWXAPI的实例
-        api = WXAPIFactory.createWXAPI((Context) mIView, Constant.APPID, true);
-        // 将应用的appid注册到微信
-        api.registerApp("wx6a6349cd0ccf0b09");
-    }
 
     //获取微信访问getCode
     public void getCode() {
