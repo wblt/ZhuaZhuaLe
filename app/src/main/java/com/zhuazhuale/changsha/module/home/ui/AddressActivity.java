@@ -176,8 +176,10 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
      */
     @Override
     public void showQueryUserAddress(AddressBean addressBean, int type) {
+
         switch (type) {
             case Constant.INIT:
+
                 if (addressBean.getCode() == 0) {
 //                    getLoadLayout().setLayoutState(State.NO_DATA);
                     ToastUtil.show(addressBean.getInfo());
@@ -203,7 +205,15 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
                         addressAdapter.removeAll();
                     }
                 } else {
-                    addressAdapter.replaceData(addressBean.getRows());
+                    if (addressAdapter==null){
+                        addressAdapter = new AddressAdapter(this, addressBean.getRows());
+                        rv_address_list.setLayoutManager(new LinearLayoutManager(this));
+                        rv_address_list.setHasFixedSize(false);
+                        rv_address_list.setAdapter(addressAdapter);
+                    }else {
+                        addressAdapter.replaceData(addressBean.getRows());
+                    }
+
                 }
 
                 break;

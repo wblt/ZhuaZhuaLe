@@ -32,6 +32,7 @@ public class AddressModel {
      * @param iCallListener
      */
     public void getQueryUserAddress(int vCheck, final ICallListener<String> iCallListener) {
+        LogUtil.e("我的ID :"+MyApplication.getInstance().getRowsBean().getF_ID());
         OkGo.<String>post(Constant.QueryUserAddress)
                 .tag(this)
                 .params("vCheck", vCheck)

@@ -33,10 +33,11 @@ public class EditAddressModel {
         if (ID.isEmpty()) {
             ID = "";
         }
+        LogUtil.e("我的ID :"+MyApplication.getInstance().getRowsBean().getF_ID());
         OkGo.<String>post(Constant.ModifyUserAddress)
                 .tag(this)
                 .params("F_ID", ID)
-                .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("F_UserID", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("F_Consignee", name)
                 .params("F_Mobile", phone)
                 .params("F_Address", address)
