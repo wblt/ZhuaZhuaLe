@@ -85,7 +85,7 @@ public class DeliveryPresenter extends BasePresenter<IDeliveryView> {
      * @param address
      * @param remark
      */
-    public void initCreateOrder(String name, String phone, String address,String remark) {
+    public void initCreateOrder(String name, String phone, String address, String remark) {
         addressModel.getCreateOrder(name,phone,address, remark,new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {

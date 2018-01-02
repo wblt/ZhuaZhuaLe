@@ -57,6 +57,10 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
     private MaterialDialog mDialog;
     private List<SpoilsBean.RowsBean> beanList;
     private List<String> goodsIDs;
+    private String name;
+    private String phone;
+    private String address1;
+    private String remark;
 
 
     @Override
@@ -122,6 +126,25 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
 
                 break;
             case R.id.tv_delivery_submit:
+                name = tv_delivery_name.getText().toString();
+                phone = tv_delivery_phone.getText().toString();
+                address1 = tv_delivery_address.getText().toString();
+                remark = tv_delivery_address.getText().toString();
+                if (name.isEmpty()) {
+                    ToastUtil.show("收货人不能为空");
+                    return;
+                }
+                if (phone.isEmpty()) {
+                    ToastUtil.show("收货人电话不能为空");
+                    return;
+                }
+                if (address1.isEmpty()) {
+                    ToastUtil.show("收货人地址不能为空");
+                    return;
+                }
+                if (remark.isEmpty()) {
+                    remark = "";
+                }
                 mDialog.setTitle("娃娃乐温馨提示");
                 mDialog.setMessage("是否提交订单");
 
@@ -161,26 +184,8 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
      * 提交订单
      */
     private void submitOrder() {
-        String name = tv_delivery_name.getText().toString();
-        String phone = tv_delivery_phone.getText().toString();
-        String address = tv_delivery_address.getText().toString();
-        String remark = tv_delivery_address.getText().toString();
-        if (name.isEmpty()) {
-            ToastUtil.show("收货人不能为空");
-            return;
-        }
-        if (phone.isEmpty()) {
-            ToastUtil.show("收货人电话不能为空");
-            return;
-        }
-        if (address.isEmpty()) {
-            ToastUtil.show("收货人地址不能为空");
-            return;
-        }
-        if (remark.isEmpty()) {
-            remark = "";
-        }
-        presenter.initCreateOrder(name, phone, address, remark);
+
+        presenter.initCreateOrder(name, phone, address1, remark);
     }
 
     /**
