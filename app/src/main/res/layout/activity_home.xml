@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@mipmap/beijing"
     android:orientation="vertical">
 
@@ -67,12 +67,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
+            <com.zhy.android.percent.support.PercentLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <FrameLayout
+               <!-- <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -82,20 +82,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:scaleType="fitXY"
-                        custom:ratio="0.3">
+                        custom:ratio="0.4">
 
-                    </com.zhuazhuale.changsha.view.MyImageView>
+                    </com.zhuazhuale.changsha.view.MyImageView>-->
 
 
                     <com.jude.rollviewpager.RollPagerView
                         android:id="@+id/rpv_mall"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:visibility="visible">
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        app:layout_heightPercent="26%"
+                        app:layout_widthPercent="95%">
 
                     </com.jude.rollviewpager.RollPagerView>
 
-                </FrameLayout>
+             <!--   </FrameLayout>-->
 
 
                 <RelativeLayout
@@ -132,15 +134,18 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_home_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    app:layout_heightPercent="60%"
+                    app:layout_widthPercent="100%"
                     android:paddingBottom="14dp"
                    >
 
                 </android.support.v7.widget.RecyclerView>
 
 
-            </LinearLayout>
+            </com.zhy.android.percent.support.PercentLinearLayout>
         </ScrollView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
