@@ -12,7 +12,9 @@ import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.AddressBean;
 import com.zhuazhuale.changsha.module.home.ui.AddressActivity;
 import com.zhuazhuale.changsha.module.vital.bean.AllUserTrueByDeviceIDBean;
+import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
 import com.zhuazhuale.changsha.util.FrescoUtil;
+import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.adapter.base.RecyclerBaseAdapter;
 import com.zhuazhuale.changsha.view.adapter.base.ViewHolder;
 
@@ -45,15 +47,21 @@ public class AllTrueAdapter extends RecyclerBaseAdapter<AllUserTrueByDeviceIDBea
         tv_item_alltrue_name.setText(rowsBean.getF_UserName());
         tv_item_alltrue_time.setText(rowsBean.getF_CreateTime());
         //initEvent
-        //点击该项后，从数据表中删除，并且从界面中移除
-       /* holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+       tv_item_alltrue_bo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CollectActivity mActivity = (CollectActivity) getContext();
-                mActivity.deleteCollect(rowsBean);
-                removeItem(position);
+                if (rowsBean.getF_VideoUrl().isEmpty()){
+                    ToastUtil.show("没有视频!");
+                    return;
+                }else {
+                    PlayActivity mActivity = (PlayActivity) getContext();
+                    mActivity.LookMovie(rowsBean);
+                }
+
             }
-        });*/
+        });
+
 
     }
 

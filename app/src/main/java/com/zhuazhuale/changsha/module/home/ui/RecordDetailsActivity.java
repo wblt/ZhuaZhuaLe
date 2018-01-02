@@ -15,6 +15,7 @@ import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.GradWaterBean;
 import com.zhuazhuale.changsha.module.home.adapter.RecordAdapter;
 import com.zhuazhuale.changsha.module.home.adapter.WaWaBiAdapter;
+import com.zhuazhuale.changsha.module.vital.ui.MovieActivity;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
@@ -111,7 +112,10 @@ public class RecordDetailsActivity extends AppBaseActivity implements View.OnCli
                 if (rowsBean.getF_VideoUrl().isEmpty()) {
                     ToastUtil.show("没有游戏视频!");
                 } else {
-                    ToastUtil.show(rowsBean.getF_VideoUrl());
+//                    ToastUtil.show(rowsBean.getF_VideoUrl());
+                    Intent intent = new Intent(getContext(), MovieActivity.class);
+                    intent.putExtra("MoviePath", rowsBean.getF_VideoUrl());
+                    startActivity(intent);
                 }
                 break;
         }

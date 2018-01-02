@@ -63,12 +63,23 @@
             android:exported="true"
             android:launchMode="singleTop" />
         <activity android:name=".module.home.ui.AddressListActivity" />
-        <activity android:name=".module.vital.ui.PlayActivity"
-            android:screenOrientation="portrait"/>
-        <service android:name="cn.jpush.android.service.PushService"
+        <activity
+            android:name=".module.vital.ui.PlayActivity"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name="cn.jpush.android.service.PushService"
             android:process=":multiprocess"
-            tools:node="replace" >
-        </service>
+            tools:node="replace"></service>
+        <receiver
+            android:name=".util.NetworkChangeReceiver"
+            android:label="NetworkConnection">
+            <intent-filter>
+                <!-- 网络状态发生变化的时候，系统会发出 android.net.conn.CONNECTIVITY_CHANGE -->
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <activity android:name=".module.vital.ui.MovieActivity" />
     </application>
 
 </manifest>

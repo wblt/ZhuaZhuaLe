@@ -204,6 +204,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 showLoadingDialog();
+                CountdownUtil.getInstance().cancel("DOWN");
                 soundUtils.playSound(start, 0);
                 presenter.initUpperGame(rowsBean.getF_ID());
                 dialog.dismiss();
@@ -487,6 +488,17 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         Thread thread = new Thread(mutliThread);
         thread.start();
 
+    }
+
+    /**
+     * 观看抓取成功记录
+     *
+     * @param rowsBean
+     */
+    public void LookMovie(AllUserTrueByDeviceIDBean.RowsBean rowsBean) {
+        Intent intent = new Intent(this, MovieActivity.class);
+        intent.putExtra("MoviePath", rowsBean.getF_VideoUrl());
+        startActivity(intent);
     }
 
     /**
