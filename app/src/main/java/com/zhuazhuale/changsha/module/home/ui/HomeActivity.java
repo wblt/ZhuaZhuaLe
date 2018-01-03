@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -26,6 +27,7 @@ import com.zhuazhuale.changsha.module.login.bean.WeiXinLoginGetUserinfoBean;
 import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.IItemOnClickListener;
+import com.zhuazhuale.changsha.util.PermissionUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
@@ -70,7 +72,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
 
     @Override
     protected void initView() {
-
+        PermissionUtil.requestPerssions(this, 1, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     @Override

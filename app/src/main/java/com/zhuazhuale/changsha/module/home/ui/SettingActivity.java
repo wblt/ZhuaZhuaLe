@@ -12,6 +12,7 @@ import com.zhuazhuale.changsha.module.home.presenter.SettingPresenter;
 import com.zhuazhuale.changsha.module.login.ui.FlashActivity;
 import com.zhuazhuale.changsha.module.login.ui.LoginActivity;
 import com.zhuazhuale.changsha.util.PreferenceUtil;
+import com.zhuazhuale.changsha.util.ScreenRecorder;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.MaterialDialog;
@@ -167,8 +168,8 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
         switch (view.getId()) {
 
             case R.id.ic_setting_tzzx:
-               /* intent = new Intent(SettingActivity.this, FlashActivity.class);
-                startActivity(intent);*/
+                intent = new Intent(SettingActivity.this, ScreenRecorderActivity.class);
+                startActivity(intent);
                 break;
             case R.id.ic_setting_yqjl:
                 intent = new Intent(SettingActivity.this, InviteActivity.class);

@@ -79,7 +79,9 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+
         <activity android:name=".module.vital.ui.MovieActivity" />
+        <activity android:name=".module.home.ui.ScreenRecorderActivity" />
     </application>
 
 </manifest>
