@@ -26,8 +26,8 @@ import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
-import com.zhuazhuale.changsha.module.home.ui.FeedBackActivity;
 import com.zhuazhuale.changsha.module.home.ui.RechargeActivity;
+import com.zhuazhuale.changsha.module.home.ui.RecordActivity;
 import com.zhuazhuale.changsha.module.vital.adapter.AllTrueAdapter;
 import com.zhuazhuale.changsha.module.vital.bean.AllUserTrueByDeviceIDBean;
 import com.zhuazhuale.changsha.module.vital.bean.ControlGameBean;
@@ -174,7 +174,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         getTvToolbarRight().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getContext(), FeedBackActivity.class));
+                startActivity(new Intent(getContext(), RecordActivity.class));
             }
         });
     }

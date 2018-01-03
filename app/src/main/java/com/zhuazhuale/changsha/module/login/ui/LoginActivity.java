@@ -3,6 +3,7 @@ package com.zhuazhuale.changsha.module.login.ui;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
@@ -10,6 +11,7 @@ import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.model.entity.eventbus.LoginEvent;
 import com.zhuazhuale.changsha.module.home.Bean.LoginInfoBean;
 import com.zhuazhuale.changsha.module.home.ui.HomeActivity;
+import com.zhuazhuale.changsha.module.home.ui.XieYiActivity;
 import com.zhuazhuale.changsha.module.login.presenter.LoginPresenter;
 import com.zhuazhuale.changsha.util.CommonUtil;
 import com.zhuazhuale.changsha.util.Constant;
@@ -29,6 +31,9 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     ImageView iv_login_wxlogin;
     @BindView(R.id.iv_login_check)
     ImageView iv_login_check;
+    @BindView(R.id.tv_login_xieyi)
+    TextView tv_login_xieyi;
+
     private boolean isAgree = true;
 
 
@@ -103,7 +108,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     protected void initEvent() {
         iv_login_wxlogin.setOnClickListener(this);
         iv_login_check.setOnClickListener(this);
-
+        tv_login_xieyi.setOnClickListener(this);
         boolean isLogin = PreferenceUtil.getBoolean(this, BaseConstants.IsLogin, false);
         if (isLogin) {
             // 从本地拿取用户数据,并放到内存中,方便使用
@@ -140,6 +145,10 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                     iv_login_wxlogin.setImageResource(R.mipmap.icon_login_wechat_nor);
 
                 }
+                break;
+            case R.id.tv_login_xieyi:
+                Intent intent=new Intent(getContext(),XieYiActivity.class);
+                startActivity(intent);
                 break;
         }
     }

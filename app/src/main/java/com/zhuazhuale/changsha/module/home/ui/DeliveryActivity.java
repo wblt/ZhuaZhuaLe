@@ -259,6 +259,7 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
             finish();
         } else {
             ToastUtil.show("× 生成订单失败");
+            ToastUtil.show(bean.getInfo());
         }
     }
 

@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,10 +49,11 @@ public class AboutUsActivity extends AppBaseActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.ic_aboutus_gwpf:
                 break;
             case R.id.ic_aboutus_yhxy:
+                Intent intent=new Intent(getContext(),XieYiActivity.class);
+                startActivity(intent);
                 break;
         }
     }

@@ -82,6 +82,7 @@
 
         <activity android:name=".module.vital.ui.MovieActivity" />
         <activity android:name=".module.home.ui.ScreenRecorderActivity" />
+        <activity android:name=".module.home.ui.XieYiActivity"/>
     </application>
 
 </manifest>
