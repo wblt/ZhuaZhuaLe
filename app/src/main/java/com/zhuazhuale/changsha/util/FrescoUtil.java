@@ -59,7 +59,7 @@ import static com.facebook.common.util.ByteConstants.MB;
  * author：    ljy
  * date：      2017/9/15
  * description: Fresco图片加载辅助类，用于初始化Fresco
- *              http://www.jianshu.com/p/5b5625612f56
+ * http://www.jianshu.com/p/5b5625612f56
  */
 public class FrescoUtil {
 
@@ -87,6 +87,7 @@ public class FrescoUtil {
 
     /**
      * 单例
+     *
      * @return FrescoUtil
      */
     public static FrescoUtil getInstance() {
@@ -98,11 +99,12 @@ public class FrescoUtil {
 
     /**
      * 初始化
+     *
      * @param context 全局上下文
      */
     public void initializeFresco(Context context) {
-            ImagePipelineConfig config = getImagePipelineConfig(context);
-            Fresco.initialize(context, config);
+        ImagePipelineConfig config = getImagePipelineConfig(context);
+        Fresco.initialize(context, config);
     }
 
 
@@ -210,12 +212,21 @@ public class FrescoUtil {
 
     //加载网络图片，包括动图
     public void loadNetImage(SimpleDraweeView simpleDraweeView, String url) {
+        if (url.isEmpty() && url == null) {
+            return;
+        }
         Uri uri = Uri.parse(url);
         loadImage(simpleDraweeView, uri, false, false);
     }
 
     //加载网络图片，先加载小图，待大图加载完成后替换
     public void loadNetImageSmallToBig(SimpleDraweeView simpleDraweeView, String smallUrl, String bigUrl) {
+        if (smallUrl.isEmpty() && smallUrl == null) {
+            return;
+        }
+        if (bigUrl.isEmpty() && bigUrl == null) {
+            return;
+        }
         Uri smallUri = Uri.parse(smallUrl);
         Uri bigUri = Uri.parse(bigUrl);
         loadImageSmallToBig(simpleDraweeView, smallUri, bigUri);
@@ -223,6 +234,9 @@ public class FrescoUtil {
 
     //加载本地文件图片
     public void loadLocalImage(SimpleDraweeView simpleDraweeView, String fileName) {
+        if (fileName.isEmpty() && fileName == null) {
+            return;
+        }
         Uri uri = Uri.parse("file://" + fileName);
         loadImage(simpleDraweeView, uri, false, false);
     }
@@ -298,10 +312,11 @@ public class FrescoUtil {
 
     /**
      * 构建、获取ImageRequest
-     * @param uri 加载路径
+     *
+     * @param uri                         加载路径
      * @param progressiveRenderingEnabled 是否开启渐进式加载
-     * @param blurEnable 是否开启高斯模糊
-     * @param simpleDraweeView 加载的图片控件
+     * @param blurEnable                  是否开启高斯模糊
+     * @param simpleDraweeView            加载的图片控件
      * @return ImageRequest
      */
     public ImageRequest getImageRequest(Uri uri, boolean progressiveRenderingEnabled, boolean blurEnable, SimpleDraweeView simpleDraweeView) {
@@ -343,6 +358,7 @@ public class FrescoUtil {
 
     /**
      * 构建、获取Controller
+     *
      * @param request
      * @param oldController
      * @return
@@ -358,6 +374,7 @@ public class FrescoUtil {
 
     /**
      * 构建、获取Controller（先小图再大图）
+     *
      * @param smallRequest
      * @param bigRequest
      * @param oldController
