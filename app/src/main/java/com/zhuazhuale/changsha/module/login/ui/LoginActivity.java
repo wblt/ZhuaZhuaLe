@@ -63,7 +63,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         rowsBean.setF_CP(F_CP);
         rowsBean.setF_Img(F_Img);
         rowsBean.setF_VerCode(F_VerCode);
-        rowsBean.setF_VerCode(F_FxUrl);
+        rowsBean.setF_FxUrl(F_FxUrl);
         // 保存在内存中
         MyApplication.getInstance().setRowsBean(rowsBean);
     }

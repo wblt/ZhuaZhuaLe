@@ -1,7 +1,6 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
@@ -117,44 +117,28 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
                 intent1.setType("text/plain");
                 startActivity(Intent.createChooser(intent1, "share"));*/
 
-//                shareWebPage();
-                wechatShare(0);
+                String url = MyApplication.getInstance().getRowsBean().getF_FxUrl();
+                String title = "长沙抓抓乐";
+                String desc = "亲，欢迎使用长沙抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
+
+                wechatShare(0,url,title,desc);
                 break;
 
         }
     }
 
-    /*
-  * 分享链接
-  */
-    private void shareWebPage() {
-        Resources res = getResources();
-        Bitmap bmp = BitmapFactory.decodeResource(res, R.mipmap.ic_logo);
 
+    private void wechatShare(int flag, String url, String title, String desc) {
         WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = MyApplication.getInstance().getRowsBean().getF_FxUrl();
+        webpage.webpageUrl = url;
         WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title = "长沙抓抓乐";
-        msg.description = "亲，欢迎使用长沙抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
-
-        SendMessageToWX.Req req = new SendMessageToWX.Req();
-        req.transaction = String.valueOf(System.currentTimeMillis());
-        req.message = msg;
-        req.scene = SendMessageToWX.Req.WXSceneSession;
-        api.sendReq(req);
-    }
-
-    private void wechatShare(int flag) {
-        WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = MyApplication.getInstance().getRowsBean().getF_FxUrl();
-        WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title = "长沙抓抓乐";
-        msg.description = "亲，欢迎使用长沙抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
+        msg.title = title;
+        msg.description = desc;
         //这里替换一张自己工程里的图片资源
         Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.mipmap.share);
         //并且还要创建图片的缩略图，因为微信限制了图片的大小
-        Bitmap thumbBmp = Bitmap.createScaledBitmap(thumb, 90, 90, true);
         msg.setThumbImage(thumb);
+        msg.thumbData = bmpToByteArray(thumb, true);
 
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = String.valueOf(System.currentTimeMillis());

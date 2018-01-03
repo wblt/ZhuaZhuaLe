@@ -98,6 +98,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private PlayPresenter presenter;
     private StartGameBean.RowsBean gameBeanRows;
     private boolean isPlay = false;//是否可以开始操作
+    private boolean isMovie = false;//是否可以开始操作
     private String url1;
     private String url2;
     private TXLivePlayer mLivePlayer2;
@@ -569,7 +570,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         switch (view.getId()) {
             case R.id.iv_play_startgame:
 
-                if (isOpen) {
+                if (isOpen&&isMovie) {
                     if (newCP != 0 && newCP > rowsBean.getF_Price()) {
                         showLoadingDialog();
                         soundUtils.playSound(start, 0);
@@ -814,13 +815,17 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                             isFirst = false;
                         }
                         ToastUtil.show("欢迎进入游戏间");
+                        isMovie = true;
                         dismissLoadingDialog();
                         break;
                     case 2007:
                         ToastUtil.show("有点延迟...");
                         showLoadingDialog();
                         break;
-
+                    case -2301:
+                        ToastUtil.show("多次连接失败,请联系客服!");
+                        finish();
+                        dismissLoadingDialog();
                 }
             }
 
