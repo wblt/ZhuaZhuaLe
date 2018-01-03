@@ -12,7 +12,7 @@ import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
 import butterknife.BindView;
 
-/**
+/**观看视频
  * Created by Administrator on 2018/1/2 0002.
  */
 

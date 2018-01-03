@@ -10,6 +10,7 @@ import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import butterknife.BindView;
 
 /**
+ * 用户协议
  * Created by Administrator on 2018/1/3.
  */
 
