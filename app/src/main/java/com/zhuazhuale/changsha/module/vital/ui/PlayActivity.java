@@ -960,7 +960,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      */
     public void checkWifiState() {
         if (isWifiConnect()) {
-            WifiManager mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+            WifiManager mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             WifiInfo mWifiInfo = mWifiManager.getConnectionInfo();
             int wifi = mWifiInfo.getRssi();//获取wifi信号强度
             if (wifi > -50 && wifi < 0) {//最强
