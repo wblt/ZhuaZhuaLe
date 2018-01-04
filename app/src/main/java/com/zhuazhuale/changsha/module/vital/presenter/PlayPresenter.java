@@ -1,5 +1,13 @@
 package com.zhuazhuale.changsha.module.vital.presenter;
 
+import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
@@ -196,6 +204,8 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             }
         });
     }
+
+
 
 
 }

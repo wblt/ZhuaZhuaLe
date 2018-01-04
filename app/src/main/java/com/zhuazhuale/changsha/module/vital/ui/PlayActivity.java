@@ -2,12 +2,20 @@ package com.zhuazhuale.changsha.module.vital.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.ColorMatrixColorFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -127,6 +135,16 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private MyThread mutliThread;
     private AlertDialog isExit;
     private TextView tv_dialog_ok;
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 0) {
+                checkWifiState();
+                sendEmptyMessageDelayed(0, 2000);
+            }
+        }
+    };
 
     @Override
     protected void setContentLayout() {
@@ -273,6 +291,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         creatThread();
 
         EventBusUtil.register(this);//订阅事件
+
+        // 初始化wifi 状态检测
+        mHandler.sendEmptyMessageDelayed(0, 2000);
     }
 
     //EventBus的事件接收，从事件中获取最新的收藏数量并更新界面展示
@@ -879,6 +900,44 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 //                LogUtil.e(bundle.toString());
             }
         });
+    }
+
+    /**
+     * 检查wifi是否处开连接状态
+     * @return
+     */
+    public boolean isWifiConnect() {
+        ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        return mWifiInfo.isConnected();
+    }
+
+    /**
+     * 检查wifi强弱并更改图标显示
+     */
+    public void checkWifiState() {
+        if (isWifiConnect()) {
+            WifiManager mWifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+            WifiInfo mWifiInfo = mWifiManager.getConnectionInfo();
+            int wifi = mWifiInfo.getRssi();//获取wifi信号强度
+            if (wifi > -50 && wifi < 0) {//最强
+                Log.e("tag","最强");
+                iv_play_wifi.setImageResource(R.mipmap.wifi_4);
+            } else if (wifi > -70 && wifi < -50) {//较强
+                Log.e("tag","较强");
+                iv_play_wifi.setImageResource(R.mipmap.wifi_2);
+            } else if (wifi > -80 && wifi < -70) {//较弱
+                Log.e("tag","较弱");
+                iv_play_wifi.setImageResource(R.mipmap.wifi_3);
+            } else if (wifi > -100 && wifi < -80) {//微弱
+                Log.e("tag","微弱");
+                iv_play_wifi.setImageResource(R.mipmap.wifi_4);
+            }
+        } else {
+            //无连接
+            Log.e("tag","无连接");
+            iv_play_wifi.setImageResource(R.mipmap.wifi_null);
+        }
     }
 
 }
