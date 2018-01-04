@@ -974,7 +974,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 iv_play_wifi.setImageResource(R.mipmap.wifi_2);
             } else if (wifi > -100 && wifi < -80) {//微弱
                 Log.e("tag","微弱");
-                iv_play_wifi.setImageResource(R.mipmap.wifi_4);
+                iv_play_wifi.setImageResource(R.mipmap.wifi_1);
             }
         } else {
             //无连接
