@@ -134,11 +134,10 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_home_list"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    app:layout_heightPercent="60%"
-                    app:layout_widthPercent="100%"
+
                     android:paddingTop="10dp"
                     android:paddingBottom="4dp"
                    >
