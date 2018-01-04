@@ -196,11 +196,6 @@
 
                     </LinearLayout>
                 </LinearLayout>
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/gray_f6"
-                    />
 
                 <LinearLayout
                     android:id="@+id/ll_play_open"

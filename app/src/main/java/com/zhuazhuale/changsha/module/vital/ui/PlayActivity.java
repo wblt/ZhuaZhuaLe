@@ -4,7 +4,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -93,6 +96,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     RecyclerView rv_play_list;
 
 
+
     private DeviceGoodsBean.RowsBean rowsBean;
     private TXLivePlayer mLivePlayer1;
     private PlayPresenter presenter;
@@ -127,6 +131,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private MyThread mutliThread;
     private AlertDialog isExit;
     private TextView tv_dialog_ok;
+    private Drawable drawableup;
+    private Drawable drawableleft;
+    private Drawable drawableright;
+    private Drawable drawabledown;
+    private Drawable drawablecatch;
 
     @Override
     protected void setContentLayout() {
@@ -177,7 +186,37 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 startActivity(new Intent(getContext(), RecordActivity.class));
             }
         });
+        drawableup = iv_play_up.getDrawable();
+        drawableleft = iv_play_left.getDrawable();
+        drawableright = iv_play_right.getDrawable();
+        drawabledown = iv_play_down.getDrawable();
+        drawablecatch = iv_play_catch.getDrawable();
+
+        qingChuIVColor();
     }
+
+    /**
+     * 恢复上下左右和抓取的按钮颜色
+     */
+    private void qingChuIVColor() {
+        drawableup.clearColorFilter();
+        drawableleft.clearColorFilter();
+        drawableright.clearColorFilter();
+        drawabledown.clearColorFilter();
+        drawablecatch.clearColorFilter();
+    }
+
+    /**
+     * 让上下左右和抓取的按钮变暗
+     */
+    private void changeIVColor() {
+        drawableup.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+        drawableleft.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+        drawableright.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+        drawabledown.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+        drawablecatch.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+    }
+
 
     /**
      * 抓到娃娃的提示dialog
@@ -319,6 +358,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             return;
         }
         if (vAction.equals("DOWN")) {
+          qingChuIVColor();//让控件恢复颜色
 
             if (controlGameBean.getCode() == 1) {
                 if (isHave) {
@@ -413,7 +453,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         if (trueBean.getCode() == 1) {
             AllTrueAdapter adapter = new AllTrueAdapter(getContext(), trueBean.getRows());
             //禁止滑动
-            LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false){
+            LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) {
                 @Override
                 public boolean canScrollHorizontally() {
                     return false;
@@ -577,7 +617,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         switch (view.getId()) {
             case R.id.iv_play_startgame:
 
-                if (isOpen&&isMovie) {
+                if (isOpen && isMovie) {
                     if (newCP != 0 && newCP > rowsBean.getF_Price()) {
                         showLoadingDialog();
                         soundUtils.playSound(start, 0);
@@ -654,6 +694,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 CountdownUtil.getInstance().cancel("play");
                 soundUtils.playSound(take, 0);
                 isPlay = false;//正在抓取,不能操作了
+                changeIVColor();
             }
         }
 
