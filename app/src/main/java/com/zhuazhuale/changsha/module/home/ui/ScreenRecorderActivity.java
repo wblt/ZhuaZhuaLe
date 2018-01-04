@@ -1,7 +1,5 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
@@ -64,7 +62,7 @@ public class ScreenRecorderActivity extends AppCompatActivity implements View.On
         mRecorder.start();
         mButton.setText("Stop Recorder");
         Toast.makeText(this, "Screen recorder is running...", Toast.LENGTH_SHORT).show();
-        moveTaskToBack(true);
+//        moveTaskToBack(true);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)

@@ -179,25 +179,7 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
                 intent = new Intent(SettingActivity.this, InputCodeActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.ic_setting_bjyx:
-                boolean Is_bjyx = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_bjyx, true);
-                if (Is_bjyx) {
-                    PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_bjyx, false);
-                } else {
-                    PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_bjyx, true);
-                }
 
-                break;
-            case R.id.ic_setting_yy:
-                boolean Is_yy = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_yy, true);
-                if (Is_yy) {
-                    PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_yy, false);
-                } else {
-                    PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_yy, true);
-                }
-                break;
-            case R.id.ic_setting_lp:
-                break;
             case R.id.ic_setting_wtfk:
                 intent = new Intent(SettingActivity.this, FeedBackActivity.class);
                 startActivity(intent);

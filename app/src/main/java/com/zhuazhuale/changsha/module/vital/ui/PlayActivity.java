@@ -7,15 +7,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.ColorMatrixColorFilter;
+import android.media.projection.MediaProjection;
+import android.media.projection.MediaProjectionManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -48,6 +53,7 @@ import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.CountdownUtil;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.FrescoUtil;
+import com.zhuazhuale.changsha.util.ScreenRecorder;
 import com.zhuazhuale.changsha.util.SoundUtils;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
@@ -57,6 +63,8 @@ import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.File;
 
 import butterknife.BindView;
 
@@ -104,7 +112,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     RecyclerView rv_play_list;
 
 
-
     private DeviceGoodsBean.RowsBean rowsBean;
     private TXLivePlayer mLivePlayer1;
     private PlayPresenter presenter;
@@ -146,7 +153,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private Drawable drawabledown;
     private Drawable drawablecatch;
 
-    private Handler mHandler = new Handler(){
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -156,6 +163,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             }
         }
     };
+    private MediaProjectionManager mMediaProjectionManager;
+    private ScreenRecorder mRecorder;
 
     @Override
     protected void setContentLayout() {
@@ -164,7 +173,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         rowsBean = (DeviceGoodsBean.RowsBean) intent.getSerializableExtra("DeviceGoods");
         url1 = rowsBean.getF_Camera1();
         url2 = rowsBean.getF_Camera2();
-
+        //录屏
+        mMediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
 
     }
 
@@ -212,7 +222,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         drawabledown = iv_play_down.getDrawable();
         drawablecatch = iv_play_catch.getDrawable();
 
-        qingChuIVColor();
     }
 
     /**
@@ -381,7 +390,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             return;
         }
         if (vAction.equals("DOWN")) {
-          qingChuIVColor();//让控件恢复颜色
+            qingChuIVColor();//让控件恢复颜色
 
             if (controlGameBean.getCode() == 1) {
                 if (isHave) {
@@ -947,6 +956,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     /**
      * 检查wifi是否处开连接状态
+     *
      * @return
      */
     public boolean isWifiConnect() {
@@ -964,22 +974,66 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             WifiInfo mWifiInfo = mWifiManager.getConnectionInfo();
             int wifi = mWifiInfo.getRssi();//获取wifi信号强度
             if (wifi > -50 && wifi < 0) {//最强
-                Log.e("tag","最强");
+                Log.e("tag", "最强");
                 iv_play_wifi.setImageResource(R.mipmap.wifi_4);
             } else if (wifi > -70 && wifi < -50) {//较强
-                Log.e("tag","较强");
+                Log.e("tag", "较强");
                 iv_play_wifi.setImageResource(R.mipmap.wifi_3);
             } else if (wifi > -80 && wifi < -70) {//较弱
-                Log.e("tag","较弱");
+                Log.e("tag", "较弱");
                 iv_play_wifi.setImageResource(R.mipmap.wifi_2);
             } else if (wifi > -100 && wifi < -80) {//微弱
-                Log.e("tag","微弱");
+                Log.e("tag", "微弱");
                 iv_play_wifi.setImageResource(R.mipmap.wifi_1);
             }
         } else {
             //无连接
-            Log.e("tag","无连接");
+            Log.e("tag", "无连接");
             iv_play_wifi.setImageResource(R.mipmap.wifi_null);
+        }
+    }
+
+    /**
+     * 录制屏幕视频
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        MediaProjection mediaProjection = mMediaProjectionManager.getMediaProjection(resultCode, data);
+        if (mediaProjection == null) {
+            Log.e("@@", "media projection is null");
+            return;
+        }
+        // video size
+        final int width = 1920;
+        final int height = 1080;
+        //录屏视频的路径
+        String moviePath = Environment.getExternalStorageDirectory() +
+                "record-" + width + "x" + height + "-" + System.currentTimeMillis() + ".mp4";
+        File file = new File(moviePath);
+        final int bitrate = 6000000;
+        mRecorder = new ScreenRecorder(width, height, bitrate, 1, mediaProjection, file.getAbsolutePath());
+        mRecorder.start();
+        ToastUtil.show("录制中...");
+    }
+
+    private static final int REQUEST_CODE = 1;
+
+    /**
+     * 开始录制
+     */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void luZhi() {
+        if (mRecorder != null) {
+            mRecorder.quit();
+            mRecorder = null;
+        } else {
+            Intent captureIntent = mMediaProjectionManager.createScreenCaptureIntent();
+            startActivityForResult(captureIntent, REQUEST_CODE);
         }
     }
 
