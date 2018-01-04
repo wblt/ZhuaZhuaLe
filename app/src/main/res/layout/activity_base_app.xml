@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.android.percent.support.PercentLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/base_coordinator"
     android:layout_width="match_parent"
@@ -8,8 +8,10 @@
 
     <RelativeLayout
         android:id="@+id/base_header_layout_app"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/header_height"
+        android:layout_width="0dp"
+        app:layout_heightPercent="6%"
+        app:layout_widthPercent="100%"
+        android:layout_height="0dp"
         android:background="@color/colorPrimary">
 
         <LinearLayout
@@ -56,4 +58,4 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-</LinearLayout>
+</com.zhy.android.percent.support.PercentLinearLayout>

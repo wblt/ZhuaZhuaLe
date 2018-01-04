@@ -139,7 +139,8 @@
                     android:layout_gravity="center"
                     app:layout_heightPercent="60%"
                     app:layout_widthPercent="100%"
-                    android:paddingBottom="14dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="4dp"
                    >
 
                 </android.support.v7.widget.RecyclerView>

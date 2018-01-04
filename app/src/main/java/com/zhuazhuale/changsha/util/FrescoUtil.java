@@ -212,7 +212,7 @@ public class FrescoUtil {
 
     //加载网络图片，包括动图
     public void loadNetImage(SimpleDraweeView simpleDraweeView, String url) {
-        if (url.isEmpty() && url == null) {
+        if (url == null || url.isEmpty()) {
             return;
         }
         Uri uri = Uri.parse(url);
@@ -221,12 +221,13 @@ public class FrescoUtil {
 
     //加载网络图片，先加载小图，待大图加载完成后替换
     public void loadNetImageSmallToBig(SimpleDraweeView simpleDraweeView, String smallUrl, String bigUrl) {
-        if (smallUrl.isEmpty() && smallUrl == null) {
+        if (smallUrl == null|| smallUrl.isEmpty()) {
             return;
         }
-        if (bigUrl.isEmpty() && bigUrl == null) {
+        if (bigUrl == null || bigUrl.isEmpty()) {
             return;
         }
+
         Uri smallUri = Uri.parse(smallUrl);
         Uri bigUri = Uri.parse(bigUrl);
         loadImageSmallToBig(simpleDraweeView, smallUri, bigUri);
@@ -234,7 +235,7 @@ public class FrescoUtil {
 
     //加载本地文件图片
     public void loadLocalImage(SimpleDraweeView simpleDraweeView, String fileName) {
-        if (fileName.isEmpty() && fileName == null) {
+        if (  fileName == null || fileName.isEmpty()) {
             return;
         }
         Uri uri = Uri.parse("file://" + fileName);
