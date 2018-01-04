@@ -412,7 +412,14 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     public void showAllUserTrues(AllUserTrueByDeviceIDBean trueBean, int type) {
         if (trueBean.getCode() == 1) {
             AllTrueAdapter adapter = new AllTrueAdapter(getContext(), trueBean.getRows());
-            rv_play_list.setLayoutManager(new LinearLayoutManager(this));
+            //禁止滑动
+            LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false){
+                @Override
+                public boolean canScrollHorizontally() {
+                    return false;
+                }
+            };
+            rv_play_list.setLayoutManager(manager);
             rv_play_list.setAdapter(adapter);
         } else {
             LogUtil.e(trueBean.getInfo());
@@ -492,7 +499,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     }
 
     /**
-     * 观看抓取成功记录
+     * 观看抓取成功记录视频
      *
      * @param rowsBean
      */

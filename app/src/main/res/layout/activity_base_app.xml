@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <com.zhy.android.percent.support.PercentRelativeLayout
         android:id="@+id/base_header_layout_app"
         android:layout_width="0dp"
         app:layout_heightPercent="6%"
@@ -16,23 +16,27 @@
 
         <LinearLayout
             android:id="@+id/ll_home_back"
-            android:layout_width="70dp"
-            android:layout_height="30dp"
+            android:layout_width="0dp"
+            app:layout_widthPercent="12%"
+            android:layout_height="0dp"
+            app:layout_heightPercent="100%"
+            android:gravity="center"
             android:layout_centerVertical="true">
 
             <ImageView
                 android:foreground="?android:attr/selectableItemBackground"
-                android:layout_marginLeft="15dp"
                 android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_height="match_parent"
                 android:padding="5dp"
                 android:src="@mipmap/ico_nav_back" />
         </LinearLayout>
 
 
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="22dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_heightPercent="96%"
+            app:layout_widthPercent="14%"
             android:layout_centerInParent="true"
             android:src="@mipmap/homepage_title"
             android:textColor="@color/white"
@@ -47,10 +51,12 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
             android:textColor="@color/white"
-            android:textSize="16dp" />
+            app:layout_textSizePercent="40%h"
+
+          />
 
 
-    </RelativeLayout>
+    </com.zhy.android.percent.support.PercentRelativeLayout>
 
     <com.zhuazhuale.changsha.view.widget.loadlayout.LoadLayout
         android:id="@+id/base_content_layout_app"

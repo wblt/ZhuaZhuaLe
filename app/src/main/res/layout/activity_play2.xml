@@ -22,8 +22,8 @@
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 app:layout_heightPercent="70%"
-                app:layout_widthPercent="90%"
-                >
+                app:layout_widthPercent="90%">
+
                 <com.tencent.rtmp.ui.TXCloudVideoView
 
                     android:id="@+id/video_view2"
@@ -102,17 +102,16 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_heightPercent="24%"
-                app:layout_widthPercent="100%"
-              >
+                app:layout_widthPercent="100%">
 
                 <LinearLayout
-                    android:paddingTop="4dp"
                     android:id="@+id/ll_play_caozuo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="4dp"
                     android:visibility="invisible">
 
-                    <LinearLayout
+                    <com.zhy.android.percent.support.PercentLinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -121,40 +120,51 @@
 
                         <ImageView
                             android:id="@+id/iv_play_up"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
                             android:foreground="?android:attr/selectableItemBackground"
-                            android:src="@mipmap/up" />
+                            android:src="@mipmap/up"
+                            app:layout_heightPercent="33%"
+                            app:layout_widthPercent="33%" />
 
-                        <LinearLayout
+                        <com.zhy.android.percent.support.PercentLinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="0dp"
+                            app:layout_heightPercent="33%">
 
                             <ImageView
                                 android:id="@+id/iv_play_left"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
                                 android:foreground="?android:attr/selectableItemBackground"
-                                android:src="@mipmap/left" />
+                                android:src="@mipmap/left"
+                                app:layout_widthPercent="33%" />
+
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                app:layout_widthPercent="20%" />
 
                             <ImageView
                                 android:id="@+id/iv_play_right"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="50dp"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
                                 android:foreground="?android:attr/selectableItemBackground"
-                                android:src="@mipmap/right" />
-                        </LinearLayout>
+                                android:src="@mipmap/right"
+                                app:layout_widthPercent="33%" />
+                        </com.zhy.android.percent.support.PercentLinearLayout>
 
                         <ImageView
                             android:id="@+id/iv_play_down"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
                             android:foreground="?android:attr/selectableItemBackground"
-                            android:src="@mipmap/down" />
+                            android:src="@mipmap/down"
+                            app:layout_heightPercent="33%"
+                            app:layout_widthPercent="33%" />
 
 
-                    </LinearLayout>
+                    </com.zhy.android.percent.support.PercentLinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -269,11 +279,12 @@
                 android:textSize="16dp" />
 
             <android.support.v7.widget.RecyclerView
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
                 android:id="@+id/rv_play_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:paddingBottom="14dp">
 
             </android.support.v7.widget.RecyclerView>
 
