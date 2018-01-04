@@ -71,6 +71,7 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
     @Override
     protected void initView() {
         mDialog = new MaterialDialog(this);
+        getTvToolbarRight().setText("充值");
     }
 
     @Override
@@ -110,6 +111,12 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
     protected void initEvent() {
         ll_delivery_address.setOnClickListener(this);
         tv_delivery_submit.setOnClickListener(this);
+        getTvToolbarRight().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(),RechargeActivity.class));
+            }
+        });
     }
 
     @Override
@@ -206,13 +213,13 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
         } else {
             ToastUtil.show(addressBean.getInfo());
             showNoAddress();
-            getTvToolbarRight().setText("添加收货地址");
+           /* getTvToolbarRight().setText("添加收货地址");
             getTvToolbarRight().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(getContext(), AddressActivity.class));
                 }
-            });
+            });*/
         }
     }
 
@@ -276,6 +283,6 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
         tv_delivery_name.setText(bean.getF_Consignee());
         tv_delivery_phone.setText(bean.getF_Mobile());
         tv_delivery_address.setText(bean.getF_Address());
-        getTvToolbarRight().setText("");
+//        getTvToolbarRight().setText("");
     }
 }

@@ -59,6 +59,8 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
     protected void initView() {
 //        getTvToolbarRight().setText("申请发货");
         mDialog = new MaterialDialog(this);
+        getTvToolbarRight().setText("申请发货");
+
     }
 
     @Override
@@ -94,6 +96,26 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
             public void onRefresh(RefreshLayout refreshlayout) {
                 //下拉刷新
                 presenter.initQueryUserGoods(9, Constant.REFRESH);
+            }
+        });
+        getTvToolbarRight().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<SpoilsBean.RowsBean> beanList = new ArrayList<>();
+                for (SpoilsBean.RowsBean rowsBean : addressAdapter.getDataList()) {
+                    if (rowsBean.isCheck()) {
+                        beanList.add(rowsBean);
+                    }
+                }
+                SpoilsBean spoilsBean = new SpoilsBean();
+                spoilsBean.setRows(beanList);
+                if (beanList.size() > 0) {
+                    intent = new Intent(SpoilsActivity.this, DeliveryActivity.class);
+                    intent.putExtra("SpoilsBean", spoilsBean);
+                    startActivityForResult(intent, 110);
+                } else {
+                    ToastUtil.show("请选择发货的商品!");
+                }
             }
         });
 
