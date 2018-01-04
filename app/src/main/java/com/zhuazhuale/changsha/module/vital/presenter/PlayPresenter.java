@@ -9,6 +9,7 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
@@ -21,6 +22,8 @@ import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
 import com.zhuazhuale.changsha.module.vital.model.PlayModel;
 import com.zhuazhuale.changsha.module.vital.ui.IPlayView;
 import com.zhuazhuale.changsha.presenter.base.BasePresenter;
+import com.zhuazhuale.changsha.util.TXupload.TXUGCPublish;
+import com.zhuazhuale.changsha.util.TXupload.TXUGCPublishTypeDef;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
 /**
@@ -203,19 +206,26 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
 //                mIView.showFinish();
             }
         });
+
+
     }
 
-  /*  public void initPushMP4To(String moviePath){
-        TXUGCPublish  mVideoPublish = new TXUGCPublish(TCVideoPublisherActivity.this.getApplicationContext());
+    /**
+     * 上传视频到腾讯云
+     * @param mCosSignature
+     * @param mVideoPath
+     */
+    public void initPushMP4To(String mCosSignature,String mVideoPath){
+        TXUGCPublish mVideoPublish = new TXUGCPublish(MyApplication.getInstance().getApplicationContext());
 // 文件发布默认是采用断点续传
         TXUGCPublishTypeDef.TXPublishParam param = new TXUGCPublishTypeDef.TXPublishParam();
         param.signature = mCosSignature;                        // 需要填写第四步中计算的上传签名
 // 录制生成的视频文件路径, ITXVideoRecordListener 的 onRecordComplete 回调中可以获取
         param.videoPath = mVideoPath;
 // 录制生成的视频首帧预览图，ITXVideoRecordListener 的 onRecordComplete 回调中可以获取
-        param.coverPath = mCoverPath;
+        param.coverPath = "";
         mVideoPublish.publishVideo(param);
-    }*/
+    }
 
 
 }
