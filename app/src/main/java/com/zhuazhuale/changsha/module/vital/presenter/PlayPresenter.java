@@ -205,7 +205,17 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
         });
     }
 
-
+  /*  public void initPushMP4To(String moviePath){
+        TXUGCPublish  mVideoPublish = new TXUGCPublish(TCVideoPublisherActivity.this.getApplicationContext());
+// 文件发布默认是采用断点续传
+        TXUGCPublishTypeDef.TXPublishParam param = new TXUGCPublishTypeDef.TXPublishParam();
+        param.signature = mCosSignature;                        // 需要填写第四步中计算的上传签名
+// 录制生成的视频文件路径, ITXVideoRecordListener 的 onRecordComplete 回调中可以获取
+        param.videoPath = mVideoPath;
+// 录制生成的视频首帧预览图，ITXVideoRecordListener 的 onRecordComplete 回调中可以获取
+        param.coverPath = mCoverPath;
+        mVideoPublish.publishVideo(param);
+    }*/
 
 
 }
