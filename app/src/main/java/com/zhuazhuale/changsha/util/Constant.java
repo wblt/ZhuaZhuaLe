@@ -14,7 +14,7 @@ public class Constant {
     public static final int LOADMORE = 5;//加载更多数据
 
 
-//    public static String URL = "http://106.14.192.166:8088";
+    //    public static String URL = "http://106.14.192.166:8088";
     public static String URL = "http://api.zhuazhuale.com";
     public static String URLGAME = "http://api2.crypfx.com:8899";
 //    public static String URLGAME = "'http://106.14.192.166:8092";
@@ -70,6 +70,14 @@ public class Constant {
     public static String ControlGame = URLGAME + "/api/Operation/ControlGame";
     //查询在这台机器用户抓取成功的记录
     public static String GetAllUserTrueByDeviceID = URL + "/api/Account/GetAllUserTrueByDeviceID";
+    //获取视频的签名
+    public static String GetUploadSignature = URL + "/api/Common/GetUploadSignature";
+    //上传视频的接口
+    /*
+     "F_GrabWaterID": self.grabID,抓取之后 返回的
+            "F_VideoUrl": result.videoURL视频的链接
+*/
+    public static String ModiflyVideoUrl = URL + "/api/Common/ModiflyVideoUrl";
 
 
 }
