@@ -1,6 +1,7 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
 import android.content.Intent;
+import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import com.zhuazhuale.changsha.module.login.ui.LoginActivity;
 import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.ScreenRecorder;
 import com.zhuazhuale.changsha.util.ToastUtil;
+import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.MaterialDialog;
 
@@ -149,6 +151,12 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
             @Override
             public void onClick(View view) {
                 boolean is_lp = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lp, false);
+                String s = android.os.Build.VERSION.RELEASE;
+                LogUtil.e("手机系统版本" + s + "    " + Build.VERSION.SDK_INT);
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) {
+                    ToastUtil.show("当前手机系统版本过低,不支持此功能!");
+                    return;
+                }
                 if (is_lp) {
                     iv_lp.setImageResource(R.mipmap.icon_guan);
                     PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_lp, false);

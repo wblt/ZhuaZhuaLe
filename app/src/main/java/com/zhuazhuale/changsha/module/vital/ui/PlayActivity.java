@@ -112,6 +112,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     TextView tv_play_djs;
     @BindView(R.id.rv_play_list)
     RecyclerView rv_play_list;
+    @BindView(R.id.tv_play_info)
+    TextView tv_play_info;
 
 
     private DeviceGoodsBean.RowsBean rowsBean;
@@ -389,6 +391,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void showControlGame(ControlGameBean controlGameBean, String vAction) {
+        tv_play_info.setVisibility(View.GONE);
         boolean isHave = getActivityStackManager().isActivityExist(PlayActivity.class);
         if (controlGameBean.getCode() == -9999) {
             ToastUtil.show("退出房间");
@@ -731,6 +734,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         if (isPlay) {
             presenter.initControlGame(rowsBean.getF_ID(), forward, gameBeanRows.getToken(), gameBeanRows.getTimestamp() + "");
             if (forward.equals("DOWN")) {
+                tv_play_info.setVisibility(View.VISIBLE);
                 CountdownUtil.getInstance().cancel("play");
                 soundUtils.playSound(take, 0);
                 isPlay = false;//正在抓取,不能操作了
@@ -1031,10 +1035,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         File file = new File(Environment.getExternalStorageDirectory(),
                 "record-" + width + "x" + height + "-" + System.currentTimeMillis() + ".mp4");
         moviePath = file.getAbsolutePath();
-        final int bitrate = 2000000;
+        final int bitrate = 1000000;
         mRecorder = new ScreenRecorder(width, height, bitrate, 1, mediaProjection, file.getAbsolutePath());
         mRecorder.start();
-        ToastUtil.show("录制中...");
     }
 
     private static final int REQUEST_CODE = 1;
