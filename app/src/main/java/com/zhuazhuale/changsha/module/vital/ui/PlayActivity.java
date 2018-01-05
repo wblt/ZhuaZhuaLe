@@ -37,6 +37,7 @@ import com.tencent.rtmp.TXLivePlayer;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.model.entity.eventbus.CPfreshEvent;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
@@ -53,6 +54,7 @@ import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.CountdownUtil;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.FrescoUtil;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.ScreenRecorder;
 import com.zhuazhuale.changsha.util.SoundUtils;
 import com.zhuazhuale.changsha.util.ToastUtil;
@@ -165,6 +167,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     };
     private MediaProjectionManager mMediaProjectionManager;
     private ScreenRecorder mRecorder;
+    private boolean is_lp;
+    private String moviePath;
 
     @Override
     protected void setContentLayout() {
@@ -175,6 +179,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         url2 = rowsBean.getF_Camera2();
         //录屏
         mMediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
+        is_lp = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lp, false);
 
     }
 
@@ -381,6 +386,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      * @param controlGameBean
      * @param vAction
      */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void showControlGame(ControlGameBean controlGameBean, String vAction) {
         boolean isHave = getActivityStackManager().isActivityExist(PlayActivity.class);
@@ -391,7 +397,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         }
         if (vAction.equals("DOWN")) {
             qingChuIVColor();//让控件恢复颜色
-
+            if (is_lp) {
+                luZhi(controlGameBean.getRows().getGrabID());//抓取结束,停止录屏
+            }
             if (controlGameBean.getCode() == 1) {
                 if (isHave) {
                     //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
@@ -732,6 +740,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -756,6 +765,10 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 //        soundUtils = null;
         mView1.onDestroy();
         mView2.onDestroy();
+        if (mRecorder != null) {
+            mRecorder.quit();
+            mRecorder = null;
+        }
     }
 
     /**
@@ -763,6 +776,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      *
      * @param gameBean
      */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void showStartGame(StartGameBean gameBean) {
         newCP = newCP - rowsBean.getF_Price();
@@ -771,6 +785,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         isPlay = false;
         switch (gameBean.getCode()) {
             case 1://成功
+                if (is_lp) {
+                    luZhi("");//开始游戏,录制视频
+                }
                 mutliThread.pauseThread();//暂停查询
                 ToastUtil.show("开始游戏吧!");
                 isStart = false;
@@ -1009,13 +1026,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             return;
         }
         // video size
-        final int width = 1920;
-        final int height = 1080;
-        //录屏视频的路径
-        String moviePath = Environment.getExternalStorageDirectory() +
-                "record-" + width + "x" + height + "-" + System.currentTimeMillis() + ".mp4";
-        File file = new File(moviePath);
-        final int bitrate = 6000000;
+        final int width = 1280;
+        final int height = 720;
+        File file = new File(Environment.getExternalStorageDirectory(),
+                "record-" + width + "x" + height + "-" + System.currentTimeMillis() + ".mp4");
+        moviePath = file.getAbsolutePath();
+        final int bitrate = 2000000;
         mRecorder = new ScreenRecorder(width, height, bitrate, 1, mediaProjection, file.getAbsolutePath());
         mRecorder.start();
         ToastUtil.show("录制中...");
@@ -1025,18 +1041,20 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     /**
      * 开始录制
+     *
+     * @param grabID
      */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private void luZhi() {
+    private void luZhi(String grabID) {
         if (mRecorder != null) {
             mRecorder.quit();
             mRecorder = null;
+            presenter.initgetGetUploadSignature(grabID, moviePath);
         } else {
             Intent captureIntent = mMediaProjectionManager.createScreenCaptureIntent();
             startActivityForResult(captureIntent, REQUEST_CODE);
         }
     }
 
-    
 
 }

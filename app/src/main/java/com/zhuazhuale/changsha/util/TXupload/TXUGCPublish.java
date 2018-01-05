@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 
+import com.tencent.ugc.TXRecordCommon;
 import com.zhuazhuale.changsha.util.TXupload.impl.TVCClient;
 import com.zhuazhuale.changsha.util.TXupload.impl.TVCConstants;
 import com.zhuazhuale.changsha.util.TXupload.impl.TVCUploadInfo;

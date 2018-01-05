@@ -121,6 +121,11 @@ public class PlayModel {
                 });
     }
 
+    /**
+     * 下机
+     * @param vDeviceID
+     * @param iCallListener
+     */
     public void getLowerGame(String vDeviceID, final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.LowerGame)
                 .tag(this)
@@ -194,6 +199,7 @@ public class PlayModel {
 
     /**
      * 查询在这台机器用户抓取成功的记录
+     *
      * @param vDeviceID
      * @param iCallListener
      */
@@ -202,6 +208,70 @@ public class PlayModel {
                 .tag(this)
                 .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vDeviceID", vDeviceID)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e("请求成功" + response.body());
+                        iCallListener.callSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e("请求失败" + response.toString());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+    }
+
+    /**
+     * 获取视频签名
+     *
+     * @param iCallListener
+     */
+    public void getGetUploadSignature(final ICallListener<String> iCallListener) {
+        OkGo.<String>post(Constant.GetUploadSignature)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e("请求成功" + response.body());
+                        iCallListener.callSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e("请求失败" + response.toString());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+    }
+
+
+    /**
+     * 上传视频的接口
+     * @param F_GrabWaterID 抓取之后 返回的
+     * @param F_VideoUrl    视频的链接
+     * @param iCallListener
+     */
+    public void getModiflyVideoUrl(String F_GrabWaterID, String F_VideoUrl, final ICallListener<String> iCallListener) {
+        OkGo.<String>post(Constant.ModiflyVideoUrl)
+                .tag(this)
+                .params("F_GrabWaterID", F_GrabWaterID)
+                .params("F_VideoUrl", F_VideoUrl)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

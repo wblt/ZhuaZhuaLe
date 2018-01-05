@@ -6,9 +6,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.tencent.ugc.TXRecordCommon;
 import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
@@ -19,12 +21,15 @@ import com.zhuazhuale.changsha.module.home.ui.IMineView;
 import com.zhuazhuale.changsha.module.vital.bean.AllUserTrueByDeviceIDBean;
 import com.zhuazhuale.changsha.module.vital.bean.ControlGameBean;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
+import com.zhuazhuale.changsha.module.vital.bean.UploadBean;
 import com.zhuazhuale.changsha.module.vital.model.PlayModel;
 import com.zhuazhuale.changsha.module.vital.ui.IPlayView;
 import com.zhuazhuale.changsha.presenter.base.BasePresenter;
 import com.zhuazhuale.changsha.util.TXupload.TXUGCPublish;
 import com.zhuazhuale.changsha.util.TXupload.TXUGCPublishTypeDef;
 import com.zhuazhuale.changsha.util.log.LogUtil;
+
+import static android.R.attr.type;
 
 /**
  * 个人中心
@@ -80,7 +85,7 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
                 LogUtil.e(TAG, s);
                 Gson gson = new Gson();
                 QueryGameBean queryGameBean = gson.fromJson(s, QueryGameBean.class);
-                mIView.showQueryGame(queryGameBean,type);
+                mIView.showQueryGame(queryGameBean, type);
             }
 
             @Override
@@ -126,6 +131,7 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
 
     /**
      * 游戏下机
+     *
      * @param vDeviceID
      */
     public void initLowerGame(String vDeviceID) {
@@ -153,6 +159,7 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
 
     /**
      * 操作游戏
+     *
      * @param vDeviceID
      * @param vAction
      * @param vToken
@@ -165,7 +172,7 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
                 LogUtil.e(TAG, s);
                 Gson gson = new Gson();
                 ControlGameBean controlGameBean = gson.fromJson(s, ControlGameBean.class);
-                mIView.showControlGame(controlGameBean,vAction);
+                mIView.showControlGame(controlGameBean, vAction);
             }
 
             @Override
@@ -182,6 +189,7 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
 
     /**
      * 查询在这台机器用户抓取成功的记录
+     *
      * @param vDeviceID
      */
 
@@ -192,7 +200,38 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
                 LogUtil.e(TAG, s);
                 Gson gson = new Gson();
                 AllUserTrueByDeviceIDBean trueByDeviceIDBean = gson.fromJson(s, AllUserTrueByDeviceIDBean.class);
-                mIView.showAllUserTrues(trueByDeviceIDBean,type);
+                mIView.showAllUserTrues(trueByDeviceIDBean, type);
+            }
+
+            @Override
+            public void callFailed() {
+                mIView.showFailed();
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e(TAG, "接口结束");
+//                mIView.showFinish();
+            }
+        });
+
+
+    }
+
+    /**
+     * 获取视频签名
+     *
+     * @param grabID
+     */
+    public void initgetGetUploadSignature(final String grabID, final String moviePath) {
+        LogUtil.e("grabID   " + grabID + "  moviePath  " + moviePath);
+        playModel.getGetUploadSignature(new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(TAG, s);
+                Gson gson = new Gson();
+                UploadBean uploadBean = gson.fromJson(s, UploadBean.class);
+                initPushMP4ToTX(uploadBean.getRows().getVToken(), moviePath, grabID);
             }
 
             @Override
@@ -212,11 +251,14 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
 
     /**
      * 上传视频到腾讯云
+     *
+     * @param grabID
      * @param mCosSignature
      * @param mVideoPath
      */
-    public void initPushMP4To(String mCosSignature,String mVideoPath){
-        TXUGCPublish mVideoPublish = new TXUGCPublish(MyApplication.getInstance().getApplicationContext());
+    public void initPushMP4ToTX(String mCosSignature, String mVideoPath, final String grabID) {
+//        TXUGCPublish mVideoPublish = new TXUGCPublish(MyApplication.getInstance().getApplicationContext());
+        TXUGCPublish mVideoPublish = new TXUGCPublish((Context) mIView);
 // 文件发布默认是采用断点续传
         TXUGCPublishTypeDef.TXPublishParam param = new TXUGCPublishTypeDef.TXPublishParam();
         param.signature = mCosSignature;                        // 需要填写第四步中计算的上传签名
@@ -225,7 +267,44 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
 // 录制生成的视频首帧预览图，ITXVideoRecordListener 的 onRecordComplete 回调中可以获取
         param.coverPath = "";
         mVideoPublish.publishVideo(param);
+        mVideoPublish.setListener(new TXUGCPublishTypeDef.ITXVideoPublishListener() {
+            @Override
+            public void onPublishProgress(long uploadBytes, long totalBytes) {
+                LogUtil.e(uploadBytes + "上传");
+            }
+
+            @Override
+            public void onPublishComplete(TXUGCPublishTypeDef.TXPublishResult result) {
+                LogUtil.e(result.toString());
+                initModiflyVideoUrl(grabID, result.videoURL);
+            }
+        });
+
     }
 
+    public void initModiflyVideoUrl(String F_GrabWaterID, String F_VideoUrl) {
+        playModel.getModiflyVideoUrl(F_GrabWaterID, F_VideoUrl, new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(TAG, s);
+                Gson gson = new Gson();
+              /*  UploadBean uploadBean = gson.fromJson(s, UploadBean.class);
+                initPushMP4ToTX(uploadBean.getRows().getVToken(), moviePath);*/
+            }
+
+            @Override
+            public void callFailed() {
+                mIView.showFailed();
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e(TAG, "接口结束");
+//                mIView.showFinish();
+            }
+        });
+
+
+    }
 
 }

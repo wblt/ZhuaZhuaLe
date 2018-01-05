@@ -6,6 +6,9 @@ import android.net.Uri;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import com.tencent.rtmp.TXLiveConstants;
+import com.tencent.rtmp.TXVodPlayer;
+import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
@@ -18,7 +21,8 @@ import butterknife.BindView;
 
 public class MovieActivity extends AppBaseActivity {
     @BindView(R.id.vv_movie_look)
-    VideoView videoView;
+    TXCloudVideoView videoView;
+    private TXVodPlayer mVodPlayer;
 
     @Override
     protected void setContentLayout() {
@@ -32,28 +36,19 @@ public class MovieActivity extends AppBaseActivity {
         //网络视频
         String videoUrl2 = videoUrl;
 
-        Uri uri = Uri.parse(videoUrl2);
 
-        //设置视频控制器
-        videoView.setMediaController(new MediaController(this));
-
-        //播放完成回调
-        videoView.setOnCompletionListener(new MyPlayerOnCompletionListener());
-
-        //设置视频路径
-        videoView.setVideoURI(uri);
-
-        //开始播放视频
-        videoView.start();
+        //mPlayerView即step1中添加的界面view
+//        TXCloudVideoView mView = (TXCloudVideoView) view.findViewById(R.id.video_view);
+//创建player对象
+        mVodPlayer = new TXVodPlayer(this);
+//关键player对象与界面view
+        mVodPlayer.setPlayerView(videoView);
+//        mVodPlayer.setRenderMode();
+        mVodPlayer.setRenderMode(TXLiveConstants.RENDER_MODE_FULL_FILL_SCREEN);//填充
+        mVodPlayer.startPlay(videoUrl2);
     }
 
-    class MyPlayerOnCompletionListener implements MediaPlayer.OnCompletionListener {
 
-        @Override
-        public void onCompletion(MediaPlayer mp) {
-            ToastUtil.show("播放完成了");
-        }
-    }
 
     @Override
     protected void obtainData() {
@@ -63,5 +58,11 @@ public class MovieActivity extends AppBaseActivity {
     @Override
     protected void initEvent() {
 
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mVodPlayer.stopPlay(true); // true代表清除最后一帧画面
+        videoView.onDestroy();
     }
 }
