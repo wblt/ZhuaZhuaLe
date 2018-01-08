@@ -48,7 +48,7 @@ public class SpoilsAdapter extends RecyclerBaseAdapter<SpoilsBean.RowsBean> {
         tv_spoils_name.setText(rowsBean.getF_Name());
         tv_item_spoils_info.setText("可以兑换 " + rowsBean.getF_ExChangePrice() + " 娃娃币");
 
-        if (rowsBean.isCheck()) {
+        if (!rowsBean.isCheck()) {
             iv_spoils_check.setImageResource(R.mipmap.selector_on);
         } else {
             iv_spoils_check.setImageResource(R.mipmap.selector_off);
@@ -67,7 +67,7 @@ public class SpoilsAdapter extends RecyclerBaseAdapter<SpoilsBean.RowsBean> {
             @Override
             public void onClick(View v) {
                 //改变选择的状态
-                if (rowsBean.isCheck()) {
+                if (!rowsBean.isCheck()) {
                     rowsBean.setCheck(false);
                     iv_spoils_check.setImageResource(R.mipmap.selector_off);
                 } else {

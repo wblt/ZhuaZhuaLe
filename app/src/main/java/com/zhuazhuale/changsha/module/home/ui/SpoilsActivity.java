@@ -103,7 +103,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
             public void onClick(View v) {
                 List<SpoilsBean.RowsBean> beanList = new ArrayList<>();
                 for (SpoilsBean.RowsBean rowsBean : addressAdapter.getDataList()) {
-                    if (rowsBean.isCheck()) {
+                    if (!rowsBean.isCheck()) {
                         beanList.add(rowsBean);
                     }
                 }
@@ -128,7 +128,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
             case R.id.tv_spoils_fahuo:
                 List<SpoilsBean.RowsBean> beanList = new ArrayList<>();
                 for (SpoilsBean.RowsBean rowsBean : addressAdapter.getDataList()) {
-                    if (rowsBean.isCheck()) {
+                    if (!rowsBean.isCheck()) {
                         beanList.add(rowsBean);
                     }
                 }

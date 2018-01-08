@@ -28,7 +28,7 @@
                 <RelativeLayout
                     android:layout_width="366dp"
                     android:layout_height="310dp"
-                    android:background="@mipmap/invitebg">
+                    >
 
                     <android.support.v7.widget.RecyclerView
                         android:layout_centerHorizontal="true"
