@@ -17,9 +17,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-
             android:orientation="vertical"
-            android:padding="14dp">
+            android:padding="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,10 +37,10 @@
                         android:textSize="14dp" />
 
                     <TextView
-                        android:layout_marginLeft="4dp"
                         android:id="@+id/tv_delivery_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
                         android:text=""
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -71,10 +70,10 @@
                     android:textSize="12dp" />
 
                 <TextView
-                    android:layout_marginLeft="4dp"
                     android:id="@+id/tv_delivery_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="12dp" />
@@ -139,16 +138,35 @@
                 android:textSize="14dp" />
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="4dp"
-            android:id="@+id/rv_delivery_list"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/ll_delivery"
-            android:paddingLeft="14dp"
-            android:paddingRight="14dp">
+            android:orientation="vertical">
 
-        </android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_delivery_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <EditText
+                android:id="@+id/et_delivery_remark"
+                android:layout_width="match_parent"
+                android:layout_height="68dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/textbeijing_recharge"
+                android:gravity="top"
+                android:hint="买家留言:对本次交易的补充说明"
+                android:padding="4dp"
+                android:textSize="14dp" />
+
+        </LinearLayout>
 
 
     </RelativeLayout>

@@ -5,6 +5,7 @@ import android.location.Address;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -50,6 +51,8 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
     LinearLayout ll_delivery_address;
     @BindView(R.id.tv_delivery_submit)
     TextView tv_delivery_submit;
+    @BindView(R.id.et_delivery_remark)
+    EditText et_delivery_remark;
 
     private List<AddressBean.RowsBean> beans;
     private AddressBean address;
@@ -114,7 +117,7 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
         getTvToolbarRight().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(),RechargeActivity.class));
+                startActivity(new Intent(getContext(), RechargeActivity.class));
             }
         });
     }
@@ -123,12 +126,17 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_delivery_address:
-                if (address != null && address.getRows().size() > 0) {
+                if (address != null && address.getRows() != null && address.getRows().size() > 0) {
+
                     Intent intent = new Intent(getContext(), AddressListActivity.class);
                     intent.putExtra("address", address);
                     startActivityForResult(intent, 110);
+
                 } else {
                     ToastUtil.show("还没有收货地址，赶紧添加一条！");
+                    Intent intent = new Intent(getContext(), AddressActivity.class);
+                    intent.putExtra("address", address);
+                    startActivityForResult(intent, 110);
                 }
 
                 break;
@@ -136,7 +144,7 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
                 name = tv_delivery_name.getText().toString();
                 phone = tv_delivery_phone.getText().toString();
                 address1 = tv_delivery_address.getText().toString();
-                remark = tv_delivery_address.getText().toString();
+                remark = et_delivery_remark.getText().toString();
                 if (name.isEmpty()) {
                     ToastUtil.show("收货人不能为空");
                     return;
@@ -202,8 +210,9 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
      */
     @Override
     public void showUserAddress(AddressBean addressBean) {
+        address = addressBean;
+
         if (addressBean.getCode() == 1) {
-            address = addressBean;
             beans = addressBean.getRows();
             if (beans.size() > 0) {
                 AddressBean.RowsBean bean = beans.get(0);
