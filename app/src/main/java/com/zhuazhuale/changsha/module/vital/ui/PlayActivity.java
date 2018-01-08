@@ -7,14 +7,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,7 +25,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -75,7 +77,7 @@ import butterknife.BindView;
  * Created by dingqi on 2017/12/23 0023.
  */
 
-public class PlayActivity extends AppBaseActivity implements View.OnClickListener, IPlayView {
+public class PlayActivity extends AppBaseActivity implements View.OnClickListener, View.OnTouchListener, IPlayView {
     @BindView(R.id.iv_play_startgame)
     ImageView iv_play_startgame;
     @BindView(R.id.iv_play_up)
@@ -400,9 +402,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         }
         if (vAction.equals("DOWN")) {
             qingChuIVColor();//让控件恢复颜色
-            if (is_lp) {
-                luZhi(controlGameBean.getRows().getGrabID());//抓取结束,停止录屏
-            }
+            ll_play_open.setVisibility(View.VISIBLE);
+            ll_play_caozuo.setVisibility(View.INVISIBLE);
             if (controlGameBean.getCode() == 1) {
                 if (isHave) {
                     //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
@@ -423,7 +424,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                     ToastUtil.show("抓取失败,再接再厉!");
                 }
             }
-
+            if (is_lp) {
+                luZhi(controlGameBean.getRows().getGrabID());//抓取结束,停止录屏
+            }
 
         } else {
             //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
@@ -564,6 +567,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         iv_play_change.setOnClickListener(this);
         iv_play_recharge.setOnClickListener(this);
 
+        iv_play_up.setOnTouchListener(this);
+        iv_play_right.setOnTouchListener(this);
+        iv_play_left.setOnTouchListener(this);
+        iv_play_down.setOnTouchListener(this);
+
     }
 
     private boolean isStart = true;
@@ -591,6 +599,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         intent.putExtra("MoviePath", rowsBean.getF_VideoUrl());
         startActivity(intent);
     }
+
 
     /**
      * 子线程,检查机器的状态
@@ -654,7 +663,62 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         }
     }
 
+    /**
+     *
+     * @param v
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        String fx;
+        switch (v.getId()) {
+            case R.id.iv_play_up:
+                fx =  up;
+                touchShijian(fx, event);
+                break;
+            case R.id.iv_play_down:
+                fx =  down;
+                touchShijian(fx, event);
+                break;
+            case R.id.iv_play_left:
+                fx = left;
+                touchShijian(fx, event);
+                break;
+            case R.id.iv_play_right:
+                fx =  right;
+                touchShijian(fx, event);
+                break;
+        }
+        return false;
+    }
 
+    /**
+     * 触摸监控事件
+     *
+     * @param fx
+     * @param event
+     */
+    private void touchShijian(String fx, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                ControlGame("T" + fx);
+                LogUtil.e("T" + fx);
+                break;
+
+            case MotionEvent.ACTION_UP:
+                ControlGame("S" + fx);
+                LogUtil.e("S" + fx);
+                break;
+        }
+    }
+
+
+    /**
+     * 点击事件
+     *
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

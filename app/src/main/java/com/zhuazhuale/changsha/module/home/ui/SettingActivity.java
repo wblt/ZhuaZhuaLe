@@ -176,8 +176,8 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
         switch (view.getId()) {
 
             case R.id.ic_setting_tzzx:
-                intent = new Intent(SettingActivity.this, ScreenRecorderActivity.class);
-                startActivity(intent);
+               /* intent = new Intent(SettingActivity.this, ScreenRecorderActivity.class);
+                startActivity(intent);*/
                 break;
             case R.id.ic_setting_yqjl:
                 intent = new Intent(SettingActivity.this, InviteActivity.class);
