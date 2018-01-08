@@ -198,16 +198,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
         iv_play_startgame.setImageResource(R.mipmap.srartgame2);
         tv_play_bi.setText(rowsBean.getF_Price() + "币 / 次");
-        //使用的时候先初始化一个声音播放工具
-        soundUtils = new SoundUtils(this, SoundUtils.MEDIA_SOUND);
-        //然后添加声音进去,参数是添加声音的编号和资源id
-        soundUtils.putSound(bgvoice, R.raw.bgvoice);
-        soundUtils.putSound(readygo, R.raw.readygo);
-        soundUtils.putSound(move, R.raw.move);
-        soundUtils.putSound(fail, R.raw.fail);
-        soundUtils.putSound(success, R.raw.success);
-        soundUtils.putSound(start, R.raw.start);
-        soundUtils.putSound(take, R.raw.take);
+        creatSoundPool();
         FrescoUtil.getInstance().loadNetImage(sdv_play_fece, MyApplication.getInstance().getRowsBean().getF_Img());
         tv_play_name.setText(MyApplication.getInstance().getRowsBean().getF_Name());
         creatMyDialog();
@@ -231,6 +222,22 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         drawabledown = iv_play_down.getDrawable();
         drawablecatch = iv_play_catch.getDrawable();
 
+    }
+
+    /**
+     * 创建声音池
+     */
+    private void creatSoundPool() {
+        //使用的时候先初始化一个声音播放工具
+        soundUtils = new SoundUtils(this, SoundUtils.MEDIA_SOUND);
+        //然后添加声音进去,参数是添加声音的编号和资源id
+        soundUtils.putSound(bgvoice, R.raw.bgvoice);
+        soundUtils.putSound(readygo, R.raw.readygo);
+        soundUtils.putSound(move, R.raw.move);
+        soundUtils.putSound(fail, R.raw.fail);
+        soundUtils.putSound(success, R.raw.success);
+        soundUtils.putSound(start, R.raw.start);
+        soundUtils.putSound(take, R.raw.take);
     }
 
     /**
@@ -414,6 +421,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 } else {
                     ToastUtil.show("恭喜你,抓取成功!");
                 }
+                if (is_lp) {
+                    luZhi(controlGameBean.getRows().getGrabID());//抓取结束,停止录屏
+                }
             } else {
                 if (isHave) {
                     soundUtils.playSound(fail, 0);
@@ -423,10 +433,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 } else {
                     ToastUtil.show("抓取失败,再接再厉!");
                 }
+                if (is_lp) {
+                    luZhi(controlGameBean.getRows().getGrabID());//抓取结束,停止录屏
+                }
             }
-            if (is_lp) {
-                luZhi(controlGameBean.getRows().getGrabID());//抓取结束,停止录屏
-            }
+
 
         } else {
             //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
@@ -434,6 +445,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         }
 
     }
+
 
     /**
      * 倒计时开始游戏
@@ -664,7 +676,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     }
 
     /**
-     *
      * @param v
      * @param event
      * @return
@@ -674,11 +685,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         String fx;
         switch (v.getId()) {
             case R.id.iv_play_up:
-                fx =  up;
+                fx = up;
                 touchShijian(fx, event);
                 break;
             case R.id.iv_play_down:
-                fx =  down;
+                fx = down;
                 touchShijian(fx, event);
                 break;
             case R.id.iv_play_left:
@@ -686,7 +697,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 touchShijian(fx, event);
                 break;
             case R.id.iv_play_right:
-                fx =  right;
+                fx = right;
                 touchShijian(fx, event);
                 break;
         }
@@ -806,6 +817,21 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             }
         }
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        creatSoundPool();
+        //无限播放背景音乐
+        soundUtils.playSoundLun(bgvoice, SoundUtils.INFINITE_PLAY);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // 停止背景音乐
+        soundUtils.stopSound();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -1099,7 +1125,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         File file = new File(Environment.getExternalStorageDirectory(),
                 "record-" + width + "x" + height + "-" + System.currentTimeMillis() + ".mp4");
         moviePath = file.getAbsolutePath();
-        final int bitrate = 1000000;
+        final int bitrate = 4000000;
         mRecorder = new ScreenRecorder(width, height, bitrate, 1, mediaProjection, file.getAbsolutePath());
         mRecorder.start();
     }
