@@ -67,12 +67,12 @@ public class SpoilsAdapter extends RecyclerBaseAdapter<SpoilsBean.RowsBean> {
             @Override
             public void onClick(View v) {
                 //改变选择的状态
-                if (!rowsBean.isCheck()) {
+                if (rowsBean.isCheck()) {
                     rowsBean.setCheck(false);
-                    iv_spoils_check.setImageResource(R.mipmap.selector_off);
+                    iv_spoils_check.setImageResource(R.mipmap.selector_on);
                 } else {
                     rowsBean.setCheck(true);
-                    iv_spoils_check.setImageResource(R.mipmap.selector_on);
+                    iv_spoils_check.setImageResource(R.mipmap.selector_off);
                 }
             }
         });
