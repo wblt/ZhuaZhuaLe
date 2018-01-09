@@ -29,6 +29,25 @@
                     android:layout_width="366dp"
                     android:layout_height="310dp"
                     >
+                    <TextView
+                        android:id="@+id/tv_invite_ti"
+                        android:textSize="18dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="我的邀请码"
+                        android:textColor="@color/white"
+                        android:gravity="center"
+                        />
+                    <TextView
+                        android:layout_margin="12dp"
+                        android:layout_below="@id/tv_invite_ti"
+                        android:textSize="14dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="每邀请一个好友加入,注册成功后,你可以获得66个游戏币,最多可以获得3300个币"
+                        android:textColor="@color/white"
+                        android:gravity="center"
+                        />
 
                     <android.support.v7.widget.RecyclerView
                         android:layout_centerHorizontal="true"
