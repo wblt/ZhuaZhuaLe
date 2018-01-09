@@ -182,8 +182,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         url1 = rowsBean.getF_Camera1();
         url2 = rowsBean.getF_Camera2();
         //录屏
-        mMediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
         is_lp = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lp, false);
+        if (is_lp) {
+            mMediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
+
+        }
 
     }
 
@@ -308,8 +311,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         //关键player对象与界面view
         mLivePlayer2.setPlayerView(mView2);
         //软解和硬解的切换需要在切换之前先stopPlay，切换之后再startPlay，否则会产生比较严重的花屏问题。
-        mLivePlayer2.stopPlay(true);
-        mLivePlayer2.enableHardwareDecode(true);
+      /*  mLivePlayer2.stopPlay(true);
+        mLivePlayer2.enableHardwareDecode(true);*/
         mLivePlayer2.startPlay(url2, TXLivePlayer.PLAY_TYPE_LIVE_RTMP); //推荐FLV
         //监听第二个直播流拉流事件
         playerListen2();
@@ -328,8 +331,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         //关键player对象与界面view
         mLivePlayer1.setPlayerView(mView1);
         //软解和硬解的切换需要在切换之前先stopPlay，切换之后再startPlay，否则会产生比较严重的花屏问题。
-        mLivePlayer1.stopPlay(true);
-        mLivePlayer1.enableHardwareDecode(true);
+       /* mLivePlayer1.stopPlay(true);
+        mLivePlayer1.enableHardwareDecode(true);*/
         mLivePlayer1.startPlay(url1, TXLivePlayer.PLAY_TYPE_LIVE_RTMP); //推荐FLV
     }
 
