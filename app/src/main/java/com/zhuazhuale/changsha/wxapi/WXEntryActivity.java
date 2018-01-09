@@ -20,6 +20,8 @@ import static com.zhuazhuale.changsha.app.MyApplication.api;
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
+    private LoginEvent event;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,16 +55,20 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 //发送成功
-                LoginEvent event = new LoginEvent(code1);
+                event = new LoginEvent(code1,true);
                 EventBusUtil.postEvent(event);
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 //发送取消
                 ToastUtil.show("微信登录被取消");
+                event = new LoginEvent("",false);
+                EventBusUtil.postEvent(event);
                 break;
             case BaseResp.ErrCode.ERR_AUTH_DENIED:
                 //发送被拒绝
                 ToastUtil.show("微信登录被拒绝");
+                event = new LoginEvent("",false);
+                EventBusUtil.postEvent(event);
                 break;
             default:
                 //发送返回

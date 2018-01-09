@@ -8,9 +8,19 @@ package com.zhuazhuale.changsha.model.entity.eventbus;
 
 public class LoginEvent {
     private String code;
+    private boolean isLogin;
 
-    public LoginEvent(String code) {
+    public boolean isLogin() {
+        return isLogin;
+    }
+
+    public void setLogin(boolean login) {
+        isLogin = login;
+    }
+
+    public LoginEvent(String code, boolean isLogin) {
         this.code = code;
+        this.isLogin = isLogin;
     }
 
     public String getCode() {

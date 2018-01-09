@@ -88,8 +88,13 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     //EventBus的事件接收，从事件中获取最新的收藏数量并更新界面展示
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleEvent(LoginEvent event) {
-        String code = event.getCode();
-        loginPresenter.initWX(code, Constant.APPID, Constant.secret);
+        if (event.isLogin()){
+            String code = event.getCode();
+            loginPresenter.initWX(code, Constant.APPID, Constant.secret);
+        }else {
+            dismissLoadingDialog();
+        }
+
     }
 
     @Override
