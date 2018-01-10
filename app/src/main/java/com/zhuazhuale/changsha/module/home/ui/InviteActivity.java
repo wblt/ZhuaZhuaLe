@@ -17,6 +17,7 @@ import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.module.home.adapter.InviteAdapter;
+import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
@@ -120,7 +121,10 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
                 String url = MyApplication.getInstance().getRowsBean().getF_FxUrl();
                 String title = "长沙抓抓乐";
                 String desc = "亲，欢迎使用长沙抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
-
+                if (url == null || url.isEmpty()) {
+                    ToastUtil.show("分享链接不存在!");
+                    return;
+                }
                 wechatShare(0, url, title, desc);
                 break;
 

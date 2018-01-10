@@ -108,7 +108,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 }
 
                 ToastUtil.show( result2);
-                finish();
                 break;
             default:
                 break;
