@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
@@ -28,6 +27,7 @@ import java.util.List;
 import butterknife.BindView;
 
 import static com.zhuazhuale.changsha.app.MyApplication.api;
+
 
 /**
  * 邀请奖励
@@ -64,8 +64,8 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void initView() {
-
     }
+
 
     @Override
     protected void obtainData() {
@@ -121,7 +121,7 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
                 String title = "长沙抓抓乐";
                 String desc = "亲，欢迎使用长沙抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
 
-                wechatShare(0,url,title,desc);
+                wechatShare(0, url, title, desc);
                 break;
 
         }
@@ -129,6 +129,7 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
 
 
     private void wechatShare(int flag, String url, String title, String desc) {
+
         WXWebpageObject webpage = new WXWebpageObject();
         webpage.webpageUrl = url;
         WXMediaMessage msg = new WXMediaMessage(webpage);

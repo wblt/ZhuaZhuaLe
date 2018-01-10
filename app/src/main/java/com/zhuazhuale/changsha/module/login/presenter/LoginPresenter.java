@@ -38,7 +38,7 @@ public class LoginPresenter extends BasePresenter<ILoginView> {
 
     //获取微信访问getCode
     public void getCode() {
-        final SendAuth.Req req = new SendAuth.Req();
+         SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
         req.state = "carjob_wx_login";
         api.sendReq(req);

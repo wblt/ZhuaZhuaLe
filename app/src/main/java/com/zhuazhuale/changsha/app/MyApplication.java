@@ -85,7 +85,7 @@ public class MyApplication extends Application {
 
     private void regToWx() {
         // 通过WXAPIFactory工厂,获得IWXAPI的实例
-        api = WXAPIFactory.createWXAPI(this, Constant.APPID, true);
+        api = WXAPIFactory.createWXAPI(this, Constant.APPID, false);
         // 将应用的appid注册到微信
         api.registerApp(Constant.APPID);
     }
