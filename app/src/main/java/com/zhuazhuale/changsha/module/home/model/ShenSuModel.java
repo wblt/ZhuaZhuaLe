@@ -32,6 +32,7 @@ public class ShenSuModel {
     public void getAppeal(String vDeviceID, String vGrabID, String vRemark, String vVideoUrl, final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.Appeal)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vDeviceID", vDeviceID)
                 .params("vGrabID", vGrabID)

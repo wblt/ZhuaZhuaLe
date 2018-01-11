@@ -32,6 +32,7 @@ public class InputCodeModel {
     public void getInvitation(String vCode, final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.Invitation)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vCode", vCode)
                 .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
                 .execute(new StringCallback() {

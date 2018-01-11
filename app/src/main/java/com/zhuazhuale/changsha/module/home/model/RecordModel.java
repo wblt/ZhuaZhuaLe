@@ -27,6 +27,7 @@ public class RecordModel {
     public void getGrabWater(int PageIndex, int PageSize, final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.GrabWater)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("PageIndex", PageIndex)
                 .params("PageSize", PageSize)
                 .params("vUserID",  MyApplication.getInstance().getRowsBean().getF_ID())

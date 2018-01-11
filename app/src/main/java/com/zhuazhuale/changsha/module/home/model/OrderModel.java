@@ -33,6 +33,7 @@ public class OrderModel {
         OkGo.<String>post(Constant.GetOrders)
                 .tag(this)
                 .params("vCheck", vCheck)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
                 .execute(new StringCallback() {
                     @Override

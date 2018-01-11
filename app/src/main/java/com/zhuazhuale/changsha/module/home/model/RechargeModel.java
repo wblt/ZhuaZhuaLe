@@ -95,6 +95,7 @@ public class RechargeModel {
     public void getWxUnifiedOrder( String productId, final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.WxUnifiedOrder)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("userid", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("openid", MyApplication.getInstance().getRowsBean().getF_Code())
                 .params("productId", productId)

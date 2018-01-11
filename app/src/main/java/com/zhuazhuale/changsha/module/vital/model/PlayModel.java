@@ -207,6 +207,7 @@ public class PlayModel {
     public void getGetAllUserTrueByDeviceID(String vDeviceID, final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.GetAllUserTrueByDeviceID)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vDeviceID", vDeviceID)
                 .execute(new StringCallback() {
@@ -239,6 +240,7 @@ public class PlayModel {
     public void getGetUploadSignature(final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.GetUploadSignature)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -271,6 +273,7 @@ public class PlayModel {
     public void getModiflyVideoUrl(String F_GrabWaterID, String F_VideoUrl, final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.ModiflyVideoUrl)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("F_GrabWaterID", F_GrabWaterID)
                 .params("F_VideoUrl", F_VideoUrl)
                 .execute(new StringCallback() {

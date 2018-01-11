@@ -32,6 +32,7 @@ public class SpoilsModel {
     public void getQueryUserGoods(int vCheck, final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.QueryUserGoods)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vCheck", vCheck)
                 .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
                 .execute(new StringCallback() {
@@ -66,6 +67,7 @@ public class SpoilsModel {
     public void getExChangeCP(String vUserGoodsID, String vDeviceID, final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.ExChangeCP)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vUserGoodsID", vUserGoodsID)
                 .params("vDeviceID", vDeviceID)
                 .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())

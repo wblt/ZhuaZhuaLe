@@ -35,6 +35,7 @@ public class AddressModel {
         LogUtil.e("我的ID :"+MyApplication.getInstance().getRowsBean().getF_ID());
         OkGo.<String>post(Constant.QueryUserAddress)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vCheck", vCheck)
                 .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
                 .execute(new StringCallback() {
@@ -68,6 +69,7 @@ public class AddressModel {
     public void getDeleteAddress(String id, final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.DeleteUserAddress)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vF_ID", id)
                 .execute(new StringCallback() {
                     @Override
@@ -113,6 +115,7 @@ public class AddressModel {
     public void getCreateOrder(String F_Consignee, String F_Mobile, String F_Address, String F_Remark, final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.CreateOrder)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("F_UserID", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("F_Address", F_Address)
                 .params("F_Consignee", F_Consignee)
@@ -160,6 +163,7 @@ public class AddressModel {
         }
         OkGo.<String>post(Constant.ModifyUserGoods)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vCheck",1)
                 .addUrlParams("vF_ID",vF_ID)

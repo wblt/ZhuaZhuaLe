@@ -36,6 +36,7 @@ public class EditAddressModel {
         LogUtil.e("我的ID :"+MyApplication.getInstance().getRowsBean().getF_ID());
         OkGo.<String>post(Constant.ModifyUserAddress)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("F_ID", ID)
                 .params("F_UserID", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("F_Consignee", name)

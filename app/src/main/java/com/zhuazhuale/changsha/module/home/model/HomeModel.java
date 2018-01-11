@@ -53,6 +53,7 @@ public class HomeModel {
     public void getLoginMain(final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.LoginMain)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vEmailCode", "test@zhuazhuale.com")
                 .params("vPassWord", "lezhuazhua.888")
                 .execute(new StringCallback() {
@@ -121,6 +122,7 @@ public class HomeModel {
 
         OkGo.<String>post(Constant.VersionCheck)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vSystem", "ANDROID")
                 .params("vVersion", vVersion)
                 .execute(new StringCallback() {

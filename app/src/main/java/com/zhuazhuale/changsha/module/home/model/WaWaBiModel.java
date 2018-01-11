@@ -27,6 +27,7 @@ public class WaWaBiModel {
     public void getBanlanceWater(int PageIndex, int PageSize, final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.BanlanceWater)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("PageIndex", PageIndex)
                 .params("PageSize", PageSize)
                 .params("vUserID",  MyApplication.getInstance().getRowsBean().getF_ID())
