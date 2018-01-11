@@ -108,7 +108,8 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
                 }
                 if (!isLoadingMore) {
                     isLoadingMore = true;
-                    mStart = mStart + 1;
+                    mStart = mStart+1;
+                    LogUtil.e(" mStart  =" + mStart);
                     //加载更多
                     getData(mStart, mCount, Constant.LOADMORE);
                 }
@@ -145,7 +146,7 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
         switch (type) {
             case Constant.INIT:
                 rfv_wawabi_fresh.finishRefresh();
-                mStart = 0;
+                mStart = 1;
                 if (0 == Bean.getCode()) {
                     getLoadLayout().setLayoutState(State.NO_DATA);
                 } else {
@@ -165,7 +166,7 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
 
                 break;
             case Constant.REFRESH:
-                mStart = 0;
+                mStart = 1;
                 rfv_wawabi_fresh.finishRefresh();
                 if (Bean.getCode() == 0) {
                     if (adapter.getItemCount() > 0) {

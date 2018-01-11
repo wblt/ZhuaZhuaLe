@@ -120,7 +120,7 @@ public class RecordActivity extends AppBaseActivity implements View.OnClickListe
                 }
                 if (!isLoadingMore) {
                     isLoadingMore = true;
-                    mStart = mStart + 1;
+                    mStart = mStart+1;
                     //加载更多
                     getData(mStart, mCount, Constant.LOADMORE);
                 }
@@ -150,7 +150,7 @@ public class RecordActivity extends AppBaseActivity implements View.OnClickListe
         switch (type) {
             case Constant.INIT:
                 rfv_record_fresh.finishRefresh();
-                mStart = 0;
+                mStart = 1;
                 if (0 == Bean.getCode()) {
                     getLoadLayout().setLayoutState(State.NO_DATA);
                 } else {
@@ -171,7 +171,7 @@ public class RecordActivity extends AppBaseActivity implements View.OnClickListe
 
                 break;
             case Constant.REFRESH:
-                mStart = 0;
+                mStart = 1;
                 rfv_record_fresh.finishRefresh();
                 if (Bean.getCode()==0){
                     getLoadLayout().setLayoutState(State.NO_DATA);
