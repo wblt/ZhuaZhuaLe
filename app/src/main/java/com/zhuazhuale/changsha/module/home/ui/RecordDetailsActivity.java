@@ -81,6 +81,11 @@ public class RecordDetailsActivity extends AppBaseActivity implements View.OnCli
             }
 
         }
+        if (rowsBean.getF_VideoUrl().isEmpty()) {
+            iv_watch.setVisibility(View.INVISIBLE);
+        } else {
+            iv_watch.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

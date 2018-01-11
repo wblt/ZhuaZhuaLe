@@ -14,6 +14,7 @@ import com.zhuazhuale.changsha.model.entity.table.MovieCollect;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.ui.HomeActivity;
 import com.zhuazhuale.changsha.util.FrescoUtil;
+import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.view.activity.CollectActivity;
 import com.zhuazhuale.changsha.view.adapter.base.RecyclerBaseAdapter;
 import com.zhuazhuale.changsha.view.adapter.base.ViewHolder;
@@ -68,8 +69,17 @@ public class DeviceGoodsAdapter extends RecyclerBaseAdapter<DeviceGoodsBean.Rows
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HomeActivity mActivity = (HomeActivity) getContext();
-                mActivity.open(rowsBean);
+                switch (rowsBean.getF_Status()) {
+                    case 3:
+                        ToastUtil.show("机器正在维修中...");
+                        break;
+                    default:
+                        HomeActivity mActivity = (HomeActivity) getContext();
+                        mActivity.open(rowsBean);
+                        break;
+
+                }
+
             }
         });
     }
