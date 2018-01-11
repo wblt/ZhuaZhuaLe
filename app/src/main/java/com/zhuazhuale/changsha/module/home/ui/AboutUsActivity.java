@@ -1,6 +1,8 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +23,8 @@ public class AboutUsActivity extends AppBaseActivity implements View.OnClickList
     View ic_aboutus_gwpf;
     @BindView(R.id.ic_aboutus_yhxy)
     View ic_aboutus_yhxy;
+    @BindView(R.id.tv_about)
+    TextView tv_about;
 
     @Override
     protected void setContentLayout() {
@@ -37,7 +41,22 @@ public class AboutUsActivity extends AppBaseActivity implements View.OnClickList
 
     @Override
     protected void obtainData() {
+        String v = "";
+        try {
+            v = getVersionName();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tv_about.setText(v + "版本");
+    }
 
+    private String getVersionName() throws Exception {
+        // 获取packagemanager的实例
+        PackageManager packageManager = getPackageManager();
+        // getPackageName()是你当前类的包名，0代表是获取版本信息
+        PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
+        String version = packInfo.versionName;
+        return version;
     }
 
     @Override
@@ -52,7 +71,7 @@ public class AboutUsActivity extends AppBaseActivity implements View.OnClickList
             case R.id.ic_aboutus_gwpf:
                 break;
             case R.id.ic_aboutus_yhxy:
-                Intent intent=new Intent(getContext(),XieYiActivity.class);
+                Intent intent = new Intent(getContext(), XieYiActivity.class);
                 startActivity(intent);
                 break;
         }

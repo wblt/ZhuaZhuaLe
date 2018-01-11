@@ -32,6 +32,7 @@ public class MineModel {
     public void getNewCP(final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.GetNewCP)
                 .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vF_ID", MyApplication.getInstance().getRowsBean().getF_ID())
                 .execute(new StringCallback() {
                     @Override

@@ -1,37 +1,43 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.tencent.bugly.crashreport.CrashReport;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
+import com.zhuazhuale.changsha.module.home.Bean.VersionBean;
 import com.zhuazhuale.changsha.module.home.adapter.DeviceGoodsAdapter;
 import com.zhuazhuale.changsha.module.home.adapter.HomeAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.HomePresenter;
-import com.zhuazhuale.changsha.module.login.bean.WeiXinLoginGetUserinfoBean;
 import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
-import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.IItemOnClickListener;
 import com.zhuazhuale.changsha.util.PermissionUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
+import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
@@ -63,6 +69,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
 
     public static HomeActivity instance = null;
     private Intent intent;
+    private ProgressBar mProgress;
 
     @Override
     protected void setContentLayout() {
@@ -72,7 +79,9 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
 
     @Override
     protected void initView() {
+
         PermissionUtil.requestPerssions(this, 1, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
     }
 
     @Override
@@ -84,6 +93,23 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
         homePresenter.initData();
         homePresenter.initDeviceGoods(1, mCont);
         getToolbar().setVisibility(View.GONE);
+        String version = "";
+        try {
+            version = getVersionName();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LogUtil.e(" version " + version);
+        homePresenter.initDeviceGoods(version);
+    }
+
+    private String getVersionName() throws Exception {
+        // 获取packagemanager的实例
+        PackageManager packageManager = getPackageManager();
+        // getPackageName()是你当前类的包名，0代表是获取版本信息
+        PackageInfo packInfo = packageManager.getPackageInfo(getPackageName(), 0);
+        String version = packInfo.versionName;
+        return version;
     }
 
     @Override
@@ -211,6 +237,25 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
     }
 
     /**
+     * 更新app
+     *
+     * @param versionBean
+     */
+    @Override
+    public void showChange(VersionBean versionBean) {
+        if (versionBean.getCode() == 1) {
+            if (versionBean.getRows().getVForce() == 1) {
+                showDownloadDialog(versionBean.getRows().getVUrl());
+            } else {
+                showNoticeDialog(versionBean.getRows().getVUrl());
+            }
+        } else {
+            LogUtil.e(versionBean.getInfo());
+        }
+    }
+
+
+    /**
      * 打开设备
      *
      * @param rowsBean
@@ -219,5 +264,80 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
         Intent intent = new Intent(getContext(), PlayActivity.class);
         intent.putExtra("DeviceGoods", rowsBean);
         startActivity(intent);
+    }
+
+    Dialog noticeDialog = null;
+
+    private void showNoticeDialog(final String vUrl) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("软件版本更新");
+//        builder.setMessage();
+        builder.setPositiveButton("下载", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                showDownloadDialog(vUrl);
+            }
+        });
+        builder.setNegativeButton("以后再说", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+        noticeDialog = builder.create();
+        noticeDialog.setCanceledOnTouchOutside(false);
+        noticeDialog.setCancelable(false);
+        noticeDialog.show();
+    }
+
+    private Dialog downloadDialog;
+
+    private void showDownloadDialog(String vUrl) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("软件版本更新");
+
+        final LayoutInflater inflater = LayoutInflater.from(this);
+        View v = inflater.inflate(R.layout.progress, null);
+        mProgress = (ProgressBar) v.findViewById(R.id.id_progress);
+
+        builder.setView(v);
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        downloadDialog = builder.create();
+        downloadDialog.setCanceledOnTouchOutside(false);
+        downloadDialog.setCancelable(false);
+        downloadDialog.show();
+        homePresenter.downloadApk(vUrl);
+    }
+
+    /**
+     * 安装apk
+     *
+     * @param
+     */
+    @Override
+    public void installApk(File apkfile) {
+        downloadDialog.dismiss();
+//        File apkfile = new File(body);
+        if (!apkfile.exists()) {
+            return;
+        }
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
+        startActivity(i);
+        finish();
+    }
+
+    @Override
+    public void showProgress(float fraction) {
+        mProgress.setProgress((int) (fraction * 100));
     }
 }

@@ -882,6 +882,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         isPlay = false;
         switch (gameBean.getCode()) {
             case 1://成功
+                isPlay = true;
                 if (is_lp) {
                     luZhi("");//开始游戏,录制视频
                 }
@@ -890,7 +891,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 isStart = false;
                 //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
                 soundUtils.playSound(readygo, 0);
-                isPlay = true;
+
                 ll_play_open.setVisibility(View.GONE);
                 ll_play_caozuo.setVisibility(View.VISIBLE);
                 //倒计时
@@ -1147,8 +1148,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             mRecorder = null;
             presenter.initgetGetUploadSignature(grabID, moviePath);
         } else {
-            Intent captureIntent = mMediaProjectionManager.createScreenCaptureIntent();
-            startActivityForResult(captureIntent, REQUEST_CODE);
+            if (isPlay){
+                Intent captureIntent = mMediaProjectionManager.createScreenCaptureIntent();
+                startActivityForResult(captureIntent, REQUEST_CODE);
+            }
+
         }
     }
 

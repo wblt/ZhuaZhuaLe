@@ -2,8 +2,10 @@ package com.zhuazhuale.changsha.module.home.ui;
 
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
+import com.zhuazhuale.changsha.module.home.Bean.VersionBean;
 import com.zhuazhuale.changsha.presenter.iview.IBaseView;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -19,4 +21,10 @@ public interface IHomeView extends IBaseView {
     void showFailed();
 
     void showFinish();
+
+    void showChange(VersionBean versionBean);
+
+    void installApk(File body);
+
+    void showProgress(float fraction);
 }

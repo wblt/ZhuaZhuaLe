@@ -23,10 +23,11 @@
                 android:src="@mipmap/ic_logo" />
 
             <TextView
+                android:id="@+id/tv_about"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:text="1.0.2版本(build 36)"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="14dp" />
 

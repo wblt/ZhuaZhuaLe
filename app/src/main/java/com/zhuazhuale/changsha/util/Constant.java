@@ -29,6 +29,7 @@ public class Constant {
     public static String GetAllPriceProduct = URL + "/api/Account/GetAllPriceProduct";
     //我的娃娃币
     public static String BanlanceWater = URL + "/api/Account/BanlanceWater";
+    //////////////////////////////////////
     //我的抓取记录
     public static String GrabWater = URL + "/api/Account/GrabWater";
     //邮箱登录
@@ -78,6 +79,8 @@ public class Constant {
             "F_VideoUrl": result.videoURL视频的链接
 */
     public static String ModiflyVideoUrl = URL + "/api/Common/ModiflyVideoUrl";
+    //检查版本更新
+    public static String VersionCheck = URL + "/api/Common/VersionCheck";
 
 
 }

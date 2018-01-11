@@ -1,17 +1,30 @@
 package com.zhuazhuale.changsha.module.home.presenter;
 
+import android.os.Environment;
+
 import com.google.gson.Gson;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.adapter.Call;
+import com.lzy.okgo.callback.FileCallback;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Progress;
+import com.lzy.okgo.model.Response;
 import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.Bean.LoginInfoBean;
+import com.zhuazhuale.changsha.module.home.Bean.VersionBean;
 import com.zhuazhuale.changsha.module.home.model.HomeModel;
 import com.zhuazhuale.changsha.module.home.ui.IHomeView;
 import com.zhuazhuale.changsha.presenter.base.BasePresenter;
+import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
-/**主页
+import java.io.File;
+
+/**
+ * 主页
  * Created by Administrator on 2017/12/12.
  */
 
@@ -56,7 +69,7 @@ public class HomePresenter extends BasePresenter<IHomeView> {
         homeModel.getLoginMain(new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
-                LogUtil.e("用户信息请求成功:    "+s);
+                LogUtil.e("用户信息请求成功:    " + s);
                 LoginInfoBean infoBean = gson.fromJson(s, LoginInfoBean.class);
                 MyApplication.getInstance().setRowsBean(infoBean.getRows());
             }
@@ -92,5 +105,51 @@ public class HomePresenter extends BasePresenter<IHomeView> {
                 mIView.showFinish();
             }
         });
+    }
+
+    public void initDeviceGoods(String vVersion) {
+        homeModel.getVersionCheck(vVersion, new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(s);
+                VersionBean versionBean = gson.fromJson(s, VersionBean.class);
+                mIView.showChange(versionBean);
+            }
+
+            @Override
+            public void callFailed() {
+                mIView.showFailed();
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e("接口结束");
+                mIView.showFinish();
+            }
+        });
+    }
+    /* 下载包安装路径 */
+    private String fileName = "zhuazhuale.apk";
+    private String savePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/updatedir/";
+    public void downloadApk(String vUrl) {
+        String Url = "http://img.zhuazhuale.com/apk/zhuazhuale20180110.apk";
+        OkGo.<File>get(vUrl)
+                .tag(this)
+                .execute(new FileCallback(savePath,fileName) {
+                    @Override
+                    public void onSuccess(Response<File> response) {
+                        LogUtil.e(response.body());
+                        mIView.installApk(response.body());
+                    }
+
+                    @Override
+                    public void downloadProgress(Progress progress) {
+                        super.downloadProgress(progress);
+                        LogUtil.e(progress.fraction);
+                        mIView.showProgress(progress.fraction);
+                    }
+                });
+
+
     }
 }
