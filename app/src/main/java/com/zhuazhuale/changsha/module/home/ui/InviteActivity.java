@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,8 +8,13 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
@@ -17,6 +23,7 @@ import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.module.home.adapter.InviteAdapter;
+import com.zhuazhuale.changsha.util.CountdownUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
@@ -27,6 +34,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static com.zhuazhuale.changsha.R.id.ll_play_open;
 import static com.zhuazhuale.changsha.app.MyApplication.api;
 
 
@@ -57,6 +65,7 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
     @BindView(R.id.rv_invite_num)
     RecyclerView rv_invite_num;
     private String code;
+    private Dialog dialog;
 
     @Override
     protected void setContentLayout() {
@@ -65,6 +74,7 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void initView() {
+        creatMyDialog();
     }
 
 
@@ -107,16 +117,30 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
         });
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_invite_fxyqm:
-                //分享
-            /*    Intent intent1 = new Intent(Intent.ACTION_SEND);
-//                intent1.putExtra(Intent.EXTRA_TEXT, "快来和我一起玩 抓抓乐,输入邀请码:" + code + "  马上送你88个游戏币!");
-                intent1.putExtra(Intent.EXTRA_TEXT, "亲，欢迎使用长沙娃娃乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！" + MyApplication.getInstance().getRowsBean().getF_FxUrl());
-                intent1.setType("text/plain");
-                startActivity(Intent.createChooser(intent1, "share"));*/
+    private void creatMyDialog() {
+        dialog = new Dialog(this, R.style.BottomDialog);
+        LinearLayout root = (LinearLayout) LayoutInflater.from(this).inflate(
+                R.layout.dialog_invite, null);
+        LinearLayout ll_invite_hy = (LinearLayout) root.findViewById(R.id.ll_invite_hy);
+        LinearLayout ll_invite_pyq = (LinearLayout) root.findViewById(R.id.ll_invite_pyq);
+        dialog.setContentView(root);
+
+        Window dialogWindow = dialog.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        lp.x = 0; // 新位置X坐标
+        lp.y = 0; // 新位置Y坐标
+        lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
+        root.measure(0, 0);
+        lp.height = root.getMeasuredHeight();
+
+        lp.alpha = 9f; // 透明度
+        dialogWindow.setAttributes(lp);
+
+        ll_invite_hy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
 
                 String url = MyApplication.getInstance().getRowsBean().getF_FxUrl();
                 String title = "长沙抓抓乐";
@@ -126,6 +150,30 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
                     return;
                 }
                 wechatShare(0, url, title, desc);
+            }
+        });
+        ll_invite_pyq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+                String url = MyApplication.getInstance().getRowsBean().getF_FxUrl();
+                String title = "长沙抓抓乐";
+                String desc = "亲，欢迎使用长沙抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
+                if (url == null || url.isEmpty()) {
+                    ToastUtil.show("分享链接不存在!");
+                    return;
+                }
+                wechatShare(1, url, title, desc);
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_invite_fxyqm:
+                dialog.show();
                 break;
 
         }

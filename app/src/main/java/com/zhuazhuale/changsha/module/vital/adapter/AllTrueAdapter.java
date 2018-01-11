@@ -40,7 +40,11 @@ public class AllTrueAdapter extends RecyclerBaseAdapter<AllUserTrueByDeviceIDBea
         TextView tv_item_alltrue_name = holder.getView(R.id.tv_item_alltrue_name);
         TextView tv_item_alltrue_time = holder.getView(R.id.tv_item_alltrue_time);
         TextView tv_item_alltrue_bo = holder.getView(R.id.tv_item_alltrue_bo);
-
+        if (rowsBean.getF_VideoUrl().isEmpty()){
+            tv_item_alltrue_bo.setVisibility(View.INVISIBLE);
+        }else {
+            tv_item_alltrue_bo.setVisibility(View.VISIBLE);
+        }
 
         //obtainData
         FrescoUtil.getInstance().loadNetImage(sdv_item_alltrueimg, rowsBean.getF_UserImg());//加载网络图片

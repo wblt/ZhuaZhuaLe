@@ -97,7 +97,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                         result2 = "分享成功";
                         break;
                     case BaseResp.ErrCode.ERR_USER_CANCEL:
-                        result2 = "用户取消";
+                        result2 = "分享取消";
                         break;
                     case BaseResp.ErrCode.ERR_AUTH_DENIED:
                         result2 = "分享失败";
