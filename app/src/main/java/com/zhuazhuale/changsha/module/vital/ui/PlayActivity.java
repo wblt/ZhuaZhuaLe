@@ -1083,23 +1083,41 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     /**
      * 检查wifi强弱并更改图标显示
      */
+    int wifiNum = 0;
     public void checkWifiState() {
+
         if (isWifiConnect()) {
             WifiManager mWifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             WifiInfo mWifiInfo = mWifiManager.getConnectionInfo();
             int wifi = mWifiInfo.getRssi();//获取wifi信号强度
             if (wifi > -50 && wifi < 0) {//最强
-                Log.e("tag", "最强");
-                iv_play_wifi.setImageResource(R.mipmap.wifi_4);
+                if (wifiNum != 1) {
+                    wifiNum = 1;
+                    Log.e("tag", "最强");
+                    iv_play_wifi.setImageResource(R.mipmap.wifi_4);
+                }
+
             } else if (wifi > -70 && wifi < -50) {//较强
-                Log.e("tag", "较强");
-                iv_play_wifi.setImageResource(R.mipmap.wifi_3);
+                if (wifiNum!=2){
+                    wifiNum = 2;
+                    Log.e("tag", "较强");
+                    iv_play_wifi.setImageResource(R.mipmap.wifi_3);
+                }
+
             } else if (wifi > -80 && wifi < -70) {//较弱
-                Log.e("tag", "较弱");
-                iv_play_wifi.setImageResource(R.mipmap.wifi_2);
+                if (wifiNum!=3){
+                    wifiNum = 3;
+                    Log.e("tag", "较弱");
+                    iv_play_wifi.setImageResource(R.mipmap.wifi_2);
+                }
+
             } else if (wifi > -100 && wifi < -80) {//微弱
-                Log.e("tag", "微弱");
-                iv_play_wifi.setImageResource(R.mipmap.wifi_1);
+                if (wifiNum!=4){
+                    wifiNum = 4;
+                    Log.e("tag", "微弱");
+                    iv_play_wifi.setImageResource(R.mipmap.wifi_1);
+                }
+
             }
         } else {
             //无连接
@@ -1148,7 +1166,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             mRecorder = null;
             presenter.initgetGetUploadSignature(grabID, moviePath);
         } else {
-            if (isPlay){
+            if (isPlay) {
                 Intent captureIntent = mMediaProjectionManager.createScreenCaptureIntent();
                 startActivityForResult(captureIntent, REQUEST_CODE);
             }
