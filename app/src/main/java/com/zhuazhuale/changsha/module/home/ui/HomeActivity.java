@@ -142,7 +142,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
                 }
                 if (!isLoadingMore) {
                     isLoadingMore = true;
-                    mStart = mStart+1;
+                    mStart = mStart + 1;
                     LogUtil.e(" mStart  =" + mStart);
                     //加载更多
                     homePresenter.initDeviceGoods(mStart, mCont, Constant.LOADMORE);
@@ -254,6 +254,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
 
                     adapter = new DeviceGoodsAdapter(this, Bean.getRows());
                     rv_home_list.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                    rv_home_list.setNestedScrollingEnabled(false);
                     rv_home_list.setAdapter(adapter);
                     if (Bean.getRows() == null || Bean.getRows().size() == 0) {
                         //设置页面为“没数据”状态
@@ -298,7 +299,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
             if (adapter.getItemCount() >= Bean.getTotal()) {
                 rfv_home.finishLoadmoreWithNoMoreData();
 
-            }else {
+            } else {
                 rfv_home.resetNoMoreData();
                 rfv_home.setEnableLoadmore(true);
             }
@@ -314,6 +315,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
 
     /**
      * 请求机器数据失败
+     *
      * @param type
      */
     @Override
