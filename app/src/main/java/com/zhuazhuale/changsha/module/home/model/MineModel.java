@@ -55,4 +55,31 @@ public class MineModel {
                     }
                 });
     }
+
+    public void getUserSign(String time,final ICallListener<String> iCallListener) {
+        OkGo.<String>post(Constant.UserSign)
+                .tag(this)
+                .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("vDateTime",time )
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e("请求成功" + response.body());
+                        iCallListener.callSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e("请求失败" + response.toString());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+    }
 }

@@ -2,24 +2,30 @@ package com.zhuazhuale.changsha.module.home.ui;
 
 import android.content.Intent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.model.entity.eventbus.CPfreshEvent;
-import com.zhuazhuale.changsha.model.entity.eventbus.LoginEvent;
+import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.presenter.MinePresenter;
-import com.zhuazhuale.changsha.module.login.presenter.LoginPresenter;
+import com.zhuazhuale.changsha.util.DataUtils;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.FrescoUtil;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
+import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.BindView;
 
@@ -83,6 +89,23 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
             id = "";
         }
         tv_mine_id.setText(id);
+        String signTime = PreferenceUtil.getString(getContext(), BaseConstants.SignTime, "");
+        if (signTime.isEmpty()) {
+            getTvToolbarRight().setText("签到");
+        } else {
+            try {
+                boolean b = DataUtils.IsToday(signTime);
+                if (b) {
+                    getTvToolbarRight().setText("已签到");
+                } else {
+                    getTvToolbarRight().setText("签到");
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
     @Override
@@ -118,6 +141,23 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
         ic_zlp.setOnClickListener(this);
         ic_dd.setOnClickListener(this);
         ic_dz.setOnClickListener(this);
+
+        getTvToolbarRight().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sign = getTvToolbarRight().getText().toString();
+                if ("签到".equals(sign)) {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                    String str = formatter.format(curDate);
+                    LogUtil.e(str);
+                    presenter.initUserSign(str);
+                } else {
+                    ToastUtil.show("您已签过到了!");
+                }
+
+            }
+        });
     }
 
     @Override
@@ -160,6 +200,22 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
     public void showNewCP(NewCPBean newCPBean) {
         if (newCPBean.getRows() != null) {
             tv_mine_yue.setText(newCPBean.getRows().getCP() + "");
+        }
+    }
+
+    @Override
+    public void showSignSuccess(EditAddressBean bean, String time) {
+        ToastUtil.show(bean.getInfo());
+        switch (bean.getCode()) {
+            case -1:
+                PreferenceUtil.putString(getContext(), BaseConstants.SignTime, time);
+                break;
+            case 0:
+                break;
+            case 1:
+                getTvToolbarRight().setText("已签到");
+                PreferenceUtil.putString(getContext(), BaseConstants.SignTime, time);
+                break;
         }
     }
 }

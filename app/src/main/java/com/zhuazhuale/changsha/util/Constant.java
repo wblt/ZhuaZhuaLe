@@ -81,6 +81,8 @@ public class Constant {
     public static String ModiflyVideoUrl = URL + "/api/Common/ModiflyVideoUrl";
     //检查版本更新
     public static String VersionCheck = URL + "/api/Common/VersionCheck";
+    //签到
+    public static String UserSign = URL + "/api/Account/UserSign";
 
 
 }

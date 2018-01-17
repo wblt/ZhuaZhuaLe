@@ -34,4 +34,6 @@ public interface BaseConstants {
     String Is_yy = "Is_yy";
     String Is_lp = "Is_lp";
 
+    String SignTime = "SignTime";
+
 }
