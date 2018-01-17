@@ -209,6 +209,7 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
         switch (bean.getCode()) {
             case -1:
                 PreferenceUtil.putString(getContext(), BaseConstants.SignTime, time);
+                getTvToolbarRight().setText("已签到");
                 break;
             case 0:
                 break;
