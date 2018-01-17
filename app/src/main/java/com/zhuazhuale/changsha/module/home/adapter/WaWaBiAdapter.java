@@ -88,6 +88,12 @@ public class WaWaBiAdapter extends RecyclerBaseAdapter<BanlanceWaterBean.RowsBea
                 tv_item_wawabi_bi.setTextColor(Color.parseColor("#7CD237"));
                 tv_item_wawabi_bi.setText("+ " + rowsBean.getF_Amout());
                 break;
+            case 8:
+                //游戏退换
+                tv_item_wawabi_type.setText("签到奖励  +   ");
+                tv_item_wawabi_bi.setTextColor(Color.parseColor("#7CD237"));
+                tv_item_wawabi_bi.setText("+ " + rowsBean.getF_Amout());
+                break;
         }
         //initEvent
         //点击该项后，从数据表中删除，并且从界面中移除
