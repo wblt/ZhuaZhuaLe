@@ -4,9 +4,7 @@ import android.os.Environment;
 
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
-import com.lzy.okgo.adapter.Call;
 import com.lzy.okgo.callback.FileCallback;
-import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Progress;
 import com.lzy.okgo.model.Response;
 import com.zhuazhuale.changsha.app.MyApplication;
@@ -18,7 +16,6 @@ import com.zhuazhuale.changsha.module.home.Bean.VersionBean;
 import com.zhuazhuale.changsha.module.home.model.HomeModel;
 import com.zhuazhuale.changsha.module.home.ui.IHomeView;
 import com.zhuazhuale.changsha.presenter.base.BasePresenter;
-import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
 import java.io.File;
@@ -85,18 +82,18 @@ public class HomePresenter extends BasePresenter<IHomeView> {
         });
     }
 
-    public void initDeviceGoods(int PageIndex, int PageSize) {
+    public void initDeviceGoods(int PageIndex, int PageSize, final int type) {
         homeModel.getGetDeviceGoods(PageIndex, PageSize, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(s);
                 DeviceGoodsBean deviceGoodsBean = gson.fromJson(s, DeviceGoodsBean.class);
-                mIView.showDeviceGoods(deviceGoodsBean);
+                mIView.showDeviceGoods(deviceGoodsBean,type);
             }
 
             @Override
             public void callFailed() {
-                mIView.showFailed();
+                mIView.showDeviceGoodsFailed(type);
             }
 
             @Override
@@ -107,7 +104,11 @@ public class HomePresenter extends BasePresenter<IHomeView> {
         });
     }
 
-    public void initDeviceGoods(String vVersion) {
+    /**
+     * 检测是否要更新app
+     * @param vVersion
+     */
+    public void initVersion(String vVersion) {
         homeModel.getVersionCheck(vVersion, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
@@ -119,6 +120,7 @@ public class HomePresenter extends BasePresenter<IHomeView> {
             @Override
             public void callFailed() {
                 mIView.showFailed();
+
             }
 
             @Override

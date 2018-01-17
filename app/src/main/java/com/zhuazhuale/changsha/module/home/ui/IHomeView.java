@@ -16,7 +16,7 @@ public interface IHomeView extends IBaseView {
 
     void showImagePage(List<BaseDataBean.RowsBean> rows);
 
-    void showDeviceGoods(DeviceGoodsBean rows);
+    void showDeviceGoods(DeviceGoodsBean rows, int type);
 
     void showFailed();
 
@@ -27,4 +27,6 @@ public interface IHomeView extends IBaseView {
     void installApk(File body);
 
     void showProgress(float fraction);
+
+    void showDeviceGoodsFailed(int type);
 }

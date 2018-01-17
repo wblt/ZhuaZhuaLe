@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.hintview.ColorPointHintView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
@@ -28,8 +30,10 @@ import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.Bean.VersionBean;
 import com.zhuazhuale.changsha.module.home.adapter.DeviceGoodsAdapter;
 import com.zhuazhuale.changsha.module.home.adapter.HomeAdapter;
+import com.zhuazhuale.changsha.module.home.adapter.WaWaBiAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.HomePresenter;
 import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
+import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.IItemOnClickListener;
 import com.zhuazhuale.changsha.util.PermissionUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
@@ -64,12 +68,14 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
 
     private HomePresenter homePresenter;
     private int mStart = 1;
-    private int mCont = 4;
-    private DeviceGoodsAdapter mCollectAdapter;
+    private int mCont = 6;
+    private DeviceGoodsAdapter adapter;
 
     public static HomeActivity instance = null;
     private Intent intent;
     private ProgressBar mProgress;
+    private boolean isLoadingMore;//是否正在进行“加载更多”的操作，避免重复发起请求
+
 
     @Override
     protected void setContentLayout() {
@@ -91,7 +97,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
 //        rfv_home.autoRefresh();
         showLoadingDialog();
         homePresenter.initData();
-        homePresenter.initDeviceGoods(1, mCont);
+        homePresenter.initDeviceGoods(1, mCont, Constant.INIT);
         getToolbar().setVisibility(View.GONE);
         String version = "";
         try {
@@ -100,7 +106,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
             e.printStackTrace();
         }
         LogUtil.e(" version " + version);
-        homePresenter.initDeviceGoods(version);
+        homePresenter.initVersion(version);
     }
 
     private String getVersionName() throws Exception {
@@ -118,11 +124,30 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
         ll_home_mine.setOnClickListener(this);
 
         rfv_home.setEnableOverScrollDrag(true);//是否启用越界拖动（仿苹果效果）1.0.4-6
+        //下拉刷新
         rfv_home.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 homePresenter.initData();
-                homePresenter.initDeviceGoods(1, mCont);
+                homePresenter.initDeviceGoods(1, mCont, Constant.REFRESH);
+            }
+        });
+        rfv_home.setOnLoadmoreListener(new OnLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+
+                //上拉加载更多
+                if (rfv_home.isRefreshing()) {
+                    return;
+                }
+                if (!isLoadingMore) {
+                    isLoadingMore = true;
+                    mStart = mStart+1;
+                    LogUtil.e(" mStart  =" + mStart);
+                    //加载更多
+                    homePresenter.initDeviceGoods(mStart, mCont, Constant.LOADMORE);
+
+                }
             }
         });
     }
@@ -144,7 +169,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
             case R.id.iv_home_fresh:
                 mStart = mStart + 1;
                 showLoadingDialog();
-                homePresenter.initDeviceGoods(mStart, mCont);
+                homePresenter.initDeviceGoods(1, mStart, mCont);
                 break;
 
         }
@@ -197,15 +222,13 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
     /**
      * 设备列表
      *
-     * @param rows
+     * @param Bean
+     * @param type
      */
     @Override
-    public void showDeviceGoods(DeviceGoodsBean rows) {
-        if (rows.getCode() == 0) {
-            rfv_home.finishRefresh(false);
-            ToastUtil.show(rows.getInfo());
-        } else {
-            iv_home_fresh.setOnClickListener(this);
+    public void showDeviceGoods(DeviceGoodsBean Bean, int type) {
+
+           /* iv_home_fresh.setOnClickListener(this);
             rfv_home.finishRefresh(true);
             //设置页面为“成功”状态，显示正文布局
             getLoadLayout().setLayoutState(State.SUCCESS);
@@ -220,6 +243,64 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
             }
             if (mStart == rows.getPageCount()) {
                 mStart = 0;
+            }*/
+        switch (type) {
+            case Constant.INIT:
+                rfv_home.finishRefresh();
+                mStart = 1;
+                if (0 == Bean.getCode()) {
+                    getLoadLayout().setLayoutState(State.NO_DATA);
+                } else {
+
+                    adapter = new DeviceGoodsAdapter(this, Bean.getRows());
+                    rv_home_list.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                    rv_home_list.setAdapter(adapter);
+                    if (Bean.getRows() == null || Bean.getRows().size() == 0) {
+                        //设置页面为“没数据”状态
+                        getLoadLayout().setLayoutState(State.NO_DATA);
+
+                    } else {
+                        //设置页面为“成功”状态，显示正文布局
+                        getLoadLayout().setLayoutState(State.SUCCESS);
+                    }
+                }
+
+                break;
+            case Constant.REFRESH:
+                mStart = 1;
+                rfv_home.finishRefresh();
+                if (Bean.getCode() == 0) {
+                    if (adapter.getItemCount() > 0) {
+                        adapter.removeAll();
+                    }
+//                    getLoadLayout().setLayoutState(State.NO_DATA);
+                    ToastUtil.show(Bean.getInfo());
+                } else {
+                    adapter.replaceData(Bean.getRows());
+                }
+
+                break;
+            case Constant.LOADMORE:
+                isLoadingMore = false;
+                if (0 == Bean.getCode()) {
+                    //全部数据加载完毕
+                    rfv_home.finishLoadmoreWithNoMoreData();
+                    rfv_home.resetNoMoreData();
+                } else {
+                    rfv_home.finishLoadmore();
+                    adapter.insertItems(Bean.getRows());
+                }
+                break;
+
+        }
+        if (Bean.getCode() != 0 && adapter != null) {
+            LogUtil.e("adapter.getItemCount()   " + adapter.getItemCount() + "      Bean.getTotal() " + Bean.getTotal());
+            if (adapter.getItemCount() >= Bean.getTotal()) {
+                rfv_home.finishLoadmoreWithNoMoreData();
+
+            }else {
+                rfv_home.resetNoMoreData();
+                rfv_home.setEnableLoadmore(true);
             }
         }
 
@@ -229,6 +310,35 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
     public void showFailed() {
         ToastUtil.show("刷新失败,请检查网络!");
         rfv_home.finishRefresh(false);
+    }
+
+    /**
+     * 请求机器数据失败
+     * @param type
+     */
+    @Override
+    public void showDeviceGoodsFailed(int type) {
+        switch (type) {
+            //初始化数据
+            case Constant.INIT:
+                //设置页面为“失败”状态
+                ToastUtil.show("加载失败,请检查网络!");
+                break;
+
+            //刷新数据
+            case Constant.REFRESH:
+                rfv_home.finishRefresh(false);
+                ToastUtil.show("刷新失败");
+                break;
+
+            //加载更多数据
+            case Constant.LOADMORE:
+                rfv_home.finishLoadmore(false);
+                isLoadingMore = false;
+                mStart = mStart - 1;//请求失败时需回退mStart值，确保下次请求的数据正确
+                ToastUtil.show("加载更多失败");
+                break;
+        }
     }
 
     @Override
@@ -340,4 +450,5 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
     public void showProgress(float fraction) {
         mProgress.setProgress((int) (fraction * 100));
     }
+
 }

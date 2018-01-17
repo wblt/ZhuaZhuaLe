@@ -197,8 +197,10 @@ public class RecordActivity extends AppBaseActivity implements View.OnClickListe
             LogUtil.e("adapter.getItemCount()   " + adapter.getItemCount() + "      Bean.getTotal() " + Bean.getTotal());
             if (adapter.getItemCount() >= Bean.getTotal()) {
                 rfv_record_fresh.finishLoadmoreWithNoMoreData();//完成加载并标记没有更多数据 1.0.4-6参考https://github.com/scwang90/SmartRefreshLayout/blob/master/art/md_property.md
-                rfv_record_fresh.resetNoMoreData();//恢复没有更多数据的原始状态 1.0.4-6
 
+            }else {
+                rfv_record_fresh.resetNoMoreData();//恢复没有更多数据的原始状态 1.0.4-6
+                rfv_record_fresh.setEnableLoadmore(true);
             }
         }
     }

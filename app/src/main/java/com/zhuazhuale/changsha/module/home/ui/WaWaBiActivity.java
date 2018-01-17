@@ -196,7 +196,9 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
             LogUtil.e("adapter.getItemCount()   " + adapter.getItemCount() + "      Bean.getTotal() " + Bean.getTotal());
             if (adapter.getItemCount() >= Bean.getTotal()) {
                 rfv_wawabi_fresh.finishLoadmoreWithNoMoreData();
+            }else {
                 rfv_wawabi_fresh.resetNoMoreData();
+                rfv_wawabi_fresh.setEnableLoadmore(true);
             }
         }
 

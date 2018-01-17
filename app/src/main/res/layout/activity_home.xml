@@ -63,9 +63,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <ScrollView
+      <!--  <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent">-->
 
             <com.zhy.android.percent.support.PercentLinearLayout
                 android:layout_width="match_parent"
@@ -120,6 +120,7 @@
                         android:src="@mipmap/homelistimg" />
 
                     <ImageView
+                        android:visibility="gone"
                         android:id="@+id/iv_home_fresh"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -135,9 +136,8 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_home_list"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-
                     android:paddingTop="10dp"
                     android:paddingBottom="4dp"
                    >
@@ -146,7 +146,10 @@
 
 
             </com.zhy.android.percent.support.PercentLinearLayout>
-        </ScrollView>
+      <!--  </ScrollView>-->
+        <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>
