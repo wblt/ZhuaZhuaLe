@@ -400,11 +400,13 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      * @param controlGameBean
      * @param vAction
      */
+    private static boolean isHave = true;
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void showControlGame(ControlGameBean controlGameBean, String vAction) {
         tv_play_info.setVisibility(View.GONE);
-        boolean isHave = getActivityStackManager().isActivityExist(PlayActivity.class);
+//        boolean isHave = getActivityStackManager().isActivityExist(PlayActivity.class);
         if (controlGameBean.getCode() == -9999) {
             ToastUtil.show("退出房间");
             finish();
@@ -841,6 +843,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     public void onDestroy() {
         super.onDestroy();
+        isHave = false;
         CountdownUtil.getInstance().cancelAll();
         if (mutliThread != null) {
             mutliThread.pauseThread();
@@ -1084,6 +1087,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      * 检查wifi强弱并更改图标显示
      */
     int wifiNum = 0;
+
     public void checkWifiState() {
 
         if (isWifiConnect()) {
@@ -1098,21 +1102,21 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 }
 
             } else if (wifi > -70 && wifi < -50) {//较强
-                if (wifiNum!=2){
+                if (wifiNum != 2) {
                     wifiNum = 2;
                     Log.e("tag", "较强");
                     iv_play_wifi.setImageResource(R.mipmap.wifi_3);
                 }
 
             } else if (wifi > -80 && wifi < -70) {//较弱
-                if (wifiNum!=3){
+                if (wifiNum != 3) {
                     wifiNum = 3;
                     Log.e("tag", "较弱");
                     iv_play_wifi.setImageResource(R.mipmap.wifi_2);
                 }
 
             } else if (wifi > -100 && wifi < -80) {//微弱
-                if (wifiNum!=4){
+                if (wifiNum != 4) {
                     wifiNum = 4;
                     Log.e("tag", "微弱");
                     iv_play_wifi.setImageResource(R.mipmap.wifi_1);
