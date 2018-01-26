@@ -8,6 +8,9 @@ public class Constant {
     public static String APPID = "wx6a6349cd0ccf0b09";
     public static String secret = "5bd3f329e4df0d79c07181d4e2b9f072";
 
+    public static int IMSDK_APPID = 1400065180;
+    public static String ACCOUNT_TYPE = "22202";
+
     //请求数据时的不同触发时机
     public static final int INIT = 3;//初始化数据
     public static final int REFRESH = 4;//刷新数据
