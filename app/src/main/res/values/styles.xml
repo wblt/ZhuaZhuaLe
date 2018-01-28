@@ -18,6 +18,14 @@
         <item name="android:windowAnimationStyle">@style/pageInOut</item>
     </style>
 
+    <style name="AppTheme.No">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+
+
     <!-- 页面跳转间的过渡动画 -->
     <style name="pageInOut">
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_from_right</item>

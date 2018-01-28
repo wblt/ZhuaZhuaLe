@@ -116,6 +116,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     RecyclerView rv_play_list;
     @BindView(R.id.tv_play_info)
     TextView tv_play_info;
+    @BindView(R.id.iv_play_back)
+    ImageView iv_play_back;
 
 
     private DeviceGoodsBean.RowsBean rowsBean;
@@ -192,7 +194,10 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     @Override
     protected void initView() {
+        int color = getResourceColor(R.color.transparent);
+        setBarTranslucent(color, 0, color, 0);
         showLoadingDialog();
+        getToolbar().setVisibility(View.GONE);
         //mPlayerView即step1中添加的界面view
         mView1 = (TXCloudVideoView) findViewById(R.id.video_view1);
         mView2 = (TXCloudVideoView) findViewById(R.id.video_view2);
@@ -575,6 +580,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     protected void initEvent() {
         //监听第一个直播流拉流事件
         playerListen1();
+        iv_play_back.setOnClickListener(this);
         iv_play_startgame.setOnClickListener(this);
         iv_play_up.setOnClickListener(this);
         iv_play_left.setOnClickListener(this);
@@ -738,11 +744,14 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.iv_play_back:
+                finish();
+                break;
             case R.id.iv_play_startgame:
-
                 if (isOpen && isMovie) {
                     if (newCP != 0 && newCP > rowsBean.getF_Price()) {
                         showLoadingDialog();
+                        iv_play_startgame.setImageResource(R.mipmap.srartgame3);
                         soundUtils.playSound(start, 0);
                         //查询游戏的状态,先查询机器状态,再开始游戏
                         presenter.initQueryGame(rowsBean.getF_ID(), startGame);

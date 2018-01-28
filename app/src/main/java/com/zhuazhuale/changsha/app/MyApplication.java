@@ -22,6 +22,7 @@ import com.tencent.imsdk.TIMGroupReceiveMessageOpt;
 import com.tencent.imsdk.TIMGroupSettings;
 import com.tencent.imsdk.TIMGroupTipsElem;
 import com.tencent.imsdk.TIMLogLevel;
+import com.tencent.imsdk.TIMLogListener;
 import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.TIMOfflinePushListener;
 import com.tencent.imsdk.TIMOfflinePushNotification;
@@ -41,6 +42,7 @@ import com.tencent.imsdk.ext.sns.TIMFriendshipProxyListener;
 import com.tencent.imsdk.ext.sns.TIMUserConfigSnsExt;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.tencent.qalsdk.QALSDKManager;
 import com.tencent.qalsdk.sdk.MsfSdkUtils;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.model.net.RetrofitUtil;
@@ -58,6 +60,7 @@ import java.io.IOException;
 import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
+import tencent.tls.platform.TLSHelper;
 
 
 /**
@@ -71,6 +74,15 @@ import cn.jpush.android.api.JPushInterface;
 public class MyApplication extends Application {
     private static MyApplication instance;
     private LoginInfoBean.RowsBean rowsBean;
+    private TLSHelper tlsHelper;
+
+    public TLSHelper getTlsHelper() {
+        return tlsHelper;
+    }
+
+    public void setTlsHelper(TLSHelper tlsHelper) {
+        this.tlsHelper = tlsHelper;
+    }
 
     public static MyApplication getInstance() {
         return instance;
@@ -116,7 +128,16 @@ public class MyApplication extends Application {
         JPushInterface.setDebugMode(true);//如果时正式版就改成false
         JPushInterface.init(this);
         regToWx();
+
+        // 务必检查IMSDK已做以下初始化
+        QALSDKManager.getInstance().setEnv(0);
+        QALSDKManager.getInstance().init(getApplicationContext(), Constant.IMSDK_APPID);
+        // 初始化TLSSDK
+        tlsHelper = TLSHelper.getInstance().init(getApplicationContext(), Constant.IMSDK_APPID);
         regToIMSDK();
+
+
+
     }
 
     /**
@@ -193,44 +214,6 @@ public class MyApplication extends Application {
     }
 
     /**
-     * 登陆IMSDK
-     */
-    public void loginSig(final Context context, String userSig, final String userName) {
-        //登录之前要初始化群和好友关系链缓存
-        //初始化消息监听
-        TIMUser user = new TIMUser();
-        user.setIdentifier(userName);//userName用户名（id）
-        user.setAppIdAt3rd(Constant.IMSDK_APPID + "");//与AppId相同的字符串
-        user.setAccountType(Constant.ACCOUNT_TYPE);
-        //发起登录请求
-        TIMManager.getInstance().login(
-                userName,
-                userSig,//用户帐号签名，由私钥加密获得，具体请参考文档
-                new TIMCallBack() {//回调接口
-                    @Override
-                    public void onSuccess() {//登录成功
-                        LogUtil.e("腾讯IMSDK 登录成功");
-                    }
-
-                    @Override
-                    public void onError(int code, String desc) {//登录失败
-                        LogUtil.d("onError", code + ":" + desc);
-                        switch (code) {
-                            case 6208:
-
-                                break;
-                            case 6200:
-
-                                break;
-                            default:
-
-                                break;
-                        }
-                    }
-                });
-    }
-
-    /**
      * 设置当前用户的用户配置，登录前设置
      *
      * @param userConfig 用户配置
@@ -241,9 +224,9 @@ public class MyApplication extends Application {
         //基本用户配置
         TIMUserConfig userConfig = new TIMUserConfig()
                 //设置群组资料拉取字段
-                .setGroupSettings(initGroupSettings())
+//                .setGroupSettings(initGroupSettings())
                 //设置资料关系链拉取字段
-                .setFriendshipSettings(initFriendshipSettings())
+//                .setFriendshipSettings(initFriendshipSettings())
                 //设置用户状态变更事件监听器
                 .setUserStatusListener(new TIMUserStatusListener() {
                     @Override
@@ -371,13 +354,7 @@ public class MyApplication extends Application {
         TIMManager.getInstance().setUserConfig(userConfig);
     }
 
-    private TIMFriendshipSettings initFriendshipSettings() {
-        return null;
-    }
 
-    private TIMGroupSettings initGroupSettings() {
-        return null;
-    }
 
 
 }

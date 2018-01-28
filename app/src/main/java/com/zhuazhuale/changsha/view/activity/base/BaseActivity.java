@@ -98,6 +98,7 @@ public abstract class BaseActivity extends AbstractActivity implements IBaseActi
 
     private void initBarColor() {
         int color = getResourceColor(R.color.colorPrimary);
+
         setBarColor(color, 0, color, 0);
     }
 
