@@ -101,7 +101,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="0dp"
                                         android:layout_weight="1"
-                                        android:text="游戏中"
+                                        android:text="观战中..."
                                         android:textColor="@color/white"
                                         android:textSize="12dp" />
 
@@ -154,15 +154,20 @@
                             android:textColor="@color/white"
                             android:textSize="16dp"
                             android:visibility="gone" />
-
-                        <ImageView
-                            android:id="@+id/iv_play_change"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <AbsoluteLayout
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:foreground="?android:attr/selectableItemBackground"
-                            android:src="@mipmap/camera_2" />
+                            android:layout_width="-60dp"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/iv_play_change"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:src="@mipmap/camera_2" />
+                        </AbsoluteLayout>
+
+
 
                     </RelativeLayout>
 
@@ -176,6 +181,7 @@
 
 
                         <LinearLayout
+                            android:animateLayoutChanges="true"
                             android:id="@+id/ll_play_open"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -222,6 +228,7 @@
                             </LinearLayout>
 
                             <RelativeLayout
+                                android:gravity="center"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -239,9 +246,10 @@
                                     android:id="@+id/tv_play_bi"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_centerInParent="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_centerHorizontal="true"
                                     android:paddingTop="36dp"
-                                    android:text="29币 / 次"
+                                    android:text="  币 / 次"
                                     android:textColor="@color/white"
                                     android:textSize="12dp" />
                             </RelativeLayout>

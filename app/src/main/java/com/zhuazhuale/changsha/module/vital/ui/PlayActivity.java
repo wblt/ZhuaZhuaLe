@@ -150,7 +150,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private int start = 5;
     private int take = 6;
     private Dialog dialog;
-    private TextView tv_dialog_info;
     private MyThread mutliThread;
     private AlertDialog isExit;
     private TextView tv_dialog_ok;
@@ -175,6 +174,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private ScreenRecorder mRecorder;
     private boolean is_lp;
     private String moviePath;
+    private LinearLayout ll_dialog_bg;
 
     @Override
     protected void setContentLayout() {
@@ -275,13 +275,13 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      * 抓到娃娃的提示dialog
      */
     private void creatMyDialog() {
-        dialog = new Dialog(this, R.style.MyDialog);
+        dialog = new Dialog(this, R.style.Dialog_Fullscreen);
         dialog.setContentView(R.layout.dialog_play);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         TextView tv_dialog_cancel = (TextView) dialog.findViewById(R.id.tv_dialog_cancel);
         tv_dialog_ok = (TextView) dialog.findViewById(R.id.tv_dialog_ok);
-        tv_dialog_info = (TextView) dialog.findViewById(R.id.tv_dialog_info);
+        ll_dialog_bg = (LinearLayout) dialog.findViewById(R.id.ll_dialog_bg);
         tv_dialog_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -425,7 +425,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 if (isHave) {
                     //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
                     soundUtils.playSound(success, 0);
-                    tv_dialog_info.setText("恭喜你,抓取成功!");
+                    ll_dialog_bg.setBackgroundResource(R.mipmap.play_succes);
+//                    tv_dialog_info.setText("恭喜你,抓取成功!");
                     openGame();
                     dialog.show();
                 } else {
@@ -437,7 +438,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             } else {
                 if (isHave) {
                     soundUtils.playSound(fail, 0);
-                    tv_dialog_info.setText("抓取失败,再接再厉!");
+                    ll_dialog_bg.setBackgroundResource(R.mipmap.play_fail);
+//                    tv_dialog_info.setText("抓取失败,再接再厉!");
                     openGame();
                     dialog.show();
                 } else {
@@ -553,8 +555,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                     isOpen = true;
                     if (type == startGame) {
                         presenter.initUpperGame(rowsBean.getF_ID());
+                    } else {
+                        iv_play_startgame.setImageResource(R.mipmap.srartgame);
                     }
-                    iv_play_startgame.setImageResource(R.mipmap.srartgame);
                     break;
                 case 2:
                     //其他用户正在游戏中
@@ -906,6 +909,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
                 ll_play_open.setVisibility(View.GONE);
                 ll_play_caozuo.setVisibility(View.VISIBLE);
+                iv_play_startgame.setImageResource(R.mipmap.srartgame);
                 //倒计时
                 CountdownUtil.getInstance().newTimer(30000, 1000, new CountdownUtil.ICountDown() {
                     @Override
