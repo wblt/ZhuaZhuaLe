@@ -24,9 +24,10 @@
             android:layout_centerVertical="true">
 
             <ImageView
+                android:id="@+id/iv_base_left"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:src="@mipmap/ico_nav_back" />
         </LinearLayout>

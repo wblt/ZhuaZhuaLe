@@ -11,6 +11,7 @@ import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.model.entity.eventbus.LoginEvent;
 import com.zhuazhuale.changsha.module.home.Bean.LoginInfoBean;
 import com.zhuazhuale.changsha.module.home.ui.HomeActivity;
+import com.zhuazhuale.changsha.module.home.ui.HomeActivity2;
 import com.zhuazhuale.changsha.module.home.ui.XieYiActivity;
 import com.zhuazhuale.changsha.module.login.presenter.LoginPresenter;
 import com.zhuazhuale.changsha.util.CommonUtil;
@@ -118,7 +119,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         if (isLogin) {
             // 从本地拿取用户数据,并放到内存中,方便使用
             getUserInfoByPreference();
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, HomeActivity2.class);
             startActivity(intent);
             // 结束此界面
             getActivityStackManager().exitActivity(this);
@@ -178,7 +179,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
             PreferenceUtil.putBoolean(this, BaseConstants.IsLogin, true);
 
             MyApplication.getInstance().setRowsBean(infoBean.getRows());
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, HomeActivity2.class);
             startActivity(intent);
             finish();
         }

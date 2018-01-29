@@ -29,9 +29,14 @@ public class HomeAdapter extends StaticPagerAdapter {
     private List<BaseDataBean.RowsBean> newsList;
     private IItemOnClickListener onItemClick;
 
-    public HomeAdapter(Context context, List<BaseDataBean.RowsBean> imgList) {
-        this.context = context;
+    public HomeAdapter(List<BaseDataBean.RowsBean> imgList) {
+
         this.newsList = imgList;
+    }
+
+    public void reFresh(List<BaseDataBean.RowsBean> imgList) {
+        this.newsList = imgList;
+        notifyDataSetChanged();
     }
 
 
@@ -41,7 +46,7 @@ public class HomeAdapter extends StaticPagerAdapter {
 
     @Override
     public View getView(ViewGroup container, final int position) {
-
+        this.context = container.getContext();
         LayoutInflater mInflater = LayoutInflater.from(context);
 
         View view2 = mInflater.inflate(R.layout.item_home,
@@ -53,7 +58,7 @@ public class HomeAdapter extends StaticPagerAdapter {
         view2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClick.itemOnClick(v,position);
+                onItemClick.itemOnClick(v, position);
             }
         });
 

@@ -38,6 +38,8 @@ public abstract class AppBaseActivity extends BaseActivity {
     TextView tv_header_right;
     @BindView(R.id.base_header_layout_app)
     RelativeLayout base_header_layout_app;
+    @BindView(R.id.iv_base_left)
+    ImageView iv_base_left;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +107,9 @@ public abstract class AppBaseActivity extends BaseActivity {
         return tv_header_right;
     }
 
+    public ImageView getIvToolbarLeft() {
+        return iv_base_left;
+    }
 
     /**
      * 获取加载布局，从而设置各种加载状态
@@ -120,7 +125,6 @@ public abstract class AppBaseActivity extends BaseActivity {
             mLoadLayout.closeAnim();
         }
     }
-
 
 
 }

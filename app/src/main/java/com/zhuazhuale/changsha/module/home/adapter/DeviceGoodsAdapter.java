@@ -10,8 +10,10 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.model.entity.res.MovieRes;
 import com.zhuazhuale.changsha.model.entity.table.MovieCollect;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
+import com.zhuazhuale.changsha.module.home.fragment.HomeFragment;
 import com.zhuazhuale.changsha.module.home.ui.HomeActivity;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
@@ -29,8 +31,14 @@ import java.util.List;
 
 public class DeviceGoodsAdapter extends RecyclerBaseAdapter<DeviceGoodsBean.RowsBean> {
 
+    private OnHomeClickListener clickListener;
+
     public DeviceGoodsAdapter(@NonNull Context context, @NonNull List<DeviceGoodsBean.RowsBean> mDataList) {
         super(context, mDataList);
+    }
+
+    public void setClickListener(OnHomeClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -74,8 +82,8 @@ public class DeviceGoodsAdapter extends RecyclerBaseAdapter<DeviceGoodsBean.Rows
                         ToastUtil.show("机器正在维修中...");
                         break;
                     default:
-                        HomeActivity mActivity = (HomeActivity) getContext();
-                        mActivity.open(rowsBean);
+
+                        clickListener.onHomeClick(rowsBean);
                         break;
 
                 }
@@ -90,4 +98,7 @@ public class DeviceGoodsAdapter extends RecyclerBaseAdapter<DeviceGoodsBean.Rows
         return new ViewHolder(view);
     }
 
+    public interface OnHomeClickListener {
+        void onHomeClick(DeviceGoodsBean.RowsBean rowsBean);
+    }
 }

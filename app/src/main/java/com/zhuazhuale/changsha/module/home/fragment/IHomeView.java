@@ -1,4 +1,4 @@
-package com.zhuazhuale.changsha.module.home.ui;
+package com.zhuazhuale.changsha.module.home.fragment;
 
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
@@ -22,11 +22,11 @@ public interface IHomeView extends IBaseView {
 
     void showFinish();
 
-    void showChange(VersionBean versionBean);
+   /* void showChange(VersionBean versionBean);
 
     void installApk(File body);
 
-    void showProgress(float fraction);
+    void showProgress(float fraction);*/
 
     void showDeviceGoodsFailed(int type);
 }

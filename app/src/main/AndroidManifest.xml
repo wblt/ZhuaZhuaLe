@@ -47,8 +47,7 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity android:name=".module.home.ui.InviteActivity" />
         <activity android:name=".module.home.ui.InputCodeActivity" />
@@ -92,19 +91,18 @@
 
         <activity android:name=".module.vital.ui.MovieActivity" />
         <activity android:name=".module.home.ui.ScreenRecorderActivity" />
-        <activity android:name=".module.home.ui.XieYiActivity"/>
-        <activity android:name=".module.vital.ui.IMchatActivity"/>
+        <activity android:name=".module.home.ui.XieYiActivity" />
+        <activity android:name=".module.vital.ui.IMchatActivity" />
+        <activity android:name=".module.home.ui.HomeActivity2" />
         <!-- 【必须】消息收发service -->
         <service
             android:name="com.tencent.qalsdk.service.QalService"
             android:exported="true"
-            android:process=":QALSERVICE" >
-        </service>
+            android:process=":QALSERVICE"></service>
         <service
             android:name="com.tencent.qalsdk.service.QalAssistService"
             android:exported="false"
-            android:process=":QALSERVICE" >
-        </service>
+            android:process=":QALSERVICE"></service>
 
         <!-- 【必须】 离线消息广播接收器 -->
         <receiver
@@ -115,7 +113,8 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.tencent.qalsdk.core.NetConnInfoCenter" android:process=":QALSERVICE">
+            android:name="com.tencent.qalsdk.core.NetConnInfoCenter"
+            android:process=":QALSERVICE">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
