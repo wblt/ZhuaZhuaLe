@@ -192,7 +192,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
         rpv_mall.setAnimationDurtion(500);
         //设置适配器
         rpv_mall.setAdapter(homeAdapter);
-        rpv_mall.setHintView(new ColorPointHintView(this, Color.BLACK, Color.GRAY));
+        rpv_mall.setHintView(new ColorPointHintView(this, Color.TRANSPARENT, Color.TRANSPARENT));
         homeAdapter.setOnItemClickListener(new IItemOnClickListener() {
             @Override
             public void itemOnClick(View view, int position) {
