@@ -13,6 +13,7 @@ import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -69,6 +70,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.util.Random;
 
 import butterknife.BindView;
 
@@ -118,6 +120,10 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     TextView tv_play_info;
     @BindView(R.id.iv_play_back)
     ImageView iv_play_back;
+    @BindView(R.id.sdv_play_video_bg)
+    SimpleDraweeView sdv_play_video_bg;
+    @BindView(R.id.iv_play_loading_bg)
+    ImageView iv_play_loading_bg;
 
 
     private DeviceGoodsBean.RowsBean rowsBean;
@@ -189,14 +195,25 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             mMediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
         }
         isHave = true;
+        Uri uri = Uri.parse(rowsBean.getF_ImgA());
+        FrescoUtil.getInstance().loadImage(sdv_play_video_bg, uri, false, true);
+        randomIv();
 
+
+    }
+
+    private void randomIv() {
+        Integer[] integers={R.mipmap.loading_bg1,R.mipmap.loading_bg2,R.mipmap.loading_bg3};
+        Random rand = new Random();
+        int i = rand.nextInt(3);
+        iv_play_loading_bg.setImageResource(integers[i]);
     }
 
     @Override
     protected void initView() {
         int color = getResourceColor(R.color.transparent);
         setBarTranslucent(color, 0, color, 0);
-        showLoadingDialog("");
+//        showLoadingDialog("");
         getToolbar().setVisibility(View.GONE);
         //mPlayerView即step1中添加的界面view
         mView1 = (TXCloudVideoView) findViewById(R.id.video_view1);
@@ -409,7 +426,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public void showControlGame(ControlGameBean controlGameBean, String vAction) {
+    public void showControlGame(final ControlGameBean controlGameBean, String vAction) {
         tv_play_info.setVisibility(View.GONE);
 //        boolean isHave = getActivityStackManager().isActivityExist(PlayActivity.class);
         if (controlGameBean.getCode() == -9999) {
@@ -446,7 +463,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                     ToastUtil.show("抓取失败,再接再厉!");
                 }
                 if (is_lp) {
-                    luZhi(controlGameBean.getRows().getGrabID());//抓取结束,停止录屏
+                    new Handler().postDelayed(new Runnable(){
+                        public void run() {
+                            luZhi(controlGameBean.getRows().getGrabID());//抓取结束,停止录屏
+                        }
+                    }, 2000);
                 }
             }
 
@@ -1026,6 +1047,14 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                             isFirst = false;
                         }
                         ToastUtil.show("欢迎进入游戏间");
+                        //延迟一秒钟
+                        new Handler().postDelayed(new Runnable(){
+                            public void run() {
+                                sdv_play_video_bg.setVisibility(View.GONE);
+                                iv_play_loading_bg.setVisibility(View.GONE);
+                            }
+                        }, 1000);
+
                         isMovie = true;
                         dismissLoadingDialog();
                         break;

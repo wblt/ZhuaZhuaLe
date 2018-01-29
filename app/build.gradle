@@ -151,7 +151,7 @@ dependencies {
     // 此处以JPush 3.0.9 版本为例。
     compile 'cn.jiguang.sdk:jcore:1.1.7'
     // 此处以JCore 1.1.7 版本为例。
-    compile files('libs/tls_sdk.jar')
-    compile 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
+//    compile files('libs/tls_sdk.jar')
+//    compile 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
 }
 
