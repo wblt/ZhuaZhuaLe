@@ -66,7 +66,7 @@ public class RechargeActivity extends AppBaseActivity implements View.OnClickLis
 
             }
         });
-        showLoadingDialog();
+        showLoadingDialog("");
         initData();
         EventBusUtil.register(this);//订阅事件
     }
@@ -185,7 +185,7 @@ public class RechargeActivity extends AppBaseActivity implements View.OnClickLis
      * @param position
      */
     public void rechargeCP(AllPriceProductBean.RowsBean rowsBean, int position) {
-        showLoadingDialog();
+        showLoadingDialog("");
         LogUtil.e(rowsBean.getF_ID()+"");
         presenter.iniWxUnifiedOrder(rowsBean.getF_ID());
 

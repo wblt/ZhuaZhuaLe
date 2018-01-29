@@ -131,7 +131,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
             case R.id.iv_login_wxlogin:
                 if (isAgree) {
                     if (CommonUtil.isWeixinAvilible(this)) {
-                        showLoadingDialog();
+                        showLoadingDialog("");
                         loginPresenter.getCode();
                     } else {
                         ToastUtil.show("您的手机还未安装最新的微信,请安装后再登录!");

@@ -69,7 +69,7 @@ public class RecordActivity extends AppBaseActivity implements View.OnClickListe
         });
 //        rfv_record_fresh.autoRefresh();
         //  初始化数据
-        showLoadingDialog();
+        showLoadingDialog("");
         getData(mStart, mCount, Constant.INIT);
     }
 

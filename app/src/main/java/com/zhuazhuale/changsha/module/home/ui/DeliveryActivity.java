@@ -80,7 +80,7 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
     @Override
     protected void obtainData() {
         presenter = new DeliveryPresenter(this);
-        showLoadingDialog();
+        showLoadingDialog("");
         presenter.initUserAddress(0);
         Intent intent = getIntent();
         spoilsBean = (SpoilsBean) intent.getSerializableExtra("SpoilsBean");
@@ -167,7 +167,7 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
                     @Override
                     public void onClick(View v) {
                         mDialog.dismiss();
-                        showLoadingDialog();
+                        showLoadingDialog("");
                         // 先修改商品的选择状态,再提交订单
                         modifyUserGoods();
                     }

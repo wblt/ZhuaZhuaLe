@@ -50,7 +50,7 @@ public class OrderActivity extends AppBaseActivity implements View.OnClickListen
 
     @Override
     protected void obtainData() {
-        showLoadingDialog();
+        showLoadingDialog("");
         presenter = new OrderPresenter(this);
         presenter.initGetOrders(0, Constant.INIT);
         getLoadLayout().setOnLoadListener(new OnLoadListener() {

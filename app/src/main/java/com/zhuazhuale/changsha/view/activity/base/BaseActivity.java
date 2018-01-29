@@ -179,22 +179,23 @@ public abstract class BaseActivity extends AbstractActivity implements IBaseActi
 
     /**
      * 显示圆形进度对话框
+     * 传""是默认小圆圈,传字符串就会显示
      */
-    public void showLoadingDialog() {
+    public void showLoadingDialog(String info) {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(getContext());
         }
-        mProgressDialog.showDialog();
+        mProgressDialog.showDialog(info);
     }
 
     /**
      * 显示圆形进度对话框（不可关闭）
      */
-    public void showNoCancelLoadingDialog() {
+    public void showNoCancelLoadingDialog(String info) {
         if (mProgressDialog == null) {
             mProgressDialog = new ProgressDialog(getContext());
         }
-        mProgressDialog.showDialog();
+        mProgressDialog.showDialog(info);
         mProgressDialog.setCancelable(false);
     }
 

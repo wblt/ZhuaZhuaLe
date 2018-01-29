@@ -116,7 +116,7 @@ public class ShenSuActivity extends AppBaseActivity implements View.OnClickListe
         if (remark.isEmpty()) {
             ToastUtil.show("请选择一个理由!");
         } else {
-            showLoadingDialog();
+            showLoadingDialog("");
             presenter.initAppeal(rowsBean.getF_DeviceID(), rowsBean.getF_ID(), remark, rowsBean.getF_VideoUrl());
 
         }

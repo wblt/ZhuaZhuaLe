@@ -206,7 +206,7 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
                     @Override
                     public void onClick(View v) {
                         mDialog.dismiss();
-                        showLoadingDialog();
+                        showLoadingDialog("");
                         presenter.initLoginOut();
                     }
                 });

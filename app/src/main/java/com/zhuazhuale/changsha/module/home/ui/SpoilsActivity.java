@@ -65,7 +65,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void obtainData() {
-        showLoadingDialog();
+        showLoadingDialog("");
         presenter = new SpoilsPresenter(this);
         presenter.initQueryUserGoods(9, Constant.INIT);
 //        showAddressList();
@@ -237,7 +237,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 mDialog.dismiss();
-                showLoadingDialog();
+                showLoadingDialog("");
                 //这里从全局变量bean获取信息来构建对象，
                 //如果从rowsBean获取的话，要声明为final类型，但是声明为final类型后，你在这个内部类里面获取到的rowsBean都是不变的（一直是第一次获取到的那个,除非重新new Dialog）
 

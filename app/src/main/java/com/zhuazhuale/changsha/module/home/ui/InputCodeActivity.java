@@ -53,7 +53,7 @@ public class InputCodeActivity extends AppBaseActivity implements View.OnClickLi
                 if (vCode.isEmpty()) {
                     ToastUtil.show("请输入邀请码!");
                 } else {
-                    showLoadingDialog();
+                    showLoadingDialog("");
                     presenter.initInvitation(vCode);
                 }
 

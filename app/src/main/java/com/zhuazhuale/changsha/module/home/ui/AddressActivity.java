@@ -59,7 +59,7 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
 
     @Override
     protected void obtainData() {
-        showLoadingDialog();
+        showLoadingDialog("");
         presenter = new AddressPresenter(this);
         presenter.initQueryUserAddress(0, Constant.INIT);
         //状态为加载时的监听,请求网络
@@ -123,7 +123,7 @@ public class AddressActivity extends AppBaseActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 mDialog.dismiss();
-                showLoadingDialog();
+                showLoadingDialog("");
                 //这里从全局变量mMovieRes获取信息来构建对象，
                 //如果从movieRes获取的话，要声明为final类型，但是声明为final类型后，你在这个内部类里面获取到的movieRes都是不变的（一直是第一次获取到的那个,除非重新new Dialog）
 

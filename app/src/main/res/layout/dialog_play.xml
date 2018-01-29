@@ -38,13 +38,13 @@
                 android:paddingRight="16dp"
                 android:paddingTop="6dp"
                 android:text="不玩了"
-                android:textSize="14dp" />
+                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/tv_dialog_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
+                android:layout_marginLeft="16dp"
                 android:background="@drawable/textbeijing"
                 android:paddingBottom="6dp"
                 android:paddingLeft="16dp"
@@ -52,7 +52,7 @@
                 android:paddingTop="6dp"
                 android:text="继续游戏"
                 android:textColor="@color/white"
-                android:textSize="14dp" />
+                android:textSize="20dp" />
         </LinearLayout>
     </LinearLayout>
 

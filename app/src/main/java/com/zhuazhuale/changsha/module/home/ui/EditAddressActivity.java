@@ -87,7 +87,7 @@ public class EditAddressActivity extends AppBaseActivity implements View.OnClick
                     ToastUtil.show("请填写地址!");
                     return;
                 }
-                showLoadingDialog();
+                showLoadingDialog("");
                 //设置不可重复点击
                 tv_edit_address_add.setEnabled(false);
                 presenter.initModifyUserAddress(address, name, id, phone);

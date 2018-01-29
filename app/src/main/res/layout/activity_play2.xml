@@ -10,22 +10,25 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <com.zhy.android.percent.support.PercentLinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <com.zhy.android.percent.support.PercentRelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_heightPercent="100%"
                 app:layout_widthPercent="100%">
+
                 <com.zhy.android.percent.support.PercentLinearLayout
                     android:id="@+id/view_play"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:orientation="vertical"
                     app:layout_heightPercent="100%"
-                    app:layout_widthPercent="100%"
-                    android:orientation="vertical">
+                    app:layout_widthPercent="100%">
 
                     <RelativeLayout
                         android:layout_width="0dp"
@@ -94,6 +97,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="0dp"
                                         android:layout_weight="1"
+                                        android:ellipsize="end"
                                         android:textColor="@color/white"
                                         android:textSize="14dp" />
 
@@ -154,11 +158,13 @@
                             android:textColor="@color/white"
                             android:textSize="16dp"
                             android:visibility="gone" />
+
                         <AbsoluteLayout
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
                             android:layout_width="-60dp"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true">
+
                             <ImageView
                                 android:id="@+id/iv_play_change"
                                 android:layout_width="wrap_content"
@@ -166,7 +172,6 @@
                                 android:foreground="?android:attr/selectableItemBackground"
                                 android:src="@mipmap/camera_2" />
                         </AbsoluteLayout>
-
 
 
                     </RelativeLayout>
@@ -179,12 +184,12 @@
                         app:layout_widthPercent="100%">
 
 
-
                         <LinearLayout
-                            android:animateLayoutChanges="true"
                             android:id="@+id/ll_play_open"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
+                            android:animateLayoutChanges="true"
+                            android:gravity="center"
                             android:orientation="horizontal">
 
                             <LinearLayout
@@ -228,17 +233,17 @@
                             </LinearLayout>
 
                             <RelativeLayout
-                                android:gravity="center"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_weight="1.5">
+                                android:layout_weight="1.7"
+                                android:gravity="center">
 
                                 <ImageView
                                     android:id="@+id/iv_play_startgame"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp"
+                                    android:layout_centerInParent="true"
                                     android:foreground="?android:attr/selectableItemBackground"
                                     android:src="@mipmap/srartgame" />
 
@@ -246,9 +251,11 @@
                                     android:id="@+id/tv_play_bi"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:layout_centerHorizontal="true"
-                                    android:paddingTop="36dp"
+                                    android:layout_centerInParent="true"
+                                    android:drawableLeft="@mipmap/coin"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="4dp"
+                                    android:paddingTop="24dp"
                                     android:text="  币 / 次"
                                     android:textColor="@color/white"
                                     android:textSize="12dp" />
@@ -281,14 +288,15 @@
                     </RelativeLayout>
 
                 </com.zhy.android.percent.support.PercentLinearLayout>
+
                 <LinearLayout
-                    android:layout_alignParentBottom="true"
                     android:id="@+id/ll_play_caozuo"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:layout_alignParentBottom="true"
+                    android:visibility="invisible"
                     app:layout_heightPercent="24%"
-                    app:layout_widthPercent="100%"
-                    android:visibility="invisible">
+                    app:layout_widthPercent="100%">
 
                     <com.zhy.android.percent.support.PercentLinearLayout
                         android:layout_width="0dp"
@@ -362,20 +370,18 @@
 
                         <TextView
                             android:id="@+id/tv_play_djs"
-                            android:layout_width="60dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:layout_marginLeft="4dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="6dp"
                             android:text="30"
-                            android:textColor="@color/white"
-                            android:textSize="30dp"
+                            android:textColor="@color/yellow"
+                            android:textSize="46dp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
                 </LinearLayout>
             </com.zhy.android.percent.support.PercentRelativeLayout>
-
-
 
 
             <TextView

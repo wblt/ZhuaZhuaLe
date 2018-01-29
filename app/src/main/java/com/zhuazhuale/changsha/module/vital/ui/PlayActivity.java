@@ -187,8 +187,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         is_lp = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lp, false);
         if (is_lp) {
             mMediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
-
         }
+        isHave = true;
 
     }
 
@@ -196,7 +196,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     protected void initView() {
         int color = getResourceColor(R.color.transparent);
         setBarTranslucent(color, 0, color, 0);
-        showLoadingDialog();
+        showLoadingDialog("");
         getToolbar().setVisibility(View.GONE);
         //mPlayerView即step1中添加的界面view
         mView1 = (TXCloudVideoView) findViewById(R.id.video_view1);
@@ -296,7 +296,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         tv_dialog_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLoadingDialog();
+                showLoadingDialog("");
                 CountdownUtil.getInstance().cancel("DOWN");
                 soundUtils.playSound(start, 0);
                 presenter.initUpperGame(rowsBean.getF_ID());
@@ -748,12 +748,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_play_back:
-                finish();
+                listen();
                 break;
             case R.id.iv_play_startgame:
                 if (isOpen && isMovie) {
                     if (newCP != 0 && newCP > rowsBean.getF_Price()) {
-                        showLoadingDialog();
+                        showLoadingDialog("准备");
                         iv_play_startgame.setImageResource(R.mipmap.srartgame3);
                         soundUtils.playSound(start, 0);
                         //查询游戏的状态,先查询机器状态,再开始游戏
@@ -1031,7 +1031,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                         break;
                     case 2007:
                         ToastUtil.show("有点延迟...");
-                        showLoadingDialog();
+                        showLoadingDialog("");
                         break;
                     case -2301:
                         ToastUtil.show("多次连接失败,请联系客服!");
@@ -1072,7 +1072,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                         break;
                     case 2007:
                         ToastUtil.show("有点延迟...");
-                        showLoadingDialog();
+                        showLoadingDialog("");
                         break;
 
                 }

@@ -95,7 +95,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
         homePresenter = new HomePresenter(this);
 //        getLoadLayout().setLayoutState(State.LOADING);
 //        rfv_home.autoRefresh();
-        showLoadingDialog();
+        showLoadingDialog("");
         homePresenter.initData();
         homePresenter.initDeviceGoods(1, mCont, Constant.INIT);
         getToolbar().setVisibility(View.GONE);
@@ -168,7 +168,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
                 break;
             case R.id.iv_home_fresh:
                 mStart = mStart + 1;
-                showLoadingDialog();
+                showLoadingDialog("");
                 homePresenter.initDeviceGoods(1, mStart, mCont);
                 break;
 

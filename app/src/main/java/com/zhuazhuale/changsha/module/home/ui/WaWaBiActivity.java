@@ -65,7 +65,7 @@ public class WaWaBiActivity extends AppBaseActivity implements View.OnClickListe
         });
 //        getLoadLayout().setLayoutState(State.LOADING);
 //        rfv_wawabi_fresh.autoRefresh();
-        showLoadingDialog();
+        showLoadingDialog("");
         getData(mStart, mCount, Constant.INIT);
 
 
