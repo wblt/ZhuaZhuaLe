@@ -124,6 +124,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     SimpleDraweeView sdv_play_video_bg;
     @BindView(R.id.iv_play_loading_bg)
     ImageView iv_play_loading_bg;
+    @BindView(R.id.tv_play_mian_type)
+    TextView tv_play_mian_type;
 
 
     private DeviceGoodsBean.RowsBean rowsBean;
@@ -203,7 +205,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     }
 
     private void randomIv() {
-        Integer[] integers={R.mipmap.loading_bg1,R.mipmap.loading_bg2,R.mipmap.loading_bg3};
+        Integer[] integers = {R.mipmap.loading_bg1, R.mipmap.loading_bg2, R.mipmap.loading_bg3};
         Random rand = new Random();
         int i = rand.nextInt(3);
         iv_play_loading_bg.setImageResource(integers[i]);
@@ -211,6 +213,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     @Override
     protected void initView() {
+        tv_play_mian_type.setText("观战中");
         int color = getResourceColor(R.color.transparent);
         setBarTranslucent(color, 0, color, 0);
 //        showLoadingDialog("");
@@ -463,7 +466,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                     ToastUtil.show("抓取失败,再接再厉!");
                 }
                 if (is_lp) {
-                    new Handler().postDelayed(new Runnable(){
+                    new Handler().postDelayed(new Runnable() {
                         public void run() {
                             luZhi(controlGameBean.getRows().getGrabID());//抓取结束,停止录屏
                         }
@@ -515,6 +518,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      */
     @Override
     public void showLowerGame(EditAddressBean lowerGame) {
+        tv_play_mian_type.setText("观战中");
         mutliThread.resumeThread();//下机了,继续检查游戏机的状态
         isStart = true;
         LogUtil.e("我下机了,继续检查吧!" + isStart);
@@ -918,6 +922,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         isPlay = false;
         switch (gameBean.getCode()) {
             case 1://成功
+                tv_play_mian_type.setText("游戏中");
                 isPlay = true;
                 if (is_lp) {
                     luZhi("");//开始游戏,录制视频
@@ -1038,7 +1043,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 LogUtil.e("       i   " + i + "        bundle  " + bundle.toString());
                 switch (i) {
                     case 2004:
-                        ToastUtil.show("欢迎进入游戏间");
+//                        ToastUtil.show("欢迎进入游戏间");
                         dismissLoadingDialog();
                         break;
                     case 2002:
@@ -1046,9 +1051,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                             creatTXLivePlayer2();
                             isFirst = false;
                         }
-                        ToastUtil.show("欢迎进入游戏间");
+//                        ToastUtil.show("欢迎进入游戏间");
                         //延迟一秒钟
-                        new Handler().postDelayed(new Runnable(){
+                        new Handler().postDelayed(new Runnable() {
                             public void run() {
                                 sdv_play_video_bg.setVisibility(View.GONE);
                                 iv_play_loading_bg.setVisibility(View.GONE);

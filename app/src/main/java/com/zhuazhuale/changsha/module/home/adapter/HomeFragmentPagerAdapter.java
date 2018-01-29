@@ -27,6 +27,8 @@ import com.zhuazhuale.changsha.module.home.fragment.HomeFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.id.tabs;
+
 /**
  * 列表页 的viewpager的adapter
  *
@@ -78,17 +80,14 @@ public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
     private int[] imageResId = {
             R.mipmap.zhua,
             R.mipmap.down,
-            R.mipmap.up
+            R.mipmap.up,
+            R.mipmap.up,
+            R.mipmap.up,
     };
 
     //重写这个方法，将设置每个Tab的标题
     @Override
     public CharSequence getPageTitle(int position) {
-      /*  Drawable image = ContextCompat.getDrawable(context, imageResId[position]);
-        image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
-        SpannableString sb = new SpannableString(" ");
-        ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
-        sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);*/
         return mTitles.get(position);
 
     }

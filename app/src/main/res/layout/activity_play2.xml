@@ -111,7 +111,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginLeft="6dp"
                                     android:orientation="vertical"
-                                    android:paddingRight="12dp">
+                                    android:paddingRight="18dp">
 
                                     <TextView
                                         android:id="@+id/tv_play_name"
@@ -119,10 +119,12 @@
                                         android:layout_height="0dp"
                                         android:layout_weight="1"
                                         android:ellipsize="end"
+                                        android:maxLines="6"
                                         android:textColor="@color/white"
                                         android:textSize="14dp" />
 
                                     <TextView
+                                        android:id="@+id/tv_play_mian_type"
                                         android:layout_width="wrap_content"
                                         android:layout_height="0dp"
                                         android:layout_weight="1"
@@ -188,6 +190,7 @@
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         app:layout_heightPercent="20%"
+                        android:background="@mipmap/play_czbg"
                         app:layout_widthPercent="100%">
 
 

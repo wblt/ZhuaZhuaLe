@@ -70,15 +70,7 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2{
                 startActivity(intent);
             }
         });
-        List<String> titleList = new ArrayList<>();
-        titleList.add("全部");
-        titleList.add("爆款");
-        titleList.add("新款");
-        titleList.add("特价");
-        titleList.add("任务");
-        pagerAdapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), titleList);
-        vp_home_info.setAdapter(pagerAdapter);
-        tl_home_title.setupWithViewPager(vp_home_info);
+
     }
 
     @Override
@@ -91,6 +83,16 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2{
             e.printStackTrace();
         }
         LogUtil.e(" version " + version);
+        presenter2.initVersion(version);
+        List<String> titleList = new ArrayList<>();
+        titleList.add("全部");
+        titleList.add("爆款");
+        titleList.add("新款");
+        titleList.add("特价");
+        titleList.add("任务");
+        pagerAdapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), titleList);
+        vp_home_info.setAdapter(pagerAdapter);
+        tl_home_title.setupWithViewPager(vp_home_info);
     }
 
     private String getVersionName() throws Exception {
@@ -131,18 +133,6 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2{
     @Override
     public void showFinish() {
 
-    }
-
-
-    /**
-     * 打开设备
-     *
-     * @param rowsBean
-     */
-    public void open(DeviceGoodsBean.RowsBean rowsBean) {
-        Intent intent = new Intent(getContext(), PlayActivity.class);
-        intent.putExtra("DeviceGoods", rowsBean);
-        startActivity(intent);
     }
 
     Dialog noticeDialog = null;

@@ -18,11 +18,8 @@
         <item name="android:windowAnimationStyle">@style/pageInOut</item>
     </style>
 
-    <style name="AppTheme.No">
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    <style name="CustomTabTextAppearanceStyle" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
     </style>
 
 
