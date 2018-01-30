@@ -2,9 +2,13 @@ package com.zhuazhuale.changsha.module.home.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -48,8 +52,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     RollPagerView rpv_mall;
     @BindView(R.id.rv_home_list)
     RecyclerView rv_home_list;
-    @BindView(R.id.iv_home_fresh)
-    ImageView iv_home_fresh;
+
 
 
     private HomePresenter homePresenter;
@@ -85,6 +88,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         adapter = new DeviceGoodsAdapter(getContext(), beanList);
         rv_home_list.setLayoutManager(new GridLayoutManager(getContext(), 2));
         rv_home_list.setAdapter(adapter);
+
     }
 
     @Override
@@ -101,7 +105,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             rpv_mall.setPlayDelay(2000);
             //设置透明度
             rpv_mall.setAnimationDurtion(500);
-                 rpv_mall.setHintView(null);
+            rpv_mall.setHintView(null);
             //设置适配器
             rpv_mall.setAdapter(homeAdapter);
 
@@ -154,13 +158,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_home_fresh:
-                mStart = mStart + 1;
-                homePresenter.initDeviceGoods(1, mStart, mCont);
-                break;
 
-        }
     }
 
     /**

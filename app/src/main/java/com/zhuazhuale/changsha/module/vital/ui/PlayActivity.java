@@ -46,6 +46,7 @@ import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
+import com.zhuazhuale.changsha.module.home.fragment.FullyLinearLayoutManager;
 import com.zhuazhuale.changsha.module.home.ui.RechargeActivity;
 import com.zhuazhuale.changsha.module.home.ui.RecordActivity;
 import com.zhuazhuale.changsha.module.vital.adapter.AllTrueAdapter;
@@ -543,19 +544,28 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      * @param trueBean
      * @param type
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void showAllUserTrues(AllUserTrueByDeviceIDBean trueBean, int type) {
         if (trueBean.getCode() == 1) {
             AllTrueAdapter adapter = new AllTrueAdapter(getContext(), trueBean.getRows());
-            //禁止滑动
+          /*  //禁止滑动
             LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) {
                 @Override
                 public boolean canScrollHorizontally() {
                     return false;
                 }
-            };
-            rv_play_list.setLayoutManager(manager);
+            };*/
+            FullyLinearLayoutManager fullyLinearLayoutManager=new FullyLinearLayoutManager(this);
+            rv_play_list.setNestedScrollingEnabled(false);
+            rv_play_list.setLayoutManager(fullyLinearLayoutManager);
             rv_play_list.setAdapter(adapter);
+           /* rv_play_list.setOnTouchListener(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });*/
         } else {
             LogUtil.e(trueBean.getInfo());
         }

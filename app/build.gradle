@@ -153,5 +153,6 @@ dependencies {
     // 此处以JCore 1.1.7 版本为例。
 //    compile files('libs/tls_sdk.jar')
     compile 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
+    compile 'com.android.support:design:25.0.0-alpha1'
 }
 
