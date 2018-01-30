@@ -1,30 +1,22 @@
 package com.zhuazhuale.changsha.module.home.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.jude.rollviewpager.RollPagerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.zhouwei.mzbanner.MZBannerView;
-import com.zhouwei.mzbanner.holder.MZHolderCreator;
-import com.zhouwei.mzbanner.holder.MZViewHolder;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
-import com.zhuazhuale.changsha.module.home.Bean.VersionBean;
 import com.zhuazhuale.changsha.module.home.adapter.DeviceGoodsAdapter;
 import com.zhuazhuale.changsha.module.home.adapter.HomeAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.HomePresenter;
@@ -33,7 +25,6 @@ import com.zhuazhuale.changsha.module.home.ui.InviteActivity;
 import com.zhuazhuale.changsha.module.home.ui.RechargeActivity;
 import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
 import com.zhuazhuale.changsha.util.Constant;
-import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.IItemOnClickListener;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
@@ -41,14 +32,10 @@ import com.zhuazhuale.changsha.view.fragment.base.BaseFragment;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import me.crosswall.lib.coverflow.CoverFlow;
-import me.crosswall.lib.coverflow.core.PageItemClickListener;
-import me.crosswall.lib.coverflow.core.PagerContainer;
 
 /**
  * Created by Administrator on 2018/1/29.
@@ -58,15 +45,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @BindView(R.id.rfv_home)
     SmartRefreshLayout rfv_home;
     @BindView(R.id.rpv_mall)
-    ViewPager rpv_mall;
+    RollPagerView rpv_mall;
     @BindView(R.id.rv_home_list)
     RecyclerView rv_home_list;
     @BindView(R.id.iv_home_fresh)
     ImageView iv_home_fresh;
-    @BindView(R.id.pager_container)
-    PagerContainer pager_container;
-    @BindView(R.id.banner)
-    MZBannerView mMZBanner;
+
 
     private HomePresenter homePresenter;
     private int mStart = 1;
@@ -75,7 +59,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     public static HomeActivity instance = null;
     private Intent intent;
-    private ProgressBar mProgress;
     private boolean isLoadingMore;//是否正在进行“加载更多”的操作，避免重复发起请求
     private List<DeviceGoodsBean.RowsBean> beanList = new ArrayList<>();
     private List<BaseDataBean.RowsBean> imgList = new ArrayList<>();
@@ -99,36 +82,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     protected void initView() {
-
         adapter = new DeviceGoodsAdapter(getContext(), beanList);
         rv_home_list.setLayoutManager(new GridLayoutManager(getContext(), 2));
         rv_home_list.setAdapter(adapter);
-        List<Integer> list=new ArrayList<>();
-        list.add(R.mipmap.camera_2);
-        list.add(R.mipmap.camera_2);
-        list.add(R.mipmap.camera_2);
-        list.add(R.mipmap.camera_2);
-
-
-    }
-    public static class BannerViewHolder implements MZViewHolder<BaseDataBean.RowsBean> {
-        private SimpleDraweeView mImageView;
-        @Override
-        public View createView(Context context) {
-            // 返回页面布局
-            View view = LayoutInflater.from(context).inflate(R.layout.banner_item,null);
-            mImageView = (SimpleDraweeView) view.findViewById(R.id.iv_home_image);
-            return view;
-        }
-
-        @Override
-        public void onBind(Context context, int position, BaseDataBean.RowsBean data) {
-            // 数据绑定
-//            mImageView.setImageResource(data);
-            Uri imageUri = Uri.parse(data.getF_ImgUrl());
-            //开始下载
-            mImageView.setImageURI(imageUri);
-        }
     }
 
     @Override
@@ -141,32 +97,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             homePresenter.initData();
             rpv_mall.setVisibility(View.VISIBLE);
             homeAdapter = new HomeAdapter(imgList);
-          /*  //设置播放时间间隔
+            //设置播放时间间隔
             rpv_mall.setPlayDelay(2000);
             //设置透明度
             rpv_mall.setAnimationDurtion(500);
                  rpv_mall.setHintView(null);
-            */
             //设置适配器
             rpv_mall.setAdapter(homeAdapter);
-            new CoverFlow.Builder()
-                    .with(rpv_mall)
-                    .pagerMargin(0f)
-                    .scale(0.3f)
-                    .spaceSize(0f)
-                    .rotationY(0f)
-                    .build();
-            pager_container.setPageItemClickListener(new PageItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    //Toast.makeText(context,"position:" + position,Toast.LENGTH_SHORT).show();
-                }
-            });
+
         }
-
-//        getLoadLayout().setLayoutState(State.LOADING);
-//        rfv_home.autoRefresh();
-
         homePresenter.initDeviceGoods(1, mCont, Constant.INIT);
         //状态为加载时的监听,请求网络
         getLoadLayout().setOnLoadListener(new OnLoadListener() {
@@ -213,20 +152,16 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         });
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.iv_home_fresh:
                 mStart = mStart + 1;
                 homePresenter.initDeviceGoods(1, mStart, mCont);
                 break;
 
         }
-
     }
-
 
     /**
      * 循环viewpager
@@ -236,14 +171,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void showImagePage(final List<BaseDataBean.RowsBean> rows) {
-        // 设置数据
-        mMZBanner.setPages(rows, new MZHolderCreator<BannerViewHolder>() {
-            @Override
-            public BannerViewHolder createViewHolder() {
-                return new BannerViewHolder();
-            }
-        });
-        mMZBanner.setIndicatorVisible(false);
+
         homeAdapter.reFresh(rows);
 //        rpv_mall.setHintView(new ColorPointHintView(this, Color.BLACK, Color.GRAY));
 
@@ -288,11 +216,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 if (0 == Bean.getCode()) {
                     getLoadLayout().setLayoutState(State.NO_DATA);
                 } else {
-
-                 /*   adapter = new DeviceGoodsAdapter(getContext(), Bean.getRows());
-                    rv_home_list.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                    rv_home_list.setNestedScrollingEnabled(false);
-                    rv_home_list.setAdapter(adapter);*/
                     adapter.replaceData(Bean.getRows());
                     if (Bean.getRows() == null || Bean.getRows().size() == 0) {
                         //设置页面为“没数据”状态
@@ -303,7 +226,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         getLoadLayout().setLayoutState(State.SUCCESS);
                     }
                 }
-
                 break;
             case Constant.REFRESH:
                 mStart = 1;
@@ -393,21 +315,4 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void showFinish() {
     }
-/*
-    @Override
-    public void showChange(VersionBean versionBean) {
-
-    }
-
-    @Override
-    public void installApk(File body) {
-
-    }
-
-    @Override
-    public void showProgress(float fraction) {
-
-    }*/
-
-
 }

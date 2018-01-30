@@ -15,12 +15,14 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.module.home.Bean.BaseTypeDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.Bean.VersionBean;
 import com.zhuazhuale.changsha.module.home.adapter.HomeFragmentPagerAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.HomePresenter2;
 import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
 import com.zhuazhuale.changsha.util.PermissionUtil;
+import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
@@ -34,7 +36,7 @@ import butterknife.BindView;
  * Created by Administrator on 2018/1/29.
  */
 
-public class HomeActivity2 extends AppBaseActivity implements IHomeView2{
+public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
 
     @BindView(R.id.tl_home_title)
     TabLayout tl_home_title;
@@ -83,16 +85,8 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2{
             e.printStackTrace();
         }
         LogUtil.e(" version " + version);
+        presenter2.initBaseTypeData();
         presenter2.initVersion(version);
-        List<String> titleList = new ArrayList<>();
-        titleList.add("全部");
-        titleList.add("爆款");
-        titleList.add("新款");
-        titleList.add("特价");
-        titleList.add("任务");
-        pagerAdapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), titleList);
-        vp_home_info.setAdapter(pagerAdapter);
-        tl_home_title.setupWithViewPager(vp_home_info);
     }
 
     private String getVersionName() throws Exception {
@@ -108,6 +102,25 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2{
     protected void initEvent() {
 
     }
+
+    /**
+     * Tab列表
+     *
+     * @param bean
+     */
+    @Override
+    public void showTabList(BaseTypeDataBean bean) {
+        if (bean.getCode() == 1) {
+            pagerAdapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), bean.getRows());
+            vp_home_info.setAdapter(pagerAdapter);
+            tl_home_title.setupWithViewPager(vp_home_info);
+        } else {
+            ToastUtil.show(bean.getInfo());
+        }
+
+
+    }
+
     /**
      * 更新app
      *
@@ -194,7 +207,6 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2{
      */
     public void installApk(File apkfile) {
         downloadDialog.dismiss();
-//        File apkfile = new File(body);
         if (!apkfile.exists()) {
             return;
         }
@@ -207,5 +219,6 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2{
     public void showProgress(float fraction) {
         mProgress.setProgress((int) (fraction * 100));
     }
+
 
 }

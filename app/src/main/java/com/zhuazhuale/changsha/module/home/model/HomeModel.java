@@ -79,6 +79,39 @@ public class HomeModel {
     }
 
     /**
+     * 获取分类
+     *
+     * @param iCallListener
+     */
+    public void getBaseTypeData(final ICallListener<String> iCallListener) {
+
+        OkGo.<String>post(Constant.BaseTypeData)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e("我是分类数据 " + response.body());
+                        iCallListener.callSuccess(response.body());
+
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e("我是分类数据 " + response.message());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+    }
+
+
+    /**
      * 获取机器的列表
      *
      * @param PageIndex
@@ -111,14 +144,34 @@ public class HomeModel {
                         iCallListener.onFinish();
                     }
                 });
+        OkGo.<String>post(Constant.BaseTypeData)
+                .tag(this)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e("我是分类数据 " + response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e("我是分类数据 " + response.message());
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                    }
+                });
     }
 
     /**
      * 检测版本更新
+     *
      * @param vVersion
      * @param iCallListener
      */
-    public void getVersionCheck(String vVersion,final ICallListener<String>iCallListener) {
+    public void getVersionCheck(String vVersion, final ICallListener<String> iCallListener) {
 
         OkGo.<String>post(Constant.VersionCheck)
                 .tag(this)

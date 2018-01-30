@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="@color/transparent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -19,37 +19,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <me.crosswall.lib.coverflow.core.PagerContainer
-                android:visibility="gone"
-              android:id="@+id/pager_container"
-                android:layout_marginTop="4dp"
-                android:paddingBottom="16dp"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:clipChildren="false"
-                android:layout_gravity="center"
-                app:layout_heightPercent="28%"
-                app:layout_widthPercent="100%">
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/rpv_mall"
-                    android:layout_width="340dp"
-                    android:layout_gravity="center"
-                    android:layout_height="match_parent">
-
-                </android.support.v4.view.ViewPager>
-            </me.crosswall.lib.coverflow.core.PagerContainer>
-            <com.zhouwei.mzbanner.MZBannerView
-                android:id="@+id/banner"
+            <com.jude.rollviewpager.RollPagerView
+                android:id="@+id/rpv_mall"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
-                android:layout_marginTop="10dp"
-                app:open_mz_mode="true"
-                app:middle_page_cover="false"
-                app:canLoop="true"
-                app:indicatorAlign="center"
-                />
+                app:layout_heightPercent="28%"
+                android:layout_marginBottom="10dp"
+                android:layout_height="0dp">
 
-            <!--   </FrameLayout>-->
+            </com.jude.rollviewpager.RollPagerView>
 
 
             <RelativeLayout
@@ -87,7 +64,7 @@
             </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
-                android:background="#fff"
+                android:paddingTop="10dp"
                 android:id="@+id/rv_home_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

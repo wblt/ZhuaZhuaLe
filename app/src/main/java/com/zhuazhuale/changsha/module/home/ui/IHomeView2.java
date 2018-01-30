@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import com.zhuazhuale.changsha.module.home.Bean.BaseTypeDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.VersionBean;
 import com.zhuazhuale.changsha.presenter.iview.IBaseView;
 
@@ -19,4 +20,6 @@ public interface IHomeView2 extends IBaseView {
     void installApk(File body);
 
     void showProgress(float fraction);
+
+    void showTabList(BaseTypeDataBean baseTypeDataBean);
 }

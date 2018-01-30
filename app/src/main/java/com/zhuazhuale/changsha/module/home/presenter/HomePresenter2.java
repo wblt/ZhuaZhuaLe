@@ -8,6 +8,7 @@ import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.model.Progress;
 import com.lzy.okgo.model.Response;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
+import com.zhuazhuale.changsha.module.home.Bean.BaseTypeDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.VersionBean;
 import com.zhuazhuale.changsha.module.home.model.HomeModel;
 import com.zhuazhuale.changsha.module.home.ui.IHomeView2;
@@ -80,7 +81,31 @@ public class HomePresenter2 extends BasePresenter<IHomeView2> {
                         mIView.showProgress(progress.fraction);
                     }
                 });
+    }
 
+    /**
+     * 获取分类
+     */
+    public void initBaseTypeData() {
+        homeModel.getBaseTypeData( new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(s);
+                BaseTypeDataBean baseTypeDataBean = gson.fromJson(s, BaseTypeDataBean.class);
+                mIView.showTabList(baseTypeDataBean);
+            }
 
+            @Override
+            public void callFailed() {
+                mIView.showFailed();
+
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e("接口结束");
+                mIView.showFinish();
+            }
+        });
     }
 }

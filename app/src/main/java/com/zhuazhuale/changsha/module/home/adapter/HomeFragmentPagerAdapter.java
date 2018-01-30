@@ -22,6 +22,7 @@ import android.text.style.ImageSpan;
 import android.view.ViewGroup;
 
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.module.home.Bean.BaseTypeDataBean;
 import com.zhuazhuale.changsha.module.home.fragment.HomeFragment;
 
 import java.util.ArrayList;
@@ -39,15 +40,14 @@ public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
 
     //存放Fragment的数组
     private List<Fragment> mFragmentList;
-    private List<String> mTitles;
+    private List<BaseTypeDataBean.RowsBean> mTitles;
     private Context context;
 
-    public HomeFragmentPagerAdapter(FragmentManager fm, List<String> list) {
+    public HomeFragmentPagerAdapter(FragmentManager fm, List<BaseTypeDataBean.RowsBean> list) {
         super(fm);
         mFragmentList = new ArrayList<>();
         this.mTitles = list;
         for (int i = 1; i < list.size() + 1; i++) {
-
             HomeFragment homeFragment = HomeFragment.newInstance(i);
             mFragmentList.add(homeFragment);
         }
@@ -88,7 +88,7 @@ public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
     //重写这个方法，将设置每个Tab的标题
     @Override
     public CharSequence getPageTitle(int position) {
-        return mTitles.get(position);
+        return mTitles.get(position).getF_Name();
 
     }
 

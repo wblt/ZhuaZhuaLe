@@ -24,6 +24,7 @@ public class Constant {
 
     //  首页的循环广告
     public static String BaseData = URL + "/api/Account/BaseData";
+    public static String BaseTypeData = URL + "/api/Account/BaseTypeData";
     //  获取设备商品信息
     public static String GetDeviceGoods = URL + "/api/Device/GetDeviceGoods";
     //获取账号余额信息
