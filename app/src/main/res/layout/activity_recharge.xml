@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/beijing"
     android:orientation="vertical">
 
 
@@ -13,21 +12,20 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#fff"
-            android:src="@mipmap/person" />
+            android:background="@mipmap/person" />
 
         <LinearLayout
+            android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:gravity="center">
+            android:gravity="center_horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="我的账户余额:"
-                android:textColor="#222"
-                android:textSize="16dp"
+                android:text="剩余金币:"
+                android:textColor="@color/white"
+                android:textSize="18dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -36,18 +34,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text=""
-                android:textColor="@color/black"
-                android:textSize="22dp"
+                android:textColor="@color/white"
+                android:textSize="34dp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="币"
-                android:textColor="#222"
-                android:textSize="16dp"
-                android:textStyle="bold" />
         </LinearLayout>
 
     </RelativeLayout>

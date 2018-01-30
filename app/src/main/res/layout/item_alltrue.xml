@@ -2,24 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
         android:background="@drawable/textbeijing_recharge"
         android:padding="6dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/sdv_item_alltrueimg"
-            android:layout_width="80dp"
-            android:layout_height="76dp" />
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            fresco:roundAsCircle="true"
+            fresco:roundBottomLeft="true"
+            fresco:roundBottomRight="true"
+            fresco:roundTopLeft="true"
+            fresco:roundTopRight="true"
+            fresco:roundedCornerRadius="4dp"  />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="6dp"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:orientation="vertical">
 

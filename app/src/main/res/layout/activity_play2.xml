@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="#0079FF"
     android:layout_height="match_parent"
-    android:background="@mipmap/beijing"
     android:orientation="vertical">
 
     <ScrollView
+        android:fillViewport="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -90,15 +91,15 @@
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
-                                android:layout_height="56dp"
+                                android:layout_height="46dp"
                                 android:layout_marginLeft="20dp"
                                 android:background="@drawable/play_name_shape"
                                 android:padding="3dp">
 
                                 <com.facebook.drawee.view.SimpleDraweeView
                                     android:id="@+id/sdv_play_fece"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
                                     fresco:roundAsCircle="true"
                                     fresco:roundBottomLeft="true"
                                     fresco:roundBottomRight="true"
@@ -394,17 +395,35 @@
             </com.zhy.android.percent.support.PercentRelativeLayout>
 
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@color/white"
-                android:gravity="center"
-                android:text="最近抓取成功记录"
-                android:textColor="@color/colorPrimary"
-                android:textSize="16dp" />
+           <LinearLayout
+               android:layout_margin="10dp"
+               android:background="@drawable/textbeijing_recharge"
+               android:orientation="vertical"
+               android:layout_width="match_parent"
+               app:layout_heightPercent="96%"
+               android:layout_height="0dp">
+               <android.support.design.widget.TabLayout
+                   app:tabTextColor="@color/gray_9"
+                   app:tabSelectedTextColor="@color/black"
+                   app:tabIndicatorColor="@color/colorPrimary"
+                   android:id="@+id/tl_play_title"
+                   app:tabTextAppearance="@style/TabLayoutTextStyle"
+                   android:layout_width="match_parent"
+                   style="@style/CustomTabTextAppearanceStyle"
+                   android:layout_height="50dp">
+
+               </android.support.design.widget.TabLayout>
+
+               <android.support.v4.view.ViewPager
+                   android:id="@+id/vp_play_info"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent">
+
+               </android.support.v4.view.ViewPager>
+           </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
+                android:visibility="gone"
                 android:id="@+id/rv_play_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

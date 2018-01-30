@@ -21,6 +21,9 @@
     <style name="CustomTabTextAppearanceStyle" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
     </style>
+    <style name="TabLayoutTextStyle">
+        <item name="android:textSize">16dp</item>
+    </style>
 
 
     <!-- 页面跳转间的过渡动画 -->

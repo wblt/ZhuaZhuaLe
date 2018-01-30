@@ -22,6 +22,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -46,10 +48,12 @@ import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
+import com.zhuazhuale.changsha.module.home.adapter.HomeFragmentPagerAdapter;
 import com.zhuazhuale.changsha.module.home.fragment.FullyLinearLayoutManager;
 import com.zhuazhuale.changsha.module.home.ui.RechargeActivity;
 import com.zhuazhuale.changsha.module.home.ui.RecordActivity;
 import com.zhuazhuale.changsha.module.vital.adapter.AllTrueAdapter;
+import com.zhuazhuale.changsha.module.vital.adapter.PlayFragmentPagerAdapter;
 import com.zhuazhuale.changsha.module.vital.bean.AllUserTrueByDeviceIDBean;
 import com.zhuazhuale.changsha.module.vital.bean.ControlGameBean;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
@@ -71,6 +75,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -127,6 +133,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     ImageView iv_play_loading_bg;
     @BindView(R.id.tv_play_mian_type)
     TextView tv_play_mian_type;
+    @BindView(R.id.tl_play_title)
+    TabLayout tl_play_title;
+    @BindView(R.id.vp_play_info)
+    ViewPager vp_play_info;
+    private PlayFragmentPagerAdapter pagerAdapter;
 
 
     private DeviceGoodsBean.RowsBean rowsBean;
@@ -250,6 +261,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         drawableright = iv_play_right.getDrawable();
         drawabledown = iv_play_down.getDrawable();
         drawablecatch = iv_play_catch.getDrawable();
+        List<String> titles = new ArrayList<>();
+        titles.add("娃娃详情");
+        titles.add("最近抓中");
+        pagerAdapter = new PlayFragmentPagerAdapter(getSupportFragmentManager(), titles, rowsBean);
+        vp_play_info.setAdapter(pagerAdapter);
+        tl_play_title.setupWithViewPager(vp_play_info);
 
     }
 
@@ -373,7 +390,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 presenter.initNewCP();
                 //查询游戏的状态
                 presenter.initQueryGame(rowsBean.getF_ID(), first);
-                presenter.initGetAllUserTrueByDeviceID(rowsBean.getF_ID(), Constant.REFRESH);
+//                presenter.initGetAllUserTrueByDeviceID(rowsBean.getF_ID(), Constant.REFRESH);
 
             }
         });
@@ -544,28 +561,16 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      * @param trueBean
      * @param type
      */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void showAllUserTrues(AllUserTrueByDeviceIDBean trueBean, int type) {
         if (trueBean.getCode() == 1) {
             AllTrueAdapter adapter = new AllTrueAdapter(getContext(), trueBean.getRows());
-          /*  //禁止滑动
-            LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) {
-                @Override
-                public boolean canScrollHorizontally() {
-                    return false;
-                }
-            };*/
-            FullyLinearLayoutManager fullyLinearLayoutManager=new FullyLinearLayoutManager(this);
+
+            FullyLinearLayoutManager fullyLinearLayoutManager = new FullyLinearLayoutManager(this);
             rv_play_list.setNestedScrollingEnabled(false);
             rv_play_list.setLayoutManager(fullyLinearLayoutManager);
             rv_play_list.setAdapter(adapter);
-           /* rv_play_list.setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    return true;
-                }
-            });*/
+
         } else {
             LogUtil.e(trueBean.getInfo());
         }

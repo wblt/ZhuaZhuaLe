@@ -40,10 +40,10 @@ public class RechargeAdapter extends RecyclerBaseAdapter<AllPriceProductBean.Row
         TextView tv_item_recharge_remark = holder.getView(R.id.tv_item_recharge_remark);
         SimpleDraweeView iv_item_recharge_img = holder.getView(R.id.iv_item_recharge_img);
         //obtainData
-        tv_item_recharge_price3.setText("充 ￥" + rowsBean.getF_Price3() + " 币");
-        tv_item_recharge_price2.setText("送 + " + rowsBean.getF_Price2() + " 币");
-        tv_item_recharge_price1.setText(rowsBean.getF_Price1() + " 币");
-        tv_item_recharge_remark.setText(rowsBean.getF_Remark());
+        tv_item_recharge_price3.setText("充 " +rowsBean.getF_Price1() + " 币");
+        tv_item_recharge_price2.setText("送 " + rowsBean.getF_Price2() + " 币");
+        tv_item_recharge_price1.setText("￥ "+rowsBean.getF_Price3());
+//        tv_item_recharge_remark.setText("￥ "+rowsBean.getF_Price3());
         switch (rowsBean.getF_Price3()) {
             case 50:
                 FrescoUtil.getInstance().loadResourceImage(iv_item_recharge_img, R.mipmap.icon_jinzhua);
