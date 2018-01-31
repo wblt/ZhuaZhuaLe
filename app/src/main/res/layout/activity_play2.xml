@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
+    <com.zhuazhuale.changsha.view.ScrollBottomScrollView
+        android:id="@+id/sv_play"
         android:fillViewport="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -434,7 +435,7 @@
             </android.support.v7.widget.RecyclerView>
 
         </com.zhy.android.percent.support.PercentLinearLayout>
-    </ScrollView>
+    </com.zhuazhuale.changsha.view.ScrollBottomScrollView>
 
 
 </LinearLayout>

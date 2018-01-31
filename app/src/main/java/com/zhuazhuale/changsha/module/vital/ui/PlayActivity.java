@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -44,6 +45,8 @@ import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.model.entity.eventbus.CPfreshEvent;
+import com.zhuazhuale.changsha.model.entity.eventbus.LoginEvent;
+import com.zhuazhuale.changsha.model.entity.eventbus.ScrollEvent;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
@@ -67,6 +70,7 @@ import com.zhuazhuale.changsha.util.ScreenRecorder;
 import com.zhuazhuale.changsha.util.SoundUtils;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
+import com.zhuazhuale.changsha.view.ScrollBottomScrollView;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
@@ -618,6 +622,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     }
 
+    @BindView(R.id.sv_play)
+    ScrollBottomScrollView sv_play;
 
     @Override
     protected void initEvent() {
@@ -637,6 +643,33 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         iv_play_right.setOnTouchListener(this);
         iv_play_left.setOnTouchListener(this);
         iv_play_down.setOnTouchListener(this);
+        sv_play.registerOnScrollViewScrollToBottom(new ScrollBottomScrollView.OnScrollBottomListener() {
+            @Override
+            public void srollToBottom() {
+//                ToastUtil.show("我是scroll,我到底了");
+                ScrollEvent event = new ScrollEvent("di");
+                EventBusUtil.postEvent(event);
+            }
+        });
+      /*  sv_play.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_UP:
+                        View childView = sv_play.getChildAt(0);
+                        if (childView != null && childView.getMeasuredHeight() <= sv_play.getScrollY() + sv_play.getHeight()) {
+                            ToastUtil.show("我是scroll,我到底了1");
+                            return true;
+                        } else if (sv_play.getScrollY() == 0) {
+                            ToastUtil.show("我是scroll,我到底了2");
+                            return false;
+                        }
+                        break;
+                }
+                return true;
+            }
+        });*/
 
     }
 
