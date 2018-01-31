@@ -125,6 +125,8 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
             pagerAdapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), bean.getRows());
             vp_home_info.setAdapter(pagerAdapter);
             tl_home_title.setupWithViewPager(vp_home_info);
+            //设置可以滑动
+            tl_home_title.setTabMode(TabLayout.MODE_SCROLLABLE);
         } else {
             ToastUtil.show(bean.getInfo());
         }

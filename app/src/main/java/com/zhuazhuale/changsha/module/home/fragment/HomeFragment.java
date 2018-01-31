@@ -224,12 +224,14 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 rfv_home.finishRefresh();
                 mStart = 1;
                 if (0 == Bean.getCode()) {
-                    getLoadLayout().setLayoutState(State.NO_DATA);
+//                    getLoadLayout().setLayoutState(State.NO_DATA);
+                    ToastUtil.show(Bean.getInfo());
                 } else {
                     adapter.replaceData(Bean.getRows());
                     if (Bean.getRows() == null || Bean.getRows().size() == 0) {
                         //设置页面为“没数据”状态
-                        getLoadLayout().setLayoutState(State.NO_DATA);
+//                        getLoadLayout().setLayoutState(State.NO_DATA);
+                        ToastUtil.show(Bean.getInfo());
 
                     } else {
                         //设置页面为“成功”状态，显示正文布局
