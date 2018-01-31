@@ -90,6 +90,25 @@ public class DeviceGoodsBean implements Serializable{
         private int F_Price;
         private int F_Sort;
         private int F_Status;
+        private String F_GroupID;
+        private String F_TypeID;
+
+        public String getF_GroupID() {
+            return F_GroupID;
+        }
+
+        public void setF_GroupID(String f_GroupID) {
+            F_GroupID = f_GroupID;
+        }
+
+        public String getF_TypeID() {
+            return F_TypeID;
+        }
+
+        public void setF_TypeID(String f_TypeID) {
+            F_TypeID = f_TypeID;
+        }
+
         private String GoodsID;
 
         public String getF_Camera1() {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.WindowManager;
@@ -33,9 +34,14 @@ public class FlashActivity extends Activity {
         setContentView(R.layout.activity_flash);
         boolean isFirstLogin = PreferenceUtil.getBoolean(this, BaseConstants.IsFirstLoGin, false);
         if (isFirstLogin) {
-            Intent intent = new Intent(FlashActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    Intent intent = new Intent(FlashActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }, 1000);
+
         } else {
             initView();
         }

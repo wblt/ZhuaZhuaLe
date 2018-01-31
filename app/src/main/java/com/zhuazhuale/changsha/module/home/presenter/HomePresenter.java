@@ -73,8 +73,8 @@ public class HomePresenter extends BasePresenter<IHomeView> {
         });
     }
 
-    public void initDeviceGoods(int PageIndex, int PageSize, final int type) {
-        homeModel.getGetDeviceGoods(PageIndex, PageSize, new ICallListener<String>() {
+    public void initDeviceGoods(int PageIndex, int PageSize, String TypeID,final int type) {
+        homeModel.getGetDeviceGoods(PageIndex, PageSize,TypeID, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(s);

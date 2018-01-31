@@ -470,7 +470,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                     ToastUtil.show("恭喜你,抓取成功!");
                 }
                 if (is_lp) {
-                    luZhi(controlGameBean.getRows().getGrabID());//抓取结束,停止录屏
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            luZhi(controlGameBean.getRows().getGrabID());//抓取结束,停止录屏
+                        }
+                    }, 2000);
+
                 }
             } else {
                 if (isHave) {

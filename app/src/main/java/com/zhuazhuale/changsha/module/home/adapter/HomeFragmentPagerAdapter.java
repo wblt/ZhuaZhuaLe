@@ -47,8 +47,8 @@ public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
         super(fm);
         mFragmentList = new ArrayList<>();
         this.mTitles = list;
-        for (int i = 1; i < list.size() + 1; i++) {
-            HomeFragment homeFragment = HomeFragment.newInstance(i);
+        for (int i =0; i < list.size() ; i++) {
+            HomeFragment homeFragment = HomeFragment.newInstance(i,list.get(i));
             mFragmentList.add(homeFragment);
         }
     }

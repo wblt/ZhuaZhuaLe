@@ -126,7 +126,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 homePresenter.initData();
-                homePresenter.initDeviceGoods(1, mCont, Constant.REFRESH);
+//                homePresenter.initDeviceGoods(1, mCont, Constant.REFRESH);
             }
         });
         rfv_home.setOnLoadmoreListener(new OnLoadmoreListener() {
@@ -142,7 +142,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
                     mStart = mStart + 1;
                     LogUtil.e(" mStart  =" + mStart);
                     //加载更多
-                    homePresenter.initDeviceGoods(mStart, mCont, Constant.LOADMORE);
+//                    homePresenter.initDeviceGoods(mStart, mCont, Constant.LOADMORE);
 
                 }
             }
@@ -166,7 +166,7 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
             case R.id.iv_home_fresh:
                 mStart = mStart + 1;
                 showLoadingDialog("");
-                homePresenter.initDeviceGoods(1, mStart, mCont);
+//                homePresenter.initDeviceGoods(1, mStart, mCont);
                 break;
 
         }

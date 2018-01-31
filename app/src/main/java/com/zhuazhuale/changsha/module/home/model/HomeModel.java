@@ -118,12 +118,13 @@ public class HomeModel {
      * @param PageSize
      * @param iCallListener
      */
-    public void getGetDeviceGoods(int PageIndex, int PageSize, final ICallListener<String> iCallListener) {
+    public void getGetDeviceGoods(int PageIndex, int PageSize,String TypeID, final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.GetDeviceGoods)
                 .tag(this)
                 .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("PageIndex", PageIndex)
                 .params("PageSize", PageSize)
+                .params("TypeID", TypeID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -144,25 +145,7 @@ public class HomeModel {
                         iCallListener.onFinish();
                     }
                 });
-        OkGo.<String>post(Constant.BaseTypeData)
-                .tag(this)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        LogUtil.e("我是分类数据 " + response.body());
-                    }
 
-                    @Override
-                    public void onError(Response<String> response) {
-                        super.onError(response);
-                        LogUtil.e("我是分类数据 " + response.message());
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                    }
-                });
     }
 
     /**

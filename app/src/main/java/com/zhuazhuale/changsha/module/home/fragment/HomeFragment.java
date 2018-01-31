@@ -20,6 +20,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
+import com.zhuazhuale.changsha.module.home.Bean.BaseTypeDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.adapter.DeviceGoodsAdapter;
 import com.zhuazhuale.changsha.module.home.adapter.HomeAdapter;
@@ -32,6 +33,7 @@ import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.IItemOnClickListener;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
+import com.zhuazhuale.changsha.view.ScrollBottomScrollView;
 import com.zhuazhuale.changsha.view.fragment.base.BaseFragment;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
@@ -54,7 +56,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     RecyclerView rv_home_list;
 
 
-
     private HomePresenter homePresenter;
     private int mStart = 1;
     private int mCont = 6;
@@ -68,10 +69,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     private int mCurrentType;
     private HomeAdapter homeAdapter;
+    private BaseTypeDataBean.RowsBean rowsBean;
 
-    public static HomeFragment newInstance(int type) {
+    public static HomeFragment newInstance(int type, BaseTypeDataBean.RowsBean rowsBean) {
         Bundle bundle = new Bundle();
         bundle.putInt("type", type);
+        bundle.putSerializable("RowsBean", rowsBean);
         HomeFragment fragment = new HomeFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -93,9 +96,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     protected void obtainData() {
-        mCurrentType = getArguments().getInt("type", 1);
+        mCurrentType = getArguments().getInt("type", 0);
+        rowsBean = (BaseTypeDataBean.RowsBean) getArguments().getSerializable("RowsBean");
+        if (mCurrentType == 0) {
+            rowsBean.setF_ID("");
+        }
         homePresenter = new HomePresenter(this);
-        if (mCurrentType > 1) {
+        if (mCurrentType > 0) {
             rpv_mall.setVisibility(View.GONE);
         } else {
             homePresenter.initData();
@@ -110,15 +117,15 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             rpv_mall.setAdapter(homeAdapter);
 
         }
-        homePresenter.initDeviceGoods(1, mCont, Constant.INIT);
+        homePresenter.initDeviceGoods(1, mCont, rowsBean.getF_ID(), Constant.INIT);
         //状态为加载时的监听,请求网络
         getLoadLayout().setOnLoadListener(new OnLoadListener() {
             @Override
             public void onLoad() {
-                if (mCurrentType == 1) {
+                if (mCurrentType == 0) {
                     homePresenter.initData();
                 }
-                homePresenter.initDeviceGoods(1, mCont, Constant.INIT);
+                homePresenter.initDeviceGoods(1, mCont, rowsBean.getF_ID(), Constant.INIT);
             }
         });
 
@@ -132,11 +139,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         rfv_home.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                if (mCurrentType == 1) {
+                if (mCurrentType == 0) {
                     homePresenter.initData();
                 }
 
-                homePresenter.initDeviceGoods(1, mCont, Constant.REFRESH);
+                homePresenter.initDeviceGoods(1, mCont, rowsBean.getF_ID(), Constant.REFRESH);
             }
         });
         rfv_home.setOnLoadmoreListener(new OnLoadmoreListener() {
@@ -152,11 +159,13 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     mStart = mStart + 1;
                     LogUtil.e(" mStart  =" + mStart);
                     //加载更多
-                    homePresenter.initDeviceGoods(mStart, mCont, Constant.LOADMORE);
+                    homePresenter.initDeviceGoods(mStart, mCont, rowsBean.getF_ID(), Constant.LOADMORE);
 
                 }
             }
         });
+
+
     }
 
     @Override
