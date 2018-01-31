@@ -20,6 +20,7 @@
 
     <style name="CustomTabTextAppearanceStyle" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
+        <item name="tabBackground">@color/transparent</item>
     </style>
     <style name="TabLayoutTextStyle">
         <item name="android:textSize">16dp</item>

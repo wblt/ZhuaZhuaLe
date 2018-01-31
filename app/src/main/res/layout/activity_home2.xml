@@ -17,7 +17,6 @@
         android:id="@+id/tl_home_title"
         app:tabTextAppearance="@style/TabLayoutTextStyleHome"
         android:layout_width="match_parent"
-        style="@style/CustomTabTextAppearanceStyle"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_height="50dp">
