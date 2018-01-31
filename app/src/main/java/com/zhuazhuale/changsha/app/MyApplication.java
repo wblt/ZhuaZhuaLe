@@ -135,9 +135,6 @@ public class MyApplication extends Application {
         // 初始化TLSSDK
         tlsHelper = TLSHelper.getInstance().init(getApplicationContext(), Constant.IMSDK_APPID);
         regToIMSDK();
-
-
-
     }
 
     /**
@@ -164,7 +161,6 @@ public class MyApplication extends Application {
         api = WXAPIFactory.createWXAPI(this, Constant.APPID, false);
         // 将应用的appid注册到微信
         api.registerApp(Constant.APPID);
-
 
     }
 

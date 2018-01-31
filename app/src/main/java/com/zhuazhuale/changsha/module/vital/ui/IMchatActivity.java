@@ -15,6 +15,7 @@ import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import butterknife.BindView;
 import tencent.tls.platform.TLSErrInfo;
 import tencent.tls.platform.TLSPwdLoginListener;
+import tencent.tls.platform.TLSStrAccRegListener;
 import tencent.tls.platform.TLSUserInfo;
 
 /**
@@ -29,6 +30,14 @@ public class IMchatActivity extends AppBaseActivity {
     EditText et_chat_password;
     @BindView(R.id.tv_chat_login)
     TextView tv_chat_login;
+
+
+    @BindView(R.id.et_chat_namez)
+    EditText et_chat_namez;
+    @BindView(R.id.et_chat_passwordz)
+    EditText et_chat_passwordz;
+    @BindView(R.id.tv_chat_loginz)
+    TextView tv_chat_loginz;
     private String userName;
 
     @Override
@@ -64,7 +73,31 @@ public class IMchatActivity extends AppBaseActivity {
 
     @Override
     protected void initEvent() {
+        tv_chat_loginz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ToastUtil.show("我点击了");
+                String name = et_chat_namez.getText().toString().trim();
+                String passWord = et_chat_passwordz.getText().toString().trim();
+                MyApplication.getInstance().getTlsHelper().TLSStrAccRegWithOA(name, passWord, new TLSStrAccRegListener() {
+                    @Override
+                    public void OnStrAccRegSuccess(TLSUserInfo tlsUserInfo) {
+                        ToastUtil.show("注册成功");
+                    }
 
+                    @Override
+                    public void OnStrAccRegFail(TLSErrInfo tlsErrInfo) {
+                        ToastUtil.show("注册失败"+tlsErrInfo.ExtraMsg);
+
+                    }
+
+                    @Override
+                    public void OnStrAccRegTimeout(TLSErrInfo tlsErrInfo) {
+                        ToastUtil.show("注册超时"+tlsErrInfo.ExtraMsg);
+                    }
+                });
+            }
+        });
     }
 
     private TLSPwdLoginListener pwdLoginListener = new TLSPwdLoginListener() {
@@ -103,6 +136,7 @@ public class IMchatActivity extends AppBaseActivity {
 
         @Override
         public void OnPwdLoginFail(TLSErrInfo errInfo) {
+            LogUtil.e(errInfo.Msg);
           /* 登录失败，比如说密码错误，用户帐号不存在等，通过errInfo.ErrCode, errInfo.Title, errInfo.Msg等可以得到更具体的错误信息*/
         }
 
