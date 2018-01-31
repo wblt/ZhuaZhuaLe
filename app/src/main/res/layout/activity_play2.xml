@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="#0079FF"
     android:layout_height="match_parent"
+    android:background="#0079FF"
     android:orientation="vertical">
 
     <com.zhuazhuale.changsha.view.ScrollBottomScrollView
         android:id="@+id/sv_play"
-        android:fillViewport="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <com.zhy.android.percent.support.PercentLinearLayout
             android:layout_width="match_parent"
@@ -191,8 +191,8 @@
                     <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        app:layout_heightPercent="20%"
                         android:background="@mipmap/play_czbg"
+                        app:layout_heightPercent="20%"
                         app:layout_widthPercent="100%">
 
 
@@ -393,44 +393,59 @@
 
                     </LinearLayout>
                 </LinearLayout>
+
+                <ScrollView
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true">
+
+                    <EditText
+                        android:id="@+id/et_play_message"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:background="@drawable/textbeijing_recharge" />
+                </ScrollView>
+
             </com.zhy.android.percent.support.PercentRelativeLayout>
 
 
-           <LinearLayout
-               android:layout_margin="10dp"
-               android:background="@drawable/textbeijing_recharge"
-               android:orientation="vertical"
-               android:layout_width="match_parent"
-               app:layout_heightPercent="96%"
-               android:layout_height="0dp">
-               <android.support.design.widget.TabLayout
-                   app:tabTextColor="@color/gray_9"
-                   app:tabSelectedTextColor="@color/black"
-                   app:tabIndicatorColor="@color/colorPrimary"
-                   android:id="@+id/tl_play_title"
-                   app:tabTextAppearance="@style/TabLayoutTextStyle"
-                   android:layout_width="match_parent"
-                   style="@style/CustomTabTextAppearanceStyle"
-                   android:layout_height="50dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/textbeijing_recharge"
+                android:orientation="vertical"
+                app:layout_heightPercent="96%">
 
-               </android.support.design.widget.TabLayout>
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tl_play_title"
+                    style="@style/CustomTabTextAppearanceStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:tabIndicatorColor="@color/colorPrimary"
+                    app:tabSelectedTextColor="@color/black"
+                    app:tabTextAppearance="@style/TabLayoutTextStyle"
+                    app:tabTextColor="@color/gray_9">
 
-               <android.support.v4.view.ViewPager
-                   android:id="@+id/vp_play_info"
-                   android:layout_width="match_parent"
-                   android:layout_height="match_parent">
+                </android.support.design.widget.TabLayout>
 
-               </android.support.v4.view.ViewPager>
-           </LinearLayout>
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/vp_play_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </android.support.v4.view.ViewPager>
+            </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
-                android:visibility="gone"
                 android:id="@+id/rv_play_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
-                android:paddingBottom="14dp">
+                android:paddingBottom="14dp"
+                android:visibility="gone">
 
             </android.support.v7.widget.RecyclerView>
 

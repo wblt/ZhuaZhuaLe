@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
@@ -30,6 +31,11 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -136,6 +142,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     TabLayout tl_play_title;
     @BindView(R.id.vp_play_info)
     ViewPager vp_play_info;
+    @BindView(R.id.et_play_message)
+    EditText et_play_message;
     private PlayFragmentPagerAdapter pagerAdapter;
 
 
@@ -197,6 +205,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     @Override
     protected void setContentLayout() {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_play2);
         Intent intent = getIntent();
         rowsBean = (DeviceGoodsBean.RowsBean) intent.getSerializableExtra("DeviceGoods");
@@ -266,7 +275,41 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         pagerAdapter = new PlayFragmentPagerAdapter(getSupportFragmentManager(), titles, rowsBean);
         vp_play_info.setAdapter(pagerAdapter);
         tl_play_title.setupWithViewPager(vp_play_info);
+//        et_play_message.requestLayout();
+      /*  //绑定软键盘到EditText
+        et_play_message.setFocusable(true);
+        et_play_message.setFocusableInTouchMode(true);
+        et_play_message.requestFocus();
+        InputMethodManager inputManager = (InputMethodManager) et_play_message.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.showSoftInput(et_play_message, 0);*/
+        //代码里面配置
+        View decorView = getWindow().getDecorView();
+        View contentView = findViewById(Window.ID_ANDROID_CONTENT);
+        decorView.getViewTreeObserver().addOnGlobalLayoutListener(getGlobalLayoutListener(decorView, et_play_message));
 
+    }
+
+    private ViewTreeObserver.OnGlobalLayoutListener getGlobalLayoutListener(final View decorView, final View contentView) {
+        return new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                decorView.getWindowVisibleDisplayFrame(r);
+
+                int height = decorView.getContext().getResources().getDisplayMetrics().heightPixels;
+                int diff = height - r.bottom;
+
+                if (diff != 0) {
+                    if (contentView.getPaddingBottom() != diff) {
+                        contentView.setPadding(0, 0, 0, diff);
+                    }
+                } else {
+                    if (contentView.getPaddingBottom() != 0) {
+                        contentView.setPadding(0, 0, 0, 0);
+                    }
+                }
+            }
+        };
     }
 
     /**
@@ -571,7 +614,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             AllTrueAdapter adapter = new AllTrueAdapter(getContext(), trueBean.getRows());
 
 //            FullyLinearLayoutManager fullyLinearLayoutManager = new FullyLinearLayoutManager(this);
-            LinearLayoutManager fullyLinearLayoutManager=new LinearLayoutManager(getContext());
+            LinearLayoutManager fullyLinearLayoutManager = new LinearLayoutManager(getContext());
             rv_play_list.setNestedScrollingEnabled(false);
             rv_play_list.setLayoutManager(fullyLinearLayoutManager);
             rv_play_list.setAdapter(adapter);
