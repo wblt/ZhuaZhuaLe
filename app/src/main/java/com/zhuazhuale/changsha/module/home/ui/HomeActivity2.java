@@ -25,6 +25,8 @@ import com.zhuazhuale.changsha.util.PermissionUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
+import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
     private Intent intent;
     private ProgressBar mProgress;
     private HomePresenter2 presenter2;
+    private String version;
 
     @Override
     protected void setContentLayout() {
@@ -78,7 +81,7 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
     @Override
     protected void obtainData() {
         presenter2 = new HomePresenter2(this);
-        String version = "";
+        version = "";
         try {
             version = getVersionName();
         } catch (Exception e) {
@@ -87,6 +90,13 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
         LogUtil.e(" version " + version);
         presenter2.initBaseTypeData();
         presenter2.initVersion(version);
+        getLoadLayout().setOnLoadListener(new OnLoadListener() {
+            @Override
+            public void onLoad() {
+                presenter2.initBaseTypeData();
+                presenter2.initVersion(version);
+            }
+        });
     }
 
     private String getVersionName() throws Exception {
@@ -111,6 +121,7 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
     @Override
     public void showTabList(BaseTypeDataBean bean) {
         if (bean.getCode() == 1) {
+            getLoadLayout().setLayoutState(State.SUCCESS);
             pagerAdapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), bean.getRows());
             vp_home_info.setAdapter(pagerAdapter);
             tl_home_title.setupWithViewPager(vp_home_info);
@@ -140,6 +151,7 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
 
     @Override
     public void showFailed() {
+        getLoadLayout().setLayoutState(State.FAILED);
 
     }
 

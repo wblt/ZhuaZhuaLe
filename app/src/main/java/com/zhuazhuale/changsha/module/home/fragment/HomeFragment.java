@@ -115,6 +115,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         getLoadLayout().setOnLoadListener(new OnLoadListener() {
             @Override
             public void onLoad() {
+                if (mCurrentType == 1) {
+                    homePresenter.initData();
+                }
                 homePresenter.initDeviceGoods(1, mCont, Constant.INIT);
             }
         });
@@ -278,6 +281,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     public void showFailed() {
         ToastUtil.show("刷新失败,请检查网络!");
         rfv_home.finishRefresh(false);
+//        getLoadLayout().setLayoutState(State.FAILED);
     }
 
     /**
@@ -292,6 +296,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             case Constant.INIT:
                 //设置页面为“失败”状态
                 ToastUtil.show("加载失败,请检查网络!");
+                getLoadLayout().setLayoutState(State.FAILED);
                 break;
 
             //刷新数据

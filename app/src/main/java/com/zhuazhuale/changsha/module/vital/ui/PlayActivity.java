@@ -30,10 +30,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -45,14 +43,11 @@ import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.model.entity.eventbus.CPfreshEvent;
-import com.zhuazhuale.changsha.model.entity.eventbus.LoginEvent;
 import com.zhuazhuale.changsha.model.entity.eventbus.ScrollEvent;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
-import com.zhuazhuale.changsha.module.home.adapter.HomeFragmentPagerAdapter;
-import com.zhuazhuale.changsha.module.home.fragment.FullyLinearLayoutManager;
 import com.zhuazhuale.changsha.module.home.ui.RechargeActivity;
 import com.zhuazhuale.changsha.module.home.ui.RecordActivity;
 import com.zhuazhuale.changsha.module.vital.adapter.AllTrueAdapter;
@@ -570,7 +565,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         if (trueBean.getCode() == 1) {
             AllTrueAdapter adapter = new AllTrueAdapter(getContext(), trueBean.getRows());
 
-            FullyLinearLayoutManager fullyLinearLayoutManager = new FullyLinearLayoutManager(this);
+//            FullyLinearLayoutManager fullyLinearLayoutManager = new FullyLinearLayoutManager(this);
+            LinearLayoutManager fullyLinearLayoutManager=new LinearLayoutManager(getContext());
             rv_play_list.setNestedScrollingEnabled(false);
             rv_play_list.setLayoutManager(fullyLinearLayoutManager);
             rv_play_list.setAdapter(adapter);
