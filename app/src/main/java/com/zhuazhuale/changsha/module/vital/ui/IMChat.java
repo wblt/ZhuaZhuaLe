@@ -6,6 +6,8 @@ import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMConnListener;
 import com.tencent.imsdk.TIMConversation;
 import com.tencent.imsdk.TIMConversationType;
+import com.tencent.imsdk.TIMElem;
+import com.tencent.imsdk.TIMElemType;
 import com.tencent.imsdk.TIMGroupEventListener;
 import com.tencent.imsdk.TIMGroupManager;
 import com.tencent.imsdk.TIMGroupMemberInfo;
@@ -20,9 +22,14 @@ import com.tencent.imsdk.TIMUserStatusListener;
 import com.tencent.imsdk.TIMValueCallBack;
 import com.tencent.imsdk.ext.group.TIMGroupManagerExt;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.module.home.model.AddressModel;
+import com.zhuazhuale.changsha.module.vital.bean.MsgBean;
+import com.zhuazhuale.changsha.module.vital.bean.MsgInfoListBean;
+import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import tencent.tls.platform.TLSErrInfo;
@@ -37,9 +44,17 @@ import tencent.tls.platform.TLSUserInfo;
 
 public class IMChat {
     private String tag = getClass().getName();
-    private String userName;
-    private TIMMessage msg;
     private TIMTextElem elem;
+    private TIMMessage msg;
+
+    public static IMChat getInstance() {
+        return IMChat.SingletonHolder.instance;
+    }
+
+    private static class SingletonHolder {
+        private static final IMChat instance = new IMChat();
+
+    }
 
     /**
      * 加入群
@@ -57,7 +72,7 @@ public class IMChat {
 
             @java.lang.Override
             public void onSuccess() {
-                LogUtil.i(tag, "成功加入");
+                LogUtil.e(tag, "成功加入");
             }
         });
     }
@@ -95,7 +110,7 @@ public class IMChat {
         TIMValueCallBack<List<TIMGroupMemberInfo>> cb = new TIMValueCallBack<List<TIMGroupMemberInfo>>() {
             @Override
             public void onError(int code, String desc) {
-                timValueCallBack.onError(code,desc);
+                timValueCallBack.onError(code, desc);
             }
 
             @Override
@@ -124,44 +139,44 @@ public class IMChat {
                     @Override
                     public void onForceOffline() {
                         //被其他终端踢下线
-                        Log.i(tag, "onForceOffline");
+                        LogUtil.e("onForceOffline");
                     }
 
                     @Override
                     public void onUserSigExpired() {
                         //用户签名过期了，需要刷新userSig重新登录SDK
-                        Log.i(tag, "onUserSigExpired");
+                        LogUtil.e("onUserSigExpired");
                     }
                 })
                 //设置连接状态事件监听器
                 .setConnectionListener(new TIMConnListener() {
                     @Override
                     public void onConnected() {
-                        Log.i(tag, "onConnected");
+                        LogUtil.e("onConnected");
                     }
 
                     @Override
                     public void onDisconnected(int code, String desc) {
-                        Log.i(tag, "onDisconnected");
+                        LogUtil.e("onDisconnected");
                     }
 
                     @Override
                     public void onWifiNeedAuth(String name) {
-                        Log.i(tag, "onWifiNeedAuth");
+                        LogUtil.e("onWifiNeedAuth");
                     }
                 })
                 //设置群组事件监听器
                 .setGroupEventListener(new TIMGroupEventListener() {
                     @Override
                     public void onGroupTipsEvent(TIMGroupTipsElem elem) {
-                        Log.i(tag, "onGroupTipsEvent, type: " + elem.getTipsType());
+                        LogUtil.e("onGroupTipsEvent, type: " + elem.getTipsType());
 
                         switch (elem.getTipsType()) {
                             case Join://加入群
-                                LogUtil.e(tag, "有人加入了" + elem.getGroupId());
+                                LogUtil.e("有人加入了" + elem.getGroupId());
                                 break;
                             case Quit://退出群
-                                LogUtil.e(tag, "有人退出了" + elem.getGroupId());
+                                LogUtil.e("有人退出了" + elem.getGroupId());
                                 break;
                         }
                     }
@@ -170,27 +185,39 @@ public class IMChat {
                 .setRefreshListener(new TIMRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        Log.i(tag, "onRefresh");
+                        LogUtil.e("onRefresh");
                     }
 
                     @Override
                     public void onRefreshConversation(List<TIMConversation> conversations) {
-                        Log.e(tag, "onRefreshConversation, Send_RecMsg_Utils size: " + conversations.size());
+
+                        LogUtil.e("onRefreshConversation, Send_RecMsg_Utils size: " + conversations.size());
                     }
                 });
         //设置消息监听器，收到新消息时，通过此监听器回调
         TIMManager.getInstance().addMessageListener(new TIMMessageListener() {
             @Override
             public boolean onNewMessages(List<TIMMessage> list) {
+                LogUtil.e("收到新的消息");
 //                resultCallBack.onNewMessages(list,type);//新消息的回调，做了简单的实现；
-                TIMMessage timMessage=new TIMMessage();
-                timMessage.isSelf();
-                return false;
+                MsgInfoListBean beans = new MsgInfoListBean();
+                List<MsgBean> msgBeen = new ArrayList<>();
+                for (TIMMessage message : list) {
+                    LogUtil.e(message.getSender());
+                    LogUtil.e(message.getMsg());
+                    MsgBean msgBean = new MsgBean();
+                    msgBean.setMsgId(message.getMsgId());
+                    msgBean.setMsgInfo(message.getMsg());
+                    msgBeen.add(msgBean);
+                }
+                beans.setMsgBeen(msgBeen);
+                EventBusUtil.postEvent(beans);
+
+                return true;
             }//消息监听器
         });
 
         TIMManager.getInstance().setUserConfig(userConfig);
-
 
     }
 
@@ -200,57 +227,96 @@ public class IMChat {
      * @param name
      * @param passWord
      */
-    public void login(String name, String passWord) {
-        userName = name;
-        MyApplication.getInstance().getTlsHelper().TLSPwdLogin(name, passWord.getBytes(), pwdLoginListener);
+    public void login(final String name, final String passWord) {
+        final String na="q454216935";
+        String p="123456";
+        MyApplication.getInstance().getTlsHelper().TLSPwdLogin(na, p.getBytes(), new TLSPwdLoginListener() {
+            @Override
+            public void OnPwdLoginSuccess(TLSUserInfo userInfo) {
+          /* 登录成功了，在这里可以获取用户票据*/
+                String usersig = MyApplication.getInstance().getTlsHelper().getUserSig(userInfo.identifier);
+                ToastUtil.show(usersig);
+                LogUtil.e(usersig);
+                // identifier为用户名，userSig 为用户登录凭证
+                TIMManager.getInstance().login(na, usersig, new TIMCallBack() {
+                    @Override
+                    public void onError(int code, String desc) {
+                        //错误码code和错误描述desc，可用于定位请求失败原因
+                        //错误码code列表请参见错误码表
+                        LogUtil.e("login 失败. code: " + code + " errmsg: " + desc);
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        LogUtil.e("login 成功");
+                    }
+                });
+
+            }
+
+            @Override
+            public void OnPwdLoginReaskImgcodeSuccess(byte[] picData) {
+          /* 请求刷新图片验证码成功，此时需要用picData 更新验证码图片，原先的验证码已经失效*/
+            }
+
+            @Override
+            public void OnPwdLoginNeedImgcode(byte[] picData, TLSErrInfo errInfo) {
+                LogUtil.e(errInfo.Msg);
+          /* 用户需要进行图片验证码的验证，需要把验证码图片展示给用户，并引导用户输入；如果验证码输入错误，仍然会到达此回调并更新图片验证码*/
+            }
+
+            @Override
+            public void OnPwdLoginFail(TLSErrInfo errInfo) {
+                LogUtil.e(errInfo.Msg);
+                ZhuCeAccount(name, passWord);
+          /* 登录失败，比如说密码错误，用户帐号不存在等，通过errInfo.ErrCode, errInfo.Title, errInfo.Msg等可以得到更具体的错误信息*/
+            }
+
+            @Override
+            public void OnPwdLoginTimeout(TLSErrInfo errInfo) {
+                LogUtil.e(errInfo.Msg);
+          /* 密码登录过程中任意一步都可以到达这里，顾名思义，网络超时，可能是用户网络环境不稳定，一般让用户重试即可*/
+            }
+        });
 
     }
 
-    // 登录监听
-    private TLSPwdLoginListener pwdLoginListener = new TLSPwdLoginListener() {
-        @Override
-        public void OnPwdLoginSuccess(TLSUserInfo userInfo) {
-          /* 登录成功了，在这里可以获取用户票据*/
-            String usersig = MyApplication.getInstance().getTlsHelper().getUserSig(userInfo.identifier);
-            ToastUtil.show(usersig);
-            LogUtil.e(usersig);
-            // identifier为用户名，userSig 为用户登录凭证
-            TIMManager.getInstance().login(userName, usersig, new TIMCallBack() {
-                @Override
-                public void onError(int code, String desc) {
-                    //错误码code和错误描述desc，可用于定位请求失败原因
-                    //错误码code列表请参见错误码表
-                    LogUtil.e("login 失败. code: " + code + " errmsg: " + desc);
-                }
 
-                @Override
-                public void onSuccess() {
-                    LogUtil.e("login 成功");
-                }
-            });
+    /**
+     * 注册账号
+     * name前面必须带个英文字母,passWord必须超过8位数
+     *
+     * @param name
+     * @param passWord
+     */
+    public void ZhuCeAccount(final String name, final String passWord) {
+        LogUtil.e(name + "  // " + passWord);
+        int result = MyApplication.getInstance().getTlsHelper().TLSStrAccReg(name, passWord, new TLSStrAccRegListener() {
+            @Override
+            public void OnStrAccRegSuccess(TLSUserInfo tlsUserInfo) {
+                ToastUtil.show("注册成功");
+                LogUtil.e("注册成功" + tlsUserInfo.toString());
+                login(name, passWord);
+            }
 
+            @Override
+            public void OnStrAccRegFail(TLSErrInfo tlsErrInfo) {
+                ToastUtil.show("注册失败" + tlsErrInfo.ExtraMsg);
+                LogUtil.e("注册失败");
+
+            }
+
+            @Override
+            public void OnStrAccRegTimeout(TLSErrInfo tlsErrInfo) {
+                ToastUtil.show("注册超时" + tlsErrInfo.ExtraMsg);
+                LogUtil.e("注册超时");
+
+            }
+        });
+        if (result == TLSErrInfo.INPUT_INVALID) {
+            LogUtil.e("账号格式不对");
         }
-
-        @Override
-        public void OnPwdLoginReaskImgcodeSuccess(byte[] picData) {
-          /* 请求刷新图片验证码成功，此时需要用picData 更新验证码图片，原先的验证码已经失效*/
-        }
-
-        @Override
-        public void OnPwdLoginNeedImgcode(byte[] picData, TLSErrInfo errInfo) {
-          /* 用户需要进行图片验证码的验证，需要把验证码图片展示给用户，并引导用户输入；如果验证码输入错误，仍然会到达此回调并更新图片验证码*/
-        }
-
-        @Override
-        public void OnPwdLoginFail(TLSErrInfo errInfo) {
-          /* 登录失败，比如说密码错误，用户帐号不存在等，通过errInfo.ErrCode, errInfo.Title, errInfo.Msg等可以得到更具体的错误信息*/
-        }
-
-        @Override
-        public void OnPwdLoginTimeout(TLSErrInfo errInfo) {
-          /* 密码登录过程中任意一步都可以到达这里，顾名思义，网络超时，可能是用户网络环境不稳定，一般让用户重试即可*/
-        }
-    };
+    }
 
 
     /**
@@ -261,7 +327,6 @@ public class IMChat {
         TIMConversation conversation = TIMManager.getInstance().getConversation(
                 TIMConversationType.Group,      //会话类型：群组
                 groupId);                       //群组Id
-        conversation.sendMessage();
 
           //获取单聊会话
         //获取与用户 "sample_user_1" 的会话
@@ -291,12 +356,12 @@ public class IMChat {
             public void onError(int code, String desc) {//发送消息失败
                 //错误码code和错误描述desc，可用于定位请求失败原因
                 //错误码code含义请参见错误码表
-                Log.d(tag, "群聊消息发送失败  send message failed. code: " + code + " errmsg: " + desc);
+                Log.d(tag, "消息发送失败  send message failed. code: " + code + " errmsg: " + desc);
             }
 
             @Override
             public void onSuccess(TIMMessage msg) {//发送消息成功
-                Log.e(tag, "群聊消息发送成功  SendMsg ok");
+                Log.e(tag, "消息发送成功" + msg.getMsg());
             }
         });
     }

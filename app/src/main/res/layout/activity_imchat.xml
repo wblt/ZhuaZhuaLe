@@ -4,79 +4,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </android.support.v7.widget.RecyclerView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_margin="10dp">
 
         <EditText
-            android:id="@+id/et_chat_name"
-            android:layout_width="160dp"
-            android:layout_height="36dp"
-            android:background="@drawable/textbeijing"
-            android:gravity="center"
-            android:hint="请输入账号" />
-
-        <EditText
-            android:id="@+id/et_chat_password"
-            android:layout_width="160dp"
-            android:layout_height="36dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/textbeijing"
-            android:gravity="center"
-            android:hint="请输入密码" />
-
-        <TextView
-            android:id="@+id/tv_chat_login"
-            android:layout_width="100dp"
+            android:id="@+id/et_info"
+            android:layout_width="0dp"
             android:layout_height="30dp"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/textbeijing_recharge_black"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/textbeijing_recharge" />
 
-            android:text="登录"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/et_chat_namez"
-            android:layout_width="160dp"
-            android:layout_height="36dp"
+        <Button
+            android:id="@+id/bt_fs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/textbeijing"
-            android:gravity="center"
-            android:hint="请输入账号" />
-
-        <EditText
-            android:id="@+id/et_chat_passwordz"
-            android:layout_width="160dp"
-            android:layout_height="36dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/textbeijing"
-            android:gravity="center"
-            android:hint="请输入密码" />
-
-        <TextView
-            android:id="@+id/tv_chat_loginz"
-            android:layout_width="100dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/textbeijing_recharge_black"
-            android:gravity="center"
-            android:text="注册"
+            android:text="发送"
             android:textColor="@color/white"
-            android:textSize="16dp" />
-
+            android:textStyle="bold" />
     </LinearLayout>
-
 
 </LinearLayout>

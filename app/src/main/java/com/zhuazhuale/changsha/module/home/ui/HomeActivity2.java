@@ -15,12 +15,15 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.module.home.Bean.BaseTypeDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.Bean.VersionBean;
 import com.zhuazhuale.changsha.module.home.adapter.HomeFragmentPagerAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.HomePresenter2;
+import com.zhuazhuale.changsha.module.vital.ui.IMChat;
 import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
+import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.PermissionUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
@@ -113,7 +116,8 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
 
     @Override
     protected void initEvent() {
-
+        String name = "zhuazhuale" + MyApplication.getInstance().getRowsBean().getF_Code1();
+        IMChat.getInstance().login(name, Constant.IMSDK_APPID + "");
     }
 
     /**
