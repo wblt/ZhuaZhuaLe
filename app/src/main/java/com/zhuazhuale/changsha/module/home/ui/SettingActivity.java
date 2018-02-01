@@ -229,7 +229,7 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
         if (bean.getCode() == 0) {
             ToastUtil.show(bean.getInfo());
         } else {
-            HomeActivity.instance.finish();
+            HomeActivity2.instance.finish();
             // 退出登录 返回登录页面
             PreferenceUtil.putBoolean(SettingActivity.this, BaseConstants.IsLogin, false);
             intent = new Intent(SettingActivity.this, LoginActivity.class);

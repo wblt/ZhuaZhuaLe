@@ -49,10 +49,13 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
     private ProgressBar mProgress;
     private HomePresenter2 presenter2;
     private String version;
+    public static HomeActivity2 instance = null;
+
 
     @Override
     protected void setContentLayout() {
         setContentView(R.layout.activity_home2);
+        instance = this;
     }
 
     @Override
