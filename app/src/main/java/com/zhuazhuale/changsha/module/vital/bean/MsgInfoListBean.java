@@ -9,6 +9,15 @@ import java.util.List;
 
 public class MsgInfoListBean implements Serializable {
     private List<MsgBean> msgBeen;
+    private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public List<MsgBean> getMsgBeen() {
         return msgBeen;

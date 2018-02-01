@@ -72,7 +72,6 @@
         <activity android:name=".module.home.ui.AddressListActivity" />
         <activity
             android:name=".module.vital.ui.PlayActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
 
         <service

@@ -85,8 +85,14 @@ public class IMchatActivity extends AppBaseActivity {
 
     //EventBus的事件接收，从事件中获取最新的收藏数量并更新界面展示
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void handleEvent(MsgInfoListBean event) {
-        chatAdapter.replaceData(event.getMsgBeen());
+    public void handleEvent(List<MsgBean> event) {
+        /*if (event.getType() == 1) {
+            if (!et_info.getText().toString().isEmpty()) {
+                et_info.setText("");
+            }
+        }*/
+            chatAdapter.replaceData(event);
+
     }
 
     @Override
@@ -105,6 +111,10 @@ public class IMchatActivity extends AppBaseActivity {
             @Override
             public void onClick(View v) {
                 String msg = et_info.getText().toString().trim();
+                if (msg.isEmpty()) {
+                    ToastUtil.show("请输入...");
+                    return;
+                }
                 IMChat.getInstance().sendMessage(conversation, msg);
             }
         });

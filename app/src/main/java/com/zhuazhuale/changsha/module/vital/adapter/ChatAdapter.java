@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.tencent.imsdk.TIMTextElem;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.vital.bean.AllUserTrueByDeviceIDBean;
 import com.zhuazhuale.changsha.module.vital.bean.MsgBean;
@@ -36,7 +37,10 @@ public class ChatAdapter extends RecyclerBaseAdapter<MsgBean> {
     protected void bindDataForView(ViewHolder holder, final MsgBean rowsBean, final int position) {
         //initView
         TextView tv_msg = holder.getView(R.id.tv_msg);
-        tv_msg.setText(rowsBean.getSender());
+        TextView tv_name = holder.getView(R.id.tv_name);
+        tv_name.setText(rowsBean.getGrpSendName());
+        TIMTextElem timTextElem = (TIMTextElem) rowsBean.getContext();
+        tv_msg.setText(timTextElem.getText());
     }
 
     @Override

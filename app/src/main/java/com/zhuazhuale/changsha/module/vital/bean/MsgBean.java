@@ -1,6 +1,8 @@
 package com.zhuazhuale.changsha.module.vital.bean;
 
-import com.tencent.imcore.Msg;
+
+
+import com.tencent.imsdk.TIMElem;
 
 import java.io.Serializable;
 
@@ -9,31 +11,31 @@ import java.io.Serializable;
  */
 
 public class MsgBean implements Serializable{
-    private String MsgId;
-    private Msg msgInfo;
-    private String Sender;
+    private String grpSendName;
+    private TIMElem context;
+    private int  type;
 
-    public String getMsgId() {
-        return MsgId;
+    public String getGrpSendName() {
+        return grpSendName;
     }
 
-    public void setMsgId(String msgId) {
-        MsgId = msgId;
+    public void setGrpSendName(String grpSendName) {
+        this.grpSendName = grpSendName;
     }
 
-    public Msg getMsgInfo() {
-        return msgInfo;
+    public TIMElem getContext() {
+        return context;
     }
 
-    public void setMsgInfo(Msg msgInfo) {
-        this.msgInfo = msgInfo;
+    public void setContext(TIMElem context) {
+        this.context = context;
     }
 
-    public String getSender() {
-        return Sender;
+    public int getType() {
+        return type;
     }
 
-    public void setSender(String sender) {
-        Sender = sender;
+    public void setType(int type) {
+        this.type = type;
     }
 }

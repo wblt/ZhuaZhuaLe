@@ -275,41 +275,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         pagerAdapter = new PlayFragmentPagerAdapter(getSupportFragmentManager(), titles, rowsBean);
         vp_play_info.setAdapter(pagerAdapter);
         tl_play_title.setupWithViewPager(vp_play_info);
-//        et_play_message.requestLayout();
-      /*  //绑定软键盘到EditText
-        et_play_message.setFocusable(true);
-        et_play_message.setFocusableInTouchMode(true);
-        et_play_message.requestFocus();
-        InputMethodManager inputManager = (InputMethodManager) et_play_message.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.showSoftInput(et_play_message, 0);*/
-        //代码里面配置
-        View decorView = getWindow().getDecorView();
-        View contentView = findViewById(Window.ID_ANDROID_CONTENT);
-        decorView.getViewTreeObserver().addOnGlobalLayoutListener(getGlobalLayoutListener(decorView, et_play_message));
-
-    }
-
-    private ViewTreeObserver.OnGlobalLayoutListener getGlobalLayoutListener(final View decorView, final View contentView) {
-        return new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect r = new Rect();
-                decorView.getWindowVisibleDisplayFrame(r);
-
-                int height = decorView.getContext().getResources().getDisplayMetrics().heightPixels;
-                int diff = height - r.bottom;
-
-                if (diff != 0) {
-                    if (contentView.getPaddingBottom() != diff) {
-                        contentView.setPadding(0, 0, 0, diff);
-                    }
-                } else {
-                    if (contentView.getPaddingBottom() != 0) {
-                        contentView.setPadding(0, 0, 0, 0);
-                    }
-                }
-            }
-        };
     }
 
     /**
