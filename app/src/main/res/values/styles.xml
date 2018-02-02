@@ -18,18 +18,28 @@
         <item name="android:windowAnimationStyle">@style/pageInOut</item>
     </style>
 
+    <style name="Transparent">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <style name="CustomTabTextAppearanceStyle" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
         <item name="tabBackground">@color/transparent</item>
     </style>
+
     <style name="TabLayoutTextStyle">
         <item name="android:textSize">16dp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="TabLayoutTextStyleHome">
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">14dp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
         <item name="tabBackground">@drawable/tab_background</item>
     </style>
@@ -50,8 +60,7 @@
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@android:color/white</item>
-    </style>
-    <!--自定义的固定宽高比-->
+    </style><!--自定义的固定宽高比-->
     <declare-styleable name="MyImageView">
         <attr name="ratio" format="float" />
     </declare-styleable>
@@ -91,8 +100,7 @@
         <item name="android:windowIsTranslucent">true</item>
         <!-- Dialog进入及退出动画 -->
         <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
-    </style>
-    <!-- ActionSheet进出动画 -->
+    </style><!-- ActionSheet进出动画 -->
     <style name="DialogAnimation" parent="@android:style/Animation.Dialog">
         <item name="android:windowEnterAnimation">@anim/actionsheet_dialog_in</item>
         <item name="android:windowExitAnimation">@anim/actionsheet_dialog_out</item>

@@ -14,6 +14,7 @@ import com.zhuazhuale.changsha.module.home.ui.HomeActivity;
 import com.zhuazhuale.changsha.module.home.ui.HomeActivity2;
 import com.zhuazhuale.changsha.module.home.ui.XieYiActivity;
 import com.zhuazhuale.changsha.module.login.presenter.LoginPresenter;
+import com.zhuazhuale.changsha.module.vital.ui.IMChat;
 import com.zhuazhuale.changsha.util.CommonUtil;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.EventBusUtil;
@@ -89,10 +90,10 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     //EventBus的事件接收，从事件中获取最新的收藏数量并更新界面展示
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleEvent(LoginEvent event) {
-        if (event.isLogin()){
+        if (event.isLogin()) {
             String code = event.getCode();
             loginPresenter.initWX(code, Constant.APPID, Constant.secret);
-        }else {
+        } else {
             dismissLoadingDialog();
         }
 
@@ -119,11 +120,21 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
         if (isLogin) {
             // 从本地拿取用户数据,并放到内存中,方便使用
             getUserInfoByPreference();
-            Intent intent = new Intent(this, HomeActivity2.class);
-            startActivity(intent);
-            // 结束此界面
-            getActivityStackManager().exitActivity(this);
+            goToHome();
+
         }
+    }
+
+    private void goToHome() {
+        //登录IM
+//            IMChat.getInstance().login("q454216935", 123456 + "");
+        String name = MyApplication.getInstance().getRowsBean().getF_Code1();
+        IMChat.getInstance().login("zhuazhuale" + name, Constant.IMSDK_APPID + "");
+        Intent intent = new Intent(this, HomeActivity2.class);
+        startActivity(intent);
+        // 结束此界面
+        getActivityStackManager().exitActivity(this);
+
     }
 
     @Override
@@ -153,7 +164,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 }
                 break;
             case R.id.tv_login_xieyi:
-                Intent intent=new Intent(getContext(),XieYiActivity.class);
+                Intent intent = new Intent(getContext(), XieYiActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -179,9 +190,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
             PreferenceUtil.putBoolean(this, BaseConstants.IsLogin, true);
 
             MyApplication.getInstance().setRowsBean(infoBean.getRows());
-            Intent intent = new Intent(this, HomeActivity2.class);
-            startActivity(intent);
-            finish();
+            goToHome();
         }
 
     }

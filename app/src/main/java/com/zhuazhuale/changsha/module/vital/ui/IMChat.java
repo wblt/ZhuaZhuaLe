@@ -370,10 +370,10 @@ public class IMChat {
     public void setNickName() {
         //初始化参数，修改昵称为“cat”
         TIMFriendshipManager.ModifyUserProfileParam param = new TIMFriendshipManager.ModifyUserProfileParam();
-        String path = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517584490096&di=cd3b7dd058b791fba268c078a1033490&imgtype=0&src=http%3A%2F%2Fwww.uuuu.cc%2Fuploads%2Fallimg%2Fc160108%2F145222J62E520-23NR.jpg";
+//        String path = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517584490096&di=cd3b7dd058b791fba268c078a1033490&imgtype=0&src=http%3A%2F%2Fwww.uuuu.cc%2Fuploads%2Fallimg%2Fc160108%2F145222J62E520-23NR.jpg";
         param.setNickname(MyApplication.getInstance().getRowsBean().getF_Name());
-//        param.setFaceUrl(MyApplication.getInstance().getRowsBean().getF_Img());
-        param.setFaceUrl(path);
+        param.setFaceUrl(MyApplication.getInstance().getRowsBean().getF_Img());
+//        param.setFaceUrl(path);
 
         TIMFriendshipManager.getInstance().modifyProfile(param, new TIMCallBack() {
             @Override

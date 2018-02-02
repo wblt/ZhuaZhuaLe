@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -33,6 +34,7 @@ import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -53,6 +55,7 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
     private HomePresenter2 presenter2;
     private String version;
     public static HomeActivity2 instance = null;
+    private long time1;
 
 
     @Override
@@ -94,9 +97,7 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
     @Override
     protected void obtainData() {
         presenter2 = new HomePresenter2(this);
-        IMChat.getInstance().login("q454216935",123456 + "");
-        String name = MyApplication.getInstance().getRowsBean().getF_Code1();
-//        IMChat.getInstance().login("zhuazhuale" + name, Constant.IMSDK_APPID + "");
+
         version = "";
         try {
             version = getVersionName();
@@ -113,6 +114,22 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
                 presenter2.initVersion(version);
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        Date date = new Date();
+        long time2 = date.getTime();
+        long time = time2 - time1;
+        if (time < 2000) {
+            return super.onKeyDown(keyCode, event);
+        } else {
+            time1 = time2;
+            ToastUtil.show("再点一次退出");
+            return true;
+        }
+
     }
 
     private String getVersionName() throws Exception {

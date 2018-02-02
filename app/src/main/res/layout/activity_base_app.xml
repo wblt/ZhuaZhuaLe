@@ -9,7 +9,7 @@
     <com.zhy.android.percent.support.PercentRelativeLayout
         android:id="@+id/base_header_layout_app"
         android:layout_width="0dp"
-        app:layout_heightPercent="6%"
+        app:layout_heightPercent="4%"
         app:layout_widthPercent="100%"
         android:layout_height="0dp"
         android:background="@color/colorPrimary">
@@ -52,8 +52,9 @@
             android:layout_centerVertical="true"
             app:layout_marginRightPercent="3%w"
             android:textColor="@color/white"
-            app:layout_textSizePercent="40%h"
-
+            android:layout_margin="5dp"
+            app:layout_textSizePercent="60%h"
+            android:background="@mipmap/mine"
           />
 
 

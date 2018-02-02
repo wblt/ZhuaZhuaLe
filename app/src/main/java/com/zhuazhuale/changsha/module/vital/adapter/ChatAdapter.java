@@ -17,6 +17,7 @@ import com.zhuazhuale.changsha.module.vital.bean.MsgInfo;
 import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
+import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.adapter.base.RecyclerBaseAdapter;
 import com.zhuazhuale.changsha.view.adapter.base.ViewHolder;
 
@@ -49,7 +50,12 @@ public class ChatAdapter extends RecyclerBaseAdapter<MsgBean> {
         tv_name.setText(msgInfo.getNickName());
 //        TIMTextElem timTextElem = (TIMTextElem) rowsBean.getContext();
         tv_msg.setText(msgInfo.getMsg());
-        FrescoUtil.getInstance().loadNetImage(sdv_face, msgInfo.getHeadPic());
+        LogUtil.e(msgInfo.getHeadPic());
+        if (msgInfo.getHeadPic().isEmpty()){
+            FrescoUtil.getInstance().loadResourceImage(sdv_face,R.mipmap.ic_logo);
+        }else {
+            FrescoUtil.getInstance().loadNetImage(sdv_face, msgInfo.getHeadPic());
+        }
     }
 
     @Override

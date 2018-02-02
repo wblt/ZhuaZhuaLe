@@ -73,6 +73,10 @@
         <activity
             android:name=".module.vital.ui.PlayActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".module.vital.ui.PutMessageActivity"
+            android:theme="@style/Transparent"
+            android:screenOrientation="portrait" />
 
         <service
             android:name="cn.jpush.android.service.PushService"

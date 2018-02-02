@@ -219,6 +219,7 @@
                                 android:orientation="vertical">
 
                                 <ImageView
+                                    android:id="@+id/iv_play_setmsg"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:foreground="?android:attr/selectableItemBackground"
@@ -458,30 +459,6 @@
         </com.zhy.android.percent.support.PercentLinearLayout>
     </com.zhuazhuale.changsha.view.ScrollBottomScrollView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
-
-        <EditText
-            android:id="@+id/et_play_message"
-            android:layout_width="0dp"
-            android:layout_height="38dp"
-            android:layout_weight="5"
-            android:background="@drawable/textbeijing_recharge" />
-
-        <TextView
-            android:id="@+id/tv_play_send_msg"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/textbeijing"
-            android:gravity="center"
-            android:text="发送"
-            android:textColor="@color/white"
-            android:textSize="16dp"
-            android:textStyle="bold" />
-    </LinearLayout>
 
 
 </RelativeLayout>

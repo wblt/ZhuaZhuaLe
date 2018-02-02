@@ -69,6 +69,7 @@ import com.zhuazhuale.changsha.module.vital.bean.MsgBean;
 import com.zhuazhuale.changsha.module.vital.bean.MsgInfo;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
 import com.zhuazhuale.changsha.module.vital.presenter.PlayPresenter;
+import com.zhuazhuale.changsha.util.CommonUtil;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.CountdownUtil;
 import com.zhuazhuale.changsha.util.EventBusUtil;
@@ -149,16 +150,16 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     TabLayout tl_play_title;
     @BindView(R.id.vp_play_info)
     ViewPager vp_play_info;
-    @BindView(R.id.et_play_message)
-    EditText et_play_message;
+
     @BindView(R.id.rv_play_lookperson)
     RecyclerView rv_play_lookperson;
     @BindView(R.id.tv_play_lookperson_num)
     TextView tv_play_lookperson_num;
-    @BindView(R.id.tv_play_send_msg)
-    TextView tv_play_send_msg;
+
     @BindView(R.id.rv_play_msg_list)
     RecyclerView rv_play_msg_list;
+    @BindView(R.id.iv_play_setmsg)
+    ImageView iv_play_setmsg;
 
     private PlayFragmentPagerAdapter pagerAdapter;
 
@@ -454,6 +455,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         chatAdapter = new ChatAdapter(this, msgBeen);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
+        rv_play_msg_list.setNestedScrollingEnabled(false);
         rv_play_msg_list.setLayoutManager(linearLayoutManager);
         rv_play_msg_list.setAdapter(chatAdapter);
         gson = new Gson();
@@ -461,26 +463,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         IMChat.getInstance().changeGroup();//创建监听
         IMChat.getInstance().joinGroup(rowsBean.getF_GroupID());
         IMChat.getInstance().getGroupMembers(rowsBean.getF_GroupID());
-        //发送消息
-        tv_play_send_msg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String msgt = et_play_message.getText().toString().trim();
 
-                if (msgt.isEmpty()) {
-                    ToastUtil.show("请输入...");
-                    return;
-                }
-                MsgInfo msgInfo = new MsgInfo();
-                msgInfo.setMsg(msgt);
-                msgInfo.setHeadPic("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517584490096&di=cd3b7dd058b791fba268c078a1033490&imgtype=0&src=http%3A%2F%2Fwww.uuuu.cc%2Fuploads%2Fallimg%2Fc160108%2F145222J62E520-23NR.jpg");
-                msgInfo.setNickName("我就是美女哈哈");
-                msgInfo.setUserId("zhuazhuale" + MyApplication.getInstance().getRowsBean().getF_Code1());
-                msgInfo.setUserAction(5);
-                String msg = gson.toJson(msgInfo);
-                IMChat.getInstance().sendMessage(rowsBean.getF_GroupID(), msg);
-            }
-        });
     }
 
     //EventBus的事件接收
@@ -505,12 +488,15 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleEvent(MsgBean event) {
-        if (event.getType() == 1) {
+       /* if (event.getType() == 1) {
             if (!et_play_message.getText().toString().isEmpty()) {
                 et_play_message.setText("");
             }
-        }
+        }*/
         msgBeen.add(event);
+        if (msgBeen.size() > 5) {
+            msgBeen.remove(0);
+        }
         chatAdapter.replaceData(msgBeen);
         rv_play_msg_list.smoothScrollToPosition(chatAdapter.getItemCount());
 
@@ -750,7 +736,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 EventBusUtil.postEvent(event);
             }
         });
-
+        iv_play_setmsg.setOnClickListener(this);
 
     }
 
@@ -965,6 +951,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 break;
             case R.id.iv_play_recharge:
                 startActivity(new Intent(getContext(), RechargeActivity.class));
+                break;
+            case R.id.iv_play_setmsg:
+                Intent intent = new Intent(getContext(), PutMessageActivity.class);
+                intent.putExtra("groupId", rowsBean.getF_GroupID());
+                startActivity(intent);
                 break;
         }
 
