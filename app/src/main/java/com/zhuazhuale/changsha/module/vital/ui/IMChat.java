@@ -1,6 +1,5 @@
 package com.zhuazhuale.changsha.module.vital.ui;
 
-import android.content.Intent;
 import android.util.Log;
 
 import com.tencent.imsdk.TIMCallBack;
@@ -9,7 +8,7 @@ import com.tencent.imsdk.TIMConversation;
 import com.tencent.imsdk.TIMConversationType;
 import com.tencent.imsdk.TIMCustomElem;
 import com.tencent.imsdk.TIMElem;
-import com.tencent.imsdk.TIMElemType;
+import com.tencent.imsdk.TIMFriendshipManager;
 import com.tencent.imsdk.TIMGroupEventListener;
 import com.tencent.imsdk.TIMGroupManager;
 import com.tencent.imsdk.TIMGroupMemberInfo;
@@ -27,10 +26,7 @@ import com.tencent.imsdk.TIMUserStatusListener;
 import com.tencent.imsdk.TIMValueCallBack;
 import com.tencent.imsdk.ext.group.TIMGroupManagerExt;
 import com.zhuazhuale.changsha.app.MyApplication;
-import com.zhuazhuale.changsha.module.home.model.AddressModel;
 import com.zhuazhuale.changsha.module.vital.bean.MsgBean;
-import com.zhuazhuale.changsha.module.vital.bean.MsgInfoListBean;
-import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
@@ -45,11 +41,13 @@ import tencent.tls.platform.TLSUserInfo;
 
 
 /**
+ * 腾讯云通讯的工具类
  * Created by Administrator on 2018/1/31 0031.
  */
 
 public class IMChat {
     private String tag = getClass().getName();
+    private String groupIds = "";
 
     public static IMChat getInstance() {
         return IMChat.SingletonHolder.instance;
@@ -110,6 +108,7 @@ public class IMChat {
      * @param groupId
      */
     public void getGroupMembers(String groupId, final TIMValueCallBack timValueCallBack) {
+        groupIds = groupId;
         //创建回调
         TIMValueCallBack<List<TIMGroupMemberInfo>> cb = new TIMValueCallBack<List<TIMGroupMemberInfo>>() {
             @Override
@@ -132,6 +131,37 @@ public class IMChat {
         TIMGroupManagerExt.getInstance().getGroupMembers(
                 groupId, //群组Id
                 cb);     //回调
+    }
+
+    /**
+     * 获取用户的资料
+     *
+     * @param userlist
+     */
+    public void getUsersProfile(List<String> userlist) {
+        //待获取用户资料的用户列表
+        List<String> users = new ArrayList<String>();
+        users.add("sample_user_1");
+        users.add("sample_user_2");
+
+        //获取用户资料
+        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>() {
+            @Override
+            public void onError(int code, String desc) {
+                //错误码code和错误描述desc，可用于定位请求失败原因
+                //错误码code列表请参见错误码表
+                Log.e(tag, "getUsersProfile failed: " + code + " desc");
+            }
+
+            @Override
+            public void onSuccess(List<TIMUserProfile> result) {
+                Log.e(tag, "getUsersProfile succ");
+                for (TIMUserProfile res : result) {
+                    Log.e(tag, "identifier: " + res.getIdentifier() + " nickName: " + res.getNickName()
+                            + " remark: " + res.getRemark());
+                }
+            }
+        });
     }
 
     /**
@@ -174,13 +204,14 @@ public class IMChat {
                     @Override
                     public void onGroupTipsEvent(TIMGroupTipsElem elem) {
                         LogUtil.e("onGroupTipsEvent, type: " + elem.getTipsType());
-
+                     /*   elem.getOpUserInfo().getNickName();
+                        elem.getOpUserInfo().getFaceUrl();*/
                         switch (elem.getTipsType()) {
                             case Join://加入群
-                                LogUtil.e("有人加入了" + elem.getGroupId());
+                                LogUtil.e("有人加入了" + elem.getOpUserInfo().getNickName() + '/' + elem.getOpUserInfo().getFaceUrl());
                                 break;
                             case Quit://退出群
-                                LogUtil.e("有人退出了" + elem.getGroupId());
+                                LogUtil.e("有人退出了" + elem.getOpUserInfo().getNickName() + '/' + elem.getOpUserInfo().getFaceUrl());
                                 break;
                         }
                     }
@@ -225,28 +256,27 @@ public class IMChat {
                             break;
                         }//case GroupSystem
                         case Text: {
-                           /* TIMTextElem textMsg = (TIMTextElem) element;
-                            if (mListener != null && mChatGroup.equals(groupId)) {
-                                mListener.onRecvChatMessage(textMsg.getText(), message.getSender());
-                            }*/
                             TIMTextElem textMsg = (TIMTextElem) element;
-                            TIMUserProfile sendUser = message.getSenderProfile();
+                            if (groupIds.equals(groupId)) {
+                                TIMUserProfile sendUser = message.getSenderProfile();
 
-                            LogUtil.e("");
-                            String name = "";
-                            if (sendUser != null) {
-                                name = sendUser.getNickName();
-                                LogUtil.e("sendUser  " + sendUser.getNickName());
-                            } else {
-                                name = message.getSender();
-                                LogUtil.e("getSender  " + message.getSender());
+                                LogUtil.e("");
+                                String name = "";
+                                if (sendUser != null) {
+                                    name = sendUser.getNickName();
+                                    LogUtil.e("sendUser  " + sendUser.getNickName());
+                                } else {
+                                    name = message.getSender();
+                                    LogUtil.e("getSender  " + message.getSender());
+                                }
+                                MsgBean msgBean = new MsgBean();
+                                msgBean.setType(2);
+                                msgBean.setContext(textMsg.getText());
+                                msgBean.setGrpSendName(name);
+                                EventBusUtil.postEvent(msgBean);
+                                LogUtil.e(textMsg.getText());
                             }
-                            MsgBean msgBean = new MsgBean();
-                            msgBean.setType(2);
-                            msgBean.setContext(textMsg.getText());
-                            msgBean.setGrpSendName(name);
-                            EventBusUtil.postEvent(msgBean);
-                            LogUtil.e(textMsg.getText());
+
                             return true;
                         }
                         case Custom: {
@@ -297,6 +327,7 @@ public class IMChat {
                     @Override
                     public void onSuccess() {
                         LogUtil.e("login 成功");
+                        setNickName();
                     }
                 });
 
@@ -327,6 +358,30 @@ public class IMChat {
             }
         });
 
+    }
+
+    /**
+     * 设置头像和昵称
+     */
+    public void setNickName() {
+        //初始化参数，修改昵称为“cat”
+        TIMFriendshipManager.ModifyUserProfileParam param = new TIMFriendshipManager.ModifyUserProfileParam();
+        param.setNickname(MyApplication.getInstance().getRowsBean().getF_Img());
+        param.setFaceUrl(MyApplication.getInstance().getRowsBean().getF_Img());
+
+        TIMFriendshipManager.getInstance().modifyProfile(param, new TIMCallBack() {
+            @Override
+            public void onError(int code, String desc) {
+                //错误码code和错误描述desc，可用于定位请求失败原因
+                //错误码code列表请参见错误码表
+                Log.e(tag, "设置头像和昵称失败:  modifyProfile failed: " + code + " desc" + desc);
+            }
+
+            @Override
+            public void onSuccess() {
+                Log.e(tag, "设置头像和昵称成功  :modifyProfile succ");
+            }
+        });
     }
 
 
