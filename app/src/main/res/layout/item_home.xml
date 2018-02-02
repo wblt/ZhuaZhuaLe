@@ -17,7 +17,7 @@
         fresco:roundBottomRight="true"
         fresco:roundTopLeft="true"
         fresco:roundTopRight="true"
-        fresco:roundedCornerRadius="4dp"
+        fresco:roundedCornerRadius="16dp"
         />
     <!--fresco:viewAspectRatio="0.25"-->
 
