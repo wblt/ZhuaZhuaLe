@@ -64,7 +64,9 @@ public class IMchatActivity extends AppBaseActivity {
     @Override
     protected void initView() {
         chatAdapter = new ChatAdapter(this, msgBeen);
-        rv_list.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setStackFromEnd(true);
+        rv_list.setLayoutManager(linearLayoutManager);
         rv_list.setAdapter(chatAdapter);
         gson = new Gson();
 
@@ -98,6 +100,7 @@ public class IMchatActivity extends AppBaseActivity {
         }
         msgBeen.add(event);
         chatAdapter.replaceData(msgBeen);
+        rv_list.smoothScrollToPosition(chatAdapter.getItemCount());
 
     }
 
