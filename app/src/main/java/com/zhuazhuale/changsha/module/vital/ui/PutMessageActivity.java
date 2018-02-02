@@ -72,8 +72,8 @@ public class PutMessageActivity extends Activity {
                 }
                 MsgInfo msgInfo = new MsgInfo();
                 msgInfo.setMsg(msgt);
-                msgInfo.setHeadPic("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517584490096&di=cd3b7dd058b791fba268c078a1033490&imgtype=0&src=http%3A%2F%2Fwww.uuuu.cc%2Fuploads%2Fallimg%2Fc160108%2F145222J62E520-23NR.jpg");
-                msgInfo.setHeadPic(MyApplication.getInstance().getRowsBean().getF_FxUrl());
+//                msgInfo.setHeadPic("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517584490096&di=cd3b7dd058b791fba268c078a1033490&imgtype=0&src=http%3A%2F%2Fwww.uuuu.cc%2Fuploads%2Fallimg%2Fc160108%2F145222J62E520-23NR.jpg");
+                msgInfo.setHeadPic(MyApplication.getInstance().getRowsBean().getF_Img());
                 msgInfo.setNickName(MyApplication.getInstance().getRowsBean().getF_Name());
                 msgInfo.setUserId("zhuazhuale" + MyApplication.getInstance().getRowsBean().getF_Code1());
                 msgInfo.setUserAction(5);
