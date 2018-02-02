@@ -2,14 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_vertical"
     android:orientation="horizontal">
 
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/sdv_face"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+
     <TextView
-        android:padding="6dp"
         android:id="@+id/tv_name"
-        android:textColor="@color/red"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:textColor="@color/red" />
 
     <TextView
         android:id="@+id/tv_msg"

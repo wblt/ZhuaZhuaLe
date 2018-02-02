@@ -117,7 +117,9 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
     @Override
     protected void initEvent() {
         String name = "zhuazhuale" + MyApplication.getInstance().getRowsBean().getF_Code1();
-        IMChat.getInstance().login(name, Constant.IMSDK_APPID + "");
+
+//        IMChat.getInstance().login(name, Constant.IMSDK_APPID + "");
+        IMChat.getInstance().login("q454216935",123456 + "");
     }
 
     /**

@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMConversation;
 import com.tencent.imsdk.TIMConversationType;
@@ -17,6 +18,7 @@ import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.model.entity.eventbus.CPfreshEvent;
 import com.zhuazhuale.changsha.module.vital.adapter.ChatAdapter;
 import com.zhuazhuale.changsha.module.vital.bean.MsgBean;
+import com.zhuazhuale.changsha.module.vital.bean.MsgInfo;
 import com.zhuazhuale.changsha.module.vital.bean.MsgInfoListBean;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
@@ -50,6 +52,8 @@ public class IMchatActivity extends AppBaseActivity {
     private List<MsgBean> msgBeen = new ArrayList<>();
     private ChatAdapter chatAdapter;
     private TIMConversation conversation;
+    String groupId = "@TGS#aHVZSSBFX";
+    private Gson gson;
 
 
     @Override
@@ -62,6 +66,7 @@ public class IMchatActivity extends AppBaseActivity {
         chatAdapter = new ChatAdapter(this, msgBeen);
         rv_list.setLayoutManager(new LinearLayoutManager(this));
         rv_list.setAdapter(chatAdapter);
+        gson = new Gson();
 
     }
 
@@ -69,8 +74,8 @@ public class IMchatActivity extends AppBaseActivity {
     protected void obtainData() {
         IMChat.getInstance().changeGroup();//创建监听
         EventBusUtil.register(this);
-        IMChat.getInstance().joinGroup("@TGS#aHVZSSBFX");
-        IMChat.getInstance().getGroupMembers("@TGS#aHVZSSBFX", new TIMValueCallBack() {
+        IMChat.getInstance().joinGroup(groupId);
+        IMChat.getInstance().getGroupMembers(groupId, new TIMValueCallBack() {
             @Override
             public void onError(int i, String s) {
 
@@ -85,37 +90,46 @@ public class IMchatActivity extends AppBaseActivity {
 
     //EventBus的事件接收，从事件中获取最新的收藏数量并更新界面展示
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void handleEvent(List<MsgBean> event) {
-        /*if (event.getType() == 1) {
+    public void handleEvent(MsgBean event) {
+        if (event.getType() == 1) {
             if (!et_info.getText().toString().isEmpty()) {
                 et_info.setText("");
             }
-        }*/
-            chatAdapter.replaceData(event);
+        }
+        msgBeen.add(event);
+        chatAdapter.replaceData(msgBeen);
 
     }
 
     @Override
     protected void initEvent() {
         //会话类型：群组
-        if (conversation == null) {
+     /*   if (conversation == null) {
             conversation = TIMManager.getInstance().getConversation(
                     TIMConversationType.Group,      //会话类型：群组
                     "@TGS#aHVZSSBFX");
-          /*  conversation = TIMManager.getInstance().getConversation(
+          *//*  conversation = TIMManager.getInstance().getConversation(
                     TIMConversationType.C2C,    //会话类型：单聊
-                    "q454216935");*/
-        }
+                    "q454216935");*//*
+        }*/
 
         bt_fs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String msg = et_info.getText().toString().trim();
-                if (msg.isEmpty()) {
+                String msgt = et_info.getText().toString().trim();
+
+                if (msgt.isEmpty()) {
                     ToastUtil.show("请输入...");
                     return;
                 }
-                IMChat.getInstance().sendMessage(conversation, msg);
+                MsgInfo msgInfo = new MsgInfo();
+                msgInfo.setMsg(msgt);
+                msgInfo.setNickName(MyApplication.getInstance().getRowsBean().getF_Name()+"222");
+                msgInfo.setHeadPic(MyApplication.getInstance().getRowsBean().getF_Img());
+                msgInfo.setUserId("zhuazhuale"+MyApplication.getInstance().getRowsBean().getF_Code1());
+                msgInfo.setUserAction(5);
+                String msg = gson.toJson(msgInfo);
+                IMChat.getInstance().sendMessage(groupId, msg);
             }
         });
     }
@@ -124,7 +138,7 @@ public class IMchatActivity extends AppBaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBusUtil.unregister(this);
-        IMChat.getInstance().quitGroup("@TGS#aHVZSSBFX");
+        IMChat.getInstance().quitGroup(groupId);
 
     }
 }

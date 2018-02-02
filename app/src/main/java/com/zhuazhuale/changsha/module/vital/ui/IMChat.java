@@ -7,6 +7,7 @@ import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMConnListener;
 import com.tencent.imsdk.TIMConversation;
 import com.tencent.imsdk.TIMConversationType;
+import com.tencent.imsdk.TIMCustomElem;
 import com.tencent.imsdk.TIMElem;
 import com.tencent.imsdk.TIMElemType;
 import com.tencent.imsdk.TIMGroupEventListener;
@@ -29,6 +30,7 @@ import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.module.home.model.AddressModel;
 import com.zhuazhuale.changsha.module.vital.bean.MsgBean;
 import com.zhuazhuale.changsha.module.vital.bean.MsgInfoListBean;
+import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
@@ -48,8 +50,6 @@ import tencent.tls.platform.TLSUserInfo;
 
 public class IMChat {
     private String tag = getClass().getName();
-    private TIMTextElem elem;
-    private TIMMessage msg;
 
     public static IMChat getInstance() {
         return IMChat.SingletonHolder.instance;
@@ -202,67 +202,67 @@ public class IMChat {
         TIMManager.getInstance().addMessageListener(new TIMMessageListener() {
             @Override
             public boolean onNewMessages(List<TIMMessage> list) {
-                LogUtil.e("收到新的消息");
-                //发送成回显示消息内容
-                for (TIMMessage currMsg : list) {
-
-                    for (int j = 0; j < currMsg.getElementCount(); j++) {
-                        if (currMsg.getElement(j) == null)
-                            continue;
-                        TIMElem elem = currMsg.getElement(j);
-                        TIMElemType type = elem.getType();
-                        String sendId = currMsg.getSender();
-                        //系统消息
-                        if (type == TIMElemType.GroupSystem) {
-                            if (TIMGroupSystemElemType.TIM_GROUP_SYSTEM_DELETE_GROUP_TYPE == ((TIMGroupSystemElem) elem).getSubtype()) {
-
-                            }
-
-                        }
-                        //定制消息
-                        if (type == TIMElemType.Custom) {
-                            String id, nickname;
-                            if (currMsg.getSenderProfile() != null) {
-                                id = currMsg.getSenderProfile().getIdentifier();
-                                nickname = currMsg.getSenderProfile().getNickName();
-                            } else {
-                                id = sendId;
-                                nickname = sendId;
-                            }
-//                            handleCustomMsg(elem, id, nickname);
-                            continue;
-                        }
-
-                        //其他群消息过滤
-
-                        if (currMsg.getConversation() != null && currMsg.getConversation().getPeer() != null)
-                            /*if (!CurLiveInfo.getChatRoomId().equals(currMsg.getConversation().getPeer())) {
-                                continue;
-                            }*/
-
-                            //最后处理文本消息
-                            if (type == TIMElemType.Text) {
-                                if (currMsg.isSelf()) {
-//                                handleTextMessage(elem, MySelfInfo.getInstance().getNickName());
-                                } else {
-                                    String nickname;
-                                    if (currMsg.getSenderProfile() != null && (!currMsg.getSenderProfile().getNickName().equals(""))) {
-                                        nickname = currMsg.getSenderProfile().getNickName();
-                                    } else {
-                                        nickname = sendId;
+                for (TIMMessage message : list) {
+                    String groupId = message.getConversation().getPeer();
+                    TIMElem element = message.getElement(0);
+                    switch (element.getType()) {
+                        case GroupSystem: {
+                            TIMGroupSystemElemType systemElemType = ((TIMGroupSystemElem) element).getSubtype();
+                            switch (systemElemType) {
+                                case TIM_GROUP_SYSTEM_DELETE_GROUP_TYPE: {
+                                    groupId = ((TIMGroupSystemElem) element).getGroupId();
+                                  /*  if (mListener != null)
+                                        mListener.onIMGroupDelete(groupId);
+                                    if (mChatGroup.equals(groupId)) {
+                                        mChatGroup = "";
                                     }
-                                    MsgBean msgBean = new MsgBean();
-                                    msgBean.setType(1);
-                                    msgBean.setContext(elem);
-                                    msgBean.setGrpSendName(nickname);
-                                    EventBusUtil.postEvent(msgBean);
+                                    if (mIssueGroup.equals(groupId)) {
+                                        mIssueGroup = "";
+                                    }*/
+                                    return true;
                                 }
                             }
+                            break;
+                        }//case GroupSystem
+                        case Text: {
+                           /* TIMTextElem textMsg = (TIMTextElem) element;
+                            if (mListener != null && mChatGroup.equals(groupId)) {
+                                mListener.onRecvChatMessage(textMsg.getText(), message.getSender());
+                            }*/
+                            TIMTextElem textMsg = (TIMTextElem) element;
+                            TIMUserProfile sendUser = message.getSenderProfile();
+
+                            LogUtil.e("");
+                            String name = "";
+                            if (sendUser != null) {
+                                name = sendUser.getNickName();
+                                LogUtil.e("sendUser  " + sendUser.getNickName());
+                            } else {
+                                name = message.getSender();
+                                LogUtil.e("getSender  " + message.getSender());
+                            }
+                            MsgBean msgBean = new MsgBean();
+                            msgBean.setType(2);
+                            msgBean.setContext(textMsg.getText());
+                            msgBean.setGrpSendName(name);
+                            EventBusUtil.postEvent(msgBean);
+                            LogUtil.e(textMsg.getText());
+                            return true;
+                        }
+                        case Custom: {
+                            byte[] userData = ((TIMCustomElem) element).getData();
+                            if (userData == null || userData.length == 0) {
+                                return true;
+                            }
+                           /* if (mListener != null && mIssueGroup.equals(groupId)) {
+                                mListener.onRecvIssueMessage(userData);
+                            }*/
+                            return true;
+                        }
                     }
                 }
-
-                return true;
-            }//消息监听器
+                return false;
+            }
         });
 
         TIMManager.getInstance().setUserConfig(userConfig);
@@ -276,8 +276,8 @@ public class IMChat {
      * @param passWord
      */
     public void login(final String name, final String passWord) {
-        final String na = "q454216935";
-        String p = "123456";
+        final String na = name;
+        String p = passWord;
         MyApplication.getInstance().getTlsHelper().TLSPwdLogin(na, p.getBytes(), new TLSPwdLoginListener() {
             @Override
             public void OnPwdLoginSuccess(TLSUserInfo userInfo) {
@@ -370,7 +370,7 @@ public class IMChat {
     /**
      * 发送消息,群聊和单聊都可以用这个,具体要看TIMConversation的类型
      */
-    public void sendMessage(TIMConversation conversation, String msgInfo) {
+    public void sendMessage(String groupId, final String msgInfo) {
      /*   //获取群聊会话
         TIMConversation conversation = TIMManager.getInstance().getConversation(
                 TIMConversationType.Group,      //会话类型：群组
@@ -383,14 +383,14 @@ public class IMChat {
                 peer);                      //会话对方用户帐号//对方id
 
         */
+        TIMConversation conversation = TIMManager.getInstance().getConversation(
+                TIMConversationType.Group,      //会话类型：群组
+                groupId);                       //群组Id
+
         //构造一条消息
-        if (msg == null) {
-            msg = new TIMMessage();
-        }
+        TIMMessage msg = new TIMMessage();
         //添加文本内容
-        if (elem == null) {
-            elem = new TIMTextElem();
-        }
+        TIMTextElem elem = new TIMTextElem();
         elem.setText(msgInfo);
 
         //将elem添加到消息
@@ -409,29 +409,24 @@ public class IMChat {
 
             @Override
             public void onSuccess(TIMMessage timMessage) {//发送消息成功
-                Log.e(tag, "消息发送成功" + msg.getMsg());
-                List<MsgBean> msgBeen=new ArrayList<MsgBean>();
-                for (int j = 0; j < timMessage.getElementCount(); j++) {
-//                    int le= (int) timMessage.getElementCount();
-                    TIMElem elem = (TIMElem) timMessage.getElement(j);
-                    if (elem.getType() == TIMElemType.Text) {
-                        TIMUserProfile sendUser = timMessage.getSenderProfile();
-                        String name;
-                        if (sendUser != null) {
-                            name = sendUser.getNickName();
-                        } else {
-                            name = timMessage.getSender();
-                        }
-                        MsgBean msgBean = new MsgBean();
-                        msgBean.setType(1);
-                        msgBean.setContext(elem);
-                        msgBean.setGrpSendName(name);
-                        msgBeen.add(msgBean);
-                    }
-                }
-                EventBusUtil.postEvent(msgBeen);
+                Log.e(tag, "消息发送成功" + timMessage.getMsg());
 
+                TIMUserProfile sendUser = timMessage.getSenderProfile();
+                String name;
+                if (sendUser != null) {
+                    name = sendUser.getNickName();
+                } else {
+                    name = timMessage.getSender();
+                }
+                MsgBean msgBean = new MsgBean();
+                msgBean.setType(1);
+                msgBean.setContext(msgInfo);
+                msgBean.setGrpSendName(name);
+                EventBusUtil.postEvent(msgBean);
             }
+
+
+//            }
 
         });
     }

@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
 import com.tencent.imsdk.TIMTextElem;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.vital.bean.AllUserTrueByDeviceIDBean;
 import com.zhuazhuale.changsha.module.vital.bean.MsgBean;
+import com.zhuazhuale.changsha.module.vital.bean.MsgInfo;
 import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
@@ -29,8 +31,11 @@ import java.util.List;
 public class ChatAdapter extends RecyclerBaseAdapter<MsgBean> {
 
 
+    private final Gson gson;
+
     public ChatAdapter(@NonNull Context context, @NonNull List<MsgBean> mDataList) {
         super(context, mDataList);
+        gson = new Gson();
     }
 
     @Override
@@ -38,9 +43,13 @@ public class ChatAdapter extends RecyclerBaseAdapter<MsgBean> {
         //initView
         TextView tv_msg = holder.getView(R.id.tv_msg);
         TextView tv_name = holder.getView(R.id.tv_name);
-        tv_name.setText(rowsBean.getGrpSendName());
-        TIMTextElem timTextElem = (TIMTextElem) rowsBean.getContext();
-        tv_msg.setText(timTextElem.getText());
+        SimpleDraweeView sdv_face = holder.getView(R.id.sdv_face);
+
+        MsgInfo msgInfo = gson.fromJson(rowsBean.getContext(), MsgInfo.class);
+        tv_name.setText(msgInfo.getNickName());
+//        TIMTextElem timTextElem = (TIMTextElem) rowsBean.getContext();
+        tv_msg.setText(msgInfo.getMsg());
+        FrescoUtil.getInstance().loadNetImage(sdv_face, msgInfo.getHeadPic());
     }
 
     @Override

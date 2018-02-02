@@ -2,7 +2,6 @@ package com.zhuazhuale.changsha.module.vital.bean;
 
 
 
-import com.tencent.imsdk.TIMElem;
 
 import java.io.Serializable;
 
@@ -12,7 +11,7 @@ import java.io.Serializable;
 
 public class MsgBean implements Serializable{
     private String grpSendName;
-    private TIMElem context;
+    private String context;
     private int  type;
 
     public String getGrpSendName() {
@@ -23,11 +22,11 @@ public class MsgBean implements Serializable{
         this.grpSendName = grpSendName;
     }
 
-    public TIMElem getContext() {
+    public String getContext() {
         return context;
     }
 
-    public void setContext(TIMElem context) {
+    public void setContext(String context) {
         this.context = context;
     }
 
