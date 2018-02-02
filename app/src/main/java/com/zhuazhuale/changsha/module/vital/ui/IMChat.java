@@ -119,11 +119,15 @@ public class IMChat {
             @Override
             public void onSuccess(List<TIMGroupMemberInfo> infoList) {//参数返回群组成员信息
                 timValueCallBack.onSuccess(infoList);
+                List<String > strings=new ArrayList<>();
                 for (TIMGroupMemberInfo info : infoList) {
                     LogUtil.e(tag, "user: " + info.getUser() +
                             "join time: " + info.getJoinTime() +
                             "role: " + info.getRole());
+                    strings.add(info.getUser());
                 }
+                getUsersProfile(strings);
+
             }
         };
 
@@ -145,20 +149,20 @@ public class IMChat {
         users.add("sample_user_2");
 
         //获取用户资料
-        TIMFriendshipManager.getInstance().getUsersProfile(users, new TIMValueCallBack<List<TIMUserProfile>>() {
+        TIMFriendshipManager.getInstance().getUsersProfile(userlist, new TIMValueCallBack<List<TIMUserProfile>>() {
             @Override
             public void onError(int code, String desc) {
                 //错误码code和错误描述desc，可用于定位请求失败原因
                 //错误码code列表请参见错误码表
-                Log.e(tag, "getUsersProfile failed: " + code + " desc");
+                LogUtil.e(tag, "getUsersProfile failed: " + code + " desc");
             }
 
             @Override
             public void onSuccess(List<TIMUserProfile> result) {
                 Log.e(tag, "getUsersProfile succ");
                 for (TIMUserProfile res : result) {
-                    Log.e(tag, "identifier: " + res.getIdentifier() + " nickName: " + res.getNickName()
-                            + " remark: " + res.getRemark());
+                    LogUtil.e(tag, "identifier: " + res.getIdentifier() + " nickName: " + res.getNickName()
+                            + " remark: " + res.getFaceUrl());
                 }
             }
         });
@@ -366,7 +370,7 @@ public class IMChat {
     public void setNickName() {
         //初始化参数，修改昵称为“cat”
         TIMFriendshipManager.ModifyUserProfileParam param = new TIMFriendshipManager.ModifyUserProfileParam();
-        param.setNickname(MyApplication.getInstance().getRowsBean().getF_Img());
+        param.setNickname(MyApplication.getInstance().getRowsBean().getF_Name());
         param.setFaceUrl(MyApplication.getInstance().getRowsBean().getF_Img());
 
         TIMFriendshipManager.getInstance().modifyProfile(param, new TIMCallBack() {
@@ -374,12 +378,12 @@ public class IMChat {
             public void onError(int code, String desc) {
                 //错误码code和错误描述desc，可用于定位请求失败原因
                 //错误码code列表请参见错误码表
-                Log.e(tag, "设置头像和昵称失败:  modifyProfile failed: " + code + " desc" + desc);
+                LogUtil.e(tag, "设置头像和昵称失败:  modifyProfile failed: " + code + " desc" + desc);
             }
 
             @Override
             public void onSuccess() {
-                Log.e(tag, "设置头像和昵称成功  :modifyProfile succ");
+                LogUtil.e(tag, "设置头像和昵称成功  :modifyProfile succ");
             }
         });
     }

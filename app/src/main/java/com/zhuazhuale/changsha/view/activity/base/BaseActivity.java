@@ -259,17 +259,20 @@ public abstract class BaseActivity extends AbstractActivity implements IBaseActi
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        switch (keyCode) {
+        return super.onKeyDown(keyCode, event);
+        /*switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                if (mOnKeyClickListener != null) {//如果没有设置返回事件的监听，则默认finish页面。
+               *//* if (mOnKeyClickListener != null) {//如果没有设置返回事件的监听，则默认finish页面。
                     mOnKeyClickListener.clickBack();
                 } else {
                     finish();
-                }
+                }*//*
+                finish();
                 return true;
             default:
                 return super.onKeyDown(keyCode, event);
-        }
+        }*/
+
     }
 
     OnKeyClickListener mOnKeyClickListener;

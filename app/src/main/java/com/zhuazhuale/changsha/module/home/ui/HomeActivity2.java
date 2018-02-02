@@ -74,9 +74,16 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
             }
         });
         getIvToolbarLeft().setImageResource(R.mipmap.shezhi);
-        getIvToolbarLeft().setOnClickListener(new View.OnClickListener() {
+       /* getIvToolbarLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                intent = new Intent(getContext(), SettingActivity.class);
+                startActivity(intent);
+            }
+        });*/
+        this.setOnKeyListener(new OnKeyClickListener() {
+            @Override
+            public void clickBack() {
                 intent = new Intent(getContext(), SettingActivity.class);
                 startActivity(intent);
             }
