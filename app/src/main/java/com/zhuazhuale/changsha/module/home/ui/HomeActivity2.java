@@ -95,6 +95,8 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
     protected void obtainData() {
         presenter2 = new HomePresenter2(this);
         IMChat.getInstance().login("q454216935",123456 + "");
+        String name = MyApplication.getInstance().getRowsBean().getF_Code1();
+//        IMChat.getInstance().login("zhuazhuale" + name, Constant.IMSDK_APPID + "");
         version = "";
         try {
             version = getVersionName();

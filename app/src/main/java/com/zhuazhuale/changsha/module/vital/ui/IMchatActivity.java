@@ -77,17 +77,7 @@ public class IMchatActivity extends AppBaseActivity {
         IMChat.getInstance().changeGroup();//创建监听
         EventBusUtil.register(this);
         IMChat.getInstance().joinGroup(groupId);
-        IMChat.getInstance().getGroupMembers(groupId, new TIMValueCallBack() {
-            @Override
-            public void onError(int i, String s) {
-
-            }
-
-            @Override
-            public void onSuccess(Object o) {
-
-            }
-        });
+        IMChat.getInstance().getGroupMembers(groupId);
     }
 
     //EventBus的事件接收，从事件中获取最新的收藏数量并更新界面展示

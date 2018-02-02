@@ -107,19 +107,18 @@ public class IMChat {
      *
      * @param groupId
      */
-    public void getGroupMembers(String groupId, final TIMValueCallBack timValueCallBack) {
+    public void getGroupMembers(String groupId) {
         groupIds = groupId;
         //创建回调
         TIMValueCallBack<List<TIMGroupMemberInfo>> cb = new TIMValueCallBack<List<TIMGroupMemberInfo>>() {
             @Override
             public void onError(int code, String desc) {
-                timValueCallBack.onError(code, desc);
+                LogUtil.e("获取群成员失败" + code + "  / " + desc);
             }
 
             @Override
             public void onSuccess(List<TIMGroupMemberInfo> infoList) {//参数返回群组成员信息
-                timValueCallBack.onSuccess(infoList);
-                List<String > strings=new ArrayList<>();
+                List<String> strings = new ArrayList<>();
                 for (TIMGroupMemberInfo info : infoList) {
                     LogUtil.e(tag, "user: " + info.getUser() +
                             "join time: " + info.getJoinTime() +
@@ -164,6 +163,7 @@ public class IMChat {
                     LogUtil.e(tag, "identifier: " + res.getIdentifier() + " nickName: " + res.getNickName()
                             + " remark: " + res.getFaceUrl());
                 }
+                EventBusUtil.postEvent(result);
             }
         });
     }
@@ -178,6 +178,7 @@ public class IMChat {
                     public void onForceOffline() {
                         //被其他终端踢下线
                         LogUtil.e("onForceOffline");
+                        ToastUtil.show("您的账号在别处登录!");
                     }
 
                     @Override
@@ -212,9 +213,11 @@ public class IMChat {
                         elem.getOpUserInfo().getFaceUrl();*/
                         switch (elem.getTipsType()) {
                             case Join://加入群
+                                getGroupMembers(groupIds);
                                 LogUtil.e("有人加入了" + elem.getOpUserInfo().getNickName() + '/' + elem.getOpUserInfo().getFaceUrl());
                                 break;
                             case Quit://退出群
+                                getGroupMembers(groupIds);
                                 LogUtil.e("有人退出了" + elem.getOpUserInfo().getNickName() + '/' + elem.getOpUserInfo().getFaceUrl());
                                 break;
                         }
@@ -263,8 +266,6 @@ public class IMChat {
                             TIMTextElem textMsg = (TIMTextElem) element;
                             if (groupIds.equals(groupId)) {
                                 TIMUserProfile sendUser = message.getSenderProfile();
-
-                                LogUtil.e("");
                                 String name = "";
                                 if (sendUser != null) {
                                     name = sendUser.getNickName();
@@ -317,8 +318,7 @@ public class IMChat {
             public void OnPwdLoginSuccess(TLSUserInfo userInfo) {
           /* 登录成功了，在这里可以获取用户票据*/
                 String usersig = MyApplication.getInstance().getTlsHelper().getUserSig(userInfo.identifier);
-                ToastUtil.show(usersig);
-                LogUtil.e(usersig);
+                LogUtil.e("TLS登录成功!");
                 // identifier为用户名，userSig 为用户登录凭证
                 TIMManager.getInstance().login(na, usersig, new TIMCallBack() {
                     @Override
@@ -370,8 +370,10 @@ public class IMChat {
     public void setNickName() {
         //初始化参数，修改昵称为“cat”
         TIMFriendshipManager.ModifyUserProfileParam param = new TIMFriendshipManager.ModifyUserProfileParam();
+        String path = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517584490096&di=cd3b7dd058b791fba268c078a1033490&imgtype=0&src=http%3A%2F%2Fwww.uuuu.cc%2Fuploads%2Fallimg%2Fc160108%2F145222J62E520-23NR.jpg";
         param.setNickname(MyApplication.getInstance().getRowsBean().getF_Name());
-        param.setFaceUrl(MyApplication.getInstance().getRowsBean().getF_Img());
+//        param.setFaceUrl(MyApplication.getInstance().getRowsBean().getF_Img());
+        param.setFaceUrl(path);
 
         TIMFriendshipManager.getInstance().modifyProfile(param, new TIMCallBack() {
             @Override
@@ -463,7 +465,7 @@ public class IMChat {
             public void onError(int code, String desc) {//发送消息失败
                 //错误码code和错误描述desc，可用于定位请求失败原因
                 //错误码code含义请参见错误码表
-                Log.d(tag, "消息发送失败  send message failed. code: " + code + " errmsg: " + desc);
+                Log.e(tag, "消息发送失败  send message failed. code: " + code + " errmsg: " + desc);
             }
 
             @Override

@@ -76,7 +76,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="60dp"
                             android:layout_marginLeft="6dp"
                             android:layout_marginRight="6dp"
                             android:layout_marginTop="28dp"
@@ -140,30 +140,38 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginLeft="6dp"
-                                android:layout_marginTop="4dp"
+                                android:layout_marginRight="14dp"
                                 android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1" />
 
                                 <LinearLayout
                                     android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="center">
+                                    android:layout_height="60dp"
+                                    android:layout_weight="2"
+                                    android:orientation="vertical">
+
+                                    <android.support.v7.widget.RecyclerView
+                                        android:id="@+id/rv_play_lookperson"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="0dp"
+                                        android:layout_gravity="right"
+                                        android:layout_weight="1">
+
+                                    </android.support.v7.widget.RecyclerView>
 
                                     <TextView
-                                        android:id="@+id/tv_play_type"
-                                        android:layout_width="wrap_content"
+                                        android:id="@+id/tv_play_lookperson_num"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:text="网络状况:"
-                                        android:textColor="@color/white"
-                                        android:textSize="14dp" />
-
-                                    <ImageView
-                                        android:id="@+id/iv_play_wifi"
-                                        android:layout_width="20dp"
-                                        android:layout_height="20dp"
-                                        android:layout_marginLeft="4dp"
-                                        android:src="@mipmap/wifi_4" />
+                                        android:layout_marginTop="4dp"
+                                        android:gravity="right"
+                                        android:text="0 人围观"
+                                        android:textColor="@color/black"
+                                        android:textSize="12dp" />
 
                                 </LinearLayout>
 
@@ -300,6 +308,7 @@
 
                 </com.zhy.android.percent.support.PercentLinearLayout>
 
+
                 <LinearLayout
                     android:id="@+id/ll_play_caozuo"
                     android:layout_width="0dp"
@@ -393,6 +402,16 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_play_msg_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_above="@id/ll_play_caozuo"
+                    android:paddingLeft="16dp"
+                    app:layout_heightPercent="30%">
+
+                </android.support.v7.widget.RecyclerView>
+
 
             </com.zhy.android.percent.support.PercentRelativeLayout>
 
@@ -439,13 +458,30 @@
         </com.zhy.android.percent.support.PercentLinearLayout>
     </com.zhuazhuale.changsha.view.ScrollBottomScrollView>
 
-
-    <EditText
-        android:layout_alignParentBottom="true"
-        android:id="@+id/et_play_message"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="@drawable/textbeijing_recharge" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <EditText
+            android:id="@+id/et_play_message"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="5"
+            android:background="@drawable/textbeijing_recharge" />
+
+        <TextView
+            android:id="@+id/tv_play_send_msg"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/textbeijing"
+            android:gravity="center"
+            android:text="发送"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 
 </RelativeLayout>

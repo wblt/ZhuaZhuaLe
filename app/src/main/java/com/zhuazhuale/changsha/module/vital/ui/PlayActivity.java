@@ -41,6 +41,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
+import com.tencent.imsdk.TIMUserProfile;
+import com.tencent.imsdk.TIMValueCallBack;
 import com.tencent.rtmp.ITXLivePlayListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePlayer;
@@ -57,9 +60,13 @@ import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
 import com.zhuazhuale.changsha.module.home.ui.RechargeActivity;
 import com.zhuazhuale.changsha.module.home.ui.RecordActivity;
 import com.zhuazhuale.changsha.module.vital.adapter.AllTrueAdapter;
+import com.zhuazhuale.changsha.module.vital.adapter.ChatAdapter;
+import com.zhuazhuale.changsha.module.vital.adapter.LookPersonAdapter;
 import com.zhuazhuale.changsha.module.vital.adapter.PlayFragmentPagerAdapter;
 import com.zhuazhuale.changsha.module.vital.bean.AllUserTrueByDeviceIDBean;
 import com.zhuazhuale.changsha.module.vital.bean.ControlGameBean;
+import com.zhuazhuale.changsha.module.vital.bean.MsgBean;
+import com.zhuazhuale.changsha.module.vital.bean.MsgInfo;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
 import com.zhuazhuale.changsha.module.vital.presenter.PlayPresenter;
 import com.zhuazhuale.changsha.util.Constant;
@@ -118,8 +125,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     ImageView iv_play_recharge;
     @BindView(R.id.sdv_play_fece)
     SimpleDraweeView sdv_play_fece;
-    @BindView(R.id.iv_play_wifi)
-    ImageView iv_play_wifi;
+    /*  @BindView(R.id.iv_play_wifi)
+      ImageView iv_play_wifi;*/
     @BindView(R.id.tv_play_name)
     TextView tv_play_name;
     @BindView(R.id.view_play)
@@ -144,6 +151,15 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     ViewPager vp_play_info;
     @BindView(R.id.et_play_message)
     EditText et_play_message;
+    @BindView(R.id.rv_play_lookperson)
+    RecyclerView rv_play_lookperson;
+    @BindView(R.id.tv_play_lookperson_num)
+    TextView tv_play_lookperson_num;
+    @BindView(R.id.tv_play_send_msg)
+    TextView tv_play_send_msg;
+    @BindView(R.id.rv_play_msg_list)
+    RecyclerView rv_play_msg_list;
+
     private PlayFragmentPagerAdapter pagerAdapter;
 
 
@@ -187,21 +203,25 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private Drawable drawabledown;
     private Drawable drawablecatch;
 
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == 0) {
-                checkWifiState();
-                sendEmptyMessageDelayed(0, 2000);
-            }
-        }
-    };
+    /* private Handler mHandler = new Handler() {
+         @Override
+         public void handleMessage(Message msg) {
+             super.handleMessage(msg);
+             if (msg.what == 0) {
+ //                checkWifiState();
+                 sendEmptyMessageDelayed(0, 2000);
+             }
+         }
+     };*/
     private MediaProjectionManager mMediaProjectionManager;
     private ScreenRecorder mRecorder;
     private boolean is_lp;
     private String moviePath;
     private LinearLayout ll_dialog_bg;
+    private LookPersonAdapter lookPersonAdapter;
+    private Gson gson;
+    private List<TIMUserProfile> userProfiles;
+    private ChatAdapter chatAdapter;
 
     @Override
     protected void setContentLayout() {
@@ -412,10 +432,58 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         EventBusUtil.register(this);//订阅事件
 
         // 初始化wifi 状态检测
-        mHandler.sendEmptyMessageDelayed(0, 2000);
+//        mHandler.sendEmptyMessageDelayed(0, 2000);
+        //创建腾讯云通信
+        initIMChat();
     }
 
-    //EventBus的事件接收，从事件中获取最新的收藏数量并更新界面展示
+    /**
+     * 创建腾讯云通信
+     */
+    private List<MsgBean> msgBeen = new ArrayList<>();
+
+    private void initIMChat() {
+        // 观看人数头像
+        userProfiles = new ArrayList<>();
+        lookPersonAdapter = new LookPersonAdapter(this, userProfiles);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rv_play_lookperson.setLayoutManager(layoutManager);
+        rv_play_lookperson.setAdapter(lookPersonAdapter);
+        // 消息展现列表
+        chatAdapter = new ChatAdapter(this, msgBeen);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setStackFromEnd(true);
+        rv_play_msg_list.setLayoutManager(linearLayoutManager);
+        rv_play_msg_list.setAdapter(chatAdapter);
+        gson = new Gson();
+
+        IMChat.getInstance().changeGroup();//创建监听
+        IMChat.getInstance().joinGroup(rowsBean.getF_GroupID());
+        IMChat.getInstance().getGroupMembers(rowsBean.getF_GroupID());
+        //发送消息
+        tv_play_send_msg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String msgt = et_play_message.getText().toString().trim();
+
+                if (msgt.isEmpty()) {
+                    ToastUtil.show("请输入...");
+                    return;
+                }
+                MsgInfo msgInfo = new MsgInfo();
+                msgInfo.setMsg(msgt);
+                msgInfo.setHeadPic("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517584490096&di=cd3b7dd058b791fba268c078a1033490&imgtype=0&src=http%3A%2F%2Fwww.uuuu.cc%2Fuploads%2Fallimg%2Fc160108%2F145222J62E520-23NR.jpg");
+                msgInfo.setNickName("我就是美女哈哈");
+                msgInfo.setUserId("zhuazhuale" + MyApplication.getInstance().getRowsBean().getF_Code1());
+                msgInfo.setUserAction(5);
+                String msg = gson.toJson(msgInfo);
+                IMChat.getInstance().sendMessage(rowsBean.getF_GroupID(), msg);
+            }
+        });
+    }
+
+    //EventBus的事件接收
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleEvent(CPfreshEvent event) {
         String code = event.getCPisFresh();
@@ -423,6 +491,28 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         if ("刷新".equals(code)) {
             presenter.initNewCP();
         }
+
+    }
+
+    //EventBus的事件接收
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleEvent(List<TIMUserProfile> event) {
+        LogUtil.e("我刷新了,观看人数");
+        userProfiles = event;
+        lookPersonAdapter.replaceData(userProfiles);
+        tv_play_lookperson_num.setText(event.size() + " 人围观  ");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleEvent(MsgBean event) {
+        if (event.getType() == 1) {
+            if (!et_play_message.getText().toString().isEmpty()) {
+                et_play_message.setText("");
+            }
+        }
+        msgBeen.add(event);
+        chatAdapter.replaceData(msgBeen);
+        rv_play_msg_list.smoothScrollToPosition(chatAdapter.getItemCount());
 
     }
 
@@ -660,25 +750,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 EventBusUtil.postEvent(event);
             }
         });
-      /*  sv_play.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
 
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_UP:
-                        View childView = sv_play.getChildAt(0);
-                        if (childView != null && childView.getMeasuredHeight() <= sv_play.getScrollY() + sv_play.getHeight()) {
-                            ToastUtil.show("我是scroll,我到底了1");
-                            return true;
-                        } else if (sv_play.getScrollY() == 0) {
-                            ToastUtil.show("我是scroll,我到底了2");
-                            return false;
-                        }
-                        break;
-                }
-                return true;
-            }
-        });*/
 
     }
 
@@ -937,6 +1009,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     @Override
     public void onDestroy() {
         super.onDestroy();
+        IMChat.getInstance().quitGroup(rowsBean.getF_GroupID());
         isHave = false;
         CountdownUtil.getInstance().cancelAll();
         if (mutliThread != null) {
@@ -1176,20 +1249,20 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         });
     }
 
-    /**
+   /* *//**
      * 检查wifi是否处开连接状态
      *
      * @return
-     */
+     *//*
     public boolean isWifiConnect() {
         ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mWifiInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         return mWifiInfo.isConnected();
     }
 
-    /**
+    *//**
      * 检查wifi强弱并更改图标显示
-     */
+     *//*
     int wifiNum = 0;
 
     public void checkWifiState() {
@@ -1232,7 +1305,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             Log.e("tag", "无连接");
             iv_play_wifi.setImageResource(R.mipmap.wifi_null);
         }
-    }
+    }*/
 
     /**
      * 录制屏幕视频
