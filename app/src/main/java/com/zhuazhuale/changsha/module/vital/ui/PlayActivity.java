@@ -2,42 +2,36 @@ package com.zhuazhuale.changsha.module.vital.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.PorterDuff;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -45,7 +39,6 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.tencent.imsdk.TIMUserProfile;
-import com.tencent.imsdk.TIMValueCallBack;
 import com.tencent.rtmp.ITXLivePlayListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePlayer;
@@ -71,7 +64,6 @@ import com.zhuazhuale.changsha.module.vital.bean.MsgBean;
 import com.zhuazhuale.changsha.module.vital.bean.MsgInfo;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
 import com.zhuazhuale.changsha.module.vital.presenter.PlayPresenter;
-import com.zhuazhuale.changsha.util.CommonUtil;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.CountdownUtil;
 import com.zhuazhuale.changsha.util.DensityUtil;
@@ -99,10 +91,10 @@ import java.util.Random;
 import butterknife.BindView;
 import master.flame.danmaku.controller.DrawHandler;
 import master.flame.danmaku.danmaku.model.BaseDanmaku;
-import master.flame.danmaku.danmaku.model.Danmaku;
 import master.flame.danmaku.danmaku.model.DanmakuTimer;
 import master.flame.danmaku.danmaku.model.IDanmakus;
 import master.flame.danmaku.danmaku.model.android.DanmakuContext;
+import master.flame.danmaku.danmaku.model.android.DanmakuFactory;
 import master.flame.danmaku.danmaku.model.android.Danmakus;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.ui.widget.DanmakuView;
@@ -516,12 +508,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         if (msgBeen.size() > 5) {
             msgBeen.remove(0);
         }
-        if (event.getType() == 3) {
+//        if (event.getType() == 3) {
             //弹幕
             MsgInfo msgInfo = gson.fromJson(event.getContext(), MsgInfo.class);
             addDanmaku(msgInfo.getNickName() + msgInfo.getMsg(), false);
 
-        }
+//        }
         chatAdapter.replaceData(msgBeen);
         rv_play_msg_list.smoothScrollToPosition(chatAdapter.getItemCount());
 
@@ -585,7 +577,40 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         danmakuView.addDanmaku(danmaku);
     }
 
-
+    /**
+     * 显示图片加文字
+     * @param islive
+     */
+    private void addDanmaKuShowTextAndImage(boolean islive) {
+        BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
+        Drawable drawable = getResources().getDrawable(R.mipmap.ic_logo);
+        drawable.setBounds(0, 0, 100, 100);
+        SpannableStringBuilder spannable = createSpannable(drawable);
+        danmaku.text = spannable;
+        danmaku.padding = 5;
+        danmaku.priority = 1;  // 一定会显示, 一般用于本机发送的弹幕
+        danmaku.isLive = islive;
+        danmaku.setTime(danmakuView.getCurrentTime() + 1200);
+        danmaku.textSize = 25f * (parser.getDisplayer().getDensity() - 0.6f);
+        danmaku.textColor = Color.RED;
+        danmaku.textShadowColor = 0; // 重要：如果有图文混排，最好不要设置描边(设textShadowColor=0)，否则会进行两次复杂的绘制导致运行效率降低
+        danmaku.underlineColor = Color.GREEN;
+        danmakuView.addDanmaku(danmaku);
+    }
+    /**
+     * 添加图片和文字
+     * @param drawable
+     * @return
+     */
+    private SpannableStringBuilder createSpannable(Drawable drawable) {
+        String text = "bitmap";
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(text);
+        ImageSpan span = new ImageSpan(drawable);//ImageSpan.ALIGN_BOTTOM);
+        spannableStringBuilder.setSpan(span, 0, text.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        spannableStringBuilder.append("图文混排");
+        spannableStringBuilder.setSpan(new BackgroundColorSpan(Color.parseColor("#8A2233B1")), 0, spannableStringBuilder.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        return spannableStringBuilder;
+    }
     /**
      * 查询游戏币数量
      *
@@ -1167,6 +1192,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         if (mRecorder != null) {
             mRecorder.quit();
             mRecorder = null;
+        }
+        if (danmakuView != null) {
+            // dont forget release!
+            danmakuView.release();
+            danmakuView = null;
         }
     }
 
