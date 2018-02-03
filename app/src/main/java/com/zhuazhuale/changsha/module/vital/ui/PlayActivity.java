@@ -28,7 +28,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -72,12 +74,14 @@ import com.zhuazhuale.changsha.module.vital.presenter.PlayPresenter;
 import com.zhuazhuale.changsha.util.CommonUtil;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.CountdownUtil;
+import com.zhuazhuale.changsha.util.DensityUtil;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.ScreenRecorder;
 import com.zhuazhuale.changsha.util.SoundUtils;
 import com.zhuazhuale.changsha.util.ToastUtil;
+import com.zhuazhuale.changsha.util.WXShareUtils;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.ScrollBottomScrollView;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
@@ -93,6 +97,15 @@ import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
+import master.flame.danmaku.controller.DrawHandler;
+import master.flame.danmaku.danmaku.model.BaseDanmaku;
+import master.flame.danmaku.danmaku.model.Danmaku;
+import master.flame.danmaku.danmaku.model.DanmakuTimer;
+import master.flame.danmaku.danmaku.model.IDanmakus;
+import master.flame.danmaku.danmaku.model.android.DanmakuContext;
+import master.flame.danmaku.danmaku.model.android.Danmakus;
+import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
+import master.flame.danmaku.ui.widget.DanmakuView;
 
 /**
  * 游戏页面
@@ -160,6 +173,10 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     RecyclerView rv_play_msg_list;
     @BindView(R.id.iv_play_setmsg)
     ImageView iv_play_setmsg;
+    @BindView(R.id.iv_play_share)
+    ImageView iv_play_share;
+    @BindView(R.id.tv_play_paoma)
+    DanmakuView danmakuView;
 
     private PlayFragmentPagerAdapter pagerAdapter;
 
@@ -223,6 +240,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private Gson gson;
     private List<TIMUserProfile> userProfiles;
     private ChatAdapter chatAdapter;
+    private Dialog shareDialog;
+    private DanmakuContext danmakuContext;
 
     @Override
     protected void setContentLayout() {
@@ -257,7 +276,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         tv_play_mian_type.setText("观战中");
         int color = getResourceColor(R.color.transparent);
         setBarTranslucent(color, 0, color, 0);
-//        showLoadingDialog("");
         getToolbar().setVisibility(View.GONE);
         //mPlayerView即step1中添加的界面view
         mView1 = (TXCloudVideoView) findViewById(R.id.video_view1);
@@ -270,7 +288,10 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         creatSoundPool();
         FrescoUtil.getInstance().loadNetImage(sdv_play_fece, MyApplication.getInstance().getRowsBean().getF_Img());
         tv_play_name.setText(MyApplication.getInstance().getRowsBean().getF_Name());
+        //抓中提示
         creatMyDialog();
+        //微信分享
+        creatWXShareDialog();
         // 监听返回按键
         this.setOnKeyListener(new OnKeyClickListener() {
             @Override
@@ -296,6 +317,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         pagerAdapter = new PlayFragmentPagerAdapter(getSupportFragmentManager(), titles, rowsBean);
         vp_play_info.setAdapter(pagerAdapter);
         tl_play_title.setupWithViewPager(vp_play_info);
+        //弹幕
+        initDanMu();
     }
 
     /**
@@ -488,18 +511,78 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleEvent(MsgBean event) {
-       /* if (event.getType() == 1) {
-            if (!et_play_message.getText().toString().isEmpty()) {
-                et_play_message.setText("");
-            }
-        }*/
+
         msgBeen.add(event);
         if (msgBeen.size() > 5) {
             msgBeen.remove(0);
         }
+        if (event.getType() == 3) {
+            //弹幕
+            MsgInfo msgInfo = gson.fromJson(event.getContext(), MsgInfo.class);
+            addDanmaku(msgInfo.getNickName() + msgInfo.getMsg(), false);
+
+        }
         chatAdapter.replaceData(msgBeen);
         rv_play_msg_list.smoothScrollToPosition(chatAdapter.getItemCount());
 
+    }
+
+    /**
+     * 弹幕初始化
+     */
+    private void initDanMu() {
+        danmakuView.enableDanmakuDrawingCache(true);
+        danmakuView.setCallback(new DrawHandler.Callback() {
+            @Override
+            public void prepared() {
+//                showDanmaku = true;
+                danmakuView.start();
+//                generateSomeDanmaku();
+            }
+
+            @Override
+            public void updateTimer(DanmakuTimer timer) {
+
+            }
+
+            @Override
+            public void danmakuShown(BaseDanmaku danmaku) {
+
+            }
+
+            @Override
+            public void drawingFinished() {
+
+            }
+        });
+        danmakuContext = DanmakuContext.create();
+        danmakuView.prepare(parser, danmakuContext);
+    }
+
+    private BaseDanmakuParser parser = new BaseDanmakuParser() {
+        @Override
+        protected IDanmakus parse() {
+            return new Danmakus();
+        }
+    };
+
+    /**
+     * 向弹幕View中添加一条弹幕
+     *
+     * @param content    弹幕的具体内容
+     * @param withBorder 弹幕是否有边框
+     */
+    private void addDanmaku(String content, boolean withBorder) {
+        BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
+        danmaku.text = content;
+        danmaku.padding = 5;
+        danmaku.textSize = DensityUtil.sp2px(this, 16);
+        danmaku.textColor = Color.BLACK;
+        danmaku.setTime(danmakuView.getCurrentTime());
+        if (withBorder) {
+            danmaku.borderColor = Color.GREEN;
+        }
+        danmakuView.addDanmaku(danmaku);
     }
 
 
@@ -737,6 +820,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             }
         });
         iv_play_setmsg.setOnClickListener(this);
+        iv_play_share.setOnClickListener(this);
 
     }
 
@@ -957,8 +1041,65 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 intent.putExtra("groupId", rowsBean.getF_GroupID());
                 startActivity(intent);
                 break;
+            case R.id.iv_play_share:
+                shareDialog.show();
+                break;
         }
 
+    }
+
+    private void creatWXShareDialog() {
+        shareDialog = new Dialog(this, R.style.BottomDialog);
+        LinearLayout root = (LinearLayout) LayoutInflater.from(this).inflate(
+                R.layout.dialog_invite, null);
+        LinearLayout ll_invite_hy = (LinearLayout) root.findViewById(R.id.ll_invite_hy);
+        LinearLayout ll_invite_pyq = (LinearLayout) root.findViewById(R.id.ll_invite_pyq);
+        shareDialog.setContentView(root);
+
+        Window dialogWindow = shareDialog.getWindow();
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        lp.x = 0; // 新位置X坐标
+        lp.y = 0; // 新位置Y坐标
+        lp.width = (int) getResources().getDisplayMetrics().widthPixels; // 宽度
+        root.measure(0, 0);
+        lp.height = root.getMeasuredHeight();
+
+        lp.alpha = 9f; // 透明度
+        dialogWindow.setAttributes(lp);
+
+        ll_invite_hy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareDialog.dismiss();
+
+                String url = MyApplication.getInstance().getRowsBean().getF_FxUrl();
+                String title = "长沙抓抓乐";
+                String desc = "亲，欢迎使用长沙抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
+                if (url == null || url.isEmpty()) {
+                    ToastUtil.show("分享链接不存在!");
+                    return;
+                }
+                WXShareUtils.wechatShare(0, url, title, desc);
+//                wechatShare(0, url, title, desc);
+            }
+        });
+        ll_invite_pyq.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareDialog.dismiss();
+
+                String url = MyApplication.getInstance().getRowsBean().getF_FxUrl();
+                String title = "长沙抓抓乐";
+                String desc = "亲，欢迎使用长沙抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
+                if (url == null || url.isEmpty()) {
+                    ToastUtil.show("分享链接不存在!");
+                    return;
+                }
+                WXShareUtils.wechatShare(1, url, title, desc);
+//                wechatShare(1, url, title, desc);
+            }
+        });
     }
 
 

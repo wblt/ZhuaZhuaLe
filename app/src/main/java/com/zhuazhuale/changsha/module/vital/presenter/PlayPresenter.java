@@ -1,23 +1,12 @@
 package com.zhuazhuale.changsha.module.vital.presenter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
-import android.os.Bundle;
-import android.util.Log;
 
 import com.google.gson.Gson;
-import com.tencent.ugc.TXRecordCommon;
-import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.QueryGameBean;
-import com.zhuazhuale.changsha.module.home.model.MineModel;
-import com.zhuazhuale.changsha.module.home.ui.IMineView;
 import com.zhuazhuale.changsha.module.vital.bean.AllUserTrueByDeviceIDBean;
 import com.zhuazhuale.changsha.module.vital.bean.ControlGameBean;
 import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
@@ -29,7 +18,6 @@ import com.zhuazhuale.changsha.util.TXupload.TXUGCPublish;
 import com.zhuazhuale.changsha.util.TXupload.TXUGCPublishTypeDef;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
-import static android.R.attr.type;
 
 /**
  * 个人中心
@@ -40,10 +28,12 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
     private String TAG = getClass().getName();
 
     private final PlayModel playModel;
+    private Gson gson;
 
     public PlayPresenter(IPlayView view) {
         super(view);
         playModel = PlayModel.getInstance();
+        gson = new Gson();
     }
 
     /**
@@ -54,7 +44,6 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
-                Gson gson = new Gson();
                 NewCPBean newCPBean = gson.fromJson(s, NewCPBean.class);
                 mIView.showNewCP(newCPBean);
             }
@@ -83,7 +72,6 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
-                Gson gson = new Gson();
                 QueryGameBean queryGameBean = gson.fromJson(s, QueryGameBean.class);
                 mIView.showQueryGame(queryGameBean, type);
             }
@@ -111,7 +99,6 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
-                Gson gson = new Gson();
                 StartGameBean gameBean = gson.fromJson(s, StartGameBean.class);
                 mIView.showStartGame(gameBean);
             }
@@ -139,7 +126,6 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
-                Gson gson = new Gson();
                 EditAddressBean LowerGame = gson.fromJson(s, EditAddressBean.class);
                 mIView.showLowerGame(LowerGame);
             }
@@ -170,7 +156,6 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
-                Gson gson = new Gson();
                 ControlGameBean controlGameBean = gson.fromJson(s, ControlGameBean.class);
                 mIView.showControlGame(controlGameBean, vAction);
             }
@@ -198,7 +183,6 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
-                Gson gson = new Gson();
                 AllUserTrueByDeviceIDBean trueByDeviceIDBean = gson.fromJson(s, AllUserTrueByDeviceIDBean.class);
                 mIView.showAllUserTrues(trueByDeviceIDBean, type);
             }
@@ -229,7 +213,6 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
-                Gson gson = new Gson();
                 UploadBean uploadBean = gson.fromJson(s, UploadBean.class);
                 initPushMP4ToTX(uploadBean.getRows().getVToken(), moviePath, grabID);
             }
@@ -287,7 +270,6 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
-                Gson gson = new Gson();
               /*  UploadBean uploadBean = gson.fromJson(s, UploadBean.class);
                 initPushMP4ToTX(uploadBean.getRows().getVToken(), moviePath);*/
             }

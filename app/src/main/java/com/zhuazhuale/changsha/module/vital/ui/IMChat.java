@@ -2,6 +2,7 @@ package com.zhuazhuale.changsha.module.vital.ui;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMConnListener;
 import com.tencent.imsdk.TIMConversation;
@@ -27,6 +28,7 @@ import com.tencent.imsdk.TIMValueCallBack;
 import com.tencent.imsdk.ext.group.TIMGroupManagerExt;
 import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.module.vital.bean.MsgBean;
+import com.zhuazhuale.changsha.module.vital.bean.MsgInfo;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
@@ -209,15 +211,40 @@ public class IMChat {
                     @Override
                     public void onGroupTipsEvent(TIMGroupTipsElem elem) {
                         LogUtil.e("onGroupTipsEvent, type: " + elem.getTipsType());
-                     /*   elem.getOpUserInfo().getNickName();
-                        elem.getOpUserInfo().getFaceUrl();*/
+                        TIMUserProfile timUserProfile = elem.getOpUserInfo();
+                        MsgInfo msgInfo = new MsgInfo();
+                        MsgBean msgBean = new MsgBean();
+                        Gson gson = new Gson();
                         switch (elem.getTipsType()) {
                             case Join://加入群
                                 getGroupMembers(groupIds);
-                                LogUtil.e("有人加入了" + elem.getOpUserInfo().getNickName() + '/' + elem.getOpUserInfo().getFaceUrl());
+                                msgInfo.setHeadPic(timUserProfile.getFaceUrl());
+                                msgInfo.setUserId(timUserProfile.getIdentifier());
+                                msgInfo.setMsg("进入房间");
+                                msgInfo.setNickName(timUserProfile.getNickName());
+                                msgInfo.setUserAction(5);
+
+                                String context1 = gson.toJson(msgInfo);
+                                msgBean.setType(3);
+                                msgBean.setContext(context1);
+                                msgBean.setGrpSendName(timUserProfile.getNickName());
+                                EventBusUtil.postEvent(msgBean);
+                                LogUtil.e("有人加入了" + timUserProfile.getNickName() + '/' + timUserProfile.getFaceUrl());
                                 break;
                             case Quit://退出群
                                 getGroupMembers(groupIds);
+                                msgInfo.setHeadPic(timUserProfile.getFaceUrl());
+                                msgInfo.setUserId(timUserProfile.getIdentifier());
+                                msgInfo.setMsg("退出房间");
+                                msgInfo.setNickName(timUserProfile.getNickName());
+                                msgInfo.setUserAction(5);
+
+
+                                String context2 = gson.toJson(msgInfo);
+                                msgBean.setType(3);
+                                msgBean.setContext(context2);
+                                msgBean.setGrpSendName(timUserProfile.getNickName());
+                                EventBusUtil.postEvent(msgBean);
                                 LogUtil.e("有人退出了" + elem.getOpUserInfo().getNickName() + '/' + elem.getOpUserInfo().getFaceUrl());
                                 break;
                         }

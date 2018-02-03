@@ -31,59 +31,6 @@ import static com.zhuazhuale.changsha.app.MyApplication.api;
 public class WXShareUtils {
 
 
-    public static void creatMyDialog(Context context) {
-         final Dialog  dialog = new Dialog(context, R.style.BottomDialog);
-        LinearLayout root = (LinearLayout) LayoutInflater.from(context).inflate(
-                R.layout.dialog_invite, null);
-        LinearLayout ll_invite_hy = (LinearLayout) root.findViewById(R.id.ll_invite_hy);
-        LinearLayout ll_invite_pyq = (LinearLayout) root.findViewById(R.id.ll_invite_pyq);
-        dialog.setContentView(root);
-
-        Window dialogWindow = dialog.getWindow();
-        dialogWindow.setGravity(Gravity.BOTTOM);
-        WindowManager.LayoutParams lp = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-        lp.x = 0; // 新位置X坐标
-        lp.y = 0; // 新位置Y坐标
-        lp.width = (int) context.getResources().getDisplayMetrics().widthPixels; // 宽度
-        root.measure(0, 0);
-        lp.height = root.getMeasuredHeight();
-
-        lp.alpha = 9f; // 透明度
-        dialogWindow.setAttributes(lp);
-
-        ll_invite_hy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-
-                String url = MyApplication.getInstance().getRowsBean().getF_FxUrl();
-                String title = "长沙抓抓乐";
-                String desc = "亲，欢迎使用长沙抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
-                if (url == null || url.isEmpty()) {
-                    ToastUtil.show("分享链接不存在!");
-                    return;
-                }
-                WXShareUtils.wechatShare(0, url, title, desc);
-//                wechatShare(0, url, title, desc);
-            }
-        });
-        ll_invite_pyq.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-
-                String url = MyApplication.getInstance().getRowsBean().getF_FxUrl();
-                String title = "长沙抓抓乐";
-                String desc = "亲，欢迎使用长沙抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
-                if (url == null || url.isEmpty()) {
-                    ToastUtil.show("分享链接不存在!");
-                    return;
-                }
-                WXShareUtils.wechatShare(1, url, title, desc);
-//                wechatShare(1, url, title, desc);
-            }
-        });
-    }
 
     public static void wechatShare(int flag, String url, String title, String desc) {
 

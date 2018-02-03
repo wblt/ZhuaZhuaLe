@@ -75,8 +75,8 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void initView() {
-//        creatMyDialog();
-        WXShareUtils.creatMyDialog(this);
+        creatMyDialog();
+//        WXShareUtils.creatMyDialog(this);
     }
 
 
