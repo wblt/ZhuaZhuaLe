@@ -3,29 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent"
+    android:id="@+id/rl_put_mess"
     android:orientation="vertical">
 
     <LinearLayout
+        android:background="@color/gray_e"
         android:id="@+id/ll_play_msg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:paddingBottom="10dp"
-        android:layout_margin="5dp">
+       >
 
         <EditText
-            android:background="@color/white"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/textbeijing_recharge"
             android:hint="与小伙伴们一起互动吧!"
             android:paddingLeft="4dp"
-            android:paddingBottom="10dp"
             android:id="@+id/et_play_message"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="30dp"
             android:textColor="@color/black"
+            android:textSize="14dp"
             android:layout_weight="5"
          />
 
         <TextView
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:id="@+id/tv_play_send_msg"
             android:layout_width="0dp"
             android:layout_height="match_parent"

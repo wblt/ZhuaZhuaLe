@@ -25,6 +25,7 @@ import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.module.home.adapter.InviteAdapter;
 import com.zhuazhuale.changsha.util.CountdownUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
+import com.zhuazhuale.changsha.util.WXShareUtils;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
@@ -74,7 +75,8 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void initView() {
-        creatMyDialog();
+//        creatMyDialog();
+        WXShareUtils.creatMyDialog(this);
     }
 
 
@@ -149,7 +151,8 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
                     ToastUtil.show("分享链接不存在!");
                     return;
                 }
-                wechatShare(0, url, title, desc);
+                WXShareUtils.wechatShare(0, url, title, desc);
+//                wechatShare(0, url, title, desc);
             }
         });
         ll_invite_pyq.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +167,8 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
                     ToastUtil.show("分享链接不存在!");
                     return;
                 }
-                wechatShare(1, url, title, desc);
+                WXShareUtils.wechatShare(1, url, title, desc);
+//                wechatShare(1, url, title, desc);
             }
         });
     }
@@ -179,58 +183,4 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
         }
     }
 
-
-    private void wechatShare(int flag, String url, String title, String desc) {
-
-        WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = url;
-        WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title = title;
-        msg.description = desc;
-        //这里替换一张自己工程里的图片资源
-        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.mipmap.share);
-        //并且还要创建图片的缩略图，因为微信限制了图片的大小
-        msg.setThumbImage(thumb);
-        msg.thumbData = bmpToByteArray(thumb, true);
-
-        SendMessageToWX.Req req = new SendMessageToWX.Req();
-        req.transaction = String.valueOf(System.currentTimeMillis());
-        req.message = msg;
-        req.scene = flag == 0 ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
-        api.sendReq(req);
-    }
-
-    public static byte[] bmpToByteArray(final Bitmap bmp, final boolean needRecycle) {
-        int i;
-        int j;
-        if (bmp.getHeight() > bmp.getWidth()) {
-            i = bmp.getWidth();
-            j = bmp.getWidth();
-        } else {
-            i = bmp.getHeight();
-            j = bmp.getHeight();
-        }
-
-        Bitmap localBitmap = Bitmap.createBitmap(i, j, Bitmap.Config.RGB_565);
-        Canvas localCanvas = new Canvas(localBitmap);
-
-        while (true) {
-            localCanvas.drawBitmap(bmp, new Rect(0, 0, i, j), new Rect(0, 0, i, j), null);
-            if (needRecycle)
-                bmp.recycle();
-            ByteArrayOutputStream localByteArrayOutputStream = new ByteArrayOutputStream();
-            localBitmap.compress(Bitmap.CompressFormat.JPEG, 100,
-                    localByteArrayOutputStream);
-            localBitmap.recycle();
-            byte[] arrayOfByte = localByteArrayOutputStream.toByteArray();
-            try {
-                localByteArrayOutputStream.close();
-                return arrayOfByte;
-            } catch (Exception e) {
-                // F.out(e);
-            }
-            i = bmp.getHeight();
-            j = bmp.getHeight();
-        }
-    }
 }

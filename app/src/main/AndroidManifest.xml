@@ -76,6 +76,7 @@
         <activity
             android:name=".module.vital.ui.PutMessageActivity"
             android:theme="@style/Transparent"
+            android:windowSoftInputMode="adjustResize|adjustUnspecified|stateHidden"
             android:screenOrientation="portrait" />
 
         <service

@@ -351,7 +351,7 @@ public class IMChat {
             @Override
             public void OnPwdLoginFail(TLSErrInfo errInfo) {
                 LogUtil.e(errInfo.Msg);
-                ZhuCeAccount(name, passWord);
+                ZhuCeAccount(na, passWord);
           /* 登录失败，比如说密码错误，用户帐号不存在等，通过errInfo.ErrCode, errInfo.Title, errInfo.Msg等可以得到更具体的错误信息*/
             }
 

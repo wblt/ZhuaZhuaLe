@@ -37,7 +37,7 @@ public class LookPersonAdapter extends RecyclerBaseAdapter<TIMUserProfile> {
         //initView
         SimpleDraweeView sdv_look_person_face=holder.getView(R.id.sdv_look_person_face);
         if (rowsBean.getFaceUrl().isEmpty()){
-            FrescoUtil.getInstance().loadResourceImage(sdv_look_person_face,R.mipmap.ic_logo);
+            FrescoUtil.getInstance().loadResourceImage(sdv_look_person_face,R.mipmap.ic_image_load);
         }else {
             FrescoUtil.getInstance().loadNetImage(sdv_look_person_face, rowsBean.getFaceUrl());//加载网络图片
 

@@ -2,12 +2,16 @@ package com.zhuazhuale.changsha.module.vital.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -32,6 +36,8 @@ public class PutMessageActivity extends Activity {
     EditText et_play_message;
     @BindView(R.id.tv_play_send_msg)
     TextView tv_play_send_msg;
+    @BindView(R.id.rl_put_mess)
+    RelativeLayout rl_put_mess;
     private Gson gson;
 
     @Override
@@ -56,6 +62,32 @@ public class PutMessageActivity extends Activity {
         UltimateBar ultimateBar = new UltimateBar(this);
         int color = ResourcesCompat.getColor(getResources(), R.color.transparent, null);
         ultimateBar.setTransparentBar(color, 0, color, 0);
+        View decorView = getWindow().getDecorView();
+        View contentView = findViewById(R.id.ll_play_msg);// 此处的控件ID可以使用界面当中的指定的任意控件
+        decorView.getViewTreeObserver().addOnGlobalLayoutListener(getGlobalLayoutListener(decorView, contentView));
+    }
+
+    private ViewTreeObserver.OnGlobalLayoutListener getGlobalLayoutListener(final View decorView, final View contentView) {
+        return new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                decorView.getWindowVisibleDisplayFrame(r);
+
+                int height = decorView.getContext().getResources().getDisplayMetrics().heightPixels;
+                int diff = height - r.bottom;
+
+                if (diff != 0) {
+                    if (contentView.getPaddingBottom() != diff) {
+                        contentView.setPadding(0, 0, 0, diff);
+                    }
+                } else {
+                    if (contentView.getPaddingBottom() != 0) {
+                        contentView.setPadding(0, 0, 0, 0);
+                    }
+                }
+            }
+        };
     }
 
     private void initData() {
@@ -80,6 +112,12 @@ public class PutMessageActivity extends Activity {
                 String msg = gson.toJson(msgInfo);
                 IMChat.getInstance().sendMessage(groupId, msg);
                 et_play_message.setText("");
+                finish();
+            }
+        });
+        rl_put_mess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 finish();
             }
         });

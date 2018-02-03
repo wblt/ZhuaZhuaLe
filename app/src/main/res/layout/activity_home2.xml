@@ -17,8 +17,8 @@
         android:id="@+id/tl_home_title"
         app:tabTextAppearance="@style/TabLayoutTextStyleHome"
         android:layout_width="match_parent"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:layout_height="40dp">
 
     </android.support.design.widget.TabLayout>
