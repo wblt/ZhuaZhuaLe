@@ -97,15 +97,15 @@
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
-                                android:layout_height="46dp"
+                                android:layout_height="40dp"
                                 android:layout_marginLeft="20dp"
                                 android:background="@drawable/play_name_shape"
                                 android:padding="3dp">
 
                                 <com.facebook.drawee.view.SimpleDraweeView
                                     android:id="@+id/sdv_play_fece"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
+                                    android:layout_width="34dp"
+                                    android:layout_height="34dp"
                                     fresco:roundAsCircle="true"
                                     fresco:roundBottomLeft="true"
                                     fresco:roundBottomRight="true"

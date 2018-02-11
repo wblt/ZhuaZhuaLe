@@ -508,12 +508,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         if (msgBeen.size() > 5) {
             msgBeen.remove(0);
         }
-//        if (event.getType() == 3) {
+        if (event.getType() == 3) {
             //弹幕
             MsgInfo msgInfo = gson.fromJson(event.getContext(), MsgInfo.class);
             addDanmaku(msgInfo.getNickName() + msgInfo.getMsg(), false);
 
-//        }
+        }
         chatAdapter.replaceData(msgBeen);
         rv_play_msg_list.smoothScrollToPosition(chatAdapter.getItemCount());
 
@@ -794,12 +794,18 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                         presenter.initUpperGame(rowsBean.getF_ID());
                     } else {
                         iv_play_startgame.setImageResource(R.mipmap.srartgame);
+                        FrescoUtil.getInstance().loadNetImage(sdv_play_fece, MyApplication.getInstance().getRowsBean().getF_Img());
+                        tv_play_name.setText(MyApplication.getInstance().getRowsBean().getF_Name());
+                        tv_play_mian_type.setText("围观中");
                     }
                     break;
                 case 2:
                     //其他用户正在游戏中
                     isOpen = false;
                     iv_play_startgame.setImageResource(R.mipmap.srartgame2);
+                    FrescoUtil.getInstance().loadNetImage(sdv_play_fece,queryGameBean.getRows().getVUserImg());
+                    tv_play_name.setText(queryGameBean.getRows().getUserName());
+                    tv_play_mian_type.setText("游戏中");
                     break;
                 case 3://在维修中
                     isOpen = false;

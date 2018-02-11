@@ -7,10 +7,11 @@ package com.zhuazhuale.changsha.module.home.Bean;
 
 public class QueryGameBean {
 
+
     /**
      * Code : 1
      * Info :
-     * rows : {"vStatus":1}
+     * rows : {"vStatus":1,"UserName":"","vUserImg":""}
      * PageCount : 0
      * total : 0
      */
@@ -64,9 +65,13 @@ public class QueryGameBean {
     public static class RowsBean {
         /**
          * vStatus : 1
+         * UserName :
+         * vUserImg :
          */
 
         private int vStatus;
+        private String UserName;
+        private String vUserImg;
 
         public int getVStatus() {
             return vStatus;
@@ -74,6 +79,22 @@ public class QueryGameBean {
 
         public void setVStatus(int vStatus) {
             this.vStatus = vStatus;
+        }
+
+        public String getUserName() {
+            return UserName;
+        }
+
+        public void setUserName(String UserName) {
+            this.UserName = UserName;
+        }
+
+        public String getVUserImg() {
+            return vUserImg;
+        }
+
+        public void setVUserImg(String vUserImg) {
+            this.vUserImg = vUserImg;
         }
     }
 }

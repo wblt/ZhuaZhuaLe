@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.model.entity.eventbus.CPfreshEvent;
 import com.zhuazhuale.changsha.module.home.Bean.BaseTypeDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.Bean.VersionBean;
@@ -25,12 +26,16 @@ import com.zhuazhuale.changsha.module.home.presenter.HomePresenter2;
 import com.zhuazhuale.changsha.module.vital.ui.IMChat;
 import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
 import com.zhuazhuale.changsha.util.Constant;
+import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.PermissionUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -69,6 +74,7 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
         PermissionUtil.requestPerssions(this, 1, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         getTvToolbarRight().setBackgroundResource(R.mipmap.mine);
+//        getTvToolbarRight().setBackgroundResource(R.mipmap.grzx);
         getTvToolbarRight().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,6 +102,7 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
 
     @Override
     protected void obtainData() {
+        showLoadingDialog("");
         presenter2 = new HomePresenter2(this);
 
         version = "";
@@ -114,6 +121,15 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
                 presenter2.initVersion(version);
             }
         });
+        EventBusUtil.register(this);//订阅事件
+    }
+
+    //EventBus的事件接收，从事件中获取最新的收藏数量并更新界面展示
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleEvent(String event) {
+        if ("TXLOFIN".equals(event)){
+            dismissLoadingDialog();
+        }
     }
 
     @Override
