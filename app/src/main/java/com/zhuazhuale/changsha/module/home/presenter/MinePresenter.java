@@ -74,4 +74,25 @@ public class MinePresenter extends BasePresenter<IMineView> {
     }
 
 
+    public void initDuiHuan() {
+        mineModel.getExchangeBagNumber(new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(TAG, s);
+
+                NewCPBean newCPBean = gson.fromJson(s, NewCPBean.class);
+                mIView.showDuiHuan(newCPBean);
+            }
+
+            @Override
+            public void callFailed() {
+
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e(TAG, "接口结束");
+            }
+        });
+    }
 }

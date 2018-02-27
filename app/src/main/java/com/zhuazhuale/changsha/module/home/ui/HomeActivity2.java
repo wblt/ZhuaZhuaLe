@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.zhuazhuale.changsha.R;
@@ -54,6 +55,11 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
     TabLayout tl_home_title;
     @BindView(R.id.vp_home_info)
     ViewPager vp_home_info;
+    @BindView(R.id.ll_home_shezhi)
+    LinearLayout ll_home_shezhi;
+     @BindView(R.id.ll_home_mine)
+    LinearLayout ll_home_mine;
+
     private HomeFragmentPagerAdapter pagerAdapter;
     private Intent intent;
     private ProgressBar mProgress;
@@ -71,18 +77,19 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
 
     @Override
     protected void initView() {
+        getToolbar().setVisibility(View.GONE);
         PermissionUtil.requestPerssions(this, 1, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         getTvToolbarRight().setBackgroundResource(R.mipmap.mine);
 //        getTvToolbarRight().setBackgroundResource(R.mipmap.grzx);
-        getTvToolbarRight().setOnClickListener(new View.OnClickListener() {
+        ll_home_mine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 intent = new Intent(getContext(), MineActivity.class);
                 startActivity(intent);
             }
         });
-        getIvToolbarLeft().setImageResource(R.mipmap.shezhi);
+//        getIvToolbarLeft().setImageResource(R.mipmap.shezhi);
        /* getIvToolbarLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,9 +97,9 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
                 startActivity(intent);
             }
         });*/
-        this.setOnKeyListener(new OnKeyClickListener() {
+        ll_home_shezhi.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void clickBack() {
+            public void onClick(View v) {
                 intent = new Intent(getContext(), SettingActivity.class);
                 startActivity(intent);
             }

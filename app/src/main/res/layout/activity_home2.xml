@@ -1,34 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.android.percent.support.PercentLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/home_bg"
-        />
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/base_header_layout_app"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimary"
+        app:layout_heightPercent="6%"
+        app:layout_widthPercent="100%">
+
+        <LinearLayout
+            android:id="@+id/ll_home_shezhi"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            app:layout_heightPercent="100%"
+            app:layout_widthPercent="12%">
+
+            <ImageView
+                android:id="@+id/iv_base_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:padding="5dp"
+                android:src="@mipmap/shezhi" />
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/homepage_title"
+            android:textColor="@color/white"
+            android:textSize="30dp"
+            app:layout_heightPercent="100%"
+            app:layout_widthPercent="15%" />
+
+        <LinearLayout
+            android:id="@+id/ll_home_mine"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            app:layout_heightPercent="100%"
+            app:layout_widthPercent="12%">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:padding="5dp"
+                android:src="@mipmap/mine" />
+        </LinearLayout>
+
+
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
 
     <android.support.design.widget.TabLayout
-        app:tabTextColor="@color/white"
-        app:tabSelectedTextColor="@color/yellow2"
-        app:tabIndicatorColor="@color/transparent"
         android:id="@+id/tl_home_title"
-        app:tabTextAppearance="@style/TabLayoutTextStyleHome"
         android:layout_width="match_parent"
-        android:paddingTop="5dp"
+        android:layout_height="40dp"
+        android:background="@color/colorPrimary"
         android:paddingBottom="5dp"
-        android:layout_height="40dp">
+        android:paddingTop="5dp"
+        app:tabIndicatorColor="@color/transparent"
+        app:tabSelectedTextColor="@color/yellow2"
+        app:tabTextAppearance="@style/TabLayoutTextStyleHome"
+        app:tabTextColor="@color/white">
 
     </android.support.design.widget.TabLayout>
 
     <android.support.v4.view.ViewPager
-        android:layout_below="@id/tl_home_title"
         android:id="@+id/vp_home_info"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/tl_home_title">
 
     </android.support.v4.view.ViewPager>
 
-</RelativeLayout>
+</com.zhy.android.percent.support.PercentLinearLayout>

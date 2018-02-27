@@ -19,6 +19,7 @@ import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+import com.zhuazhuale.changsha.view.widget.MaterialDialog;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -48,6 +49,10 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
     View ic_dd;
     @BindView(R.id.ic_dz)
     View ic_dz;
+    @BindView(R.id.ic_sc)
+    View ic_sc;
+    @BindView(R.id.tv_mine_qd)
+    TextView tv_mine_qd;
     @BindView(R.id.sdv_mine_face)
     SimpleDraweeView sdv_mine_face;
     @BindView(R.id.tv_mine_name)
@@ -56,10 +61,13 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
     TextView tv_mine_yue;
     @BindView(R.id.tv_mine_id)
     TextView tv_mine_id;
+    @BindView(R.id.tv_mine_dhby)
+    TextView tv_mine_dhby;
 
     private Intent intent;
     private MinePresenter presenter;
     private String id;
+    private MaterialDialog mDialog;
 
     @Override
     protected void setContentLayout() {
@@ -76,12 +84,14 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
         TextView tv_zlp = (TextView) ic_zlp.findViewById(R.id.tv_list_n);
         TextView tv_dd = (TextView) ic_dd.findViewById(R.id.tv_list_n);
         TextView tv_dz = (TextView) ic_dz.findViewById(R.id.tv_list_n);
-        tv_cz.setText("充值");
-        tv_wwb.setText("我的娃娃币");
-        tv_zqjl.setText("我的抓取记录");
-        tv_zlp.setText("我的战利品");
-        tv_dd.setText("我的订单");
-        tv_dz.setText("我的地址");
+        TextView tv_sc = (TextView) ic_sc.findViewById(R.id.tv_list_n);
+        tv_cz.setText("充值中心");
+        tv_wwb.setText("娃娃币记录");
+        tv_zqjl.setText("抓取记录");
+        tv_zlp.setText("战利品管理");
+        tv_dd.setText("订单中心");
+        tv_dz.setText("地址管理");
+        tv_sc.setText("网上商城");
         if (MyApplication.getInstance().getRowsBean().getF_Code1() != null) {
             // 邀请码
             id = MyApplication.getInstance().getRowsBean().getF_Code1();
@@ -91,25 +101,24 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
         tv_mine_id.setText(id);
         String signTime = PreferenceUtil.getString(getContext(), BaseConstants.SignTime, "");
         if (signTime.isEmpty()) {
-            getTvToolbarRight().setText("签到");
+            tv_mine_qd.setText("签到");
         } else {
             try {
                 boolean b = DataUtils.IsToday(signTime);
                 if (b) {
-                    getTvToolbarRight().setText("已签到");
+                    tv_mine_qd.setText("已签到");
                 } else {
-                    getTvToolbarRight().setText("签到");
+                    tv_mine_qd.setText("签到");
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
-
-
     }
 
     @Override
     protected void obtainData() {
+        mDialog = new MaterialDialog(this);
         presenter = new MinePresenter(this);
         presenter.initNewCP();
         EventBusUtil.register(this);//订阅事件
@@ -141,23 +150,9 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
         ic_zlp.setOnClickListener(this);
         ic_dd.setOnClickListener(this);
         ic_dz.setOnClickListener(this);
-
-        getTvToolbarRight().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String sign = getTvToolbarRight().getText().toString();
-                if ("签到".equals(sign)) {
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                    Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-                    String str = formatter.format(curDate);
-                    LogUtil.e(str);
-                    presenter.initUserSign(str);
-                } else {
-                    ToastUtil.show("您已签过到了!");
-                }
-
-            }
-        });
+        ic_sc.setOnClickListener(this);
+        tv_mine_qd.setOnClickListener(this);
+        tv_mine_dhby.setOnClickListener(this);
     }
 
     @Override
@@ -188,6 +183,42 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
                 intent = new Intent(MineActivity.this, AddressActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.ic_sc:
+                intent = new Intent(MineActivity.this, AddressActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.tv_mine_qd:
+                String sign = tv_mine_qd.getText().toString();
+                if ("签到".equals(sign)) {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                    String str = formatter.format(curDate);
+                    LogUtil.e(str);
+                    presenter.initUserSign(str);
+                } else {
+                    ToastUtil.show("您已签过到了!");
+                }
+                break;
+            case R.id.tv_mine_dhby:
+                mDialog.setTitle("城市抓抓乐温馨提示");
+                mDialog.setMessage("您确定使用88游戏币兑换包邮劵么");
+
+                mDialog.setPositiveButton("确定兑换", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialog.dismiss();
+                        showLoadingDialog("");
+                        presenter.initDuiHuan();
+                    }
+                });
+                mDialog.setNegativeButton("取消兑换", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialog.dismiss();
+                    }
+                });
+                mDialog.show();
+                break;
         }
     }
 
@@ -209,14 +240,21 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
         switch (bean.getCode()) {
             case -1:
                 PreferenceUtil.putString(getContext(), BaseConstants.SignTime, time);
-                getTvToolbarRight().setText("已签到");
+                tv_mine_qd.setText("已签到");
                 break;
             case 0:
                 break;
             case 1:
-                getTvToolbarRight().setText("已签到");
+                tv_mine_qd.setText("已签到");
                 PreferenceUtil.putString(getContext(), BaseConstants.SignTime, time);
                 break;
         }
     }
+
+    @Override
+    public void showDuiHuan(NewCPBean newCPBean) {
+        ToastUtil.show(newCPBean.getInfo()   );
+        dismissLoadingDialog();
+    }
+
 }

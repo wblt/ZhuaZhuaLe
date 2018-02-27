@@ -87,6 +87,8 @@ public class Constant {
     public static String VersionCheck = URL + "/api/Common/VersionCheck";
     //签到
     public static String UserSign = URL + "/api/Account/UserSign";
+    //兑换包邮
+    public static String ExchangeBagNumber = URL + "/api/Account/ExchangeBagNumber";
 
 
 }

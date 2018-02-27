@@ -199,7 +199,7 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
                 break;
             case R.id.ic_setting_tcdl:
 
-                mDialog.setTitle("娃娃乐温馨提示");
+                mDialog.setTitle("城市抓抓乐温馨提示");
                 mDialog.setMessage("是否要退出登录");
 
                 mDialog.setPositiveButton("确定", new View.OnClickListener() {
