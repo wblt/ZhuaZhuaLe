@@ -13,12 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         fresco:actualImageScaleType="fitXY"
-        fresco:roundBottomLeft="true"
+
+        />
+    <!--fresco:viewAspectRatio="0.25"
+      fresco:roundBottomLeft="true"
         fresco:roundBottomRight="true"
         fresco:roundTopLeft="true"
         fresco:roundTopRight="true"
         fresco:roundedCornerRadius="16dp"
-        />
-    <!--fresco:viewAspectRatio="0.25"-->
+    -->
 
 </LinearLayout>
