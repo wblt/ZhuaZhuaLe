@@ -62,7 +62,8 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
     @BindView(R.id.tv_mine_id)
     TextView tv_mine_id;
     @BindView(R.id.tv_mine_dhby)
-    TextView tv_mine_dhby;
+    TextView tv_mine_dhby; @BindView(R.id.tv_mine_by)
+    TextView tv_mine_by;
 
     private Intent intent;
     private MinePresenter presenter;
@@ -231,6 +232,7 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
     public void showNewCP(NewCPBean newCPBean) {
         if (newCPBean.getRows() != null) {
             tv_mine_yue.setText(newCPBean.getRows().getCP() + "");
+            tv_mine_by.setText(newCPBean.getRows().getF_BagNumber() + "");
         }
     }
 

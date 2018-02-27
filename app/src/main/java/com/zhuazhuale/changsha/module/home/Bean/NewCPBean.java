@@ -10,7 +10,7 @@ public class NewCPBean {
     /**
      * Code : 1
      * Info :
-     * rows : {"CP":12}
+     * rows : {"CP":23,"F_BagNumber":0}
      * PageCount : 0
      * total : 0
      */
@@ -63,10 +63,12 @@ public class NewCPBean {
 
     public static class RowsBean {
         /**
-         * CP : 12
+         * CP : 23
+         * F_BagNumber : 0.0
          */
 
         private int CP;
+        private double F_BagNumber;
 
         public int getCP() {
             return CP;
@@ -74,6 +76,14 @@ public class NewCPBean {
 
         public void setCP(int CP) {
             this.CP = CP;
+        }
+
+        public double getF_BagNumber() {
+            return F_BagNumber;
+        }
+
+        public void setF_BagNumber(double F_BagNumber) {
+            this.F_BagNumber = F_BagNumber;
         }
     }
 }
