@@ -54,7 +54,7 @@ public class PlayFragment extends BaseFragment {
         FrescoUtil.getInstance().loadNetImage(sdv_fra_play_img, bean.getF_ImgB());
         tv_fra_play_name.setText(bean.getF_Name());
         String[] sizes = bean.getF_Name().split("-");
-        tv_fra_play_size.setText("30cm");
+//        tv_fra_play_size.setText("--");
         tv_fra_play_coin.setText(bean.getF_Price()+"");
     }
 

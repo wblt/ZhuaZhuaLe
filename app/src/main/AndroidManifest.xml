@@ -99,6 +99,7 @@
         <activity android:name=".module.home.ui.XieYiActivity" />
         <activity android:name=".module.vital.ui.IMchatActivity" />
         <activity android:name=".module.home.ui.HomeActivity2" />
+        <activity android:name=".module.home.ui.SmallActivity" />
         <!-- 【必须】消息收发service -->
         <service
             android:name="com.tencent.qalsdk.service.QalService"

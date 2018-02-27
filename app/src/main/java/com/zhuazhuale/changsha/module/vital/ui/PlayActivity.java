@@ -304,7 +304,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         drawabledown = iv_play_down.getDrawable();
         drawablecatch = iv_play_catch.getDrawable();
         List<String> titles = new ArrayList<>();
-        titles.add("娃娃详情");
+        titles.add("商品详情");
         titles.add("最近抓中");
         pagerAdapter = new PlayFragmentPagerAdapter(getSupportFragmentManager(), titles, rowsBean);
         vp_play_info.setAdapter(pagerAdapter);
