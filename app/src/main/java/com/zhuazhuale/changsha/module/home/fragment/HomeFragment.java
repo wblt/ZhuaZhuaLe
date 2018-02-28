@@ -62,7 +62,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     private HomePresenter homePresenter;
     private int mStart = 1;
-    private int mCont = 6;
+    private int mCont = 8;
     private DeviceGoodsAdapter adapter;
 
     public static HomeActivity instance = null;
