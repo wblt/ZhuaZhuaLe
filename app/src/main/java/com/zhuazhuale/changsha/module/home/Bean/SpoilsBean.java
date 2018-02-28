@@ -13,7 +13,7 @@ public class SpoilsBean implements Serializable{
     /**
      * Code : 1
      * Info :
-     * rows : [{"F_ID":"3c32ffd3-c508-4092-acf0-7ef8cd69ae79","F_UserID":"d734b0cc-721d-4430-b153-596acfaed97f","F_GoodsID":"6bbeae9a-5b36-4621-9e1d-09b16cc61e6f","F_DeviceID":"73dacdaa-abeb-4edb-a18c-dc1f831b5981","F_Name":"超级小飞侠-20CM","F_Img":"http://img.zhuazhuale.com/Goods/xiaofeixia.jpg","F_Check":true,"F_ExChangePrice":500}]
+     * rows : [{"F_ID":"90bdd565-7a13-4f01-9f1f-d3bf31ada620","F_UserID":"bc75c868-0c01-4344-bec5-238fe51e2254","F_GoodsID":"5383288f-c2c1-4125-946b-5f3c64a27932","F_DeviceID":"06d01bc2-93a9-4b3d-9b44-0e490f918db4","F_Name":"小猪佩奇-20CM","F_Img":"http://img.zhuazhuale.com/Goods/peiqi.jpg","F_Check":false,"F_ExChangePrice":30,"F_CreateTime":"2018-02-28 02:38:27","F_ExpiryTime":"2018-03-16"},{"F_ID":"3918c726-69da-4475-8b9c-42313b2e3c72","F_UserID":"bc75c868-0c01-4344-bec5-238fe51e2254","F_GoodsID":"5383288f-c2c1-4125-946b-5f3c64a27932","F_DeviceID":"06d01bc2-93a9-4b3d-9b44-0e490f918db4","F_Name":"小猪佩奇-20CM","F_Img":"http://img.zhuazhuale.com/Goods/peiqi.jpg","F_Check":false,"F_ExChangePrice":30,"F_CreateTime":"2018-02-28 02:38:27","F_ExpiryTime":"2018-03-16"},{"F_ID":"9c84b8ea-de72-4667-9aea-715ca5b5828c","F_UserID":"bc75c868-0c01-4344-bec5-238fe51e2254","F_GoodsID":"5383288f-c2c1-4125-946b-5f3c64a27932","F_DeviceID":"06d01bc2-93a9-4b3d-9b44-0e490f918db4","F_Name":"小猪佩奇-20CM","F_Img":"http://img.zhuazhuale.com/Goods/peiqi.jpg","F_Check":false,"F_ExChangePrice":30,"F_CreateTime":"2018-02-28 02:38:27","F_ExpiryTime":"2018-03-16"},{"F_ID":"50e007ee-f044-4d28-a126-8201874528dc","F_UserID":"bc75c868-0c01-4344-bec5-238fe51e2254","F_GoodsID":"5383288f-c2c1-4125-946b-5f3c64a27932","F_DeviceID":"06d01bc2-93a9-4b3d-9b44-0e490f918db4","F_Name":"小猪佩奇-20CM","F_Img":"http://img.zhuazhuale.com/Goods/peiqi.jpg","F_Check":false,"F_ExChangePrice":30,"F_CreateTime":"2018-02-28 02:38:26","F_ExpiryTime":"2018-03-16"},{"F_ID":"318850ee-d446-4945-8d3b-d356c821d2e2","F_UserID":"bc75c868-0c01-4344-bec5-238fe51e2254","F_GoodsID":"5383288f-c2c1-4125-946b-5f3c64a27932","F_DeviceID":"06d01bc2-93a9-4b3d-9b44-0e490f918db4","F_Name":"小猪佩奇-20CM","F_Img":"http://img.zhuazhuale.com/Goods/peiqi.jpg","F_Check":false,"F_ExChangePrice":30,"F_CreateTime":"2018-02-28 02:38:26","F_ExpiryTime":"2018-03-16"},{"F_ID":"eec1ae00-81d9-4d55-a010-2d41a08df4b5","F_UserID":"bc75c868-0c01-4344-bec5-238fe51e2254","F_GoodsID":"5383288f-c2c1-4125-946b-5f3c64a27932","F_DeviceID":"06d01bc2-93a9-4b3d-9b44-0e490f918db4","F_Name":"小猪佩奇-20CM","F_Img":"http://img.zhuazhuale.com/Goods/peiqi.jpg","F_Check":false,"F_ExChangePrice":30,"F_CreateTime":"2018-02-28 02:38:18","F_ExpiryTime":"2018-03-16"}]
      * PageCount : 0
      * total : 0
      */
@@ -66,14 +66,16 @@ public class SpoilsBean implements Serializable{
 
     public static class RowsBean implements Serializable{
         /**
-         * F_ID : 3c32ffd3-c508-4092-acf0-7ef8cd69ae79
-         * F_UserID : d734b0cc-721d-4430-b153-596acfaed97f
-         * F_GoodsID : 6bbeae9a-5b36-4621-9e1d-09b16cc61e6f
-         * F_DeviceID : 73dacdaa-abeb-4edb-a18c-dc1f831b5981
-         * F_Name : 超级小飞侠-20CM
-         * F_Img : http://img.zhuazhuale.com/Goods/xiaofeixia.jpg
-         * F_Check : true
-         * F_ExChangePrice : 500
+         * F_ID : 90bdd565-7a13-4f01-9f1f-d3bf31ada620
+         * F_UserID : bc75c868-0c01-4344-bec5-238fe51e2254
+         * F_GoodsID : 5383288f-c2c1-4125-946b-5f3c64a27932
+         * F_DeviceID : 06d01bc2-93a9-4b3d-9b44-0e490f918db4
+         * F_Name : 小猪佩奇-20CM
+         * F_Img : http://img.zhuazhuale.com/Goods/peiqi.jpg
+         * F_Check : false
+         * F_ExChangePrice : 30
+         * F_CreateTime : 2018-02-28 02:38:27
+         * F_ExpiryTime : 2018-03-16
          */
 
         private String F_ID;
@@ -84,6 +86,8 @@ public class SpoilsBean implements Serializable{
         private String F_Img;
         private boolean F_Check;
         private int F_ExChangePrice;
+        private String F_CreateTime;
+        private String F_ExpiryTime;
         private boolean isCheck;
 
         public boolean isCheck() {
@@ -156,6 +160,22 @@ public class SpoilsBean implements Serializable{
 
         public void setF_ExChangePrice(int F_ExChangePrice) {
             this.F_ExChangePrice = F_ExChangePrice;
+        }
+
+        public String getF_CreateTime() {
+            return F_CreateTime;
+        }
+
+        public void setF_CreateTime(String F_CreateTime) {
+            this.F_CreateTime = F_CreateTime;
+        }
+
+        public String getF_ExpiryTime() {
+            return F_ExpiryTime;
+        }
+
+        public void setF_ExpiryTime(String F_ExpiryTime) {
+            this.F_ExpiryTime = F_ExpiryTime;
         }
     }
 }

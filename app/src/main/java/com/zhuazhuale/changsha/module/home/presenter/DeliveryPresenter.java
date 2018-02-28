@@ -23,10 +23,12 @@ public class DeliveryPresenter extends BasePresenter<IDeliveryView> {
     private String TAG = getClass().getName();
 
     private final AddressModel addressModel;
+    private final Gson gson;
 
     public DeliveryPresenter(IDeliveryView iDeliveryView) {
         super(iDeliveryView);
         addressModel = AddressModel.getInstance();
+        gson = new Gson();
     }
 
     public void initUserAddress(int vCheck) {
@@ -34,7 +36,7 @@ public class DeliveryPresenter extends BasePresenter<IDeliveryView> {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
-                Gson gson = new Gson();
+
                 AddressBean addressBean = gson.fromJson(s, AddressBean.class);
                 mIView.showUserAddress(addressBean);
             }
@@ -54,15 +56,15 @@ public class DeliveryPresenter extends BasePresenter<IDeliveryView> {
 
     /**
      * 修改商品选择状态
+     *
      * @param goodsIDs
      */
     public void initModifyUserGoods(List<String> goodsIDs) {
-        addressModel.getModifyUserGoods(goodsIDs,new ICallListener<String>() {
+        addressModel.getModifyUserGoods(goodsIDs, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
-                Gson gson = new Gson();
-                EditAddressBean bean=gson.fromJson(s,EditAddressBean.class);
+                EditAddressBean bean = gson.fromJson(s, EditAddressBean.class);
                 mIView.showModifyUserGoods(bean);
 
             }
@@ -78,21 +80,21 @@ public class DeliveryPresenter extends BasePresenter<IDeliveryView> {
             }
         });
     }
+
     /**
      * 生成订单
+     *
      * @param name
      * @param phone
      * @param address
      * @param remark
      */
     public void initCreateOrder(String name, String phone, String address, String remark) {
-        addressModel.getCreateOrder(name,phone,address, remark,new ICallListener<String>() {
+        addressModel.getCreateOrder(name, phone, address, remark, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
-                Gson gson = new Gson();
-
-                EditAddressBean bean=gson.fromJson(s,EditAddressBean.class);
+                EditAddressBean bean = gson.fromJson(s, EditAddressBean.class);
                 mIView.showCreateOrder(bean);
             }
 
@@ -109,4 +111,55 @@ public class DeliveryPresenter extends BasePresenter<IDeliveryView> {
         });
     }
 
+    /**
+     * 兑换包邮劵
+     */
+    public void initDuiHuan() {
+        addressModel.getExchangeBagNumber(new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(TAG, s);
+
+                NewCPBean newCPBean = gson.fromJson(s, NewCPBean.class);
+                mIView.showDuiHuan(newCPBean);
+            }
+
+            @Override
+            public void callFailed() {
+                mIView.showFailed();
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e(TAG, "接口结束");
+                mIView.showFinish();
+            }
+        });
+    }
+
+    /**
+     * 个人的游戏币和包邮劵
+     */
+    public void initNewCP() {
+        addressModel.getNewCP(new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(TAG, s);
+
+                NewCPBean newCPBean = gson.fromJson(s, NewCPBean.class);
+                mIView.showNewCP(newCPBean);
+            }
+
+            @Override
+            public void callFailed() {
+                mIView.showFailed();
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e(TAG, "接口结束");
+                mIView.showFinish();
+            }
+        });
+    }
 }

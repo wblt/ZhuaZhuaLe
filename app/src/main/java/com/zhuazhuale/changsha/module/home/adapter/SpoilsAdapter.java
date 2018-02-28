@@ -42,12 +42,13 @@ public class SpoilsAdapter extends RecyclerBaseAdapter<SpoilsBean.RowsBean> {
         TextView tv_spoils_name = holder.getView(R.id.tv_item_spoils_name);
         TextView tv_item_spoils_info = holder.getView(R.id.tv_item_spoils_info);
         TextView tv_item_spoils_dh = holder.getView(R.id.tv_item_spoils_dh);
+        TextView tv_item_spoils_time = holder.getView(R.id.tv_item_spoils_time);
 
         //obtainData
         FrescoUtil.getInstance().loadNetImage(sdv_spoils_img, rowsBean.getF_Img());//加载网络图片
         tv_spoils_name.setText(rowsBean.getF_Name());
         tv_item_spoils_info.setText("可以兑换 " + rowsBean.getF_ExChangePrice() + " 娃娃币");
-
+        tv_item_spoils_time.setText("自动兑换："+rowsBean.getF_ExpiryTime());
         if (!rowsBean.isCheck()) {
             iv_spoils_check.setImageResource(R.mipmap.selector_on);
         } else {

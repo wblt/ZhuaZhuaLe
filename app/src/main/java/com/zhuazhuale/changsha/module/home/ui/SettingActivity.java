@@ -48,6 +48,8 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
     View ic_setting_gywm;
     @BindView(R.id.ic_setting_tcdl)
     View ic_setting_tcdl;
+    @BindView(R.id.ic_setting_srflm)
+    View ic_setting_srflm;
     private Intent intent;
     private MaterialDialog mDialog;
     private SettingPresenter presenter;
@@ -71,6 +73,7 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
         TextView tv_wtfk = (TextView) ic_setting_wtfk.findViewById(R.id.tv_list_n);
         TextView tv_gywm = (TextView) ic_setting_gywm.findViewById(R.id.tv_list_n);
         TextView tv_tcdl = (TextView) ic_setting_tcdl.findViewById(R.id.tv_list_n);
+        TextView tv_srflm = (TextView) ic_setting_srflm.findViewById(R.id.tv_list_n);
 
         iv_bjyx = (ImageView) ic_setting_bjyx.findViewById(R.id.iv_list_tu);
         iv_yy = (ImageView) ic_setting_yy.findViewById(R.id.iv_list_tu);
@@ -98,6 +101,7 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
         tv_tzzx.setText("通知中心");
         tv_yqjl.setText("邀请奖励");
         tv_sryqm.setText("输入邀请码");
+        tv_srflm.setText("输入福利码");
         tv_bjyx.setText("背景音效");
         tv_yy.setText("音乐");
         tv_lp.setText("录屏");
@@ -170,6 +174,7 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
         ic_setting_wtfk.setOnClickListener(this);
         ic_setting_gywm.setOnClickListener(this);
         ic_setting_tcdl.setOnClickListener(this);
+        ic_setting_srflm.setOnClickListener(this);
     }
 
     @Override
@@ -186,6 +191,10 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
                 break;
             case R.id.ic_setting_sryqm:
                 intent = new Intent(SettingActivity.this, InputCodeActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.ic_setting_srflm:
+                intent = new Intent(SettingActivity.this, InputFlmActivity.class);
                 startActivity(intent);
                 break;
 

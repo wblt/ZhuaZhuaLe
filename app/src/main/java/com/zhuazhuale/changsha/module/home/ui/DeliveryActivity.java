@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.model.entity.eventbus.AddressEvent;
+import com.zhuazhuale.changsha.model.entity.eventbus.CPfreshEvent;
 import com.zhuazhuale.changsha.module.home.Bean.AddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
+import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.SpoilsBean;
 import com.zhuazhuale.changsha.module.home.adapter.DeliveryAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.DeliveryPresenter;
@@ -51,20 +53,25 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
     LinearLayout ll_delivery_address;
     @BindView(R.id.tv_delivery_submit)
     TextView tv_delivery_submit;
+    @BindView(R.id.tv_delivery_dhby)
+    TextView tv_delivery_dhby;
     @BindView(R.id.et_delivery_remark)
     EditText et_delivery_remark;
+    @BindView(R.id.tv_delivery_by)
+    TextView tv_delivery_by;
 
     private List<AddressBean.RowsBean> beans;
     private AddressBean address;
     private DeliveryPresenter presenter;
-    private MaterialDialog mDialog;
+    private MaterialDialog mDialog1;
+    private MaterialDialog mDialog2;
+    private MaterialDialog mDialog3;
     private List<SpoilsBean.RowsBean> beanList;
     private List<String> goodsIDs;
     private String name;
     private String phone;
     private String address1;
     private String remark;
-
 
     @Override
     protected void setContentLayout() {
@@ -73,8 +80,21 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
 
     @Override
     protected void initView() {
-        mDialog = new MaterialDialog(this);
+        mDialog1 = new MaterialDialog(this);
+        mDialog2 = new MaterialDialog(this);
+        mDialog3 = new MaterialDialog(this);
         getTvToolbarRight().setText("充值");
+        mDialog1.setTitle("城市抓抓乐温馨提示");
+        mDialog1.setMessage("申请发货将扣除一次包邮劵");
+
+        mDialog1.setPositiveButton("确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog1.dismiss();
+            }
+        });
+
+        mDialog1.show();
     }
 
     @Override
@@ -86,7 +106,7 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
         spoilsBean = (SpoilsBean) intent.getSerializableExtra("SpoilsBean");
         tv_delivery_num.setText(spoilsBean.getRows().size() + " 件商品");
         showDelivery(spoilsBean);
-
+        presenter.initNewCP();
         EventBusUtil.register(this);//订阅事件
     }
 
@@ -114,6 +134,7 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
     protected void initEvent() {
         ll_delivery_address.setOnClickListener(this);
         tv_delivery_submit.setOnClickListener(this);
+        tv_delivery_dhby.setOnClickListener(this);
         getTvToolbarRight().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,25 +181,45 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
                 if (remark.isEmpty()) {
                     remark = "";
                 }
-                mDialog.setTitle("娃娃乐温馨提示");
-                mDialog.setMessage("是否提交订单");
+                mDialog2.setTitle("娃娃乐温馨提示");
+                mDialog2.setMessage("是否提交订单");
 
-                mDialog.setPositiveButton("提交", new View.OnClickListener() {
+                mDialog2.setPositiveButton("提交", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mDialog.dismiss();
+                        mDialog2.dismiss();
                         showLoadingDialog("");
                         // 先修改商品的选择状态,再提交订单
                         modifyUserGoods();
                     }
                 });
-                mDialog.setNegativeButton("取消", new View.OnClickListener() {
+                mDialog2.setNegativeButton("取消", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mDialog.dismiss();
+                        mDialog2.dismiss();
                     }
                 });
-                mDialog.show();
+                mDialog2.show();
+                break;
+            case R.id.tv_delivery_dhby:
+                mDialog3.setTitle("城市抓抓乐温馨提示");
+                mDialog3.setMessage("您确定使用88游戏币兑换包邮劵么");
+
+                mDialog3.setPositiveButton("确定兑换", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialog3.dismiss();
+                        showLoadingDialog("");
+                        presenter.initDuiHuan();
+                    }
+                });
+                mDialog3.setNegativeButton("取消兑换", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialog3.dismiss();
+                    }
+                });
+                mDialog3.show();
                 break;
         }
     }
@@ -271,11 +312,35 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
     public void showCreateOrder(EditAddressBean bean) {
         if (bean.getCode() == 1) {
             ToastUtil.show("√ 生成订单成功");
+            CPfreshEvent cPfreshEvent=new CPfreshEvent("刷新");
+            EventBusUtil.postEvent(cPfreshEvent);
             setResult(2);
             finish();
+            Intent intent=new Intent(this,OrderActivity.class);
+            startActivity(intent);
         } else {
             ToastUtil.show("× 生成订单失败");
             ToastUtil.show(bean.getInfo());
+        }
+    }
+
+    @Override
+    public void showDuiHuan(NewCPBean newCPBean) {
+        ToastUtil.show(newCPBean.getInfo());
+        dismissLoadingDialog();
+        if (newCPBean.getCode() == 1) {
+            presenter.initNewCP();
+            CPfreshEvent cPfreshEvent=new CPfreshEvent("刷新");
+            EventBusUtil.postEvent(cPfreshEvent);
+        }
+    }
+
+    @Override
+    public void showNewCP(NewCPBean newCPBean) {
+        if (newCPBean.getCode() == 1) {
+            tv_delivery_by.setText("包邮: " + newCPBean.getRows().getF_BagNumber());
+        } else {
+            ToastUtil.show(newCPBean.getInfo());
         }
     }
 

@@ -22,6 +22,7 @@ public class AddressModel {
         return AddressModel.SingletonHolder.instance;
     }
 
+
     private static class SingletonHolder {
         private static final AddressModel instance = new AddressModel();
     }
@@ -32,7 +33,7 @@ public class AddressModel {
      * @param iCallListener
      */
     public void getQueryUserAddress(int vCheck, final ICallListener<String> iCallListener) {
-        LogUtil.e("我的ID :"+MyApplication.getInstance().getRowsBean().getF_ID());
+        LogUtil.e("我的ID :" + MyApplication.getInstance().getRowsBean().getF_ID());
         OkGo.<String>post(Constant.QueryUserAddress)
                 .tag(this)
                 .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
@@ -158,15 +159,15 @@ public class AddressModel {
 }
      */
     public void getModifyUserGoods(List<String> vF_ID, final ICallListener<String> iCallListener) {
-        for (String s:vF_ID){
-            LogUtil.e("商品编号:  "+s);
+        for (String s : vF_ID) {
+            LogUtil.e("商品编号:  " + s);
         }
         OkGo.<String>post(Constant.ModifyUserGoods)
                 .tag(this)
                 .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
                 .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
-                .params("vCheck",1)
-                .addUrlParams("vF_ID",vF_ID)
+                .params("vCheck", 1)
+                .addUrlParams("vF_ID", vF_ID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -189,4 +190,66 @@ public class AddressModel {
                 });
     }
 
+    /**
+     * 兑换包邮
+     *
+     * @param iCallListener
+     */
+    public void getExchangeBagNumber(final ICallListener<String> iCallListener) {
+        OkGo.<String>post(Constant.ExchangeBagNumber)
+                .tag(this)
+                .params("F_UserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e("请求成功" + response.body());
+                        iCallListener.callSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e("请求失败" + response.toString());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+    }
+
+    /**
+     * 个人余额
+     *
+     * @param iCallListener
+     */
+    public void getNewCP(final ICallListener<String> iCallListener) {
+        OkGo.<String>post(Constant.GetNewCP)
+                .tag(this)
+                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("vF_ID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e("请求成功" + response.body());
+                        iCallListener.callSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e("请求失败" + response.toString());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+    }
 }

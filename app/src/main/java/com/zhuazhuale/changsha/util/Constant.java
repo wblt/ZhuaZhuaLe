@@ -89,6 +89,8 @@ public class Constant {
     public static String UserSign = URL + "/api/Account/UserSign";
     //兑换包邮
     public static String ExchangeBagNumber = URL + "/api/Account/ExchangeBagNumber";
+    //福码兑换
+    public static String WelfareCode = URL + "/api/Account/WelfareCode";
 
 
 }

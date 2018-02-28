@@ -2,6 +2,7 @@ package com.zhuazhuale.changsha.module.home.ui;
 
 import com.zhuazhuale.changsha.module.home.Bean.AddressBean;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
+import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.presenter.iview.IBaseView;
 
 /**
@@ -19,4 +20,8 @@ public interface IDeliveryView extends IBaseView {
     void showModifyUserGoods(EditAddressBean bean);
 
     void showCreateOrder(EditAddressBean bean);
+
+    void showDuiHuan(NewCPBean newCPBean);
+
+    void showNewCP(NewCPBean newCPBean);
 }
