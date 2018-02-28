@@ -10,7 +10,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.view.widget.loadlayout.LoadLayout;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,6 +87,15 @@ public abstract class AppBaseActivity extends BaseActivity {
                 }
             }
         });
+        EventBusUtil.register(this);//订阅事件
+    }
+
+    //EventBus的事件接收，从事件中获取最新的收藏数量并更新界面展示
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleEvent(String event) {
+        if ("onForceOffline".equals(event)){
+          showLoadingDialog("您的账号在别处登录");
+        }
     }
 
     /**

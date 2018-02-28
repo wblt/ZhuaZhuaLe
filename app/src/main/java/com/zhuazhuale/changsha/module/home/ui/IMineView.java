@@ -14,4 +14,6 @@ public interface IMineView extends IBaseView {
 
 
     void showSignSuccess(EditAddressBean bean, String time);
+
+    void showDuiHuan(NewCPBean newCPBean);
 }

@@ -8,15 +8,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="6dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
         android:background="@drawable/textbeijing_recharge"
         android:padding="6dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/sdv_item_alltrueimg"
-            android:layout_width="66dp"
-            android:layout_height="66dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             fresco:roundAsCircle="true"
             fresco:roundBottomLeft="true"
             fresco:roundBottomRight="true"
@@ -61,7 +61,7 @@
             android:padding="8dp"
             android:text="播放视频"
             android:textColor="@color/white"
-            android:textSize="16dp" />
+            android:textSize="10dp" />
     </LinearLayout>
 
 </LinearLayout>

@@ -7,20 +7,19 @@
 
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:id="@+id/iv_home_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         fresco:actualImageScaleType="fitXY"
 
         />
-    <!--fresco:viewAspectRatio="0.25"
-      fresco:roundBottomLeft="true"
-        fresco:roundBottomRight="true"
-        fresco:roundTopLeft="true"
-        fresco:roundTopRight="true"
-        fresco:roundedCornerRadius="16dp"
-    -->
+    <!--fresco:roundBottomLeft="true"
+    fresco:roundBottomRight="true"
+    fresco:roundTopLeft="true"
+    fresco:roundTopRight="true"
+    fresco:roundedCornerRadius="16dp"-->
+    <!--fresco:viewAspectRatio="0.25"-->
 
 </LinearLayout>

@@ -13,10 +13,12 @@ import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.model.entity.eventbus.CPfreshEvent;
 import com.zhuazhuale.changsha.module.home.Bean.BaseTypeDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
 import com.zhuazhuale.changsha.module.home.Bean.VersionBean;
@@ -25,12 +27,16 @@ import com.zhuazhuale.changsha.module.home.presenter.HomePresenter2;
 import com.zhuazhuale.changsha.module.vital.ui.IMChat;
 import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
 import com.zhuazhuale.changsha.util.Constant;
+import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.PermissionUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,6 +55,11 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
     TabLayout tl_home_title;
     @BindView(R.id.vp_home_info)
     ViewPager vp_home_info;
+    @BindView(R.id.ll_home_shezhi)
+    LinearLayout ll_home_shezhi;
+     @BindView(R.id.ll_home_mine)
+    LinearLayout ll_home_mine;
+
     private HomeFragmentPagerAdapter pagerAdapter;
     private Intent intent;
     private ProgressBar mProgress;
@@ -66,17 +77,19 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
 
     @Override
     protected void initView() {
+        getToolbar().setVisibility(View.GONE);
         PermissionUtil.requestPerssions(this, 1, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         getTvToolbarRight().setBackgroundResource(R.mipmap.mine);
-        getTvToolbarRight().setOnClickListener(new View.OnClickListener() {
+//        getTvToolbarRight().setBackgroundResource(R.mipmap.grzx);
+        ll_home_mine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 intent = new Intent(getContext(), MineActivity.class);
                 startActivity(intent);
             }
         });
-        getIvToolbarLeft().setImageResource(R.mipmap.shezhi);
+//        getIvToolbarLeft().setImageResource(R.mipmap.shezhi);
        /* getIvToolbarLeft().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,9 +97,9 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
                 startActivity(intent);
             }
         });*/
-        this.setOnKeyListener(new OnKeyClickListener() {
+        ll_home_shezhi.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void clickBack() {
+            public void onClick(View v) {
                 intent = new Intent(getContext(), SettingActivity.class);
                 startActivity(intent);
             }
@@ -96,6 +109,7 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
 
     @Override
     protected void obtainData() {
+        showLoadingDialog("");
         presenter2 = new HomePresenter2(this);
 
         version = "";
@@ -114,6 +128,15 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
                 presenter2.initVersion(version);
             }
         });
+        EventBusUtil.register(this);//订阅事件
+    }
+
+    //EventBus的事件接收，从事件中获取最新的收藏数量并更新界面展示
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleEvent(String event) {
+        if ("TXLOFIN".equals(event)){
+            dismissLoadingDialog();
+        }
     }
 
     @Override

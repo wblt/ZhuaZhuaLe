@@ -48,6 +48,7 @@ public class PutMessageActivity extends Activity {
         Intent intent = getIntent();
         groupId = intent.getStringExtra("groupId");
 
+
         initView();
         initData();
         gson = new Gson();
