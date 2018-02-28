@@ -2,6 +2,7 @@ package com.zhuazhuale.changsha.module.home.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
@@ -40,6 +41,8 @@ import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 
@@ -70,6 +73,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private int mCurrentType;
     private HomeAdapter homeAdapter;
     private BaseTypeDataBean.RowsBean rowsBean;
+    private Thread thread;
+    private Handler mHandler;
+    private Timer mTimer;
+    private TimerTask mTimerTask;
 
     public static HomeFragment newInstance(int type, BaseTypeDataBean.RowsBean rowsBean) {
         Bundle bundle = new Bundle();
@@ -128,9 +135,33 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 homePresenter.initDeviceGoods(1, mCont, rowsBean.getF_ID(), Constant.INIT);
             }
         });
+        //定时刷新状态
+        mHandler = new Handler();
+        mTimer = new Timer();
+        mTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        LogUtil.e("我在刷新");
+                        if (adapter != null && adapter.getItemCount() != 0) {
+                            LogUtil.e("我在刷新" +adapter.getItemCount());
+                            homePresenter.initDeviceGoods(1, adapter.getItemCount(), rowsBean.getF_ID(), Constant.REFRESH);
+                        }
+                    }
+                });
+            }
+        };
+        mTimer.schedule(mTimerTask,0,5000);
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mTimer.cancel();
+    }
 
     @Override
     protected void initEvent() {
@@ -284,6 +315,24 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 startActivity(intent);
             }
         });
+
+       /* if (thread == null) {
+            thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(1000);
+                        if (adapter != null && adapter.getItemCount() != 0) {
+                            homePresenter.initDeviceGoods(1, adapter.getItemCount(), rowsBean.getF_ID(), Constant.REFRESH);
+                        }
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.start();
+        }*/
 
 
     }

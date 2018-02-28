@@ -301,12 +301,32 @@
                                     android:foreground="?android:attr/selectableItemBackground"
                                     android:src="@mipmap/share_play" />
 
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                <LinearLayout
                                     android:layout_marginTop="10dp"
-                                    android:foreground="?android:attr/selectableItemBackground"
-                                    android:src="@mipmap/same_play" />
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <ImageView
+                                        android:id="@+id/iv_play_dz"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+
+                                        android:foreground="?android:attr/selectableItemBackground"
+                                        android:src="@mipmap/same_play" />
+
+                                    <TextView
+                                        android:layout_marginTop="3dp"
+                                        android:textSize="12dp"
+                                        android:textColor="@color/white"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="点赞" />
+
+                                </LinearLayout>
+
+
                             </LinearLayout>
 
 
@@ -419,6 +439,14 @@
                     app:layout_heightPercent="30%">
 
                 </android.support.v7.widget.RecyclerView>
+
+                <com.zhuazhuale.changsha.util.HeartLayout
+                    android:id="@+id/hl_play_heart"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_heightPercent="70%">
+
+                </com.zhuazhuale.changsha.util.HeartLayout>
 
 
             </com.zhy.android.percent.support.PercentRelativeLayout>

@@ -69,6 +69,7 @@ import com.zhuazhuale.changsha.util.CountdownUtil;
 import com.zhuazhuale.changsha.util.DensityUtil;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.FrescoUtil;
+import com.zhuazhuale.changsha.util.HeartLayout;
 import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.ScreenRecorder;
 import com.zhuazhuale.changsha.util.SoundUtils;
@@ -169,6 +170,10 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     ImageView iv_play_share;
     @BindView(R.id.tv_play_paoma)
     DanmakuView danmakuView;
+    @BindView(R.id.hl_play_heart)
+    HeartLayout hl_play_heart;
+    @BindView(R.id.iv_play_dz)
+    ImageView iv_play_dz;
 
     private PlayFragmentPagerAdapter pagerAdapter;
 
@@ -579,6 +584,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     /**
      * 显示图片加文字
+     *
      * @param islive
      */
     private void addDanmaKuShowTextAndImage(boolean islive) {
@@ -597,8 +603,10 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         danmaku.underlineColor = Color.GREEN;
         danmakuView.addDanmaku(danmaku);
     }
+
     /**
      * 添加图片和文字
+     *
      * @param drawable
      * @return
      */
@@ -611,6 +619,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         spannableStringBuilder.setSpan(new BackgroundColorSpan(Color.parseColor("#8A2233B1")), 0, spannableStringBuilder.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         return spannableStringBuilder;
     }
+
     /**
      * 查询游戏币数量
      *
@@ -803,7 +812,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                     //其他用户正在游戏中
                     isOpen = false;
                     iv_play_startgame.setImageResource(R.mipmap.srartgame2);
-                    FrescoUtil.getInstance().loadNetImage(sdv_play_fece,queryGameBean.getRows().getVUserImg());
+                    FrescoUtil.getInstance().loadNetImage(sdv_play_fece, queryGameBean.getRows().getVUserImg());
                     tv_play_name.setText(queryGameBean.getRows().getUserName());
                     tv_play_mian_type.setText("游戏中");
                     break;
@@ -852,6 +861,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         });
         iv_play_setmsg.setOnClickListener(this);
         iv_play_share.setOnClickListener(this);
+        iv_play_dz.setOnClickListener(this);
 
     }
 
@@ -1074,6 +1084,18 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 break;
             case R.id.iv_play_share:
                 shareDialog.show();
+                break;
+            case R.id.iv_play_dz:
+                hl_play_heart.addFavor();
+                MsgInfo msgInfo = new MsgInfo();
+                msgInfo.setMsg("点了个赞");
+//                msgInfo.setHeadPic("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517584490096&di=cd3b7dd058b791fba268c078a1033490&imgtype=0&src=http%3A%2F%2Fwww.uuuu.cc%2Fuploads%2Fallimg%2Fc160108%2F145222J62E520-23NR.jpg");
+                msgInfo.setHeadPic(MyApplication.getInstance().getRowsBean().getF_Img());
+                msgInfo.setNickName(MyApplication.getInstance().getRowsBean().getF_Name());
+                msgInfo.setUserId("zhuazhuale" + MyApplication.getInstance().getRowsBean().getF_Code1());
+                msgInfo.setUserAction(5);
+                String msg = gson.toJson(msgInfo);
+                IMChat.getInstance().sendMessage(rowsBean.getF_GroupID(), msg);
                 break;
         }
 

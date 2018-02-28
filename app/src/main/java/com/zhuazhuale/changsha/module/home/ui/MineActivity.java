@@ -62,7 +62,8 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
     @BindView(R.id.tv_mine_id)
     TextView tv_mine_id;
     @BindView(R.id.tv_mine_dhby)
-    TextView tv_mine_dhby; @BindView(R.id.tv_mine_by)
+    TextView tv_mine_dhby;
+    @BindView(R.id.tv_mine_by)
     TextView tv_mine_by;
 
     private Intent intent;
@@ -255,8 +256,11 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
 
     @Override
     public void showDuiHuan(NewCPBean newCPBean) {
-        ToastUtil.show(newCPBean.getInfo()   );
+        ToastUtil.show(newCPBean.getInfo());
         dismissLoadingDialog();
+        if (newCPBean.getCode() == 1) {
+            presenter.initNewCP();
+        }
     }
 
 }

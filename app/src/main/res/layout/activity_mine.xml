@@ -221,7 +221,6 @@
                         android:layout_height="20dp" />
 
                     <include
-                        android:visibility="gone"
                         android:id="@+id/ic_sc"
                         layout="@layout/layout_list" />
                 </LinearLayout>
