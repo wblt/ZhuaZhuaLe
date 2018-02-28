@@ -75,8 +75,8 @@ public class HeartLayout extends RelativeLayout implements View.OnClickListener 
     private void findViewById(Context context) {
         LayoutInflater.from(context).inflate(R.layout.ly_periscope, this);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon_like);
-        dHeight = bitmap.getWidth();
-        dWidth = bitmap.getHeight();
+        dHeight = bitmap.getWidth()/3;
+        dWidth = bitmap.getHeight()/3;
         textHight = sp2px(getContext(), 20) + dHeight / 2;
 
         pointx = dWidth;//随机上浮方向的x坐标

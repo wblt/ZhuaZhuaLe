@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -38,26 +39,43 @@ public class RechargeAdapter extends RecyclerBaseAdapter<AllPriceProductBean.Row
         TextView tv_item_recharge_price2 = holder.getView(R.id.tv_item_recharge_price2);
         TextView tv_item_recharge_price1 = holder.getView(R.id.tv_item_recharge_price1);
         TextView tv_item_recharge_remark = holder.getView(R.id.tv_item_recharge_remark);
+        LinearLayout ll_item_recharge = holder.getView(R.id.ll_item_recharge);
         ImageView iv_item_recharge_img = holder.getView(R.id.iv_item_recharge_img);
         //obtainData
-        tv_item_recharge_price3.setText("充 " +rowsBean.getF_Price3() + " 元");
+        tv_item_recharge_price3.setText("充 " + rowsBean.getF_Price3() + " 元");
         tv_item_recharge_price2.setText("送 +" + rowsBean.getF_Price2() + " 币");
         tv_item_recharge_price1.setText(rowsBean.getF_Remark());
+        if (rowsBean.getF_Activity() == 1) {
+            ll_item_recharge.setBackgroundResource(R.drawable.textbeijing_recharge_black_red);
+        } else {
+            ll_item_recharge.setBackgroundResource(R.drawable.textbeijing_recharge_black);
+
+        }
 //        tv_item_recharge_remark.setText("￥ "+rowsBean.getF_Price3());
         switch (rowsBean.getF_Price3()) {
-            case 50:
-                iv_item_recharge_img.setImageResource(R.mipmap.icon_jinzhua);
+            case 10:
+                iv_item_recharge_img.setImageResource(R.mipmap.icon_jinbi);
 //                FrescoUtil.getInstance().loadResourceImage(iv_item_recharge_img, R.mipmap.icon_jinzhua);
                 break;
+            case 20:
+                iv_item_recharge_img.setImageResource(R.mipmap.icon_jinbi);
+
+//                FrescoUtil.getInstance().loadResourceImage(iv_item_recharge_img, R.mipmap.icon_jinguan);
+                break;
+            case 50:
+                iv_item_recharge_img.setImageResource(R.mipmap.icon_jinzhua);
+
+//                FrescoUtil.getInstance().loadResourceImage(iv_item_recharge_img, R.mipmap.icon_jindai);
+                break;
             case 100:
-                iv_item_recharge_img.setImageResource(R.mipmap.icon_jinguan);
+                iv_item_recharge_img.setImageResource(R.mipmap.icon_jindai);
 
 //                FrescoUtil.getInstance().loadResourceImage(iv_item_recharge_img, R.mipmap.icon_jinguan);
                 break;
             case 300:
-                iv_item_recharge_img.setImageResource(R.mipmap.icon_jindai);
+                iv_item_recharge_img.setImageResource(R.mipmap.icon_jinguan);
 
-//                FrescoUtil.getInstance().loadResourceImage(iv_item_recharge_img, R.mipmap.icon_jindai);
+//                FrescoUtil.getInstance().loadResourceImage(iv_item_recharge_img, R.mipmap.icon_jinguan);
                 break;
             case 500:
                 iv_item_recharge_img.setImageResource(R.mipmap.icon_jinguan);
@@ -76,7 +94,7 @@ public class RechargeAdapter extends RecyclerBaseAdapter<AllPriceProductBean.Row
             @Override
             public void onClick(View v) {
                 RechargeActivity mActivity = (RechargeActivity) getContext();
-                mActivity.rechargeCP(rowsBean,position);
+                mActivity.rechargeCP(rowsBean, position);
             }
         });
 
