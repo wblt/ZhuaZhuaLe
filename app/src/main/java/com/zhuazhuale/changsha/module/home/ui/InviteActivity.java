@@ -145,8 +145,8 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
                 dialog.dismiss();
 
                 String url = MyApplication.getInstance().getRowsBean().getF_FxUrl();
-                String title = "长沙抓抓乐";
-                String desc = "亲，欢迎使用长沙抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
+                String title = "城市抓抓乐";
+                String desc = "亲，欢迎使用城市抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
                 if (url == null || url.isEmpty()) {
                     ToastUtil.show("分享链接不存在!");
                     return;
@@ -161,8 +161,8 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
                 dialog.dismiss();
 
                 String url = MyApplication.getInstance().getRowsBean().getF_FxUrl();
-                String title = "长沙抓抓乐";
-                String desc = "亲，欢迎使用长沙抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
+                String title = "城市抓抓乐";
+                String desc = "亲，欢迎使用城市抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
                 if (url == null || url.isEmpty()) {
                     ToastUtil.show("分享链接不存在!");
                     return;
