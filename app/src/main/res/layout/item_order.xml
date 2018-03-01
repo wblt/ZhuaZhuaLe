@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <LinearLayout
 
@@ -71,7 +71,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="订单状态:"
-                        android:textSize="14dp" />
+                        android:textSize="12dp" />
 
                     <TextView
                         android:id="@+id/tv_item_order_type"
@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
                         android:text=""
-                        android:textSize="14dp" />
+                        android:textSize="12dp" />
                 </LinearLayout>
 
 

@@ -9,12 +9,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:background="@drawable/textbeijing_recharge"
-        android:padding="14dp">
+        android:padding="10dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/sdv_item_wawabi_img"
-            android:layout_width="70dp"
-            android:layout_height="76dp"
+            android:layout_width="63dp"
+            android:layout_height="66dp"
             android:layout_gravity="center" />
 
         <LinearLayout
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@color/black"
-                android:textSize="16dp" />
+                android:textSize="14dp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -43,14 +43,14 @@
                     android:layout_height="wrap_content"
                     android:text="游戏消费  -   "
                     android:textColor="@color/black"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <TextView
                     android:id="@+id/tv_item_wawabi_amout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
             </LinearLayout>
 
             <TextView
@@ -69,7 +69,7 @@
             android:layout_gravity="center"
             android:text=""
             android:textColor="@color/green"
-            android:textSize="20dp" />
+            android:textSize="16dp" />
 
     </LinearLayout>
 

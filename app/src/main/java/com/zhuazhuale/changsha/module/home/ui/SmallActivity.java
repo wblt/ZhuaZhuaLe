@@ -64,6 +64,7 @@ public class SmallActivity extends AppBaseActivity implements IMallView {
     @Override
     protected void obtainData() {
         mallPresenter = new MallPresenter(this);
+        showLoadingDialog("");
         mallPresenter.initDeviceGoods(1, mCont, "", Constant.INIT);
         //状态为加载时的监听,请求网络
         getLoadLayout().setOnLoadListener(new OnLoadListener() {
@@ -219,6 +220,6 @@ public class SmallActivity extends AppBaseActivity implements IMallView {
 
     @Override
     public void showFinish() {
-
+        dismissLoadingDialog();
     }
 }

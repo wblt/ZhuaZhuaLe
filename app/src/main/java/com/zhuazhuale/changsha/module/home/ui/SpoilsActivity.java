@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -50,6 +51,9 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
     private SpoilsBean.RowsBean bean;
     private int pos;
     private Dialog dialog;
+    private TextView tv_dialog_qx;
+    private TextView tv_dialog_qd;
+    private EditText et_dialog_zs;
 
 
     @Override
@@ -65,7 +69,16 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
 
         dialog = new Dialog(this, R.style.MyDialog);
         dialog.setContentView(R.layout.dialog_zengsong);
-
+        tv_dialog_qx = (TextView) dialog.findViewById(R.id.tv_dialog_qx);
+        tv_dialog_qd = (TextView) dialog.findViewById(R.id.tv_dialog_qd);
+        et_dialog_zs = (EditText) dialog.findViewById(R.id.et_dialog_zs);
+        tv_dialog_qx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                et_dialog_zs.setText("");
+            }
+        });
     }
 
     @Override
@@ -267,8 +280,25 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
         }
     }
 
-    public void zengSong(SpoilsBean.RowsBean rowsBean, int position) {
+    public void zengSong(final SpoilsBean.RowsBean rowsBean, final int position) {
+        bean = rowsBean;
+        pos = position;
         dialog.show();
+        tv_dialog_qd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String yaoqingma = et_dialog_zs.getText().toString();
+                if (yaoqingma.isEmpty()) {
+                    ToastUtil.show("请输入邀请码！");
+                } else {
+                    showLoadingDialog("");
+                    dialog.dismiss();
+                    et_dialog_zs.setText("");
+                    presenter.initGiveUserGoods(bean.getF_GoodsID(), yaoqingma, pos);
+
+                }
+            }
+        });
      /*   bean = rowsBean;
         pos = position;
         mDialog.setTitle("城市抓抓乐温馨提示");

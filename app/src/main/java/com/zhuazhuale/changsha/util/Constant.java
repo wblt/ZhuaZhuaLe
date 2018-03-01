@@ -91,6 +91,8 @@ public class Constant {
     public static String ExchangeBagNumber = URL + "/api/Account/ExchangeBagNumber";
     //福码兑换
     public static String WelfareCode = URL + "/api/Account/WelfareCode";
+    //赠送
+    public static String GiveUserGoods = URL + "/api/Account/GiveUserGoods";
 
 
 }

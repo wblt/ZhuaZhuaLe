@@ -78,5 +78,35 @@ public class SpoilsPresenter extends BasePresenter<ISpoilsView> {
         });
     }
 
+    /**
+     * 赠送
+     *
+     * @param vGoodsID
+     * @param vCode
+     * @param pos
+     */
+    public void initGiveUserGoods(String vGoodsID, String vCode, final int pos) {
+        spoilsModel.getGiveUserGoods(vGoodsID, vCode, new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(TAG, s);
+                Gson gson = new Gson();
+                EditAddressBean bean = gson.fromJson(s, EditAddressBean.class);
+                mIView.showExChangeCP(bean, pos);
+            }
+
+            @Override
+            public void callFailed() {
+                mIView.showFailed(Constant.REFRESH);
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e(TAG, "接口结束");
+                mIView.showFinish();
+            }
+        });
+    }
+
 
 }

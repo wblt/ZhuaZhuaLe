@@ -92,4 +92,38 @@ public class SpoilsModel {
                     }
                 });
     }
+
+    /**
+     * 赠送
+     * @param vGoodsID
+     * @param vCode
+     * @param iCallListener
+     */
+    public void getGiveUserGoods(String vGoodsID, String vCode, final ICallListener<String> iCallListener) {
+        OkGo.<String>post(Constant.GiveUserGoods)
+                .tag(this)
+                .params("vGoodsID", vGoodsID)
+                .params("vCode", vCode)
+                .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e("请求成功" + response.body());
+                        iCallListener.callSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e("请求失败" + response.toString());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+    }
 }
