@@ -1034,21 +1034,24 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 }
 
                 break;
-            case R.id.iv_play_up:
-
+            /*case R.id.iv_play_up:
+                LogUtil.e(up);
                 ControlGame(up);
                 break;
             case R.id.iv_play_down:
+                LogUtil.e(down);
                 ControlGame(down);
                 break;
             case R.id.iv_play_left:
+                LogUtil.e(left);
                 ControlGame(left);
                 break;
             case R.id.iv_play_right:
+                LogUtil.e(right);
                 ControlGame(right);
-                break;
+                break;*/
             case R.id.iv_play_catch:
-
+                LogUtil.e("DOWN");
                 ControlGame("DOWN");
                 break;
             case R.id.iv_play_change:
