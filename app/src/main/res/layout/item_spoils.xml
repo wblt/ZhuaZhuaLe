@@ -30,7 +30,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:gravity="center_vertical">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -40,34 +41,34 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:maxLines="1"
-                    android:ellipsize="end"
                     android:id="@+id/tv_item_spoils_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="12dp" />
 
                 <TextView
-                    android:maxLines="1"
-                    android:ellipsize="end"
                     android:id="@+id/tv_item_spoils_info"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text=""
                     android:textSize="10dp" />
 
                 <TextView
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:textColor="@color/red"
                     android:id="@+id/tv_item_spoils_time"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text=""
+                    android:textColor="@color/red"
                     android:textSize="10dp" />
 
 
@@ -76,14 +77,29 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_item_spoils_dh"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/textbeijing"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="8dp"
+                    android:text="兑换"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_item_spoils_zs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/textbeijing"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:gravity="center"
@@ -91,7 +107,7 @@
                     android:paddingLeft="14dp"
                     android:paddingRight="14dp"
                     android:paddingTop="8dp"
-                    android:text="兑换"
+                    android:text="赠送"
                     android:textColor="@color/white"
                     android:textSize="12dp" />
             </LinearLayout>

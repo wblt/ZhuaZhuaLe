@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +49,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
     private MaterialDialog mDialog;
     private SpoilsBean.RowsBean bean;
     private int pos;
+    private Dialog dialog;
 
 
     @Override
@@ -60,6 +62,9 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
 //        getTvToolbarRight().setText("申请发货");
         mDialog = new MaterialDialog(this);
         getTvToolbarRight().setText("申请发货");
+
+        dialog = new Dialog(this, R.style.MyDialog);
+        dialog.setContentView(R.layout.dialog_zengsong);
 
     }
 
@@ -257,8 +262,35 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==110&&resultCode==2){
-            presenter.initQueryUserGoods(9,Constant.REFRESH);
+        if (requestCode == 110 && resultCode == 2) {
+            presenter.initQueryUserGoods(9, Constant.REFRESH);
         }
+    }
+
+    public void zengSong(SpoilsBean.RowsBean rowsBean, int position) {
+        dialog.show();
+     /*   bean = rowsBean;
+        pos = position;
+        mDialog.setTitle("城市抓抓乐温馨提示");
+        mDialog.setMessage("确定赠送该商品给好友吗?");
+
+        mDialog.setPositiveButton("确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+                showLoadingDialog("");
+                //这里从全局变量bean获取信息来构建对象，
+                //如果从rowsBean获取的话，要声明为final类型，但是声明为final类型后，你在这个内部类里面获取到的rowsBean都是不变的（一直是第一次获取到的那个,除非重新new Dialog）
+
+                presenter.initExChangeCP(bean.getF_ID(), bean.getF_DeviceID(), pos);
+            }
+        });
+        mDialog.setNegativeButton("取消兑换", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
+        mDialog.show();*/
     }
 }
