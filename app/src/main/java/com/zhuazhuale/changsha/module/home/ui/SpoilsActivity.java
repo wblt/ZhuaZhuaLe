@@ -294,7 +294,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
                     showLoadingDialog("");
                     dialog.dismiss();
                     et_dialog_zs.setText("");
-                    presenter.initGiveUserGoods(bean.getF_GoodsID(), yaoqingma, pos);
+                    presenter.initGiveUserGoods(bean.getF_ID(), yaoqingma, pos);
 
                 }
             }
