@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -121,6 +122,7 @@ public class RechargeActivity extends AppBaseActivity implements View.OnClickLis
 
     /**
      * 充值列表
+     *
      * @param allPriceProductBean
      */
     @Override
@@ -185,9 +187,11 @@ public class RechargeActivity extends AppBaseActivity implements View.OnClickLis
      * @param position
      */
     public void rechargeCP(AllPriceProductBean.RowsBean rowsBean, int position) {
-        showLoadingDialog("");
-        LogUtil.e(rowsBean.getF_ID()+"");
-        presenter.iniWxUnifiedOrder(rowsBean.getF_ID());
-
+//        showLoadingDialog("");
+        LogUtil.e(rowsBean.getF_ID() + "");
+//        presenter.iniWxUnifiedOrder(rowsBean.getF_ID());
+        Intent intent = new Intent(this, PayMonenyActivity.class);
+        intent.putExtra("rowsBean", rowsBean);
+        startActivity(intent);
     }
 }

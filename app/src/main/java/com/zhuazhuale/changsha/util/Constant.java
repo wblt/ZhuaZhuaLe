@@ -93,6 +93,8 @@ public class Constant {
     public static String WelfareCode = URL + "/api/Account/WelfareCode";
     //赠送
     public static String GiveUserGoods = URL + "/api/Account/GiveUserGoods";
+    //支付宝下单
+    public static String AliUnifiedOrder = URL + "/api/Common/AliUnifiedOrder";
 
 
 }
