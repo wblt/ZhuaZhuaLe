@@ -44,7 +44,7 @@ public class PayMonenyActivity extends AppBaseActivity implements View.OnClickLi
     @Override
     protected void setContentLayout() {
         setContentView(R.layout.activity_paymoneny);
-        numType = 0;
+        numType = 2;
     }
 
     @Override
@@ -81,15 +81,11 @@ public class PayMonenyActivity extends AppBaseActivity implements View.OnClickLi
                 iv_pay_check_wx.setImageResource(R.mipmap.selector_on);
                 break;
             case R.id.tv_pay_ok:
-                if (numType == 0) {
-                    ToastUtil.show("请选择支付方式!");
-                } else {
 
-                }
                 switch (numType) {
-                    case 0:
+                 /*   case 0:
                         ToastUtil.show("请选择支付方式!");
-                        break;
+                        break;*/
                     case 1:
                         break;
                     case 2:
