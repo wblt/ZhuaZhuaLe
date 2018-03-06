@@ -20,6 +20,7 @@ public class RechargeModel {
         return RechargeModel.SingletonHolder.instance;
     }
 
+
     private static class SingletonHolder {
         private static final RechargeModel instance = new RechargeModel();
     }
@@ -92,7 +93,7 @@ public class RechargeModel {
      *
      * @param iCallListener
      */
-    public void getWxUnifiedOrder( String productId, final ICallListener<String> iCallListener) {
+    public void getWxUnifiedOrder(String productId, final ICallListener<String> iCallListener) {
         OkGo.<String>post(Constant.WxUnifiedOrder)
                 .tag(this)
                 .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
@@ -120,4 +121,39 @@ public class RechargeModel {
                     }
                 });
     }
+
+    /**
+     * 支付宝下单
+     *
+     * @param productId
+     * @param iCallListener
+     */
+    public void getAliUnifiedOrder(String productId, final ICallListener<String> iCallListener) {
+        OkGo.<String>post(Constant.AliUnifiedOrder)
+                .tag(this)
+                .params("userid", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("openid", MyApplication.getInstance().getRowsBean().getF_Code())
+                .params("productId", productId)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtil.e(response.toString());
+                        iCallListener.callSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e(response.toString());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+    }
+
 }

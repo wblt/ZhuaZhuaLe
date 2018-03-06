@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.home.ui;
 
+import com.zhuazhuale.changsha.module.home.Bean.AlipayBean;
 import com.zhuazhuale.changsha.module.home.Bean.AllPriceProductBean;
 import com.zhuazhuale.changsha.module.home.Bean.NewCPBean;
 import com.zhuazhuale.changsha.module.home.Bean.WxUnifiedOrder;
@@ -17,4 +18,6 @@ public interface IPayMonenyView extends IBaseView {
     void showFinish();
 
     void showWxUnifiedOrder(WxUnifiedOrder wxUnifiedOrder);
+
+    void showAliUnifiedOrde(AlipayBean alipayBean);
 }

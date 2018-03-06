@@ -91,7 +91,7 @@ dependencies {
     // 导入腾讯云直播SDK aar
     compile(name: 'LiteAVSDK_Professional_3.9.2754', ext: 'aar')
     /*// 导入短视频SDK aar
-            compile(name: 'LiteAVSDK_UGC_3.9.2754', ext: 'aar')*/
+                compile(name: 'LiteAVSDK_UGC_3.9.2754', ext: 'aar')*/
     compile 'com.android.support:multidex:1.0.0'
     //Fresco图片加载
     //加载gif动图需编译此库
@@ -151,7 +151,7 @@ dependencies {
     // 此处以JPush 3.0.9 版本为例。
     compile 'cn.jiguang.sdk:jcore:1.1.7'
     // 此处以JCore 1.1.7 版本为例。
-//    compile files('libs/tls_sdk.jar')
+    //    compile files('libs/tls_sdk.jar')
     compile 'com.github.pinguo-zhouwei:MZBannerView:v2.0.0'
     compile 'com.android.support:design:25.0.0-alpha1'
     compile 'com.github.ctiao:DanmakuFlameMaster:0.9.16'
