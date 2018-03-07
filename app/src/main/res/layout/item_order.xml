@@ -10,7 +10,7 @@
         android:layout_marginBottom="14dp"
         android:background="@drawable/textbeijing_recharge"
         android:orientation="vertical"
-        android:padding="14dp">
+        android:padding="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"

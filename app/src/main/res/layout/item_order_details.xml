@@ -12,7 +12,7 @@
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/sdv_item_order_details_img"
             android:layout_width="60dp"
-            android:layout_height="50dp" />
+            android:layout_height="60dp" />
 
         <TextView
             android:id="@+id/tv_item_order_details_name"

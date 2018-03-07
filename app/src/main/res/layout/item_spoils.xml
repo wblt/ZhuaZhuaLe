@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:background="@drawable/textbeijing_recharge"
-        android:padding="8dp">
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/iv_item_spoils_check"
@@ -24,8 +24,8 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/sdv_item_spoils_img"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
             android:layout_gravity="center" />
 
         <LinearLayout
