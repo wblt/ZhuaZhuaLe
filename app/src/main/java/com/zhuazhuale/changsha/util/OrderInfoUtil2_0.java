@@ -1,6 +1,9 @@
 package com.zhuazhuale.changsha.util;
 
 
+import com.google.gson.Gson;
+import com.zhuazhuale.changsha.module.home.Bean.AlipayBean;
+import com.zhuazhuale.changsha.module.home.Bean.AlipayContent;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
 import java.io.UnsupportedEncodingException;
@@ -64,27 +67,29 @@ public class OrderInfoUtil2_0 {
     /**
      * 构造支付订单参数列表
      *
-     * @param pid
      * @param app_id
-     * @param target_id
+     * @param alipayBean
      * @return
      */
-    public static Map<String, String> buildOrderParamMap(String app_id, boolean rsa2) {
-        Map<String, String> keyValues = new HashMap<String, String>();
+    public static Map<String, String> buildOrderParamMap(String app_id, boolean rsa2, AlipayBean alipayBean) {
+        Map<String, String> keyValues = new HashMap<>();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date curDate = new Date(System.currentTimeMillis());
+        String s = formatter.format(curDate);
 
         keyValues.put("app_id", app_id);
-
-        keyValues.put("biz_content", "{\"timeout_express\":\"30m\",\"product_code\":\"QUICK_MSECURITY_PAY\",\"total_amount\":\"0.01\",\"subject\":\"1\",\"body\":\"我是测试数据\",\"out_trade_no\":\"" + getOutTradeNo() + "\"}");
-        LogUtil.e("{\"timeout_express\":\"30m\",\"product_code\":\"QUICK_MSECURITY_PAY\",\"total_amount\":\"0.01\",\"subject\":\"1\",\"body\":\"我是测试数据\",\"out_trade_no\":\"" + getOutTradeNo() + "\"}");
+        AlipayContent alipay = new AlipayContent("30m", "QUICK_MSECURITY_PAY", alipayBean.getRows().getTotal_amout() + "", alipayBean.getRows().getSubject(), alipayBean.getRows().getBody(), alipayBean.getRows().getOut_trade_no());
+        Gson gson = new Gson();
+        String sss = gson.toJson(alipay);
+        keyValues.put("biz_content", sss);
+        LogUtil.e(sss);
         keyValues.put("charset", "utf-8");
-
         keyValues.put("method", "alipay.trade.app.pay");
-
         keyValues.put("sign_type", rsa2 ? "RSA2" : "RSA");
 
-        keyValues.put("timestamp", "2016-07-29 16:55:53");
+        keyValues.put("timestamp", s);
 
-        keyValues.put("version", "1.0");
+        keyValues.put("version", "2.0");
 
         return keyValues;
     }
@@ -109,6 +114,7 @@ public class OrderInfoUtil2_0 {
         String tailKey = keys.get(keys.size() - 1);
         String tailValue = map.get(tailKey);
         sb.append(buildKeyValue(tailKey, tailValue, true));
+        LogUtil.e(sb);
 
         return sb.toString();
     }
@@ -159,17 +165,17 @@ public class OrderInfoUtil2_0 {
         String tailKey = keys.get(keys.size() - 1);
         String tailValue = map.get(tailKey);
         authInfo.append(buildKeyValue(tailKey, tailValue, false));
-
+        LogUtil.e(authInfo);
         String oriSign = SignUtils.sign(authInfo.toString(), rsaKey, rsa2);
         LogUtil.e(oriSign);
         String encodedSign = "";
 
-       /* try {
+        try {
             encodedSign = URLEncoder.encode(oriSign, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        }*/
-        return "sign=" + oriSign;
+        }
+        return "sign=" + encodedSign;
     }
 
     /**

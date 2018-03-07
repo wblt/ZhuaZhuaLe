@@ -213,10 +213,12 @@ public class FrescoUtil {
     //加载网络图片，包括动图
     public void loadNetImage(SimpleDraweeView simpleDraweeView, String url) {
         if (url == null || url.isEmpty()) {
-            return;
+            loadResourceImage(simpleDraweeView,R.mipmap.ic_image_load);
+        }else {
+            Uri uri = Uri.parse(url);
+            loadImage(simpleDraweeView, uri, false, false);
         }
-        Uri uri = Uri.parse(url);
-        loadImage(simpleDraweeView, uri, false, false);
+
     }
 
     //加载网络图片，先加载小图，待大图加载完成后替换

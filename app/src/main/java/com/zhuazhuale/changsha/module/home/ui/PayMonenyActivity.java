@@ -25,6 +25,7 @@ import com.zhuazhuale.changsha.module.home.presenter.PayMonenyPresenter;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.OrderInfoUtil2_0;
 import com.zhuazhuale.changsha.util.ToastUtil;
+import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
 
 import java.util.Map;
@@ -179,12 +180,13 @@ public class PayMonenyActivity extends AppBaseActivity implements View.OnClickLi
          * orderInfo的获取必须来自服务端；
          */
         boolean rsa2 = true;
-        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap("2017102309480225", rsa2);
+        Map<String, String> params = OrderInfoUtil2_0.buildOrderParamMap("2017102309480225", rsa2, alipayBean);
         String orderParam = OrderInfoUtil2_0.buildOrderParam(params);
 
         String privateKey = alipayBean.getRows().getVKey();
         String sign = OrderInfoUtil2_0.getSign(params, privateKey, rsa2);
         final String orderInfo = orderParam + "&" + sign;
+        LogUtil.e(orderInfo);
 
         Runnable payRunnable = new Runnable() {
 
@@ -192,7 +194,7 @@ public class PayMonenyActivity extends AppBaseActivity implements View.OnClickLi
             public void run() {
                 PayTask alipay = new PayTask(PayMonenyActivity.this);
                 Map<String, String> result = alipay.payV2(orderInfo, true);
-                Log.i("msp", result.toString());
+                LogUtil.e("msp", result.toString());
 
                 Message msg = new Message();
                 msg.what = SDK_PAY_FLAG;

@@ -13,17 +13,18 @@ import java.util.Locale;
 public class DataUtils {
     /**
      * 判断给定字符串时间是否为今日(效率不是很高，不过也是一种方法)
+     *
      * @param sdate
      * @return boolean
      */
-    public static boolean isToday(String sdate){
+    public static boolean isToday(String sdate) {
         boolean b = false;
         Date time = toDate(sdate);
         Date today = new Date();
-        if(time != null){
+        if (time != null) {
             String nowDate = dateFormater2.get().format(today);
             String timeDate = dateFormater2.get().format(time);
-            if(nowDate.equals(timeDate)){
+            if (nowDate.equals(timeDate)) {
                 b = true;
             }
         }
@@ -32,6 +33,7 @@ public class DataUtils {
 
     /**
      * 将字符串转位日期类型
+     *
      * @param sdate
      * @return
      */
@@ -57,8 +59,10 @@ public class DataUtils {
         }
     };
     private static ThreadLocal<SimpleDateFormat> DateLocal = new ThreadLocal<SimpleDateFormat>();
+
     /**
      * 判断是否为今天(效率比较高)
+     *
      * @param day 传入的 时间  "2016-06-28 10:10:30" "2016-06-28" 都可以
      * @return true今天 false不是
      * @throws ParseException
@@ -86,6 +90,7 @@ public class DataUtils {
 
     /**
      * 判断是否为昨天(效率比较高)
+     *
      * @param day 传入的 时间  "2016-06-28 10:10:30" "2016-06-28" 都可以
      * @return true今天 false不是
      * @throws ParseException
@@ -114,6 +119,13 @@ public class DataUtils {
     public static SimpleDateFormat getDateFormat() {
         if (null == DateLocal.get()) {
             DateLocal.set(new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA));
+        }
+        return DateLocal.get();
+    }
+
+    public static SimpleDateFormat getDateFormat2() {
+        if (null == DateLocal.get()) {
+            DateLocal.set(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA));
         }
         return DateLocal.get();
     }
