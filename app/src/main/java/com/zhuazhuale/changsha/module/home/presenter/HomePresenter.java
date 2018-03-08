@@ -77,7 +77,7 @@ public class HomePresenter extends BasePresenter<IHomeView> {
         homeModel.getGetDeviceGoods(PageIndex, PageSize,TypeID, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
-                LogUtil.e(s);
+//                LogUtil.e(s);
                 DeviceGoodsBean deviceGoodsBean = gson.fromJson(s, DeviceGoodsBean.class);
                 mIView.showDeviceGoods(deviceGoodsBean,type);
             }

@@ -219,16 +219,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private Drawable drawabledown;
     private Drawable drawablecatch;
 
-    /* private Handler mHandler = new Handler() {
-         @Override
-         public void handleMessage(Message msg) {
-             super.handleMessage(msg);
-             if (msg.what == 0) {
- //                checkWifiState();
-                 sendEmptyMessageDelayed(0, 2000);
-             }
-         }
-     };*/
+
     private MediaProjectionManager mMediaProjectionManager;
     private ScreenRecorder mRecorder;
     private boolean is_lp;
@@ -756,17 +747,15 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
             @Override
             public void onFinish() {
-                tv_dialog_ok.setText("(0)");
-                CountdownUtil.getInstance().cancel("DOWN");
-                presenter.initLowerGame(rowsBean.getF_ID());
-                isPlay = false;
-                ll_play_open.setVisibility(View.VISIBLE);
-                ll_play_caozuo.setVisibility(View.INVISIBLE);
+                if (!isStart) {
+                    tv_dialog_ok.setText("(0)");
+                    CountdownUtil.getInstance().cancel("DOWN");
+                    presenter.initLowerGame(rowsBean.getF_ID());
+                    isPlay = false;
+                    ll_play_open.setVisibility(View.VISIBLE);
+                    ll_play_caozuo.setVisibility(View.INVISIBLE);
+                }
 
-
-//                showLoadingDialog();
-//                soundUtils.playSound(start, 0);
-//                presenter.initLowerGame(rowsBean.getF_ID());
                 dialog.dismiss();
             }
         }, "DOWN");
@@ -980,7 +969,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                         onPause();
                     }
                     try {
-                        LogUtil.e("我是子线程");
+//                        LogUtil.e("我是子线程");
                         presenter.initQueryGame(rowsBean.getF_ID(), thread);
                         Thread.sleep(5000);
 
@@ -1453,7 +1442,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         mLivePlayer2.setPlayListener(new ITXLivePlayListener() {
             @Override
             public void onPlayEvent(int i, Bundle bundle) {
-                LogUtil.e("       i   " + i + "        bundle  " + bundle.toString());
+//                LogUtil.e("       i   " + i + "        bundle  " + bundle.toString());
                 switch (i) {
                     case 2004:
                         iv_play_change.setClickable(true);

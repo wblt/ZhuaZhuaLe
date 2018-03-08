@@ -71,7 +71,7 @@ public class PlayModel {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        LogUtil.e("请求成功" + response.body());
+//                        LogUtil.e("请求成功" + response.body());
                         iCallListener.callSuccess(response.body());
                     }
 

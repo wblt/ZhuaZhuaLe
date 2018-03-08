@@ -71,7 +71,7 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
         playModel.getQueryGame(vDeviceID, new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
-                LogUtil.e(TAG, s);
+//                LogUtil.e(TAG, s);
                 QueryGameBean queryGameBean = gson.fromJson(s, QueryGameBean.class);
                 mIView.showQueryGame(queryGameBean, type);
             }
@@ -83,7 +83,7 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
 
             @Override
             public void onFinish() {
-                LogUtil.e(TAG, "接口结束");
+//                LogUtil.e(TAG, "接口结束");
 //                mIView.showFinish();
             }
         });

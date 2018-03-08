@@ -145,9 +145,9 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        LogUtil.e("我在刷新");
+//                        LogUtil.e("我在刷新");
                         if (adapter != null && adapter.getItemCount() != 0) {
-                            LogUtil.e("我在刷新" + adapter.getItemCount());
+//                            LogUtil.e("我在刷新" + adapter.getItemCount());
                             homePresenter.initDeviceGoods(1, adapter.getItemCount(), rowsBean.getF_ID(), Constant.REFRESH);
                         }
                     }
@@ -321,7 +321,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
         }
         if (Bean.getCode() != 0 && adapter != null) {
-            LogUtil.e("adapter.getItemCount()   " + adapter.getItemCount() + "      Bean.getTotal() " + Bean.getTotal());
+//            LogUtil.e("adapter.getItemCount()   " + adapter.getItemCount() + "      Bean.getTotal() " + Bean.getTotal());
             if (adapter.getItemCount() >= Bean.getTotal()) {
                 rfv_home.finishLoadmoreWithNoMoreData();
 

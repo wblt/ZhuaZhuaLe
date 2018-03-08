@@ -128,7 +128,7 @@ public class HomeModel {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        LogUtil.e(response.toString());
+//                        LogUtil.e(response.toString());
                         iCallListener.callSuccess(response.body());
                     }
 
