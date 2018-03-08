@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.vital.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -239,6 +240,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private ChatAdapter chatAdapter;
     private Dialog shareDialog;
     private DanmakuContext danmakuContext;
+    private TextView tv_dialog_cancel;
 
     @Override
     protected void setContentLayout() {
@@ -361,34 +363,46 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      * 抓到娃娃的提示dialog
      */
     private void creatMyDialog() {
-        dialog = new Dialog(this, R.style.Dialog_Fullscreen);
+        Activity activity = PlayActivity.this;
+        while (activity.getParent() != null) {
+            activity = activity.getParent();
+        }
+        dialog = new Dialog(activity, R.style.Dialog_Fullscreen);
         dialog.setContentView(R.layout.dialog_play);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
-        TextView tv_dialog_cancel = (TextView) dialog.findViewById(R.id.tv_dialog_cancel);
+        tv_dialog_cancel = (TextView) dialog.findViewById(R.id.tv_dialog_cancel);
         tv_dialog_ok = (TextView) dialog.findViewById(R.id.tv_dialog_ok);
         ll_dialog_bg = (LinearLayout) dialog.findViewById(R.id.ll_dialog_bg);
         tv_dialog_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CountdownUtil.getInstance().cancel("DOWN");
-                presenter.initLowerGame(rowsBean.getF_ID());
-                isPlay = false;
-                ll_play_open.setVisibility(View.VISIBLE);
-                ll_play_caozuo.setVisibility(View.INVISIBLE);
+                if (isOpen && isMovie) {
+                    CountdownUtil.getInstance().cancel("DOWN");
+                    presenter.initLowerGame(rowsBean.getF_ID());
+                    isPlay = false;
+                    ll_play_open.setVisibility(View.VISIBLE);
+                    ll_play_caozuo.setVisibility(View.INVISIBLE);
+                }
+
                 dialog.dismiss();
             }
         });
         tv_dialog_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showLoadingDialog("");
-                CountdownUtil.getInstance().cancel("DOWN");
-                soundUtils.playSound(start, 0);
-                presenter.initUpperGame(rowsBean.getF_ID());
+                if (isOpen && isMovie) {
+                    showLoadingDialog("");
+                    CountdownUtil.getInstance().cancel("DOWN");
+                    soundUtils.playSound(start, 0);
+                    presenter.initUpperGame(rowsBean.getF_ID());
+                }
+
                 dialog.dismiss();
             }
         });
+
+//        dialog.show();
     }
 
     private void creatTXLivePlayer2() {
@@ -493,6 +507,23 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         LogUtil.e(code);
         if ("刷新".equals(code)) {
             presenter.initNewCP();
+        }
+
+    }//EventBus的事件接收
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleEvent(String event) {
+
+        if ("抓取成功".equals(event)) {
+//            creatMyDialog();
+            ll_dialog_bg.setBackgroundResource(R.mipmap.play_succes);
+            dialog.show();
+            openGame();
+        } else {
+//            creatMyDialog();
+            ll_dialog_bg.setBackgroundResource(R.mipmap.play_fail);
+            dialog.show();
+            openGame();
         }
 
     }
@@ -643,11 +674,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      * @param controlGameBean
      * @param vAction
      */
-    private static boolean isHave = true;
+    private static boolean isHave;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void showControlGame(final ControlGameBean controlGameBean, String vAction) {
+
         tv_play_info.setVisibility(View.GONE);
 //        boolean isHave = getActivityStackManager().isActivityExist(PlayActivity.class);
         if (controlGameBean.getCode() == -9999) {
@@ -657,16 +689,19 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         }
         if (vAction.equals("DOWN")) {
             qingChuIVColor();//让控件恢复颜色
+            isStart = true;
             ll_play_open.setVisibility(View.VISIBLE);
             ll_play_caozuo.setVisibility(View.INVISIBLE);
             if (controlGameBean.getCode() == 1) {
                 if (isHave) {
+                   /* //抓中提示
+                    creatMyDialog();*/
+                    EventBusUtil.postEvent("抓取成功");
                     //需要播放的地方执行这句即可, 参数分别是声音的编号和循环次数
                     soundUtils.playSound(success, 0);
-                    ll_dialog_bg.setBackgroundResource(R.mipmap.play_succes);
+//                    ll_dialog_bg.setBackgroundResource(R.mipmap.play_succes);
 //                    tv_dialog_info.setText("恭喜你,抓取成功!");
-                    openGame();
-                    dialog.show();
+//                    openGame();
                 } else {
                     ToastUtil.show("恭喜你,抓取成功!");
                 }
@@ -680,11 +715,14 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 }
             } else {
                 if (isHave) {
+                    //抓中提示
+                    EventBusUtil.postEvent("抓取失败");
+//                    creatMyDialog();
                     soundUtils.playSound(fail, 0);
-                    ll_dialog_bg.setBackgroundResource(R.mipmap.play_fail);
+//                    ll_dialog_bg.setBackgroundResource(R.mipmap.play_fail);
 //                    tv_dialog_info.setText("抓取失败,再接再厉!");
-                    openGame();
-                    dialog.show();
+//                    openGame();
+//                    dialog.show();
                 } else {
                     ToastUtil.show("抓取失败,再接再厉!");
                 }
@@ -741,7 +779,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      */
     @Override
     public void showLowerGame(EditAddressBean lowerGame) {
-        if (isHave){
+        if (isHave && mutliThread != null) {
             tv_play_mian_type.setText("观战中");
             mutliThread.resumeThread();//下机了,继续检查游戏机的状态
             isStart = true;
@@ -1202,6 +1240,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         super.onDestroy();
         IMChat.getInstance().quitGroup(rowsBean.getF_GroupID());
         isHave = false;
+//        dialog.cancel();
         CountdownUtil.getInstance().cancelAll();
         if (mutliThread != null) {
             mutliThread.pauseThread();
