@@ -165,6 +165,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
                 break;
             case R.id.tv_login_xieyi:
                 Intent intent = new Intent(getContext(), XieYiActivity.class);
+                intent.putExtra("url","http://zhuazhuale.com/rules.html");
                 startActivity(intent);
                 break;
         }

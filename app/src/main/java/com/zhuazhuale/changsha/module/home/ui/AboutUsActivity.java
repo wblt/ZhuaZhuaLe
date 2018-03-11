@@ -72,6 +72,7 @@ public class AboutUsActivity extends AppBaseActivity implements View.OnClickList
                 break;
             case R.id.ic_aboutus_yhxy:
                 Intent intent = new Intent(getContext(), XieYiActivity.class);
+                intent.putExtra("url","http://zhuazhuale.com/rules.html");
                 startActivity(intent);
                 break;
         }

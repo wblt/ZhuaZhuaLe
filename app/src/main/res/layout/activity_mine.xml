@@ -103,7 +103,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="包邮次数:"
+                                android:text="邮卡:"
                                 android:textColor="#fff"
                                 android:textSize="15dp" />
 
@@ -150,7 +150,7 @@
                         android:background="@drawable/textbeijing_recharge"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:gravity="center"
-                        android:text="兑换包邮"
+                        android:text="兑换邮卡"
                         android:textColor="@color/colorPrimary"
                         android:textSize="14dp" />
 

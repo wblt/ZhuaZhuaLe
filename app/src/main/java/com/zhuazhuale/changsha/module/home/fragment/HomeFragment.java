@@ -30,6 +30,7 @@ import com.zhuazhuale.changsha.module.home.presenter.HomePresenter;
 import com.zhuazhuale.changsha.module.home.ui.HomeActivity;
 import com.zhuazhuale.changsha.module.home.ui.InviteActivity;
 import com.zhuazhuale.changsha.module.home.ui.RechargeActivity;
+import com.zhuazhuale.changsha.module.home.ui.XieYiActivity;
 import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.IItemOnClickListener;
@@ -37,6 +38,7 @@ import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.ScrollBottomScrollView;
 import com.zhuazhuale.changsha.view.fragment.base.BaseFragment;
+import com.zhuazhuale.changsha.view.widget.MaterialDialog;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
@@ -78,6 +80,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     private Handler mHandler;
     private Timer mTimer;
     private TimerTask mTimerTask;
+    private MaterialDialog mDialog3;
 
     public static HomeFragment newInstance(int type, BaseTypeDataBean.RowsBean rowsBean) {
         Bundle bundle = new Bundle();
@@ -96,6 +99,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     protected void initView() {
+        mDialog3 = new MaterialDialog(getContext());
         adapter = new DeviceGoodsAdapter(getContext(), beanList);
         rv_home_list.setLayoutManager(new GridLayoutManager(getContext(), 2));
         rv_home_list.setAdapter(adapter);
@@ -223,6 +227,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
             @Override
             public void itemOnClick(View view, int position) {
                 switch (rows.get(position).getF_Type()) {
+                    case 0:
+                        //邀请码界面
+                        intent = new Intent(getContext(), XieYiActivity.class);
+                        intent.putExtra("url", rows.get(position).getF_ContentUrl());
+                        startActivity(intent);
+                        break;
                     case 1:
                         //邀请码界面
                         intent = new Intent(getContext(), InviteActivity.class);
@@ -234,11 +244,27 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                         startActivity(intent);
                         break;
                     case 3:
+                        mDialog3.setTitle("城市抓抓乐温馨提示");
+                        mDialog3.setMessage("城市抓抓乐想打开QQ");
 
-                        boolean isJoin = joinQQGroup("PskjSgIiYpsWWuHSZbv-w__Mdq3gGAMC");
-                        if (!isJoin) {
-                            ToastUtil.show("未安装手Q或安装的版本不支持");
-                        }
+                        mDialog3.setPositiveButton("打开", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mDialog3.dismiss();
+                                boolean isJoin = joinQQGroup("PskjSgIiYpsWWuHSZbv-w__Mdq3gGAMC");
+                                if (!isJoin) {
+                                    ToastUtil.show("未安装手Q或安装的版本不支持");
+                                }
+                            }
+                        });
+                        mDialog3.setNegativeButton("取消", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mDialog3.dismiss();
+                            }
+                        });
+                        mDialog3.show();
+
                         break;
                     default:
                         break;

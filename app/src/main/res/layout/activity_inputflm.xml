@@ -22,10 +22,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:background="@mipmap/searchbg"
-        android:digits="1234567890"
         android:gravity="center"
         android:hint="输入福利码,获取专属您的福利"
-        android:inputType="phone|number"
+        android:inputType="number"
+        android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         android:maxLength="11"
         android:maxLines="1"
         android:textSize="14dp" />

@@ -60,6 +60,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_device_price"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

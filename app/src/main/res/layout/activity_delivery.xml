@@ -176,7 +176,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="（5件以上包邮或支付88个游戏币）"
+                    android:text="（5件以上包邮或扣除1张邮卡）"
                     android:textSize="12dp" />
 
                 <TextView
@@ -184,7 +184,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="包邮：  0"
+                    android:text="邮卡：  0"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12dp" />
             </LinearLayout>

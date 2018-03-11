@@ -44,7 +44,7 @@
                         android:textSize="14dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="每邀请一个好友加入,注册成功后,你可以获得66个游戏币,最多可以获得3300个币"
+                        android:text="每邀请一个好友加入,注册成功后,你可以获得30个游戏币,最多可以获得300个币"
                         android:textColor="@color/white"
                         android:gravity="center"
                         />

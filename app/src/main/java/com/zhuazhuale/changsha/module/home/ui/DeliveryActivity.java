@@ -85,7 +85,7 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
         mDialog3 = new MaterialDialog(this);
         getTvToolbarRight().setText("充值");
         mDialog1.setTitle("城市抓抓乐温馨提示");
-        mDialog1.setMessage("申请发货将扣除一次包邮劵");
+        mDialog1.setMessage("申请发货将扣除1张邮卡");
 
         mDialog1.setPositiveButton("确定", new View.OnClickListener() {
             @Override
@@ -181,7 +181,7 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
                 if (remark.isEmpty()) {
                     remark = "";
                 }
-                mDialog2.setTitle("娃娃乐温馨提示");
+                mDialog2.setTitle("城市抓抓乐温馨提示");
                 mDialog2.setMessage("是否提交订单");
 
                 mDialog2.setPositiveButton("提交", new View.OnClickListener() {
@@ -203,7 +203,7 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
                 break;
             case R.id.tv_delivery_dhby:
                 mDialog3.setTitle("城市抓抓乐温馨提示");
-                mDialog3.setMessage("您确定使用88游戏币兑换包邮劵么");
+                mDialog3.setMessage("您确定使用88游戏币兑换邮卡么");
 
                 mDialog3.setPositiveButton("确定兑换", new View.OnClickListener() {
                     @Override
@@ -338,7 +338,7 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
     @Override
     public void showNewCP(NewCPBean newCPBean) {
         if (newCPBean.getCode() == 1) {
-            tv_delivery_by.setText("包邮: " + newCPBean.getRows().getF_BagNumber());
+            tv_delivery_by.setText("邮卡: " + newCPBean.getRows().getF_BagNumber());
         } else {
             ToastUtil.show(newCPBean.getInfo());
         }
