@@ -128,7 +128,7 @@ public class LoginActivity extends AppBaseActivity implements View.OnClickListen
     private void goToHome() {
         //登录IM
 //            IMChat.getInstance().login("q454216935", 123456 + "");
-        String name = MyApplication.getInstance().getRowsBean().getF_Code1();
+        String name = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Code1, "");
         IMChat.getInstance().login("zhuazhuale" + name, Constant.IMSDK_APPID + "");
         Intent intent = new Intent(this, HomeActivity2.class);
         startActivity(intent);

@@ -15,12 +15,14 @@ import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.TIMValueCallBack;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.model.entity.eventbus.CPfreshEvent;
 import com.zhuazhuale.changsha.module.vital.adapter.ChatAdapter;
 import com.zhuazhuale.changsha.module.vital.bean.MsgBean;
 import com.zhuazhuale.changsha.module.vital.bean.MsgInfo;
 import com.zhuazhuale.changsha.module.vital.bean.MsgInfoListBean;
 import com.zhuazhuale.changsha.util.EventBusUtil;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
@@ -115,11 +117,15 @@ public class IMchatActivity extends AppBaseActivity {
                     ToastUtil.show("请输入...");
                     return;
                 }
+                String F_Img = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Img, "");
+                String F_Name = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Name, "");
+                String F_Code1 = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Code1, "");
+
                 MsgInfo msgInfo = new MsgInfo();
                 msgInfo.setMsg(msgt);
-                msgInfo.setNickName(MyApplication.getInstance().getRowsBean().getF_Name()+"222");
-                msgInfo.setHeadPic(MyApplication.getInstance().getRowsBean().getF_Img());
-                msgInfo.setUserId("zhuazhuale"+MyApplication.getInstance().getRowsBean().getF_Code1());
+                msgInfo.setNickName(F_Name);
+                msgInfo.setHeadPic(F_Img);
+                msgInfo.setUserId("zhuazhuale"+F_Code1);
                 msgInfo.setUserAction(5);
                 String msg = gson.toJson(msgInfo);
                 IMChat.getInstance().sendMessage(groupId, msg);

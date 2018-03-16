@@ -5,8 +5,10 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.util.Constant;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
 /**
@@ -30,11 +32,13 @@ public class SpoilsModel {
      * @param iCallListener
      */
     public void getQueryUserGoods(int vCheck, final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
+
         OkGo.<String>post(Constant.QueryUserGoods)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl", F_ID)
                 .params("vCheck", vCheck)
-                .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("vUserID",F_ID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -65,12 +69,14 @@ public class SpoilsModel {
      * @param iCallListener
      */
     public void getExChangeCP(String vUserGoodsID, String vDeviceID, final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
+
         OkGo.<String>post(Constant.ExChangeCP)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl", F_ID)
                 .params("vUserGoodsID", vUserGoodsID)
                 .params("vDeviceID", vDeviceID)
-                .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("vUserID", F_ID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -100,11 +106,13 @@ public class SpoilsModel {
      * @param iCallListener
      */
     public void getGiveUserGoods(String vGoodsID, String vCode, final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
+
         OkGo.<String>post(Constant.GiveUserGoods)
                 .tag(this)
                 .params("vGoodsID", vGoodsID)
                 .params("vCode", vCode)
-                .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("vUserID", F_ID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

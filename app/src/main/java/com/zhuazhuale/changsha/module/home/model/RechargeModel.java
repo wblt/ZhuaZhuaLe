@@ -5,8 +5,10 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.util.Constant;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
 /**
@@ -31,10 +33,11 @@ public class RechargeModel {
      * @param iCallListener
      */
     public void getNewCP(final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.GetNewCP)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
-                .params("vF_ID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl", F_ID)
+                .params("vF_ID",F_ID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -63,9 +66,10 @@ public class RechargeModel {
      * @param iCallListener
      */
     public void getAllPriceProduct(final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.GetAllPriceProduct)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl",F_ID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -94,11 +98,13 @@ public class RechargeModel {
      * @param iCallListener
      */
     public void getWxUnifiedOrder(String productId, final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
+        String F_Code = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Code, "");
         OkGo.<String>post(Constant.WxUnifiedOrder)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
-                .params("userid", MyApplication.getInstance().getRowsBean().getF_ID())
-                .params("openid", MyApplication.getInstance().getRowsBean().getF_Code())
+                .params("zzl", F_ID)
+                .params("userid", F_ID)
+                .params("openid", F_Code)
                 .params("productId", productId)
                 .execute(new StringCallback() {
                     @Override
@@ -129,10 +135,13 @@ public class RechargeModel {
      * @param iCallListener
      */
     public void getAliUnifiedOrder(String productId, final ICallListener<String> iCallListener) {
+        String F_Code = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Code, "");
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
+
         OkGo.<String>post(Constant.AliUnifiedOrder)
                 .tag(this)
-                .params("userid", MyApplication.getInstance().getRowsBean().getF_ID())
-                .params("openid", MyApplication.getInstance().getRowsBean().getF_Code())
+                .params("userid", F_ID)
+                .params("openid", F_Code)
                 .params("productId", productId)
                 .execute(new StringCallback() {
                     @Override

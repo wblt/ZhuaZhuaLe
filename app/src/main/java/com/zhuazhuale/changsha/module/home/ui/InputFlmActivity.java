@@ -10,9 +10,11 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.module.home.Bean.EditAddressBean;
 import com.zhuazhuale.changsha.module.home.presenter.InputCodePresenter;
 import com.zhuazhuale.changsha.util.Constant;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
@@ -67,10 +69,12 @@ public class InputFlmActivity extends AppBaseActivity implements View.OnClickLis
     }
 
     private void initData() {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
+
         OkGo.<String>post(Constant.WelfareCode)
                 .tag(this)
                 .params("F_Code", vCode)
-                .params("F_UserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("F_UserID", F_ID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

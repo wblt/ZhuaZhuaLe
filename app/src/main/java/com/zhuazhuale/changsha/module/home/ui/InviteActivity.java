@@ -22,8 +22,10 @@ import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.module.home.adapter.InviteAdapter;
 import com.zhuazhuale.changsha.util.CountdownUtil;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.WXShareUtils;
 import com.zhuazhuale.changsha.util.log.LogUtil;
@@ -82,8 +84,10 @@ public class InviteActivity extends AppBaseActivity implements View.OnClickListe
 
     @Override
     protected void obtainData() {
-        if (MyApplication.getInstance().getRowsBean().getF_Code1() != null) {
-            code = MyApplication.getInstance().getRowsBean().getF_Code1();// 邀请码
+        String F_Code1 = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Code1, "");
+
+        if (F_Code1 != null) {
+            code = F_Code1;// 邀请码
         }
 
         if (code.isEmpty() || code == null) {

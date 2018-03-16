@@ -5,8 +5,10 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.util.Constant;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
 /**
@@ -25,9 +27,10 @@ public class HomeModel {
     }
 
     public void getBaseData(final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.BaseData)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl", F_ID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -51,9 +54,10 @@ public class HomeModel {
     }
 
     public void getLoginMain(final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.LoginMain)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl",F_ID)
                 .params("vEmailCode", "test@zhuazhuale.com")
                 .params("vPassWord", "lezhuazhua.888")
                 .execute(new StringCallback() {
@@ -119,9 +123,10 @@ public class HomeModel {
      * @param iCallListener
      */
     public void getGetDeviceGoods(int PageIndex, int PageSize,String TypeID, final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.GetDeviceGoods)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl", F_ID)
                 .params("PageIndex", PageIndex)
                 .params("PageSize", PageSize)
                 .params("TypeID", TypeID)
@@ -155,10 +160,10 @@ public class HomeModel {
      * @param iCallListener
      */
     public void getVersionCheck(String vVersion, final ICallListener<String> iCallListener) {
-
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.VersionCheck)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl", F_ID)
                 .params("vSystem", "ANDROID")
                 .params("vVersion", vVersion)
                 .execute(new StringCallback() {

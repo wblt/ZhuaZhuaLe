@@ -276,7 +276,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         iv_play_startgame.setImageResource(R.mipmap.srartgame2);
         tv_play_bi.setText(rowsBean.getF_Price() + "币 / 次");
         creatSoundPool();
-        FrescoUtil.getInstance().loadNetImage(sdv_play_fece, MyApplication.getInstance().getRowsBean().getF_Img());
+        String F_Img = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Img, "");
+
+        FrescoUtil.getInstance().loadNetImage(sdv_play_fece, F_Img);
         tv_play_name.setText(MyApplication.getInstance().getRowsBean().getF_Name());
         //抓中提示
         creatMyDialog();
@@ -833,7 +835,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                         presenter.initUpperGame(rowsBean.getF_ID());
                     } else {
                         iv_play_startgame.setImageResource(R.mipmap.srartgame);
-                        FrescoUtil.getInstance().loadNetImage(sdv_play_fece, MyApplication.getInstance().getRowsBean().getF_Img());
+                        String F_Img = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Img, "");
+
+                        FrescoUtil.getInstance().loadNetImage(sdv_play_fece, F_Img);
                         tv_play_name.setText(MyApplication.getInstance().getRowsBean().getF_Name());
                         tv_play_mian_type.setText("围观中");
                     }
@@ -1123,9 +1127,13 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 MsgInfo msgInfo = new MsgInfo();
                 msgInfo.setMsg("点了个赞");
 //                msgInfo.setHeadPic("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517584490096&di=cd3b7dd058b791fba268c078a1033490&imgtype=0&src=http%3A%2F%2Fwww.uuuu.cc%2Fuploads%2Fallimg%2Fc160108%2F145222J62E520-23NR.jpg");
-                msgInfo.setHeadPic(MyApplication.getInstance().getRowsBean().getF_Img());
-                msgInfo.setNickName(MyApplication.getInstance().getRowsBean().getF_Name());
-                msgInfo.setUserId("zhuazhuale" + MyApplication.getInstance().getRowsBean().getF_Code1());
+                String F_Img = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Img, "");
+                String F_Name = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Name, "");
+                String F_Code1 = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Code1, "");
+
+                msgInfo.setHeadPic(F_Img);
+                msgInfo.setNickName(F_Name);
+                msgInfo.setUserId("zhuazhuale" +F_Code1);
                 msgInfo.setUserAction(5);
                 String msg = gson.toJson(msgInfo);
                 IMChat.getInstance().sendMessage(rowsBean.getF_GroupID(), msg);

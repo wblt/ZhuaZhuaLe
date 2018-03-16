@@ -5,8 +5,10 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.util.Constant;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
 import java.util.Date;
@@ -32,10 +34,11 @@ public class PlayModel {
      * @param iCallListener
      */
     public void getNewCP(final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.GetNewCP)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
-                .params("vF_ID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl", F_ID)
+                .params("vF_ID", F_ID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -96,9 +99,10 @@ public class PlayModel {
      * @param iCallListener
      */
     public void getUpperGame(String vDeviceID, final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.UpperGame)
                 .tag(this)
-                .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("vUserID", F_ID)
                 .params("vDeviceID", vDeviceID)
                 .execute(new StringCallback() {
                     @Override
@@ -128,9 +132,10 @@ public class PlayModel {
      * @param iCallListener
      */
     public void getLowerGame(String vDeviceID, final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.LowerGame)
                 .tag(this)
-                .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("vUserID", F_ID)
                 .params("vDeviceID", vDeviceID)
                 .execute(new StringCallback() {
                     @Override
@@ -168,10 +173,10 @@ public class PlayModel {
      * @param iCallListener
      */
     public void getControlGame(String vDeviceID, String vAction, String vToken, String timeStamp, final ICallListener<String> iCallListener) {
-
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.ControlGame)
                 .tag(this)
-                .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("vUserID", F_ID)
                 .params("vDeviceID", vDeviceID)
                 .params("vAction", vAction)
                 .params("vToken", vToken)
@@ -205,10 +210,11 @@ public class PlayModel {
      * @param iCallListener
      */
     public void getGetAllUserTrueByDeviceID(String vDeviceID, final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.GetAllUserTrueByDeviceID)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
-                .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl",F_ID)
+                .params("vUserID", F_ID)
                 .params("vDeviceID", vDeviceID)
                 .execute(new StringCallback() {
                     @Override
@@ -238,9 +244,10 @@ public class PlayModel {
      * @param iCallListener
      */
     public void getGetUploadSignature(final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.GetUploadSignature)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl",F_ID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -271,9 +278,10 @@ public class PlayModel {
      * @param iCallListener
      */
     public void getModiflyVideoUrl(String F_GrabWaterID, String F_VideoUrl, final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.ModiflyVideoUrl)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl",F_ID)
                 .params("F_GrabWaterID", F_GrabWaterID)
                 .params("F_VideoUrl", F_VideoUrl)
                 .execute(new StringCallback() {

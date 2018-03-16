@@ -167,6 +167,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         super.onDestroy();
         if (mTimer != null) {
             mTimer.cancel();
+            mTimer = null;
+        }
+        if (mTimerTask != null) {
+            mTimerTask.cancel();
+            mTimerTask = null;
         }
     }
 

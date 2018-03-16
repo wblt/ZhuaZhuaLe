@@ -5,8 +5,10 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.util.Constant;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
 import static com.jude.rollviewpager.R.id.time;
@@ -33,10 +35,11 @@ public class MineModel {
      * @param iCallListener
      */
     public void getNewCP(final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.GetNewCP)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
-                .params("vF_ID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl", F_ID)
+                .params("vF_ID", F_ID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -60,9 +63,10 @@ public class MineModel {
     }
 
     public void getUserSign(String time,final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.UserSign)
                 .tag(this)
-                .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("vUserID",F_ID)
                 .params("vDateTime",time )
                 .execute(new StringCallback() {
                     @Override
@@ -91,9 +95,10 @@ public class MineModel {
      * @param iCallListener
      */
     public void getExchangeBagNumber(final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.ExchangeBagNumber)
                 .tag(this)
-                .params("F_UserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("F_UserID", F_ID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

@@ -27,9 +27,11 @@ import com.tencent.imsdk.TIMUserStatusListener;
 import com.tencent.imsdk.TIMValueCallBack;
 import com.tencent.imsdk.ext.group.TIMGroupManagerExt;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.module.vital.bean.MsgBean;
 import com.zhuazhuale.changsha.module.vital.bean.MsgInfo;
 import com.zhuazhuale.changsha.util.EventBusUtil;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
@@ -397,11 +399,14 @@ public class IMChat {
      * 设置头像和昵称
      */
     public void setNickName() {
+        String F_Img = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Img, "");
+        String F_Name = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Name, "");
+
         //初始化参数，修改昵称为“cat”
         TIMFriendshipManager.ModifyUserProfileParam param = new TIMFriendshipManager.ModifyUserProfileParam();
 //        String path = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517584490096&di=cd3b7dd058b791fba268c078a1033490&imgtype=0&src=http%3A%2F%2Fwww.uuuu.cc%2Fuploads%2Fallimg%2Fc160108%2F145222J62E520-23NR.jpg";
-        param.setNickname(MyApplication.getInstance().getRowsBean().getF_Name());
-        param.setFaceUrl(MyApplication.getInstance().getRowsBean().getF_Img());
+        param.setNickname(F_Name);
+        param.setFaceUrl(F_Img);
 //        param.setFaceUrl(path);
 
         TIMFriendshipManager.getInstance().modifyProfile(param, new TIMCallBack() {

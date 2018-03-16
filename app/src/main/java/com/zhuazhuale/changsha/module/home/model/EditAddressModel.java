@@ -5,8 +5,10 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.util.Constant;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
 /**
@@ -33,12 +35,12 @@ public class EditAddressModel {
         if (ID.isEmpty()) {
             ID = "";
         }
-        LogUtil.e("我的ID :"+MyApplication.getInstance().getRowsBean().getF_ID());
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.ModifyUserAddress)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl", F_ID)
                 .params("F_ID", ID)
-                .params("F_UserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("F_UserID", F_ID)
                 .params("F_Consignee", name)
                 .params("F_Mobile", phone)
                 .params("F_Address", address)

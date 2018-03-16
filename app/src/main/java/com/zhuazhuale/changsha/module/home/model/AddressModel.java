@@ -5,8 +5,10 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.util.Constant;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 
 import java.util.List;
@@ -33,12 +35,14 @@ public class AddressModel {
      * @param iCallListener
      */
     public void getQueryUserAddress(int vCheck, final ICallListener<String> iCallListener) {
-        LogUtil.e("我的ID :" + MyApplication.getInstance().getRowsBean().getF_ID());
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
+        LogUtil.e("我的ID :" + F_ID);
+
         OkGo.<String>post(Constant.QueryUserAddress)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl",F_ID)
                 .params("vCheck", vCheck)
-                .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("vUserID", F_ID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -68,9 +72,10 @@ public class AddressModel {
      * @param iCallListener
      */
     public void getDeleteAddress(String id, final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.DeleteUserAddress)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl", F_ID)
                 .params("vF_ID", id)
                 .execute(new StringCallback() {
                     @Override
@@ -114,10 +119,11 @@ public class AddressModel {
      * @param iCallListener
      */
     public void getCreateOrder(String F_Consignee, String F_Mobile, String F_Address, String F_Remark, final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.CreateOrder)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
-                .params("F_UserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl", F_ID)
+                .params("F_UserID", F_ID)
                 .params("F_Address", F_Address)
                 .params("F_Consignee", F_Consignee)
                 .params("F_Mobile", F_Mobile)
@@ -162,10 +168,11 @@ public class AddressModel {
         for (String s : vF_ID) {
             LogUtil.e("商品编号:  " + s);
         }
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.ModifyUserGoods)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
-                .params("vUserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl", F_ID)
+                .params("vUserID", F_ID)
                 .params("vCheck", 1)
                 .addUrlParams("vF_ID", vF_ID)
                 .execute(new StringCallback() {
@@ -196,9 +203,10 @@ public class AddressModel {
      * @param iCallListener
      */
     public void getExchangeBagNumber(final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.ExchangeBagNumber)
                 .tag(this)
-                .params("F_UserID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("F_UserID", F_ID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -227,10 +235,11 @@ public class AddressModel {
      * @param iCallListener
      */
     public void getNewCP(final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
         OkGo.<String>post(Constant.GetNewCP)
                 .tag(this)
-                .params("zzl", MyApplication.getInstance().getRowsBean().getF_ID())
-                .params("vF_ID", MyApplication.getInstance().getRowsBean().getF_ID())
+                .params("zzl", F_ID)
+                .params("vF_ID",F_ID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

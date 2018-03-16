@@ -17,7 +17,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.module.vital.bean.MsgInfo;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.ToastUtil;
 
 import org.zackratos.ultimatebar.UltimateBar;
@@ -106,9 +108,13 @@ public class PutMessageActivity extends Activity {
                 MsgInfo msgInfo = new MsgInfo();
                 msgInfo.setMsg(msgt);
 //                msgInfo.setHeadPic("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517584490096&di=cd3b7dd058b791fba268c078a1033490&imgtype=0&src=http%3A%2F%2Fwww.uuuu.cc%2Fuploads%2Fallimg%2Fc160108%2F145222J62E520-23NR.jpg");
-                msgInfo.setHeadPic(MyApplication.getInstance().getRowsBean().getF_Img());
-                msgInfo.setNickName(MyApplication.getInstance().getRowsBean().getF_Name());
-                msgInfo.setUserId("zhuazhuale" + MyApplication.getInstance().getRowsBean().getF_Code1());
+                String F_Img = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Img, "");
+                String F_Name = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Name, "");
+                String F_Code1 = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Code1, "");
+
+                msgInfo.setHeadPic(F_Img);
+                msgInfo.setNickName(F_Name);
+                msgInfo.setUserId("zhuazhuale" +F_Code1);
                 msgInfo.setUserAction(5);
                 String msg = gson.toJson(msgInfo);
                 IMChat.getInstance().sendMessage(groupId, msg);

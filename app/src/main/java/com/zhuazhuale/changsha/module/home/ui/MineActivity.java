@@ -78,8 +78,10 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
 
     @Override
     protected void initView() {
-        if (MyApplication.getInstance().getRowsBean().getF_Img() != null) {
-            FrescoUtil.getInstance().loadNetImage(sdv_mine_face, MyApplication.getInstance().getRowsBean().getF_Img());
+        String F_Img = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Img, "");
+
+        if (F_Img != null) {
+            FrescoUtil.getInstance().loadNetImage(sdv_mine_face, F_Img);
         } else {
             FrescoUtil.getInstance().loadResourceImage(sdv_mine_face, R.mipmap.ic_image_load);
         }
@@ -98,9 +100,11 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
         tv_dd.setText("订单中心");
         tv_dz.setText("地址管理");
         tv_sc.setText("网上商城");
-        if (MyApplication.getInstance().getRowsBean().getF_Code1() != null) {
+        String F_Code1 = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Code1, "");
+
+        if (F_Code1 != null) {
             // 邀请码
-            id = MyApplication.getInstance().getRowsBean().getF_Code1();
+            id = F_Code1;
         } else {
             id = "";
         }
