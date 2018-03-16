@@ -85,7 +85,9 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
         } else {
             FrescoUtil.getInstance().loadResourceImage(sdv_mine_face, R.mipmap.ic_image_load);
         }
-        tv_mine_name.setText(MyApplication.getInstance().getRowsBean().getF_Name());
+        String name = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Name, "");
+
+        tv_mine_name.setText(name);
         TextView tv_cz = (TextView) ic_cz.findViewById(R.id.tv_list_n);
         TextView tv_wwb = (TextView) ic_wwb.findViewById(R.id.tv_list_n);
         TextView tv_zqjl = (TextView) ic_zqjl.findViewById(R.id.tv_list_n);

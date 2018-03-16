@@ -279,7 +279,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         String F_Img = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Img, "");
 
         FrescoUtil.getInstance().loadNetImage(sdv_play_fece, F_Img);
-        tv_play_name.setText(MyApplication.getInstance().getRowsBean().getF_Name());
+        String name = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Name, "");
+
+        tv_play_name.setText(name);
         //抓中提示
         creatMyDialog();
         //微信分享
@@ -836,9 +838,10 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                     } else {
                         iv_play_startgame.setImageResource(R.mipmap.srartgame);
                         String F_Img = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Img, "");
+                        String name = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Name, "");
 
                         FrescoUtil.getInstance().loadNetImage(sdv_play_fece, F_Img);
-                        tv_play_name.setText(MyApplication.getInstance().getRowsBean().getF_Name());
+                        tv_play_name.setText(name);
                         tv_play_mian_type.setText("围观中");
                     }
                     break;
@@ -1166,8 +1169,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 shareDialog.dismiss();
+                String url = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_FxUrl, "");
 
-                String url = MyApplication.getInstance().getRowsBean().getF_FxUrl();
                 String title = "城市抓抓乐";
                 String desc = "亲，欢迎使用城市抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
                 if (url == null || url.isEmpty()) {
@@ -1182,8 +1185,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 shareDialog.dismiss();
-
-                String url = MyApplication.getInstance().getRowsBean().getF_FxUrl();
+                String url = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_FxUrl, "");
                 String title = "城市抓抓乐";
                 String desc = "亲，欢迎使用城市抓抓乐，分享即可免费获得抓取娃娃的机会，还在等什么，赶紧行动起来吧！！！";
                 if (url == null || url.isEmpty()) {
