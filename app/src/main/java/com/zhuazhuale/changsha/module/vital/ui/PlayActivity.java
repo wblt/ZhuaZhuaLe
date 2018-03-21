@@ -5,9 +5,17 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
@@ -21,10 +29,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.ImageSpan;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -67,7 +72,6 @@ import com.zhuazhuale.changsha.module.vital.bean.StartGameBean;
 import com.zhuazhuale.changsha.module.vital.presenter.PlayPresenter;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.CountdownUtil;
-import com.zhuazhuale.changsha.util.DensityUtil;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.HeartLayout;
@@ -86,8 +90,15 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -95,10 +106,12 @@ import master.flame.danmaku.controller.DrawHandler;
 import master.flame.danmaku.danmaku.model.BaseDanmaku;
 import master.flame.danmaku.danmaku.model.DanmakuTimer;
 import master.flame.danmaku.danmaku.model.IDanmakus;
+import master.flame.danmaku.danmaku.model.IDisplayer;
+import master.flame.danmaku.danmaku.model.android.BaseCacheStuffer;
 import master.flame.danmaku.danmaku.model.android.DanmakuContext;
-import master.flame.danmaku.danmaku.model.android.DanmakuFactory;
 import master.flame.danmaku.danmaku.model.android.Danmakus;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
+import master.flame.danmaku.danmaku.util.IOUtils;
 import master.flame.danmaku.ui.widget.DanmakuView;
 
 /**
@@ -312,8 +325,195 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         vp_play_info.setAdapter(pagerAdapter);
         tl_play_title.setupWithViewPager(vp_play_info);
         //弹幕
-        initDanMu();
+//        initDanMu();
+        initDanmuConfig();
     }
+    private BaseCacheStuffer.Proxy mCacheStufferAdapter = new BaseCacheStuffer.Proxy() {
+
+        @Override
+        public void prepareDrawing(final BaseDanmaku danmaku, boolean fromWorkerThread) {
+        }
+
+        @Override
+        public void releaseResource(BaseDanmaku danmaku) {
+            // tag包含bitmap，一定要清空
+            danmaku.tag = null;
+        }
+    };
+    /**
+     * 初始化配置
+     */
+    private void initDanmuConfig() {
+        // 设置最大显示行数
+        HashMap<Integer, Integer> maxLinesPair = new HashMap<Integer, Integer>();
+        maxLinesPair.put(BaseDanmaku.TYPE_SCROLL_RL, 2); // 滚动弹幕最大显示2行
+        // 设置是否禁止重叠
+        HashMap<Integer, Boolean> overlappingEnablePair = new HashMap<Integer, Boolean>();
+        overlappingEnablePair.put(BaseDanmaku.TYPE_SCROLL_RL, true);
+        overlappingEnablePair.put(BaseDanmaku.TYPE_FIX_TOP, true);
+
+//        mDanmakuContext = DanmakuContext.create();
+        danmakuContext = DanmakuContext.create();
+        danmakuContext
+                .setDanmakuStyle(IDisplayer.DANMAKU_STYLE_NONE)
+                .setDuplicateMergingEnabled(false)
+                .setScrollSpeedFactor(1.5f)//越大速度越慢
+                .setScaleTextSize(1.2f)
+                .setCacheStuffer(new MyCacheStuffer(this), mCacheStufferAdapter)
+                .setMaximumLines(maxLinesPair)
+                .preventOverlapping(overlappingEnablePair);
+
+        if (danmakuView != null) {
+            danmakuView.setCallback(new DrawHandler.Callback() {
+                @Override
+                public void prepared() {
+                    danmakuView.start();
+                }
+
+                @Override
+                public void updateTimer(DanmakuTimer timer) {
+                }
+
+                @Override
+                public void danmakuShown(BaseDanmaku danmaku) {
+                }
+
+                @Override
+                public void drawingFinished() {
+                }
+            });
+        }
+
+        danmakuView.prepare(new BaseDanmakuParser() {
+
+            @Override
+            protected Danmakus parse() {
+                return new Danmakus();
+            }
+        }, danmakuContext);
+        danmakuView.enableDanmakuDrawingCache(true);
+    }
+    public void addDanmu(final String avatorUrl, final String name, final String content) {
+        if (TextUtils.isEmpty(avatorUrl)) {
+            // 组装需要传递给danmaku的数据
+            Drawable drawable=getResourceDrawable(R.mipmap.ic_logo);
+            BitmapDrawable bd = (BitmapDrawable) drawable;
+            Bitmap bm= bd.getBitmap();
+            bm = makeRoundCorner(bm);
+            setDanMu(name,content,bm);
+            return;
+        }
+        FrescoUtil.getInstance().loadImageBitmap(avatorUrl, new FrescoUtil.FrescoBitmapCallback<Bitmap>() {
+            @Override
+            public void onSuccess(Uri uri, Bitmap result) {
+                // 组装需要传递给danmaku的数据
+                result = makeRoundCorner(result);
+                setDanMu(name,content,result);
+            }
+
+            @Override
+            public void onFailure(Uri uri, Throwable throwable) {
+                // 组装需要传递给danmaku的数据
+                Drawable drawable=getResourceDrawable(R.mipmap.ic_logo);
+                BitmapDrawable bd = (BitmapDrawable) drawable;
+                Bitmap bm= bd.getBitmap();
+                bm = makeRoundCorner(bm);
+                setDanMu(name,content,bm);
+            }
+
+            @Override
+            public void onCancel(Uri uri) {
+
+            }
+        });
+       /* new Thread() {
+            @Override
+            public void run() {
+                InputStream inputStream = null;
+                try {
+                    // 从网络获取图片并且保存到一个bitmap里
+                    URLConnection urlConnection = new URL(avatorUrl).openConnection();
+                    inputStream = urlConnection.getInputStream();
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    bitmap = makeRoundCorner(bitmap);
+
+                    // 组装需要传递给danmaku的数据
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("name", name);
+                    map.put("content", content);
+                    map.put("bitmap", bitmap);
+                    danmaku.tag = map;
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    IOUtils.closeQuietly(inputStream);
+                }
+                danmaku.text = "";
+                danmaku.padding = 0;
+                danmaku.priority = 1;  // 一定会显示, 一般用于本机发送的弹幕
+                danmaku.isLive = true;
+//                danmaku.time = mDanmakuView.getCurrentTime() + 1000;
+                danmaku.textSize = 0;
+                danmakuView.addDanmaku(danmaku);
+            }
+        }.start();*/
+    }
+    private void setDanMu(String name,String content,Bitmap bitmap ){
+        final BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("name", name);
+        map.put("content", content);
+        map.put("bitmap", bitmap);
+        danmaku.tag = map;
+        danmaku.text = "";
+        danmaku.padding = 0;
+        danmaku.priority = 1;  // 一定会显示, 一般用于本机发送的弹幕
+        danmaku.isLive = true;
+//                danmaku.time = mDanmakuView.getCurrentTime() + 1000;
+        danmaku.textSize = 0;
+        danmakuView.addDanmaku(danmaku);
+    }
+
+    /**
+     * 将图片变成圆形
+     *
+     * @param bitmap
+     * @return
+     */
+    private static Bitmap makeRoundCorner(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int left = 0, top = 0, right = width, bottom = height;
+        float roundPx = height / 2;
+        if (width > height) {
+            left = (width - height) / 2;
+            top = 0;
+            right = left + height;
+            bottom = height;
+        } else if (height > width) {
+            left = 0;
+            top = (height - width) / 2;
+            right = width;
+            bottom = top + width;
+            roundPx = width / 2;
+        }
+        Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        int color = 0xff424242;
+        Paint paint = new Paint();
+        Rect rect = new Rect(left, top, right, bottom);
+        RectF rectF = new RectF(rect);
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
+    }
+
 
     /**
      * 创建声音池
@@ -542,109 +742,15 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         if (event.getType() == 3) {
             //弹幕
             MsgInfo msgInfo = gson.fromJson(event.getContext(), MsgInfo.class);
-            addDanmaku(msgInfo.getNickName() + msgInfo.getMsg(), false);
-
+            addDanmu(msgInfo.getHeadPic(),msgInfo.getNickName(),msgInfo.getMsg());
         }
         chatAdapter.replaceData(msgBeen);
         rv_play_msg_list.smoothScrollToPosition(chatAdapter.getItemCount());
 
     }
 
-    /**
-     * 弹幕初始化
-     */
-    private void initDanMu() {
-        danmakuView.enableDanmakuDrawingCache(true);
-        danmakuView.setCallback(new DrawHandler.Callback() {
-            @Override
-            public void prepared() {
-//                showDanmaku = true;
-                danmakuView.start();
-//                generateSomeDanmaku();
-            }
 
-            @Override
-            public void updateTimer(DanmakuTimer timer) {
 
-            }
-
-            @Override
-            public void danmakuShown(BaseDanmaku danmaku) {
-
-            }
-
-            @Override
-            public void drawingFinished() {
-
-            }
-        });
-        danmakuContext = DanmakuContext.create();
-        danmakuView.prepare(parser, danmakuContext);
-    }
-
-    private BaseDanmakuParser parser = new BaseDanmakuParser() {
-        @Override
-        protected IDanmakus parse() {
-            return new Danmakus();
-        }
-    };
-
-    /**
-     * 向弹幕View中添加一条弹幕
-     *
-     * @param content    弹幕的具体内容
-     * @param withBorder 弹幕是否有边框
-     */
-    private void addDanmaku(String content, boolean withBorder) {
-        BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
-        danmaku.text = content;
-        danmaku.padding = 5;
-        danmaku.textSize = DensityUtil.sp2px(this, 16);
-        danmaku.textColor = Color.BLACK;
-        danmaku.setTime(danmakuView.getCurrentTime());
-        if (withBorder) {
-            danmaku.borderColor = Color.GREEN;
-        }
-        danmakuView.addDanmaku(danmaku);
-    }
-
-    /**
-     * 显示图片加文字
-     *
-     * @param islive
-     */
-    private void addDanmaKuShowTextAndImage(boolean islive) {
-        BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
-        Drawable drawable = getResources().getDrawable(R.mipmap.ic_logo);
-        drawable.setBounds(0, 0, 100, 100);
-        SpannableStringBuilder spannable = createSpannable(drawable);
-        danmaku.text = spannable;
-        danmaku.padding = 5;
-        danmaku.priority = 1;  // 一定会显示, 一般用于本机发送的弹幕
-        danmaku.isLive = islive;
-        danmaku.setTime(danmakuView.getCurrentTime() + 1200);
-        danmaku.textSize = 25f * (parser.getDisplayer().getDensity() - 0.6f);
-        danmaku.textColor = Color.RED;
-        danmaku.textShadowColor = 0; // 重要：如果有图文混排，最好不要设置描边(设textShadowColor=0)，否则会进行两次复杂的绘制导致运行效率降低
-        danmaku.underlineColor = Color.GREEN;
-        danmakuView.addDanmaku(danmaku);
-    }
-
-    /**
-     * 添加图片和文字
-     *
-     * @param drawable
-     * @return
-     */
-    private SpannableStringBuilder createSpannable(Drawable drawable) {
-        String text = "bitmap";
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(text);
-        ImageSpan span = new ImageSpan(drawable);//ImageSpan.ALIGN_BOTTOM);
-        spannableStringBuilder.setSpan(span, 0, text.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        spannableStringBuilder.append("图文混排");
-        spannableStringBuilder.setSpan(new BackgroundColorSpan(Color.parseColor("#8A2233B1")), 0, spannableStringBuilder.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        return spannableStringBuilder;
-    }
 
     /**
      * 查询游戏币数量
@@ -1126,6 +1232,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 shareDialog.show();
                 break;
             case R.id.iv_play_dz:
+                if (isOpen){
+                    return;
+                }
                 hl_play_heart.addFavor();
                 MsgInfo msgInfo = new MsgInfo();
                 msgInfo.setMsg("点了个赞");
@@ -1136,7 +1245,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
                 msgInfo.setHeadPic(F_Img);
                 msgInfo.setNickName(F_Name);
-                msgInfo.setUserId("zhuazhuale" +F_Code1);
+                msgInfo.setUserId("zhuazhuale" + F_Code1);
                 msgInfo.setUserAction(5);
                 String msg = gson.toJson(msgInfo);
                 IMChat.getInstance().sendMessage(rowsBean.getF_GroupID(), msg);

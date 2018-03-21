@@ -28,6 +28,7 @@ public class HomeModel {
 
     public void getBaseData(final ICallListener<String> iCallListener) {
         String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
+        LogUtil.e(F_ID);
         OkGo.<String>post(Constant.BaseData)
                 .tag(this)
                 .params("zzl", F_ID)
