@@ -714,7 +714,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             ll_dialog_bg.setBackgroundResource(R.mipmap.play_succes);
             dialog.show();
             openGame();
-        } else {
+        } else if ("抓取失败".equals(event)){
 //            creatMyDialog();
             ll_dialog_bg.setBackgroundResource(R.mipmap.play_fail);
             dialog.show();

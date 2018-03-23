@@ -184,6 +184,7 @@ public class IMChat {
                         //被其他终端踢下线
                         LogUtil.e("onForceOffline");
                         ToastUtil.show("您的账号在别处登录!");
+
                         EventBusUtil.postEvent("onForceOffline");
                     }
 

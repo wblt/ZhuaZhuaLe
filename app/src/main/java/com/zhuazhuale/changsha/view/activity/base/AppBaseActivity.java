@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.util.EventBusUtil;
+import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.widget.loadlayout.LoadLayout;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -94,8 +95,9 @@ public abstract class AppBaseActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleEvent(String event) {
         if ("onForceOffline".equals(event)){
-          showLoadingDialog("您的账号在别处登录");
+          showLoadingDialog("您的账号在别处登录,请重新登录");
         }
+        LogUtil.e("11111","您的账号在别处登录");
     }
 
     /**

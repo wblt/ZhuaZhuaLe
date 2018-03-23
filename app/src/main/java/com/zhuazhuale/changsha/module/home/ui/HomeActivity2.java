@@ -137,6 +137,10 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
         if ("TXLOFIN".equals(event)){
             dismissLoadingDialog();
         }
+        if ("onForceOffline".equals(event)){
+            showLoadingDialog("您的账号在别处登录");
+        }
+        LogUtil.e("11111","您的账号在别处登录");
     }
 
     @Override
