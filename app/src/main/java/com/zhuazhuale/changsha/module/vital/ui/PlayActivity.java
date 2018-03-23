@@ -1161,7 +1161,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             case R.id.iv_play_startgame:
                 if (isOpen && isMovie) {
                     if (newCP != 0 && newCP > rowsBean.getF_Price()) {
-                        showLoadingDialog("准备 !");
+                        //showLoadingDialog("准备 !");
                         iv_play_startgame.setImageResource(R.mipmap.srartgame3);
                         soundUtils.playSound(start, 0);
                         //查询游戏的状态,先查询机器状态,再开始游戏
