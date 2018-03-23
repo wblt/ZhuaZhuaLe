@@ -119,7 +119,7 @@ public class SpoilsActivity extends AppBaseActivity implements View.OnClickListe
         getTvToolbarRight().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (addressAdapter.getDataList() == null) {
+                if (addressAdapter == null) {
                     ToastUtil.show("没有需要发货的商品!");
                     return;
                 }
