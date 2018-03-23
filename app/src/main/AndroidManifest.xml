@@ -74,7 +74,8 @@
         <activity android:name=".module.home.ui.AddressListActivity" />
         <activity
             android:name=".module.vital.ui.PlayActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/HeheTransparent"/>
         <activity
             android:name=".module.vital.ui.PutMessageActivity"
             android:screenOrientation="portrait"

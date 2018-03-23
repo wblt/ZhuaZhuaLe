@@ -106,4 +106,9 @@
         <item name="android:windowExitAnimation">@anim/actionsheet_dialog_out</item>
     </style>
 
+    <style name="HeheTransparent" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--将Activity的Theme设置成透明-->
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
 </resources>
