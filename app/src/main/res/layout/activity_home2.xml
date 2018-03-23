@@ -88,7 +88,8 @@
         app:tabIndicatorColor="@color/transparent"
         app:tabSelectedTextColor="@color/yellow2"
         app:tabTextAppearance="@style/TabLayoutTextStyleHome"
-        app:tabTextColor="@color/white">
+        app:tabTextColor="@color/white"
+        app:tabMaxWidth="60dp">
 
     </android.support.design.widget.TabLayout>
 
