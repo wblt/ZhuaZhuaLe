@@ -1,6 +1,7 @@
 package com.zhuazhuale.changsha.module.home.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.model.entity.res.MovieRes;
 import com.zhuazhuale.changsha.model.entity.table.MovieCollect;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
@@ -44,7 +48,7 @@ public class DeviceGoodsAdapter extends RecyclerBaseAdapter<DeviceGoodsBean.Rows
     @Override
     protected void bindDataForView(ViewHolder holder, final DeviceGoodsBean.RowsBean rowsBean, final int position) {
         //initView
-        SimpleDraweeView sdvMovie = holder.getView(R.id.sdv_devicegoods);
+        ImageView sdvMovie = holder.getView(R.id.sdv_devicegoods);
         TextView tv_device_name = holder.getView(R.id.tv_device_name);
         TextView tv_device_price = holder.getView(R.id.tv_device_price);
         ImageView iv_status = holder.getView(R.id.iv_item_devicegoods_status);
@@ -69,7 +73,16 @@ public class DeviceGoodsAdapter extends RecyclerBaseAdapter<DeviceGoodsBean.Rows
         }
 
         //obtainData
-        FrescoUtil.getInstance().loadNetImage(sdvMovie, rowsBean.getF_ImgA());//加载网络图片
+       /* Uri imageUri = Uri.parse(rowsBean.getF_ImgA());
+        //开始下载
+        sdvMovie.setImageURI(imageUri);*/
+//        FrescoUtil.getInstance().loadNetImage(sdvMovie, rowsBean.getF_ImgA());//加载网络图片
+        Glide.with(MyApplication.getInstance())
+                .load( rowsBean.getF_ImgA())
+                .placeholder(R.mipmap.ic_image_load)
+                .error(R.mipmap.ic_image_load)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(sdvMovie);
         tv_device_name.setText(rowsBean.getF_Name());
         tv_device_price.setText(rowsBean.getF_Price() + "/次");
 

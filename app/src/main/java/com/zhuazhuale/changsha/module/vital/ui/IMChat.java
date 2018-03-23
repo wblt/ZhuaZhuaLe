@@ -145,7 +145,7 @@ public class IMChat {
      *
      * @param userlist
      */
-    public void getUsersProfile(List<String> userlist) {
+    public void getUsersProfile(final List<String> userlist) {
         //待获取用户资料的用户列表
         List<String> users = new ArrayList<String>();
         users.add("sample_user_1");
@@ -158,6 +158,7 @@ public class IMChat {
                 //错误码code和错误描述desc，可用于定位请求失败原因
                 //错误码code列表请参见错误码表
                 LogUtil.e(tag, "getUsersProfile failed: " + code + " desc");
+                getUsersProfile(userlist);
             }
 
             @Override

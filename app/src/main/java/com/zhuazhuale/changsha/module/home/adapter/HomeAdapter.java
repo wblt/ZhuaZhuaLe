@@ -7,12 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.zhuazhuale.changsha.R;
+import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.IItemOnClickListener;
@@ -51,10 +54,16 @@ public class HomeAdapter extends StaticPagerAdapter {
 
         View view2 = mInflater.inflate(R.layout.item_home,
                 container, false);
-        final SimpleDraweeView view = (SimpleDraweeView) view2.findViewById(R.id.iv_home_image);
-        Uri imageUri = Uri.parse(newsList.get(position).getF_ImgUrl());
+        final ImageView view = (ImageView) view2.findViewById(R.id.iv_home_image);
+       /* Uri imageUri = Uri.parse(newsList.get(position).getF_ImgUrl());
         //开始下载
-        view.setImageURI(imageUri);
+        view.setImageURI(imageUri);*/
+        Glide.with(MyApplication.getInstance())
+                .load(newsList.get(position).getF_ImgUrl())
+                .placeholder(R.mipmap.ic_image_load)
+                .error(R.mipmap.ic_image_load)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(view);
         view2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
