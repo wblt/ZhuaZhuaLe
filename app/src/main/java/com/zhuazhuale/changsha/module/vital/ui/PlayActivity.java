@@ -83,6 +83,7 @@ import com.zhuazhuale.changsha.util.WXShareUtils;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.ScrollBottomScrollView;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+import com.zhuazhuale.changsha.view.widget.MaterialDialog;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
@@ -276,6 +277,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     @Override
     protected void initView() {
+        mDialog = new MaterialDialog(this);
         tv_play_mian_type.setText("观战中");
         int color = getResourceColor(R.color.transparent);
         setBarTranslucent(color, 0, color, 0);
@@ -328,6 +330,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 //        initDanMu();
         initDanmuConfig();
     }
+
     private BaseCacheStuffer.Proxy mCacheStufferAdapter = new BaseCacheStuffer.Proxy() {
 
         @Override
@@ -340,6 +343,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             danmaku.tag = null;
         }
     };
+
     /**
      * 初始化配置
      */
@@ -393,14 +397,15 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         }, danmakuContext);
         danmakuView.enableDanmakuDrawingCache(true);
     }
+
     public void addDanmu(final String avatorUrl, final String name, final String content) {
         if (TextUtils.isEmpty(avatorUrl)) {
             // 组装需要传递给danmaku的数据
-            Drawable drawable=getResourceDrawable(R.mipmap.ic_logo);
+            Drawable drawable = getResourceDrawable(R.mipmap.ic_logo);
             BitmapDrawable bd = (BitmapDrawable) drawable;
-            Bitmap bm= bd.getBitmap();
+            Bitmap bm = bd.getBitmap();
             bm = makeRoundCorner(bm);
-            setDanMu(name,content,bm);
+            setDanMu(name, content, bm);
             return;
         }
         FrescoUtil.getInstance().loadImageBitmap(avatorUrl, new FrescoUtil.FrescoBitmapCallback<Bitmap>() {
@@ -408,17 +413,17 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             public void onSuccess(Uri uri, Bitmap result) {
                 // 组装需要传递给danmaku的数据
                 result = makeRoundCorner(result);
-                setDanMu(name,content,result);
+                setDanMu(name, content, result);
             }
 
             @Override
             public void onFailure(Uri uri, Throwable throwable) {
                 // 组装需要传递给danmaku的数据
-                Drawable drawable=getResourceDrawable(R.mipmap.ic_logo);
+                Drawable drawable = getResourceDrawable(R.mipmap.ic_logo);
                 BitmapDrawable bd = (BitmapDrawable) drawable;
-                Bitmap bm= bd.getBitmap();
+                Bitmap bm = bd.getBitmap();
                 bm = makeRoundCorner(bm);
-                setDanMu(name,content,bm);
+                setDanMu(name, content, bm);
             }
 
             @Override
@@ -426,41 +431,10 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
             }
         });
-       /* new Thread() {
-            @Override
-            public void run() {
-                InputStream inputStream = null;
-                try {
-                    // 从网络获取图片并且保存到一个bitmap里
-                    URLConnection urlConnection = new URL(avatorUrl).openConnection();
-                    inputStream = urlConnection.getInputStream();
-                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                    bitmap = makeRoundCorner(bitmap);
 
-                    // 组装需要传递给danmaku的数据
-                    Map<String, Object> map = new HashMap<String, Object>();
-                    map.put("name", name);
-                    map.put("content", content);
-                    map.put("bitmap", bitmap);
-                    danmaku.tag = map;
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    IOUtils.closeQuietly(inputStream);
-                }
-                danmaku.text = "";
-                danmaku.padding = 0;
-                danmaku.priority = 1;  // 一定会显示, 一般用于本机发送的弹幕
-                danmaku.isLive = true;
-//                danmaku.time = mDanmakuView.getCurrentTime() + 1000;
-                danmaku.textSize = 0;
-                danmakuView.addDanmaku(danmaku);
-            }
-        }.start();*/
     }
-    private void setDanMu(String name,String content,Bitmap bitmap ){
+
+    private void setDanMu(String name, String content, Bitmap bitmap) {
         final BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", name);
@@ -714,7 +688,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             ll_dialog_bg.setBackgroundResource(R.mipmap.play_succes);
             dialog.show();
             openGame();
-        } else if ("抓取失败".equals(event)){
+        } else if ("抓取失败".equals(event)) {
 //            creatMyDialog();
             ll_dialog_bg.setBackgroundResource(R.mipmap.play_fail);
             dialog.show();
@@ -742,14 +716,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         if (event.getType() == 3) {
             //弹幕
             MsgInfo msgInfo = gson.fromJson(event.getContext(), MsgInfo.class);
-            addDanmu(msgInfo.getHeadPic(),msgInfo.getNickName(),msgInfo.getMsg());
+            addDanmu(msgInfo.getHeadPic(), msgInfo.getNickName(), msgInfo.getMsg());
         }
         chatAdapter.replaceData(msgBeen);
         rv_play_msg_list.smoothScrollToPosition(chatAdapter.getItemCount());
 
     }
-
-
 
 
     /**
@@ -857,7 +829,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
             @Override
             public void onFinish() {
-                if (!isStart) {
+                if (isStart) {
                     tv_dialog_ok.setText("(0)");
                     CountdownUtil.getInstance().cancel("DOWN");
                     presenter.initLowerGame(rowsBean.getF_ID());
@@ -1232,7 +1204,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 shareDialog.show();
                 break;
             case R.id.iv_play_dz:
-                if (isOpen){
+                if (isOpen) {
                     return;
                 }
                 hl_play_heart.addFavor();
@@ -1657,12 +1629,31 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      * @param resultCode
      * @param data
      */
+    private MaterialDialog mDialog;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         MediaProjection mediaProjection = mMediaProjectionManager.getMediaProjection(resultCode, data);
         if (mediaProjection == null) {
             Log.e("@@", "media projection is null");
+            mDialog.setTitle("城市抓抓乐温馨提示");
+            mDialog.setMessage("取消录制视频会影响申诉功能，是否重新开启录制视频！");
+
+            mDialog.setPositiveButton("开启", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDialog.dismiss();
+                    luZhi("");
+                }
+            });
+            mDialog.setNegativeButton("取消", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDialog.dismiss();
+                }
+            });
+            mDialog.show();
             return;
         }
         // video size

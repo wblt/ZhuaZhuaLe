@@ -81,7 +81,7 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
 
         boolean isbjyx = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_bjyx, true);
         boolean isyy = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_yy, true);
-        boolean islp = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lp, false);
+        boolean islp = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lp, true);
         if (isbjyx) {
             iv_bjyx.setImageResource(R.mipmap.icon_kai);
         } else {
