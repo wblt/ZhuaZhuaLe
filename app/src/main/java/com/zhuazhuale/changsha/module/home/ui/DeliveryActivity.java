@@ -203,7 +203,7 @@ public class DeliveryActivity extends AppBaseActivity implements View.OnClickLis
                 break;
             case R.id.tv_delivery_dhby:
                 mDialog3.setTitle("城市抓抓乐温馨提示");
-                mDialog3.setMessage("您确定使用88游戏币兑换邮卡么");
+                mDialog3.setMessage("您确定使用128游戏币兑换邮卡么");
 
                 mDialog3.setPositiveButton("确定兑换", new View.OnClickListener() {
                     @Override

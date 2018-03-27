@@ -22,6 +22,7 @@ public class HomeModel {
         return HomeModel.SingletonHolder.instance;
     }
 
+
     private static class SingletonHolder {
         private static final HomeModel instance = new HomeModel();
     }
@@ -131,6 +132,35 @@ public class HomeModel {
                 .params("PageIndex", PageIndex)
                 .params("PageSize", PageSize)
                 .params("TypeID", TypeID)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+//                        LogUtil.e(response.toString());
+                        iCallListener.callSuccess(response.body());
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtil.e(response.toString());
+                        iCallListener.callFailed();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        iCallListener.onFinish();
+                    }
+                });
+
+    }
+
+    public void getGetDevicesStatus(String typeID, final ICallListener<String> iCallListener) {
+        String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
+        OkGo.<String>post(Constant.GetDevicesStatus)
+                .tag(this)
+                .params("vUserID", F_ID)
+                .params("vDevicesID", typeID)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

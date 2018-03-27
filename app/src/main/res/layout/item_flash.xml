@@ -20,13 +20,13 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="140dp"
-        android:background="@drawable/textbeijing"
+        android:background="@drawable/textbeijing_recharge"
         android:paddingBottom="8dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="8dp"
         android:text="点击进入游戏"
-        android:textColor="@color/white"
+        android:textColor="@color/colorPrimary"
         android:textSize="18dp" />
 
 </RelativeLayout>

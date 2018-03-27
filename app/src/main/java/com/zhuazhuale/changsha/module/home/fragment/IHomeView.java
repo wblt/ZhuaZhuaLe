@@ -2,6 +2,7 @@ package com.zhuazhuale.changsha.module.home.fragment;
 
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
+import com.zhuazhuale.changsha.module.home.Bean.DevicesTypeBean;
 import com.zhuazhuale.changsha.module.home.Bean.VersionBean;
 import com.zhuazhuale.changsha.presenter.iview.IBaseView;
 
@@ -29,4 +30,6 @@ public interface IHomeView extends IBaseView {
     void showProgress(float fraction);*/
 
     void showDeviceGoodsFailed(int type);
+
+    void showDeviceGoodsType(DevicesTypeBean deviceGoodsBean);
 }

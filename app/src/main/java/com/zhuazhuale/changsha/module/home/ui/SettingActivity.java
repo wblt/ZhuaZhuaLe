@@ -155,7 +155,7 @@ public class SettingActivity extends AppBaseActivity implements View.OnClickList
         iv_lp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean is_lp = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lp, false);
+                boolean is_lp = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lp, true);
                 String s = android.os.Build.VERSION.RELEASE;
                 LogUtil.e("手机系统版本" + s + "    " + Build.VERSION.SDK_INT);
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT_WATCH) {

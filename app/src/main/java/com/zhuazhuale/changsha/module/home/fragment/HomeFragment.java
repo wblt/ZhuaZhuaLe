@@ -24,6 +24,7 @@ import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.BaseTypeDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
+import com.zhuazhuale.changsha.module.home.Bean.DevicesTypeBean;
 import com.zhuazhuale.changsha.module.home.adapter.DeviceGoodsAdapter;
 import com.zhuazhuale.changsha.module.home.adapter.HomeAdapter;
 import com.zhuazhuale.changsha.module.home.presenter.HomePresenter;
@@ -152,7 +153,17 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
 //                        LogUtil.e("我在刷新");
                         if (adapter != null && adapter.getItemCount() != 0) {
 //                            LogUtil.e("我在刷新" + adapter.getItemCount());
-                            homePresenter.initDeviceGoods(1, adapter.getItemCount(), rowsBean.getF_ID(), Constant.REFRESH);
+                            List<DeviceGoodsBean.RowsBean> mData = adapter.getDataList();
+                            String resouse = "";
+                            for (int aa = 0; aa < mData.size(); aa++) {
+                                if (aa == 1) {
+                                    resouse = mData.get(aa).getF_ID();
+                                } else {
+                                    resouse = resouse + "," + mData.get(aa).getF_ID();
+                                }
+                            }
+                            LogUtil.e(resouse);
+                            homePresenter.initGetDevicesStatus(resouse, Constant.REFRESH);
                         }
                     }
                 });
@@ -427,6 +438,26 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                 ToastUtil.show("加载更多失败");
                 break;
         }
+    }
+
+    /**
+     * 刷新状态
+     *
+     * @param deviceGoodsBean
+     */
+    @Override
+    public void showDeviceGoodsType(DevicesTypeBean deviceGoodsBean) {
+        if (adapter != null && adapter.getItemCount() != 0) {
+            List<DeviceGoodsBean.RowsBean> rowsBeans = adapter.getDataList();
+            if (deviceGoodsBean.getRows().size() == rowsBeans.size()) {
+                for (int ss = 0; ss < rowsBeans.size(); ss++) {
+                    rowsBeans.get(ss).setF_Status(deviceGoodsBean.getRows().get(ss).getF_Status());
+                }
+                adapter.replaceData(rowsBeans);
+            }
+
+        }
+
     }
 
     @Override

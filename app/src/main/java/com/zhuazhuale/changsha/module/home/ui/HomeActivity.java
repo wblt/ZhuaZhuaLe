@@ -24,6 +24,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
+import com.zhuazhuale.changsha.module.home.Bean.DevicesTypeBean;
 import com.zhuazhuale.changsha.module.home.Bean.VersionBean;
 import com.zhuazhuale.changsha.module.home.adapter.DeviceGoodsAdapter;
 import com.zhuazhuale.changsha.module.home.adapter.HomeAdapter;
@@ -339,6 +340,11 @@ public class HomeActivity extends AppBaseActivity implements IHomeView, View.OnC
                 ToastUtil.show("加载更多失败");
                 break;
         }
+    }
+
+    @Override
+    public void showDeviceGoodsType(DevicesTypeBean deviceGoodsBean) {
+
     }
 
     @Override

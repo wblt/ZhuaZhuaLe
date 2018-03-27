@@ -7,9 +7,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.media.projection.MediaProjection;
+import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +24,7 @@ import android.widget.ProgressBar;
 
 import com.zhuazhuale.changsha.R;
 import com.zhuazhuale.changsha.app.MyApplication;
+import com.zhuazhuale.changsha.app.constant.BaseConstants;
 import com.zhuazhuale.changsha.model.entity.eventbus.CPfreshEvent;
 import com.zhuazhuale.changsha.module.home.Bean.BaseTypeDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
@@ -29,9 +36,12 @@ import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.PermissionUtil;
+import com.zhuazhuale.changsha.util.PreferenceUtil;
+import com.zhuazhuale.changsha.util.ScreenRecorder;
 import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
 import com.zhuazhuale.changsha.view.activity.base.AppBaseActivity;
+import com.zhuazhuale.changsha.view.widget.MaterialDialog;
 import com.zhuazhuale.changsha.view.widget.loadlayout.OnLoadListener;
 import com.zhuazhuale.changsha.view.widget.loadlayout.State;
 
@@ -57,7 +67,7 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
     ViewPager vp_home_info;
     @BindView(R.id.ll_home_shezhi)
     LinearLayout ll_home_shezhi;
-     @BindView(R.id.ll_home_mine)
+    @BindView(R.id.ll_home_mine)
     LinearLayout ll_home_mine;
 
     private HomeFragmentPagerAdapter pagerAdapter;
@@ -67,12 +77,65 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
     private String version;
     public static HomeActivity2 instance = null;
     private long time1;
+    private MediaProjectionManager mMediaProjectionManager;
+    private MaterialDialog mDialog;
+    private boolean is_lpqx;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void setContentLayout() {
         setContentView(R.layout.activity_home2);
         instance = this;
+        is_lpqx = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lpqx, false);
+        if (!is_lpqx){
+            luZhi();
+        }
+
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        MediaProjection mediaProjection = mMediaProjectionManager.getMediaProjection(resultCode, data);
+        if (mediaProjection == null) {
+            Log.e("@@", "media projection is null");
+            mDialog.setTitle("城市抓抓乐温馨提示");
+            mDialog.setMessage("取消录制视频会影响申诉功能，是否重新开启录制视频！");
+
+            mDialog.setPositiveButton("开启", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDialog.dismiss();
+                    luZhi();
+                }
+            });
+            mDialog.setNegativeButton("取消", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDialog.dismiss();
+                }
+            });
+            mDialog.show();
+        }else {
+            PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_lpqx, true);
+
+        }
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void luZhi() {
+        //录屏
+        boolean is_lp = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lp, true);
+        if (is_lp) {
+            mMediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
+            Intent captureIntent = mMediaProjectionManager.createScreenCaptureIntent();
+            startActivityForResult(captureIntent, 1);
+            mDialog = new MaterialDialog(this);
+        }
+
     }
 
     @Override
@@ -134,10 +197,10 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
     //EventBus的事件接收，从事件中获取最新的收藏数量并更新界面展示
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleEvent(String event) {
-        if ("TXLOFIN".equals(event)){
+        if ("TXLOFIN".equals(event)) {
             dismissLoadingDialog();
         }
-        if ("onForceOffline".equals(event)){
+        if ("onForceOffline".equals(event)) {
             showLoadingDialog("您的账号在别处登录");
         }
 

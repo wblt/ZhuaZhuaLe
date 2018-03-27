@@ -213,7 +213,7 @@ public class MineActivity extends AppBaseActivity implements View.OnClickListene
                 break;
             case R.id.tv_mine_dhby:
                 mDialog.setTitle("城市抓抓乐温馨提示");
-                mDialog.setMessage("您确定使用88游戏币兑换包邮劵么");
+                mDialog.setMessage("您确定使用128游戏币兑换包邮劵么");
 
                 mDialog.setPositiveButton("确定兑换", new View.OnClickListener() {
                     @Override

@@ -33,6 +33,7 @@ public interface BaseConstants {
     String Is_bjyx = "Is_bjyx";
     String Is_yy = "Is_yy";
     String Is_lp = "Is_lp";
+    String Is_lpqx = "Is_lpqx";
 
     String SignTime = "SignTime";
 

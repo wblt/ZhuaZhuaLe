@@ -5,6 +5,7 @@ import com.zhuazhuale.changsha.app.MyApplication;
 import com.zhuazhuale.changsha.app.constant.ICallListener;
 import com.zhuazhuale.changsha.module.home.Bean.BaseDataBean;
 import com.zhuazhuale.changsha.module.home.Bean.DeviceGoodsBean;
+import com.zhuazhuale.changsha.module.home.Bean.DevicesTypeBean;
 import com.zhuazhuale.changsha.module.home.Bean.LoginInfoBean;
 import com.zhuazhuale.changsha.module.home.model.HomeModel;
 import com.zhuazhuale.changsha.module.home.fragment.IHomeView;
@@ -80,6 +81,27 @@ public class HomePresenter extends BasePresenter<IHomeView> {
 //                LogUtil.e(s);
                 DeviceGoodsBean deviceGoodsBean = gson.fromJson(s, DeviceGoodsBean.class);
                 mIView.showDeviceGoods(deviceGoodsBean,type);
+            }
+
+            @Override
+            public void callFailed() {
+                mIView.showDeviceGoodsFailed(type);
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtil.e("接口结束");
+                mIView.showFinish();
+            }
+        });
+    }
+    public void initGetDevicesStatus( String TypeID,final int type) {
+        homeModel.getGetDevicesStatus(TypeID, new ICallListener<String>() {
+            @Override
+            public void callSuccess(String s) {
+                LogUtil.e(s);
+                DevicesTypeBean deviceGoodsBean = gson.fromJson(s, DevicesTypeBean.class);
+                mIView.showDeviceGoodsType(deviceGoodsBean);
             }
 
             @Override

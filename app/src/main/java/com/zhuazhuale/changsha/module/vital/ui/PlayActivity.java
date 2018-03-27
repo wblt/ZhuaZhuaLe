@@ -247,6 +247,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private DanmakuContext danmakuContext;
     private TextView tv_dialog_cancel;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void setContentLayout() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
@@ -256,9 +257,34 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         url1 = rowsBean.getF_Camera1();
         url2 = rowsBean.getF_Camera2();
         //录屏
-        is_lp = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lp, false);
-        if (is_lp) {
-            mMediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
+        mMediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
+        is_lp = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lp, true);
+        boolean is_lpqx = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lpqx, false);
+        if (!is_lpqx) {
+            Intent captureIntent = mMediaProjectionManager.createScreenCaptureIntent();
+            startActivityForResult(captureIntent, REQUEST_CODE);
+        }
+        if (!is_lp) {
+            mDialog = new MaterialDialog(this);
+            mDialog.setTitle("城市抓抓乐温馨提示");
+            mDialog.setMessage("取消录制视频会影响申诉功能，是否重新开启录制视频！");
+
+            mDialog.setPositiveButton("开启", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDialog.dismiss();
+                    PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_lp, true);
+                    is_lp = true;
+                }
+            });
+            mDialog.setNegativeButton("取消", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDialog.dismiss();
+                    PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_lp, true);
+                }
+            });
+            mDialog.show();
         }
         isHave = true;
         Uri uri = Uri.parse(rowsBean.getF_ImgA());
@@ -277,7 +303,6 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     @Override
     protected void initView() {
-        mDialog = new MaterialDialog(this);
         tv_play_mian_type.setText("观战中");
         int color = getResourceColor(R.color.transparent);
         setBarTranslucent(color, 0, color, 0);
@@ -1637,8 +1662,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         MediaProjection mediaProjection = mMediaProjectionManager.getMediaProjection(resultCode, data);
         if (mediaProjection == null) {
             Log.e("@@", "media projection is null");
+            mDialog = new MaterialDialog(this);
             mDialog.setTitle("城市抓抓乐温馨提示");
-            mDialog.setMessage("取消录制视频会影响申诉功能，是否重新开启录制视频！");
+            mDialog.setMessage("取消录制权限会影响申诉功能，是否重新开启录制视频！");
 
             mDialog.setPositiveButton("开启", new View.OnClickListener() {
                 @Override
@@ -1656,15 +1682,19 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             mDialog.show();
             return;
         }
-        // video size
-        final int width = 1280;
-        final int height = 720;
-        File file = new File(Environment.getExternalStorageDirectory(),
-                "record-" + width + "x" + height + "-" + System.currentTimeMillis() + ".mp4");
-        moviePath = file.getAbsolutePath();
-        final int bitrate = 4000000;
-        mRecorder = new ScreenRecorder(width, height, bitrate, 1, mediaProjection, file.getAbsolutePath());
-        mRecorder.start();
+        PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_lpqx, true);
+        if (isPlay) {
+            // video size
+            final int width = 1280;
+            final int height = 720;
+            File file = new File(Environment.getExternalStorageDirectory(),
+                    "record-" + width + "x" + height + "-" + System.currentTimeMillis() + ".mp4");
+            moviePath = file.getAbsolutePath();
+            final int bitrate = 4000000;
+            mRecorder = new ScreenRecorder(width, height, bitrate, 1, mediaProjection, file.getAbsolutePath());
+            mRecorder.start();
+        }
+
     }
 
     private static final int REQUEST_CODE = 1;
@@ -1674,7 +1704,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      *
      * @param grabID
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void luZhi(String grabID) {
         if (mRecorder != null) {
             mRecorder.quit();
