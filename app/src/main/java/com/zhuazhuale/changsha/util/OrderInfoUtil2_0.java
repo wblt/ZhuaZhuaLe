@@ -86,10 +86,9 @@ public class OrderInfoUtil2_0 {
         keyValues.put("charset", "utf-8");
         keyValues.put("method", "alipay.trade.app.pay");
         keyValues.put("sign_type", rsa2 ? "RSA2" : "RSA");
-
         keyValues.put("timestamp", s);
-
-        keyValues.put("version", "2.0");
+        keyValues.put("notify_url", "http://www.zhuazhuale.com/Notify/AliNotify");
+        keyValues.put("version", "1.0");
 
         return keyValues;
     }

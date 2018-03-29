@@ -137,7 +137,7 @@ public class RechargeModel {
     public void getAliUnifiedOrder(String productId, final ICallListener<String> iCallListener) {
         String F_Code = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_Code, "");
         String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
-
+        LogUtil.e("F_Code  "+F_Code+"  productId  "+productId);
         OkGo.<String>post(Constant.AliUnifiedOrder)
                 .tag(this)
                 .params("userid", F_ID)

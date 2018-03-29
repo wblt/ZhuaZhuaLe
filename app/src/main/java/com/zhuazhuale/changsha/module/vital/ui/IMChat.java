@@ -358,6 +358,7 @@ public class IMChat {
                         //错误码code和错误描述desc，可用于定位请求失败原因
                         //错误码code列表请参见错误码表
                         LogUtil.e("login 失败. code: " + code + " errmsg: " + desc);
+                        login(name,passWord);
                     }
 
                     @Override
@@ -448,14 +449,14 @@ public class IMChat {
             public void OnStrAccRegFail(TLSErrInfo tlsErrInfo) {
                 ToastUtil.show("注册失败" + tlsErrInfo.ExtraMsg);
                 LogUtil.e("注册失败");
-
+                ZhuCeAccount(name,passWord);
             }
 
             @Override
             public void OnStrAccRegTimeout(TLSErrInfo tlsErrInfo) {
                 ToastUtil.show("注册超时" + tlsErrInfo.ExtraMsg);
                 LogUtil.e("注册超时");
-
+                ZhuCeAccount(name,passWord);
             }
         });
         if (result == TLSErrInfo.INPUT_INVALID) {

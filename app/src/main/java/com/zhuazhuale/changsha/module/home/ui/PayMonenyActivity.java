@@ -180,7 +180,7 @@ public class PayMonenyActivity extends AppBaseActivity implements View.OnClickLi
         String privateKey = alipayBean.getRows().getVKey();
         String sign = OrderInfoUtil2_0.getSign(params, privateKey, rsa2);
         final String orderInfo = orderParam + "&" + sign;
-        LogUtil.e(orderInfo);
+        LogUtil.e("orderInfo"+orderInfo);
 
         Runnable payRunnable = new Runnable() {
 
