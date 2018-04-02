@@ -106,7 +106,7 @@ public class HomePresenter extends BasePresenter<IHomeView> {
 
             @Override
             public void callFailed() {
-                mIView.showDeviceGoodsFailed(type);
+//                mIView.showDeviceGoodsFailed(type);
             }
 
             @Override
