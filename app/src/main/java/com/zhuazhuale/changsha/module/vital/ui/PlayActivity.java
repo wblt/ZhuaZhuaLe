@@ -281,7 +281,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 @Override
                 public void onClick(View v) {
                     mDialog.dismiss();
-                    PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_lp, true);
+//                    PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_lp, true);
                 }
             });
             mDialog.show();
@@ -805,6 +805,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 }
                 if (is_lp) {
                     new Handler().postDelayed(new Runnable() {
+                        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                         public void run() {
                             luZhi(controlGameBean.getRows().getGrabID());//抓取结束,停止录屏
                         }
