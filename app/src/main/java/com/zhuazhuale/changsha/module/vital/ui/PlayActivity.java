@@ -48,6 +48,7 @@ import com.google.gson.Gson;
 import com.tencent.imsdk.TIMUserProfile;
 import com.tencent.rtmp.ITXLivePlayListener;
 import com.tencent.rtmp.TXLiveConstants;
+import com.tencent.rtmp.TXLivePlayConfig;
 import com.tencent.rtmp.TXLivePlayer;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.zhuazhuale.changsha.R;
@@ -250,6 +251,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private TextView tv_dialog_cancel;
     private boolean isSDOpen;
     private File file;
+    private TXLivePlayConfig mPlayConfig;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -307,6 +309,13 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 
     @Override
     protected void initView() {
+
+        mPlayConfig = new TXLivePlayConfig();
+        //极速模式
+        mPlayConfig.setAutoAdjustCacheTime(true);
+        mPlayConfig.setMinAutoAdjustCacheTime(1);
+        mPlayConfig.setMaxAutoAdjustCacheTime(1);
+
         tv_play_mian_type.setText("观战中");
         int color = getResourceColor(R.color.transparent);
         setBarTranslucent(color, 0, color, 0);
@@ -611,12 +620,13 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
 //        mLivePlayer.setRenderMode(TXLiveConstants.RENDER_MODE_ADJUST_RESOLUTION;);
         mLivePlayer2.setRenderMode(TXLiveConstants.RENDER_MODE_FULL_FILL_SCREEN);//填充
         mLivePlayer2.setRenderRotation(TXLiveConstants.RENDER_ROTATION_LANDSCAPE);
+        mLivePlayer2.setConfig(mPlayConfig);
         //关键player对象与界面view
         mLivePlayer2.setPlayerView(mView2);
         //软解和硬解的切换需要在切换之前先stopPlay，切换之后再startPlay，否则会产生比较严重的花屏问题。
       /*  mLivePlayer2.stopPlay(true);
         mLivePlayer2.enableHardwareDecode(true);*/
-        mLivePlayer2.startPlay(url2, TXLivePlayer. PLAY_TYPE_LIVE_RTMP_ACC); //推荐FLV
+        mLivePlayer2.startPlay(url2, TXLivePlayer.PLAY_TYPE_LIVE_RTMP_ACC); //推荐FLV
         //监听第二个直播流拉流事件
         playerListen2();
     }
@@ -627,16 +637,19 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private void creatTXLivePlayer1() {
         //创建player对象 setRenderMode
         mLivePlayer1 = new TXLivePlayer(getContext());
+
         //将图像等比例缩放，适配最长边，缩放后的宽和高都不会超过显示区域，居中显示，画面可能会留有黑边。
 //        mLivePlayer.setRenderMode(TXLiveConstants.RENDER_MODE_ADJUST_RESOLUTION;);
         mLivePlayer1.setRenderMode(TXLiveConstants.RENDER_MODE_FULL_FILL_SCREEN);//填充
         mLivePlayer1.setRenderRotation(TXLiveConstants.RENDER_ROTATION_LANDSCAPE);
+        mLivePlayer1.setConfig(mPlayConfig);
         //关键player对象与界面view
         mLivePlayer1.setPlayerView(mView1);
         //软解和硬解的切换需要在切换之前先stopPlay，切换之后再startPlay，否则会产生比较严重的花屏问题。
        /* mLivePlayer1.stopPlay(true);
         mLivePlayer1.enableHardwareDecode(true);*/
-        mLivePlayer1.startPlay(url1, TXLivePlayer. PLAY_TYPE_LIVE_RTMP_ACC); //推荐FLV
+
+        mLivePlayer1.startPlay(url1, TXLivePlayer.PLAY_TYPE_LIVE_RTMP_ACC); //推荐FLV
     }
 
     @Override
@@ -645,7 +658,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         getLoadLayout().setOnLoadListener(new OnLoadListener() {
             @Override
             public void onLoad() {
-                mLivePlayer1.startPlay(url1, TXLivePlayer. PLAY_TYPE_LIVE_RTMP_ACC); //推荐FLV
+                mLivePlayer1.startPlay(url1, TXLivePlayer.PLAY_TYPE_LIVE_RTMP_ACC); //推荐FLV
                 //查询游戏币数量
                 presenter.initNewCP();
                 //查询游戏的状态
@@ -1716,7 +1729,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         if (mRecorder != null) {
             mRecorder.quit();
             mRecorder = null;
-            presenter.initgetGetUploadSignature(grabID, moviePath,file);
+            presenter.initgetGetUploadSignature(grabID, moviePath, file);
         } else {
             if (isPlay) {
                 Intent captureIntent = mMediaProjectionManager.createScreenCaptureIntent();
