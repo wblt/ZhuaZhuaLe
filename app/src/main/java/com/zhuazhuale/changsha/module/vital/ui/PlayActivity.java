@@ -1,5 +1,6 @@
 package com.zhuazhuale.changsha.module.vital.ui;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -75,6 +76,7 @@ import com.zhuazhuale.changsha.util.CountdownUtil;
 import com.zhuazhuale.changsha.util.EventBusUtil;
 import com.zhuazhuale.changsha.util.FrescoUtil;
 import com.zhuazhuale.changsha.util.HeartLayout;
+import com.zhuazhuale.changsha.util.PermissionUtil;
 import com.zhuazhuale.changsha.util.PreferenceUtil;
 import com.zhuazhuale.changsha.util.ScreenRecorder;
 import com.zhuazhuale.changsha.util.SoundUtils;
@@ -246,6 +248,8 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private Dialog shareDialog;
     private DanmakuContext danmakuContext;
     private TextView tv_dialog_cancel;
+    private boolean isSDOpen;
+    private File file;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -290,7 +294,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         Uri uri = Uri.parse(rowsBean.getF_ImgA());
         FrescoUtil.getInstance().loadImage(sdv_play_video_bg, uri, false, true);
         randomIv();
-
+        isSDOpen = PermissionUtil.getExternalStoragePermissions(this, 110);
 
     }
 
@@ -612,7 +616,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         //软解和硬解的切换需要在切换之前先stopPlay，切换之后再startPlay，否则会产生比较严重的花屏问题。
       /*  mLivePlayer2.stopPlay(true);
         mLivePlayer2.enableHardwareDecode(true);*/
-        mLivePlayer2.startPlay(url2, TXLivePlayer.PLAY_TYPE_LIVE_RTMP); //推荐FLV
+        mLivePlayer2.startPlay(url2, TXLivePlayer. PLAY_TYPE_LIVE_RTMP_ACC); //推荐FLV
         //监听第二个直播流拉流事件
         playerListen2();
     }
@@ -632,7 +636,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         //软解和硬解的切换需要在切换之前先stopPlay，切换之后再startPlay，否则会产生比较严重的花屏问题。
        /* mLivePlayer1.stopPlay(true);
         mLivePlayer1.enableHardwareDecode(true);*/
-        mLivePlayer1.startPlay(url1, TXLivePlayer.PLAY_TYPE_LIVE_RTMP); //推荐FLV
+        mLivePlayer1.startPlay(url1, TXLivePlayer. PLAY_TYPE_LIVE_RTMP_ACC); //推荐FLV
     }
 
     @Override
@@ -641,7 +645,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         getLoadLayout().setOnLoadListener(new OnLoadListener() {
             @Override
             public void onLoad() {
-                mLivePlayer1.startPlay(url1, TXLivePlayer.PLAY_TYPE_LIVE_RTMP); //推荐FLV
+                mLivePlayer1.startPlay(url1, TXLivePlayer. PLAY_TYPE_LIVE_RTMP_ACC); //推荐FLV
                 //查询游戏币数量
                 presenter.initNewCP();
                 //查询游戏的状态
@@ -827,6 +831,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                 }
                 if (is_lp) {
                     new Handler().postDelayed(new Runnable() {
+                        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                         public void run() {
                             luZhi(controlGameBean.getRows().getGrabID());//抓取结束,停止录屏
                         }
@@ -1384,6 +1389,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
      *
      * @param gameBean
      */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void showStartGame(StartGameBean gameBean) {
@@ -1684,11 +1690,11 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
             return;
         }
         PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_lpqx, true);
-        if (isPlay) {
+        if (isPlay && isSDOpen) {
             // video size
             final int width = 1280;
             final int height = 720;
-            File file = new File(Environment.getExternalStorageDirectory(),
+            file = new File(Environment.getExternalStorageDirectory(),
                     "record-" + width + "x" + height + "-" + System.currentTimeMillis() + ".mp4");
             moviePath = file.getAbsolutePath();
             final int bitrate = 4000000;
@@ -1710,7 +1716,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         if (mRecorder != null) {
             mRecorder.quit();
             mRecorder = null;
-            presenter.initgetGetUploadSignature(grabID, moviePath);
+            presenter.initgetGetUploadSignature(grabID, moviePath,file);
         } else {
             if (isPlay) {
                 Intent captureIntent = mMediaProjectionManager.createScreenCaptureIntent();

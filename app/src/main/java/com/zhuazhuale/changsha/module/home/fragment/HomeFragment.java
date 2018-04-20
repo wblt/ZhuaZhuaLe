@@ -151,6 +151,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     @Override
                     public void run() {
 //                        LogUtil.e("我在刷新");
+                        // TODO Auto-generated method stub
+
                         if (adapter != null && adapter.getItemCount() != 0) {
 //                            LogUtil.e("我在刷新" + adapter.getItemCount());
                             List<DeviceGoodsBean.RowsBean> mData = adapter.getDataList();

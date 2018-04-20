@@ -14,9 +14,13 @@ import com.zhuazhuale.changsha.module.vital.bean.UploadBean;
 import com.zhuazhuale.changsha.module.vital.model.PlayModel;
 import com.zhuazhuale.changsha.module.vital.ui.IPlayView;
 import com.zhuazhuale.changsha.presenter.base.BasePresenter;
+import com.zhuazhuale.changsha.util.FileUtil;
 import com.zhuazhuale.changsha.util.TXupload.TXUGCPublish;
 import com.zhuazhuale.changsha.util.TXupload.TXUGCPublishTypeDef;
+import com.zhuazhuale.changsha.util.ToastUtil;
 import com.zhuazhuale.changsha.util.log.LogUtil;
+
+import java.io.File;
 
 
 /**
@@ -206,15 +210,16 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
      * 获取视频签名
      *
      * @param grabID
+     * @param file
      */
-    public void initgetGetUploadSignature(final String grabID, final String moviePath) {
+    public void initgetGetUploadSignature(final String grabID, final String moviePath, final File file) {
         LogUtil.e("grabID   " + grabID + "  moviePath  " + moviePath);
         playModel.getGetUploadSignature(new ICallListener<String>() {
             @Override
             public void callSuccess(String s) {
                 LogUtil.e(TAG, s);
                 UploadBean uploadBean = gson.fromJson(s, UploadBean.class);
-                initPushMP4ToTX(uploadBean.getRows().getVToken(), moviePath, grabID);
+                initPushMP4ToTX(uploadBean.getRows().getVToken(), moviePath, grabID, file);
             }
 
             @Override
@@ -235,11 +240,12 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
     /**
      * 上传视频到腾讯云
      *
-     * @param grabID
      * @param mCosSignature
      * @param mVideoPath
+     * @param grabID
+     * @param file
      */
-    public void initPushMP4ToTX(String mCosSignature, String mVideoPath, final String grabID) {
+    public void initPushMP4ToTX(String mCosSignature, final String mVideoPath, final String grabID, final File file) {
 //        TXUGCPublish mVideoPublish = new TXUGCPublish(MyApplication.getInstance().getApplicationContext());
         TXUGCPublish mVideoPublish = new TXUGCPublish((Context) mIView);
 // 文件发布默认是采用断点续传
@@ -260,6 +266,8 @@ public class PlayPresenter extends BasePresenter<IPlayView> {
             public void onPublishComplete(TXUGCPublishTypeDef.TXPublishResult result) {
                 LogUtil.e(result.toString());
                 initModiflyVideoUrl(grabID, result.videoURL);
+                FileUtil.deleteFile(file);
+
             }
         });
 

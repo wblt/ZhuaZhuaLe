@@ -3,6 +3,7 @@ package com.zhuazhuale.changsha.module.home.ui;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -88,10 +89,30 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
         setContentView(R.layout.activity_home2);
         instance = this;
         is_lpqx = PreferenceUtil.getBoolean(getContext(), BaseConstants.Is_lpqx, false);
-        if (!is_lpqx){
+        if (!is_lpqx) {
             luZhi();
         }
+        PermissionUtil.getExternalStoragePermissions(this, 110);
+       /* boolean b = PermissionUtil.deniedRequestAgain(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (b) {
+            ToastUtil.show("请打开手机的存储权限！");
+            gotoMiuiPermission();
+        }*/
+    }
 
+    /**
+     * 跳转到miui的权限管理页面
+     */
+    private void gotoMiuiPermission() {
+        Intent i = new Intent("miui.intent.action.APP_PERM_EDITOR");
+        ComponentName componentName = new ComponentName("com.miui.securitycenter", "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
+        i.setComponent(componentName);
+        i.putExtra("extra_pkgname", getPackageName());
+        try {
+            startActivity(i);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -118,7 +139,7 @@ public class HomeActivity2 extends AppBaseActivity implements IHomeView2 {
                 }
             });
             mDialog.show();
-        }else {
+        } else {
             PreferenceUtil.putBoolean(getContext(), BaseConstants.Is_lpqx, true);
 
         }
