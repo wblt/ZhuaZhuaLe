@@ -33,6 +33,7 @@ import com.zhuazhuale.changsha.module.home.ui.InviteActivity;
 import com.zhuazhuale.changsha.module.home.ui.RechargeActivity;
 import com.zhuazhuale.changsha.module.home.ui.XieYiActivity;
 import com.zhuazhuale.changsha.module.vital.ui.PlayActivity;
+import com.zhuazhuale.changsha.util.CommonUtil;
 import com.zhuazhuale.changsha.util.Constant;
 import com.zhuazhuale.changsha.util.IItemOnClickListener;
 import com.zhuazhuale.changsha.util.ToastUtil;
@@ -158,7 +159,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                             List<DeviceGoodsBean.RowsBean> mData = adapter.getDataList();
                             String resouse = "";
                             for (int aa = 0; aa < mData.size(); aa++) {
-                                if (aa == 1) {
+                                if (aa == 0) {
                                     resouse = mData.get(aa).getF_ID();
                                 } else {
                                     resouse = resouse + "," + mData.get(aa).getF_ID();
@@ -377,9 +378,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         adapter.setClickListener(new DeviceGoodsAdapter.OnHomeClickListener() {
             @Override
             public void onHomeClick(DeviceGoodsBean.RowsBean rowsBean) {
-                Intent intent = new Intent(getContext(), PlayActivity.class);
-                intent.putExtra("DeviceGoods", rowsBean);
-                startActivity(intent);
+                if (!CommonUtil.isFastClick()) {
+                    Intent intent = new Intent(getContext(), PlayActivity.class);
+                    intent.putExtra("DeviceGoods", rowsBean);
+                    startActivity(intent);
+                }
+
             }
         });
 
@@ -456,6 +460,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
                     rowsBeans.get(ss).setF_Status(deviceGoodsBean.getRows().get(ss).getF_Status());
                 }
                 adapter.replaceData(rowsBeans);
+                LogUtil.e("我刷新了");
             }
 
         }

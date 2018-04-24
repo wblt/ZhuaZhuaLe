@@ -157,6 +157,7 @@ public class HomeModel {
 
     public void getGetDevicesStatus(String typeID, final ICallListener<String> iCallListener) {
         String F_ID = PreferenceUtil.getString(MyApplication.getInstance(), BaseConstants.F_ID, "");
+        LogUtil.e(Constant.GetDevicesStatus);
         OkGo.<String>post(Constant.GetDevicesStatus)
                 .tag(this)
                 .params("vUserID", F_ID)

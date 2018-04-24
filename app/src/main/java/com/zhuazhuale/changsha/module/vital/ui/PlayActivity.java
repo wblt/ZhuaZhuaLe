@@ -18,6 +18,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
@@ -252,6 +253,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private boolean isSDOpen;
     private File file;
     private TXLivePlayConfig mPlayConfig;
+    private MediaPlayer mMediaPlayer;
+    private Integer[] bgvoices;
+    private Random rand;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -534,21 +538,37 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         //使用的时候先初始化一个声音播放工具
         soundUtils = new SoundUtils(this, SoundUtils.MEDIA_SOUND);
 
-        Integer[] bgvoices = {R.raw.bgvoice, R.raw.bgvoice1, R.raw.bgvoice2, R.raw.bgvoice3, R.raw.bgvoice4};
+        bgvoices = new Integer[]{R.raw.bgvoice, R.raw.bgvoice1, R.raw.bgvoice2, R.raw.bgvoice3, R.raw.bgvoice4};
         Integer[] fails = {R.raw.fail, R.raw.fail1, R.raw.fail2};
         Integer[] succes = {R.raw.success, R.raw.success1, R.raw.success2, R.raw.success3};
-        Random rand = new Random();
+        rand = new Random();
         int i = rand.nextInt(5);
-        int j=rand.nextInt(3);
-        int k=rand.nextInt(4);
+        int j = rand.nextInt(3);
+        int k = rand.nextInt(4);
         //然后添加声音进去,参数是添加声音的编号和资源id
-        soundUtils.putSound(bgvoice,bgvoices[i]);
+//        soundUtils.putSound(bgvoice,R.raw.bgvoice);
         soundUtils.putSound(readygo, R.raw.readygo);
         soundUtils.putSound(move, R.raw.move);
-        soundUtils.putSound(fail,fails[j]);
-        soundUtils.putSound(success,succes[k]);
+        soundUtils.putSound(fail, fails[j]);
+        soundUtils.putSound(success, succes[k]);
         soundUtils.putSound(start, R.raw.start);
         soundUtils.putSound(take, R.raw.take);
+        boolean is_yy = PreferenceUtil.getBoolean(this, BaseConstants.Is_yy, true);
+        if (is_yy){
+            //直接创建，不需要设置setDataSource
+            mMediaPlayer = MediaPlayer.create(this, bgvoices[i]);
+            mMediaPlayer.start();
+
+            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    LogUtil.e("我结束了!");
+                    mMediaPlayer = MediaPlayer.create(PlayActivity.this, bgvoices[rand.nextInt(5)]);
+                    mMediaPlayer.start();
+                }
+            });
+        }
+
     }
 
     /**
@@ -1356,7 +1376,10 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         super.onRestart();
         creatSoundPool();
         //无限播放背景音乐
-        soundUtils.playSoundLun(bgvoice, SoundUtils.INFINITE_PLAY);
+//        soundUtils.playSoundLun(bgvoice, SoundUtils.INFINITE_PLAY);
+        if (mMediaPlayer==null&&mMediaPlayer.isPlaying()){
+            mMediaPlayer.start();//暂停播放
+        }
     }
 
     @Override
@@ -1364,6 +1387,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         super.onStop();
         // 停止背景音乐
         soundUtils.stopSound();
+        if (mMediaPlayer!=null){
+            mMediaPlayer.pause();//暂停播放
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -1373,6 +1399,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         IMChat.getInstance().quitGroup(rowsBean.getF_GroupID());
         isHave = false;
 //        dialog.cancel();
+        mMediaPlayer.stop();
         CountdownUtil.getInstance().cancelAll();
         if (mutliThread != null) {
             mutliThread.pauseThread();
@@ -1594,7 +1621,7 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
                         break;
                     case 2002:
                         //无限播放背景音乐
-                        soundUtils.playSoundLun(bgvoice, SoundUtils.INFINITE_PLAY);
+//                        soundUtils.playSoundLun(bgvoice, SoundUtils.INFINITE_PLAY);
                         if (isFirst) {
                             creatTXLivePlayer2();
                             isFirst = false;
