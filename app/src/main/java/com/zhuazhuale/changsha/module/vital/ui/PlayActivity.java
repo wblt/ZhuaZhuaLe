@@ -553,20 +553,12 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         soundUtils.putSound(success, succes[k]);
         soundUtils.putSound(start, R.raw.start);
         soundUtils.putSound(take, R.raw.take);
-        boolean is_yy = PreferenceUtil.getBoolean(this, BaseConstants.Is_yy, true);
-        if (is_yy){
+        boolean is_bjyx = PreferenceUtil.getBoolean(this, BaseConstants.Is_bjyx, true);
+        if (is_bjyx){
             //直接创建，不需要设置setDataSource
             mMediaPlayer = MediaPlayer.create(this, bgvoices[i]);
+            mMediaPlayer.setLooping(true);
             mMediaPlayer.start();
-
-            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    LogUtil.e("我结束了!");
-                    mMediaPlayer = MediaPlayer.create(PlayActivity.this, bgvoices[rand.nextInt(5)]);
-                    mMediaPlayer.start();
-                }
-            });
         }
 
     }
@@ -1399,7 +1391,9 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
         IMChat.getInstance().quitGroup(rowsBean.getF_GroupID());
         isHave = false;
 //        dialog.cancel();
-        mMediaPlayer.stop();
+        if (mMediaPlayer!=null){
+            mMediaPlayer.stop();//暂停播放
+        }
         CountdownUtil.getInstance().cancelAll();
         if (mutliThread != null) {
             mutliThread.pauseThread();

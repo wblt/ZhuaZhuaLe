@@ -119,8 +119,7 @@ public class SoundUtils {
             float currentVolumn = am.getStreamVolume(soundVolType);
             // 比值
             float volumnRatio = currentVolumn / maxVolumn;
-            soundPool.play(soundPoolMap.get(order), volumnRatio, volumnRatio, 1,
-                    times, 1);
+            soundPool.play(soundPoolMap.get(order), 1, 1, 1, times, 1);
         }
 
     }
@@ -143,7 +142,7 @@ public class SoundUtils {
             float currentVolumn = am.getStreamVolume(soundVolType);
             // 比值
             float volumnRatio = currentVolumn / maxVolumn;
-            soundPool.play(soundPoolMap.get(order), volumnRatio, volumnRatio, 1,
+            soundPool.play(soundPoolMap.get(order), 1, 1, 1,
                     times, 1);
         } else {
             return;
