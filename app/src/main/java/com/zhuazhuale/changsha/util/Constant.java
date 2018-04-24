@@ -28,7 +28,9 @@ public class Constant {
     //  获取设备商品信息
     public static String GetDeviceGoods = URL + "/api/Device/GetDeviceGoods";
     //获取游戏机列表状态
-    public static String GetDevicesStatus = URL + "/api/Device/GetDevicesStatus";
+//    public static String GetDevicesStatus = URL + "/api/Device/GetDevicesStatus";
+    public static String GetDevicesStatus = URLGAME + "/api/Operation/GetDevicesStatus";
+
     //获取账号余额信息
     public static String GetNewCP = URL + "/api/Account/GetNewCP";
     //获取充值兑换比例

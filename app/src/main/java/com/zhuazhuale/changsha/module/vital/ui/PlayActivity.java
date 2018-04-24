@@ -533,12 +533,20 @@ public class PlayActivity extends AppBaseActivity implements View.OnClickListene
     private void creatSoundPool() {
         //使用的时候先初始化一个声音播放工具
         soundUtils = new SoundUtils(this, SoundUtils.MEDIA_SOUND);
+
+        Integer[] bgvoices = {R.raw.bgvoice, R.raw.bgvoice1, R.raw.bgvoice2, R.raw.bgvoice3, R.raw.bgvoice4};
+        Integer[] fails = {R.raw.fail, R.raw.fail1, R.raw.fail2};
+        Integer[] succes = {R.raw.success, R.raw.success1, R.raw.success2, R.raw.success3};
+        Random rand = new Random();
+        int i = rand.nextInt(5);
+        int j=rand.nextInt(3);
+        int k=rand.nextInt(4);
         //然后添加声音进去,参数是添加声音的编号和资源id
-        soundUtils.putSound(bgvoice, R.raw.bgvoice);
+        soundUtils.putSound(bgvoice,bgvoices[i]);
         soundUtils.putSound(readygo, R.raw.readygo);
         soundUtils.putSound(move, R.raw.move);
-        soundUtils.putSound(fail, R.raw.fail);
-        soundUtils.putSound(success, R.raw.success);
+        soundUtils.putSound(fail,fails[j]);
+        soundUtils.putSound(success,succes[k]);
         soundUtils.putSound(start, R.raw.start);
         soundUtils.putSound(take, R.raw.take);
     }
